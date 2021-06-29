@@ -3,8 +3,7 @@ tickit
 
 |code_ci| |docs_ci| |coverage| |pypi_version| |license|
 
-This is where you should write a short paragraph that describes what your module does,
-how it does it, and why people should use it.
+Event-based device simulation framework.
 
 ============== ==============================================================
 PyPI           ``pip install tickit``
@@ -12,20 +11,7 @@ Source code    https://github.com/dls-controls/tickit
 Documentation  https://dls-controls.github.io/tickit
 ============== ==============================================================
 
-This is where you should put some images or code snippets that illustrate
-some relevant examples. If it is a library then you might put some
-introductory code here:
-
-.. code:: python
-
-    from tickit import HelloClass
-
-    hello = HelloClass("me")
-    print(hello.format_greeting())
-
-Or if it is a commandline tool then you might put some example commands here::
-
-    tickit person --times=2
+TODO
 
 
 .. |code_ci| image:: https://github.com/dls-controls/tickit/workflows/Code%20CI/badge.svg?branch=master

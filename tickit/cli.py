@@ -1,6 +1,6 @@
 from argparse import ArgumentParser
 
-from tickit import HelloClass, __version__, say_hello_lots
+from tickit import __version__
 
 
 def main(args=None):
@@ -9,4 +9,4 @@ def main(args=None):
     parser.add_argument("name", help="Name of the person to greet")
     parser.add_argument("--times", type=int, default=5, help="Number of times to greet")
     args = parser.parse_args(args)
-    say_hello_lots(HelloClass(args.name), args.times)
+    print(args)
