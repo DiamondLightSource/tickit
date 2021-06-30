@@ -32,12 +32,6 @@ stages:
   - install
   - build
   - test
-  - staging
-
-
-cache:
-  paths:
-    - build/html
 
 
 install packages (DLS internal):
@@ -89,33 +83,23 @@ tests and publish coverage:
     - dls-py3 publish-coverage ${CI_PROJECT_ID} ${CI_MERGE_REQUEST_IID} ${COVERAGE_REPORT_NAME} ${COVERAGE_REPORT_TOKEN}
 
 
-build docs:
+build and publish docs:
   stage: test
   needs: ["build project"]
-  extends: ".dls_internal"
+  extends: ".dls_external"
   except:
     variables:
       - $SKIP_DOCS # Define this to skip docs build
   script:
     - pipenv run docs
-
-
-publish docs:
-  stage: staging
-  needs: ["build docs"]
-  extends: ".dls_internal"
-  except:
-    variables:
-      - $SKIP_DOCS # Define this to skip docs build
-  script:
     - mkdir -p ${DOCS_PUBLISH_ROOT}/latest
     - cp -rf build/html/* ${DOCS_PUBLISH_ROOT}/latest
     - echo "Documentation is available at ${DOCS_PUBLISH_URL}/latest"
 
 
 wheel and metadata check:
-  stage: staging
-  needs: ["tests and coverage"]
+  stage: test
+  needs: ["build project", "install packages (DLS internal)"]
   extends: ".dls_internal"
   script:
     - dls-python3 setup.py bdist_wheel
