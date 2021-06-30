@@ -16,9 +16,3 @@ using ``autoclass`` and ``autofunction`` directives instead of
     :type: str
 
     Version number as calculated by https://github.com/dls-controls/versiongit
-
-.. automodule:: tickit.tickit
-    :members:
-
-    ``tickit.tickit``
-    -------------------------------------------------------------------
