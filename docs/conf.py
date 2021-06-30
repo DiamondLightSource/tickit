@@ -12,10 +12,10 @@
 import os
 import sys
 
+import tickit  # noqa
 
 sys.path.insert(0, os.path.abspath(os.path.join(__file__, "..", "..")))
 
-import tickit  # noqa
 
 # -- General configuration ------------------------------------------------
 
@@ -131,8 +131,8 @@ html_show_copyright = True
 html_css_files = ["theme_overrides.css"]
 
 # Logo
-html_logo = "images/dls-logo.svg"
-html_favicon = "images/dls-favicon.ico"
+html_logo = "images/tickit-logo.svg"
+html_favicon = "images/tickit-logo.ico"
 
 # sphinx-multiversion config
 smv_rebuild_tags = False
