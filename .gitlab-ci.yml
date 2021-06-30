@@ -92,7 +92,7 @@ tests and publish coverage:
 build docs:
   stage: test
   needs: ["build project"]
-  extends: ".dls_external"
+  extends: ".dls_internal"
   except:
     variables:
       - $SKIP_DOCS # Define this to skip docs build
