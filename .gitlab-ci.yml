@@ -1,4 +1,122 @@
 include:
   - project: 'controls/reports/ci_templates'
     ref: master
-    file: 'python3/dls_py3_template.yml'
+    file: 'defaults.yml'
+
+
+.dls_internal:
+  # Use Kubernetes runners
+  tags:
+    - rhel7-k8s
+  image:
+    name: gcr.io/diamond-privreg/controls/gitlab-runners:latest
+  before_script:
+    - source /etc/dlsprofile
+    - load_controls_modules
+    # Each job needs the Pipenv to be installed.
+    - pipenv install --dev --deploy
+
+
+.dls_external:
+  # Use default Kubernetes runners
+  tags:
+    - argus
+  image:
+    name: python:3.7
+  before_script:
+    - pip install pipenv
+    - pipenv install --dev --deploy
+
+
+stages:
+  - install
+  - build
+  - test
+  - staging
+
+
+cache:
+  paths:
+    - build/html
+
+
+install packages (DLS internal):
+  stage: install
+  extends: ".dls_internal"
+  script:
+    - echo "Installation successful"
+
+
+install packages:
+  stage: install
+  extends: ".dls_external"
+  script:
+    - echo "Installation successful"
+
+
+build project:
+  stage: build
+  needs: ["install packages"]
+  extends: ".dls_external"
+  script:
+    - "pipenv run build"
+
+
+tests and coverage:
+  stage: test
+  needs: ["build project"]
+  extends: ".dls_external"
+  coverage: '/TOTAL.*\s+(\d+\%)/'
+  script:
+    - pipenv run tests --junitxml=tests.xml --cov-report html
+  artifacts:
+    paths:
+      - tests.xml
+    reports:
+      junit: tests.xml
+
+
+tests and publish coverage:
+  stage: test
+  needs: ["build project"]
+  extends: ".dls_internal"
+  rules:
+    # ${CI_MERGE_REQUEST_ID} only present if the below rule is used.
+    - if: $CI_MERGE_REQUEST_ID && $COVERAGE_REPORT_TOKEN
+  coverage: '/TOTAL.*\s+(\d+\%)/'
+  script:
+    - pipenv run tests --cov-report html --cov-report xml
+    - dls-py3 publish-coverage ${CI_PROJECT_ID} ${CI_MERGE_REQUEST_IID} ${COVERAGE_REPORT_NAME} ${COVERAGE_REPORT_TOKEN}
+
+
+build docs:
+  stage: test
+  needs: ["build project"]
+  extends: ".dls_external"
+  except:
+    variables:
+      - $SKIP_DOCS # Define this to skip docs build
+  script:
+    - pipenv run docs
+
+
+publish docs:
+  stage: staging
+  needs: ["build docs"]
+  extends: ".dls_internal"
+  except:
+    variables:
+      - $SKIP_DOCS # Define this to skip docs build
+  script:
+    - mkdir -p ${DOCS_PUBLISH_ROOT}/latest
+    - cp -rf build/html/* ${DOCS_PUBLISH_ROOT}/latest
+    - echo "Documentation is available at ${DOCS_PUBLISH_URL}/latest"
+
+
+wheel and metadata check:
+  stage: staging
+  needs: ["tests and coverage"]
+  extends: ".dls_internal"
+  script:
+    - dls-python3 setup.py bdist_wheel
+    - dls-py3 check --no-tag-check
