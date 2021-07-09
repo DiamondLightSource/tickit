@@ -22,7 +22,7 @@ include:
   tags:
     - argus
   image:
-    name: python:3.7
+    name: python:3.9
   before_script:
     - pip install pipenv
     - pipenv install --dev --deploy
@@ -62,7 +62,7 @@ tests and coverage:
   extends: ".dls_external"
   coverage: '/TOTAL.*\s+(\d+\%)/'
   script:
-    - pipenv run tests --junitxml=tests.xml --cov-report html
+    - pipenv run tests tests --junitxml=tests.xml --cov-report html
   artifacts:
     paths:
       - tests.xml
@@ -79,7 +79,7 @@ tests and publish coverage:
     - if: $CI_MERGE_REQUEST_ID && $COVERAGE_REPORT_TOKEN
   coverage: '/TOTAL.*\s+(\d+\%)/'
   script:
-    - pipenv run tests --cov-report html --cov-report xml
+    - pipenv run tests tests --cov-report html --cov-report xml
     - dls-py3 publish-coverage ${CI_PROJECT_ID} ${CI_MERGE_REQUEST_IID} ${COVERAGE_REPORT_NAME} ${COVERAGE_REPORT_TOKEN}
 
 
