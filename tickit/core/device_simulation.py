@@ -3,7 +3,6 @@ import asyncio
 from tickit.core.device import Device
 from tickit.core.events import DeviceID, Input, Output
 from tickit.core.state_interface import StateConsumer, StateProducer
-from tickit.core.state_interfaces.kafka import KafkaStateConsumer, KafkaStateProducer
 from tickit.utils.topic_naming import input_topic, output_topic
 
 
@@ -17,15 +16,15 @@ class DeviceSimulation:
         self,
         deviceID: DeviceID,
         device: Device,
-        state_consumer: StateConsumer = KafkaStateConsumer,
-        state_producer: StateProducer = KafkaStateProducer,
+        state_consumer: StateConsumer,
+        state_producer: StateProducer,
     ):
         self.deviceID = deviceID
         self.device = device
         self.last_time = 0
 
         self.state_consumer: StateConsumer = state_consumer(
-            [input_topic(self.deviceID)], self.deviceID
+            [input_topic(self.deviceID)]
         )
         self.state_producer: StateProducer = state_producer()
 
