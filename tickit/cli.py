@@ -68,12 +68,10 @@ async def main(args):
         await asyncio.wait([asyncio.create_task(simulation.run_forever())])
     if args.mode == "manager":
         manager = Manager(
-            Wiring(
-                {"random-trampoline": {"output": [("sink", "input")]}},
-                state_consumer,
-                state_producer,
-                state_topic_manager,
-            )
+            Wiring({"random-trampoline": {"output": [("sink", "input")]}}),
+            state_consumer,
+            state_producer,
+            state_topic_manager,
         )
         await asyncio.wait([asyncio.create_task(manager.run_forever())])
     if args.mode == "all":
