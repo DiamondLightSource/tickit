@@ -1,5 +1,5 @@
 import json
-from typing import Collection, List, Optional
+from typing import Iterable, List, Optional
 
 from kafka import KafkaConsumer
 from kafka.admin import KafkaAdminClient
@@ -7,22 +7,10 @@ from kafka.admin.new_topic import NewTopic
 from kafka.producer.kafka import KafkaProducer
 
 
-class KafkaStateProducer:
-    def __init__(self) -> None:
-        self.producer = KafkaProducer(
-            value_serializer=lambda m: json.dumps(m).encode("ascii")
-        )
-
-    async def produce(self, topic: str, value: object) -> None:
-        print("Producing {} to {}".format(value, topic))
-        self.producer.send(topic, value.__dict__)
-
-
 class KafkaStateConsumer:
-    def __init__(self, consume_topics: Collection[str], name: str) -> None:
+    def __init__(self, consume_topics: Iterable[str]) -> None:
         self.consumer = KafkaConsumer(
             *consume_topics,
-            group_id=name,
             auto_offset_reset="earliest",
             value_deserializer=lambda m: json.loads(m.decode("ascii"))
         )
@@ -37,7 +25,18 @@ class KafkaStateConsumer:
             yield None
 
 
-class KafkaStateTopicAdmin:
+class KafkaStateProducer:
+    def __init__(self) -> None:
+        self.producer = KafkaProducer(
+            value_serializer=lambda m: json.dumps(m).encode("ascii")
+        )
+
+    async def produce(self, topic: str, value: object) -> None:
+        print("Producing {} to {}".format(value, topic))
+        self.producer.send(topic, value.__dict__)
+
+
+class KafkaStateTopicManager:
     def __init__(self, num_partitions=1, replication_factor=1) -> None:
         self.num_partitions = num_partitions
         self.replication_factor = replication_factor

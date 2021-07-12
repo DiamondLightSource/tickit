@@ -5,12 +5,7 @@ from typing import List, Optional, Set, Tuple
 
 from tickit.core.event_router import EventRouter, Wiring
 from tickit.core.events import DeviceID, Input, Output, Wakeup
-from tickit.core.state_interface import StateConsumer, StateProducer
-from tickit.core.state_interfaces.kafka import (
-    KafkaStateConsumer,
-    KafkaStateProducer,
-    KafkaStateTopicAdmin,
-)
+from tickit.core.state_interface import StateConsumer, StateProducer, StateTopicManager
 from tickit.utils.topic_naming import input_topic, output_topic
 
 
@@ -18,19 +13,20 @@ class Manager:
     def __init__(
         self,
         wiring: Wiring,
+        state_consumer: StateConsumer,
+        state_producer: StateProducer,
+        state_topic_manager: StateTopicManager,
         initial_time: int = 0,
         simulation_speed: float = 1.0,
-        state_consumer: StateConsumer = KafkaStateConsumer,
-        state_producer: StateProducer = KafkaStateProducer,
     ):
         self.event_router = EventRouter(wiring)
         self.simulation_time = initial_time
         self.simulation_speed = simulation_speed
 
-        self.state_topic_admin = KafkaStateTopicAdmin()
+        self.state_topic_manager = state_topic_manager()
         output_topics, _ = self.create_device_topics()
 
-        self.state_consumer: StateConsumer = state_consumer(output_topics, "manager")
+        self.state_consumer: StateConsumer = state_consumer(output_topics)
         self.state_producer: StateProducer = state_producer()
         self.wakeups: List[Wakeup] = []
 
@@ -38,13 +34,9 @@ class Manager:
         output_topics = set(
             output_topic(device) for device in self.event_router.devices
         )
-        input_topics = set(
-            input_topic(device) for device in self.event_router.input_devices
-        )
-        for topic in output_topics:
-            self.state_topic_admin.create_topic(topic)
-        for topic in input_topics:
-            self.state_topic_admin.create_topic(topic)
+        input_topics = set(input_topic(device) for device in self.event_router.devices)
+        for topic in set.union(input_topics, output_topics):
+            self.state_topic_manager.create_topic(topic)
         return output_topics, input_topics
 
     async def run_forever(self):

@@ -1,18 +1,18 @@
-from typing import Collection, Protocol, runtime_checkable
+from typing import Iterable, List, Optional, Protocol, runtime_checkable
 
 
 @runtime_checkable
 class StateConsumer(Protocol):
-    def __init__(self, consume_topics: Collection[str]) -> None:
+    def __init__(self, consume_topics: Iterable[str]) -> None:
         ...
 
-    async def consume(self) -> object:
+    async def consume(self) -> Optional[object]:
         ...
 
 
 @runtime_checkable
 class StateProducer(Protocol):
-    def __init__(self, produce_topic: str) -> None:
+    def __init__(self) -> None:
         ...
 
     async def produce(self, topic: str, value: object) -> None:
@@ -24,11 +24,11 @@ class StateTopicManager(Protocol):
     def __init__(self) -> None:
         ...
 
-    async def get_topics(self) -> Collection[str]:
+    def get_topics(self) -> List[str]:
         ...
 
-    async def create_topic(self, topic: str) -> None:
+    def create_topic(self, topic: str) -> None:
         ...
 
-    async def remove_topic(self, topic: str):
+    def remove_topic(self, topic: str) -> None:
         ...
