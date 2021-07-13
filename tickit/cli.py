@@ -1,9 +1,11 @@
 import asyncio
+import sys
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 from tickit import __version__
 from tickit.core import DeviceSimulation
 from tickit.core.event_router import Wiring
+from tickit.core.lifetime_runnable import run_all_forever
 from tickit.core.manager import Manager
 from tickit.core.state_interfaces.internal import (
     InternalStateConsumer,
@@ -46,9 +48,9 @@ parser_all.add_argument(
 parser.add_argument("--version", action="version", version=__version__)
 
 
-async def main(args):
-    args = parser.parse_args(args)
-    print(args)
+def main():
+    args = parser.parse_args(sys.argv[1:])
+
     if args.backend == "internal":
         state_consumer = InternalStateConsumer
         state_producer = InternalStateProducer
@@ -65,7 +67,7 @@ async def main(args):
             state_consumer,
             state_producer,
         )
-        await asyncio.wait([asyncio.create_task(simulation.run_forever())])
+        asyncio.run(run_all_forever([simulation]))
     if args.mode == "manager":
         manager = Manager(
             Wiring({"random-trampoline": {"output": [("sink", "input")]}}),
@@ -73,7 +75,7 @@ async def main(args):
             state_producer,
             state_topic_manager,
         )
-        await asyncio.wait([asyncio.create_task(manager.run_forever())])
+        asyncio.run(run_all_forever([manager]))
     if args.mode == "all":
         manager = Manager(
             Wiring({"random-trampoline": {"output": [("sink", "input")]}}),
@@ -85,9 +87,4 @@ async def main(args):
             "random-trampoline", RandomTrampoline(), state_consumer, state_producer,
         )
         sink = DeviceSimulation("sink", Sink(), state_consumer, state_producer,)
-        tasks = [
-            asyncio.create_task(manager.run_forever()),
-            asyncio.create_task(trampoline.run_forever()),
-            asyncio.create_task(sink.run_forever()),
-        ]
-        await asyncio.wait(tasks)
+        asyncio.run(run_all_forever([manager, trampoline, sink]))
