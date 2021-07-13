@@ -40,10 +40,11 @@ parser_device.add_argument(
 parser_device.add_argument("-b", "--backend", default="kafka", choices=["kafka"])
 
 parser_manager = subparsers.add_parser("manager")
+parser_manager.add_argument("config_path", help="path to simulation configuration json")
 parser_manager.add_argument("-b", "--backend", default="kafka", choices=["kafka"])
 
 parser_all = subparsers.add_parser("all")
-parser_all.add_argument("config_path", help="name given to device in simulation")
+parser_all.add_argument("config_path", help="path to simulation configuration json")
 parser_all.add_argument(
     "-b", "--backend", default="internal", choices=["internal", "kafka"]
 )
