@@ -1,3 +1,4 @@
+from functools import cached_property
 from random import randint
 from typing import Dict, Iterable, Optional, Tuple
 
@@ -12,7 +13,7 @@ class Trampoline:
     def initial_state(self) -> Tuple[Dict[str, object], Optional[int]]:
         return (dict(), self.callback_period)
 
-    @property
+    @cached_property
     def adapters(self) -> Iterable[Adapter]:
         return list()
 

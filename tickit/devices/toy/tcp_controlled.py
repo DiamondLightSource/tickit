@@ -6,7 +6,7 @@ from tickit.adapters import TcpAdapter
 from tickit.core.adapter import Adapter
 
 
-class TcpControlledDevice:
+class TcpControlled:
     tcp_server = TcpAdapter()
     observed = 0
     unobserved = 0

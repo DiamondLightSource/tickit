@@ -1,0 +1,17 @@
+[
+    {
+        "device_class": "tickit.devices.toy.trampoline.RandomTrampoline",
+        "inputs": {},
+        "name": "rand-tramp"
+    },
+    {
+        "device_class": "tickit.devices.toy.sink.Sink",
+        "inputs": {
+            "input": [
+                "rand-tramp",
+                "output"
+            ]
+        },
+        "name": "tramp-sink"
+    }
+]
