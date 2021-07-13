@@ -1,5 +1,7 @@
 from random import randint
-from typing import Dict, Optional, Tuple
+from typing import Dict, Iterable, Optional, Tuple
+
+from tickit.core.adapter import Adapter
 
 
 class Trampoline:
@@ -9,6 +11,10 @@ class Trampoline:
     @property
     def initial_state(self) -> Tuple[Dict[str, object], Optional[int]]:
         return (dict(), self.callback_period)
+
+    @property
+    def adapters(self) -> Iterable[Adapter]:
+        return list()
 
     def update(
         self, delta: int, inputs: Dict[str, object]
@@ -24,6 +30,10 @@ class RandomTrampoline:
     @property
     def initial_state(self) -> Tuple[Dict[str, object], Optional[int]]:
         return ({"output": None}, self.callback_period)
+
+    @property
+    def adapters(self) -> Dict[str, Adapter]:
+        return dict()
 
     def update(
         self, delta: int, inputs: Dict[str, object]
