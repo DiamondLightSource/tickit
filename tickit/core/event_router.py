@@ -2,7 +2,7 @@ from collections import deque
 from functools import cached_property
 from typing import Dict, Iterable, List, NewType, Set, Tuple
 
-from tickit.core.events import DeviceID, Input, IoId, Output
+from tickit.core.typedefs import DeviceID, Input, IoId, Output
 
 Wiring = NewType("Wiring", Dict[DeviceID, Dict[IoId, Iterable[Tuple[DeviceID, IoId]]]])
 

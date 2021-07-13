@@ -5,11 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name":"Python: Module",
+            "name":"Sunk Trampoline",
             "type":"python",
             "request":"launch",
             "module":"tickit",
-            "args": ["all"]
+            "args": ["all", "examples/configs/sunk-trampoline.json"]
+        },
+        {
+            "name":"Sunk TCP",
+            "type":"python",
+            "request":"launch",
+            "module":"tickit",
+            "args": ["all", "examples/configs/sunk-tcp.json"]
         },
         {
             "name":"Python: Current File",

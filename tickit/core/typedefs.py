@@ -1,10 +1,17 @@
 from dataclasses import dataclass
-from typing import Dict, NewType, Optional
+from typing import Dict, NewType, Optional, Tuple
 
 DeviceID = NewType("DeviceID", str)
 IoId = NewType("IoId", str)
 Changes = NewType("Changes", Dict[str, object])
 SimTime = NewType("SimTime", int)
+
+
+@dataclass
+class DeviceConfig:
+    name: DeviceID
+    device_class: str
+    inputs: Dict[IoId, Tuple[DeviceID, IoId]]
 
 
 @dataclass

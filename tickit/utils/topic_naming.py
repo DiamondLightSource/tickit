@@ -1,4 +1,4 @@
-from tickit.core.events import DeviceID
+from tickit.core.typedefs import DeviceID
 
 
 def output_topic(device: DeviceID):

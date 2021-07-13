@@ -1,6 +1,8 @@
 import asyncio
+import json
 import sys
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
+from typing import List, Tuple
 
 from tickit import __version__
 from tickit.core import DeviceSimulation
@@ -17,7 +19,7 @@ from tickit.core.state_interfaces.kafka import (
     KafkaStateProducer,
     KafkaStateTopicManager,
 )
-from tickit.devices.toy import RandomTrampoline, Sink
+from tickit.core.typedefs import DeviceConfig, DeviceID
 from tickit.utils import import_class
 
 parser = ArgumentParser(formatter_class=RawDescriptionHelpFormatter)
@@ -41,6 +43,7 @@ parser_manager = subparsers.add_parser("manager")
 parser_manager.add_argument("-b", "--backend", default="kafka", choices=["kafka"])
 
 parser_all = subparsers.add_parser("all")
+parser_all.add_argument("config_path", help="name given to device in simulation")
 parser_all.add_argument(
     "-b", "--backend", default="internal", choices=["internal", "kafka"]
 )
@@ -69,22 +72,28 @@ def main():
         )
         asyncio.run(run_all_forever([simulation]))
     if args.mode == "manager":
-        manager = Manager(
-            Wiring({"random-trampoline": {"output": [("sink", "input")]}}),
-            state_consumer,
-            state_producer,
-            state_topic_manager,
-        )
+        _, _, wiring = read_config(args.config_path)
+        manager = Manager(wiring, state_consumer, state_producer, state_topic_manager,)
         asyncio.run(run_all_forever([manager]))
     if args.mode == "all":
-        manager = Manager(
-            Wiring({"random-trampoline": {"output": [("sink", "input")]}}),
-            state_consumer,
-            state_producer,
-            state_topic_manager,
-        )
-        trampoline = DeviceSimulation(
-            "random-trampoline", RandomTrampoline(), state_consumer, state_producer,
-        )
-        sink = DeviceSimulation("sink", Sink(), state_consumer, state_producer,)
-        asyncio.run(run_all_forever([manager, trampoline, sink]))
+        names, devices, wiring = read_config(args.config_path)
+        device_simulations = [
+            DeviceSimulation(name, device, state_consumer, state_producer)
+            for name, device in zip(names, devices)
+        ]
+        manager = Manager(wiring, state_consumer, state_producer, state_topic_manager,)
+        asyncio.run(run_all_forever([manager, *device_simulations]))
+
+
+def read_config(config_path) -> Tuple[List[DeviceID], List[DeviceSimulation], Wiring]:
+    configs = [DeviceConfig(**config) for config in json.load(open(config_path, "r"))]
+    names = [config.name for config in configs]
+    devices = [import_class(config.device_class)() for config in configs]
+    wiring: Wiring = dict()
+    for name, device in zip(names, devices):
+        wiring[name] = {out_id: list() for out_id in device.initial_state[0].keys()}
+    for config in configs:
+        for in_id, (out_device, out_id) in config.inputs.items():
+            wiring[out_device][out_id].append((config.name, in_id))
+
+    return names, devices, wiring

@@ -1,0 +1,17 @@
+[
+    {
+        "device_class": "tickit.devices.toy.tcp_controlled.TcpControlled",
+        "inputs": {},
+        "name": "tcp-contr"
+    },
+    {
+        "device_class": "tickit.devices.toy.sink.Sink",
+        "inputs": {
+            "input": [
+                "tcp-contr",
+                "observed"
+            ]
+        },
+        "name": "contr-sink"
+    }
+]

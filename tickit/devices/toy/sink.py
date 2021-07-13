@@ -1,3 +1,4 @@
+from functools import cached_property
 from typing import Dict, Iterable, Optional, Tuple
 
 from tickit.core.adapter import Adapter
@@ -8,7 +9,7 @@ class Sink:
     def initial_state(self) -> Tuple[Dict[str, object], Optional[int]]:
         return (dict(), None)
 
-    @property
+    @cached_property
     def adapters(self) -> Iterable[Adapter]:
         return list()
 
