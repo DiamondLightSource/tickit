@@ -1,4 +1,5 @@
 import asyncio
+from typing import Dict, Optional
 
 from tickit.core.device import Device
 from tickit.core.events import DeviceID, Input, Output
@@ -8,7 +9,6 @@ from tickit.utils.topic_naming import input_topic, output_topic
 
 class DeviceSimulation:
 
-    # TODO add the device interface
     state = dict()
     inputs = dict()
 
@@ -29,16 +29,15 @@ class DeviceSimulation:
         self.state_producer: StateProducer = state_producer()
 
     async def run_forever(self):
+        for adapter in self.device.adapters:
+            asyncio.create_task(adapter.run_forever())
         self.state, call_in = self.device.initial_state
-        await self.state_producer.produce(
-            output_topic(self.deviceID),
-            Output(self.deviceID, None, self.state, call_in),
-        )
-
+        await self.output(None, self.state, call_in)
         while True:
             input = await self.state_consumer.consume().__anext__()
             if input:
                 await self.on_tick(Input(**input))
+            await self.handle_interrupts()
             await asyncio.sleep(0.1)
 
     async def on_tick(self, input: Input) -> None:
@@ -49,7 +48,19 @@ class DeviceSimulation:
         self.last_time = input.time
         changes = {k: v for k, v in new_state.items() if not self.state[k] == v}
         self.state = new_state
+        await self.output(self.last_time, changes, call_in)
+
+    async def output(
+        self, time: Optional[int], changes: Dict[str, object], call_in: int
+    ):
         await self.state_producer.produce(
-            output_topic(self.deviceID),
-            Output(self.deviceID, self.last_time, changes, call_in),
+            output_topic(self.deviceID), Output(self.deviceID, time, changes, call_in)
         )
+
+    async def handle_interrupts(self):
+        interrupt = False
+        for adapter in self.device.adapters:
+            interrupt |= adapter.interrupt
+            adapter.interrupt = False
+        if interrupt:
+            await self.output(None, dict(), 0)
