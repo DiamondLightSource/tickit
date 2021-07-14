@@ -31,8 +31,6 @@ class DeviceSimulation:
     async def run_forever(self):
         for adapter in self.device.adapters:
             asyncio.create_task(adapter.run_forever())
-        self.state, call_in = self.device.initial_state
-        await self.output(None, self.state, call_in)
         while True:
             input = await self.state_consumer.consume().__anext__()
             if input:
@@ -46,7 +44,11 @@ class DeviceSimulation:
             input.time - self.last_time, self.inputs
         )
         self.last_time = input.time
-        changes = {k: v for k, v in new_state.items() if not self.state[k] == v}
+        changes = {
+            k: v
+            for k, v in new_state.items()
+            if k not in self.state or not self.state[k] == v
+        }
         self.state = new_state
         await self.output(self.last_time, changes, call_in)
 

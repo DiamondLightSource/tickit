@@ -1,11 +1,11 @@
 import asyncio
 import bisect
 from time import time_ns
-from typing import List, Optional, Set, Tuple
+from typing import Iterable, List, Optional, Set, Tuple
 
 from tickit.core.event_router import EventRouter, Wiring
 from tickit.core.state_interface import StateConsumer, StateProducer, StateTopicManager
-from tickit.core.typedefs import DeviceID, Input, Output, Wakeup
+from tickit.core.typedefs import DeviceID, Input, Output, SimTime, Wakeup
 from tickit.utils.topic_naming import input_topic, output_topic
 
 
@@ -41,10 +41,11 @@ class Manager:
 
     async def run_forever(self):
         time = time_ns()
+        await self.tick([Wakeup(device, 0) for device in self.event_router.devices])
         while True:
             last_time = time
             if self.wakeups and self.wakeups[0].when == self.simulation_time:
-                await self.tick()
+                await self.tick([self.wakeups.pop(0)])
             await self.handle_callbacks()
             await asyncio.sleep(0.1)
             time = time_ns()
@@ -57,42 +58,44 @@ class Manager:
         self.simulation_time = new_time
         print("Progressed to {}".format(self.simulation_time))
 
-    async def tick(self) -> None:
+    async def tick(self, wakeups: Iterable[Wakeup]) -> None:
         print("Doing tick @ {}".format(self.simulation_time))
-        assert self.simulation_time == self.wakeups[0].when
-        wakeup = self.wakeups.pop(0)
-        to_update = self.event_router.dependants(wakeup.device)
+        to_update: Set[DeviceID] = set()
+        for wakeup in wakeups:
+            to_update |= self.event_router.dependants(wakeup.device)
         inputs: List[Input] = list()
-
-        await self.state_producer.produce(
-            input_topic(wakeup.device), Input(wakeup.device, self.simulation_time, {})
-        )
+        await self.schedule_possible_updates(inputs, to_update)
         while to_update:
             response: Output = await self.handle_callbacks()
-            if not response or not response.time:
+            if not response or response.time is None:
                 await asyncio.sleep(0.1)
                 continue
             assert response.time == self.simulation_time
             to_update.discard(response.source)
             inputs.extend(self.event_router.route(response))
-            tasks = [
-                asyncio.create_task(
-                    self.update_device(self.collate_inputs(inputs, device))
-                )
-                for device in to_update
-                if not self.event_router.inverse_device_tree[device].intersection(
-                    to_update
-                )
-            ]
-            if tasks:
-                await asyncio.wait(tasks)
+            await self.schedule_possible_updates(inputs, to_update)
 
-    def collate_inputs(self, inputs: List[Input], device: DeviceID) -> Input:
+    async def schedule_possible_updates(
+        self, inputs: List[Input], to_update: Set[DeviceID]
+    ) -> None:
+        tasks = [
+            asyncio.create_task(
+                self.update_device(
+                    self.collate_inputs(inputs, device, self.simulation_time)
+                )
+            )
+            for device in to_update
+            if not self.event_router.inverse_device_tree[device].intersection(to_update)
+        ]
+        if tasks:
+            await asyncio.wait(tasks)
+
+    def collate_inputs(
+        self, inputs: List[Input], device: DeviceID, time: SimTime
+    ) -> Input:
         inputs = [input for input in inputs if input.target == device]
         return Input(
-            inputs[0].target,
-            inputs[0].time,
-            {k: v for input in inputs for k, v in input.changes.items()},
+            device, time, {k: v for input in inputs for k, v in input.changes.items()},
         )
 
     async def update_device(self, input: Input) -> None:

@@ -37,7 +37,7 @@ class EventRouter:
 
     @cached_property
     def inverse_device_tree(self) -> Dict[DeviceID, Set[DeviceID]]:
-        inverse_tree = {dev: set() for dev in self.input_devices}
+        inverse_tree = {dev: set() for dev in self.devices}
         for dev, deps in self.device_tree.items():
             for dep in deps:
                 inverse_tree[dep].add(dev)

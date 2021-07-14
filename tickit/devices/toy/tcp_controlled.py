@@ -1,9 +1,10 @@
 import re
 from functools import cached_property
-from typing import Dict, Iterable, Optional, Tuple
+from typing import Dict, Iterable, Optional, Set, Tuple
 
 from tickit.adapters import TcpAdapter
 from tickit.core.adapter import Adapter
+from tickit.core.typedefs import IoId
 
 
 class TcpControlled:
@@ -12,8 +13,8 @@ class TcpControlled:
     unobserved = 0
 
     @property
-    def initial_state(self) -> Tuple[Dict[str, object], Optional[int]]:
-        return {"observed": self.observed}, None
+    def outputs(self) -> Set[IoId]:
+        return {"observed"}
 
     @cached_property
     def adapters(self) -> Iterable[Adapter]:

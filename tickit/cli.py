@@ -6,6 +6,7 @@ from typing import List, Tuple
 
 from tickit import __version__
 from tickit.core import DeviceSimulation
+from tickit.core.device import Device
 from tickit.core.event_router import Wiring
 from tickit.core.lifetime_runnable import run_all_forever
 from tickit.core.manager import Manager
@@ -89,10 +90,10 @@ def main():
 def read_config(config_path) -> Tuple[List[DeviceID], List[DeviceSimulation], Wiring]:
     configs = [DeviceConfig(**config) for config in json.load(open(config_path, "r"))]
     names = [config.name for config in configs]
-    devices = [import_class(config.device_class)() for config in configs]
+    devices: List[Device] = [import_class(config.device_class)() for config in configs]
     wiring: Wiring = dict()
     for name, device in zip(names, devices):
-        wiring[name] = {out_id: list() for out_id in device.initial_state[0].keys()}
+        wiring[name] = {out_id: list() for out_id in device.outputs}
     for config in configs:
         for in_id, (out_device, out_id) in config.inputs.items():
             wiring[out_device][out_id].append((config.name, in_id))

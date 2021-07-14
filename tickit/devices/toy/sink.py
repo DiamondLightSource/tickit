@@ -1,13 +1,14 @@
 from functools import cached_property
-from typing import Dict, Iterable, Optional, Tuple
+from typing import Dict, Iterable, Optional, Set, Tuple
 
 from tickit.core.adapter import Adapter
+from tickit.core.typedefs import IoId
 
 
 class Sink:
     @property
-    def initial_state(self) -> Tuple[Dict[str, object], Optional[int]]:
-        return (dict(), None)
+    def outputs(self) -> Set[IoId]:
+        return set()
 
     @cached_property
     def adapters(self) -> Iterable[Adapter]:
