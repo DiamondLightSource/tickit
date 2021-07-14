@@ -1,13 +1,14 @@
 from functools import cached_property
-from typing import Dict, Iterable, Optional, Protocol, Tuple, runtime_checkable
+from typing import Dict, Iterable, Optional, Protocol, Set, Tuple, runtime_checkable
 
 from tickit.core.adapter import Adapter
+from tickit.core.typedefs import IoId
 
 
 @runtime_checkable
 class Device(Protocol):
     @property
-    def initial_state(self) -> Tuple[Dict[str, object], Optional[int]]:
+    def outputs(self) -> Set[IoId]:
         ...
 
     @cached_property
