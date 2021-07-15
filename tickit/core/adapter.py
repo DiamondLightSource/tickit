@@ -1,4 +1,6 @@
-from typing import Callable, Protocol, runtime_checkable
+from typing import Callable
+
+from tickit.utils.compat.typing import Protocol, runtime_checkable
 
 
 @runtime_checkable

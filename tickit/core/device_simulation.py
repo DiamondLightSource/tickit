@@ -39,7 +39,7 @@ class DeviceSimulation:
             await asyncio.sleep(0.1)
 
     async def on_tick(self, input: Input) -> None:
-        self.inputs |= input.changes
+        self.inputs = {**self.inputs, **input.changes}
         new_state, call_in = self.device.update(
             input.time - self.last_time, self.inputs
         )

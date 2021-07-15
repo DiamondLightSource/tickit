@@ -1,8 +1,9 @@
-from functools import cached_property
-from typing import Dict, Iterable, Optional, Protocol, Set, Tuple, runtime_checkable
+from typing import Dict, Iterable, Optional, Set, Tuple
 
 from tickit.core.adapter import Adapter
 from tickit.core.typedefs import IoId
+from tickit.utils.compat.functools import cached_property
+from tickit.utils.compat.typing import Protocol, runtime_checkable
 
 
 @runtime_checkable

@@ -1,4 +1,6 @@
-from typing import Iterable, List, Optional, Protocol, runtime_checkable
+from typing import Iterable, List, Optional
+
+from tickit.utils.compat.typing import Protocol, runtime_checkable
 
 
 @runtime_checkable

@@ -1,9 +1,9 @@
-from functools import cached_property
 from random import randint
 from typing import Dict, Iterable, Optional, Set, Tuple
 
 from tickit.core.adapter import Adapter
 from tickit.core.typedefs import IoId
+from tickit.utils.compat.functools import cached_property
 
 
 class Trampoline:

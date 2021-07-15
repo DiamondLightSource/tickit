@@ -1,10 +1,10 @@
 import re
-from functools import cached_property
 from typing import Dict, Iterable, Optional, Set, Tuple
 
 from tickit.adapters import TcpAdapter
 from tickit.core.adapter import Adapter
 from tickit.core.typedefs import IoId
+from tickit.utils.compat.functools import cached_property
 
 
 class TcpControlled:
