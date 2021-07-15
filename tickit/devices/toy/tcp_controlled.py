@@ -1,8 +1,9 @@
 import re
-from typing import Dict, Iterable, Optional, Set, Tuple
+from typing import Dict, Iterable, Set
 
 from tickit.adapters import TcpAdapter
 from tickit.core.adapter import Adapter
+from tickit.core.device import UpdateEvent
 from tickit.core.typedefs import IoId
 from tickit.utils.compat.functools import cached_property
 
@@ -21,10 +22,8 @@ class TcpControlled:
         self.tcp_server.link(self)
         return [self.tcp_server]
 
-    def update(
-        self, delta: float, inputs: Dict[str, object]
-    ) -> Tuple[Dict[str, object], Optional[int]]:
-        return {"observed": self.observed}, None
+    def update(self, delta: float, inputs: Dict[str, object]) -> UpdateEvent:
+        return UpdateEvent({"observed": self.observed}, None)
 
     @tcp_server.command(r"O")
     def get_observed(self, message: str) -> str:
