@@ -22,7 +22,7 @@ class TcpControlled:
         self.tcp_server.link(self)
         return [self.tcp_server]
 
-    def update(self, delta: float, inputs: Dict[str, object]) -> UpdateEvent:
+    def update(self, delta: int, inputs: Dict[str, object]) -> UpdateEvent:
         return UpdateEvent({"observed": self.observed}, None)
 
     @tcp_server.command(r"O")
