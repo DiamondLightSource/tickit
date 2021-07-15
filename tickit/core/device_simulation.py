@@ -14,17 +14,17 @@ class DeviceSimulation:
 
     def __init__(
         self,
-        deviceID: DeviceID,
+        device_id: DeviceID,
         device: Device,
         state_consumer: StateConsumer,
         state_producer: StateProducer,
     ):
-        self.deviceID = deviceID
+        self.device_id = device_id
         self.device = device
         self.last_time = 0
 
         self.state_consumer: StateConsumer = state_consumer(
-            [input_topic(self.deviceID)]
+            [input_topic(self.device_id)]
         )
         self.state_producer: StateProducer = state_producer()
 
@@ -54,7 +54,7 @@ class DeviceSimulation:
         self, time: Optional[int], changes: Dict[str, object], call_in: int
     ):
         await self.state_producer.produce(
-            output_topic(self.deviceID), Output(self.deviceID, time, changes, call_in)
+            output_topic(self.device_id), Output(self.device_id, time, changes, call_in)
         )
 
     async def handle_interrupts(self):
