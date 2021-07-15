@@ -40,17 +40,15 @@ class DeviceSimulation:
 
     async def on_tick(self, input: Input) -> None:
         self.inputs = {**self.inputs, **input.changes}
-        new_state, call_in = self.device.update(
-            input.time - self.last_time, self.inputs
-        )
+        output = self.device.update(input.time - self.last_time, self.inputs)
         self.last_time = input.time
         changes = {
             k: v
-            for k, v in new_state.items()
+            for k, v in output.state.items()
             if k not in self.state or not self.state[k] == v
         }
-        self.state = new_state
-        await self.output(self.last_time, changes, call_in)
+        self.state = output.state
+        await self.output(self.last_time, changes, output.call_in)
 
     async def output(
         self, time: Optional[int], changes: Dict[str, object], call_in: int

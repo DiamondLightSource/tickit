@@ -1,6 +1,7 @@
-from typing import Dict, Iterable, Optional, Set, Tuple
+from typing import Dict, Iterable, Set
 
 from tickit.core.adapter import Adapter
+from tickit.core.device import UpdateEvent
 from tickit.core.typedefs import IoId
 from tickit.utils.compat.functools import cached_property
 
@@ -14,8 +15,6 @@ class Sink:
     def adapters(self) -> Iterable[Adapter]:
         return list()
 
-    def update(
-        self, delta: int, inputs: Dict[str, object]
-    ) -> Tuple[Dict[str, object], Optional[int]]:
+    def update(self, delta: int, inputs: Dict[str, object]) -> UpdateEvent:
         print("Sunk {}".format(inputs))
-        return (dict(), None)
+        return UpdateEvent(dict(), None)
