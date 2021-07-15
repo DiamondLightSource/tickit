@@ -4,7 +4,7 @@ from time import time_ns
 from typing import Iterable, List, Optional, Set, Tuple
 
 from tickit.core.event_router import EventRouter, Wiring
-from tickit.core.state_interface import StateConsumer, StateProducer, StateTopicManager
+from tickit.core.state_interfaces import StateConsumer, StateProducer, StateTopicManager
 from tickit.core.typedefs import DeviceID, Input, Output, SimTime, Wakeup
 from tickit.utils.topic_naming import input_topic, output_topic
 

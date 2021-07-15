@@ -2,7 +2,7 @@ import asyncio
 from typing import Dict, Optional
 
 from tickit.core.device import Device
-from tickit.core.state_interface import StateConsumer, StateProducer
+from tickit.core.state_interfaces import StateConsumer, StateProducer
 from tickit.core.typedefs import DeviceID, Input, Output
 from tickit.utils.topic_naming import input_topic, output_topic
 
