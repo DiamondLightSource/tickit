@@ -22,7 +22,7 @@ include:
   tags:
     - argus
   image:
-    name: python:3.9
+    name: python:3.7
   before_script:
     - pip install pipenv
     - pipenv install --dev --deploy
