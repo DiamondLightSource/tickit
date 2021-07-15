@@ -1,6 +1,8 @@
 import asyncio
 import traceback
-from typing import Iterable, Protocol, runtime_checkable
+from typing import Iterable
+
+from tickit.utils.compat.typing import Protocol, runtime_checkable
 
 
 @runtime_checkable

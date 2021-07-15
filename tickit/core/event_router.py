@@ -1,8 +1,8 @@
 from collections import deque
-from functools import cached_property
 from typing import Dict, Iterable, List, NewType, Set, Tuple
 
 from tickit.core.typedefs import DeviceID, Input, IoId, Output
+from tickit.utils.compat.functools import cached_property
 
 Wiring = NewType("Wiring", Dict[DeviceID, Dict[IoId, Iterable[Tuple[DeviceID, IoId]]]])
 
