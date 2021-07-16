@@ -1,23 +1,26 @@
-from typing import AsyncIterator, Iterable, List, Optional
+from typing import AsyncIterator, Iterable, List, Optional, TypeVar
 
 from tickit.utils.compat.typing_compat import Protocol, runtime_checkable
 
+T = TypeVar("T")
+
 
 @runtime_checkable
-class StateConsumer(Protocol):
+class StateConsumer(Protocol[T]):
     def __init__(self, consume_topics: Iterable[str]) -> None:
         ...
 
-    async def consume(self,) -> AsyncIterator[Optional[object]]:
-        yield NotImplementedError
+    async def consume(self,) -> AsyncIterator[Optional[T]]:
+        if False:
+            yield
 
 
 @runtime_checkable
-class StateProducer(Protocol):
+class StateProducer(Protocol[T]):
     def __init__(self) -> None:
         ...
 
-    async def produce(self, topic: str, value: object) -> None:
+    async def produce(self, topic: str, value: T) -> None:
         ...
 
 
