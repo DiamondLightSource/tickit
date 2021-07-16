@@ -1,10 +1,10 @@
 from collections import deque
-from typing import Dict, Iterable, List, NewType, Set, Tuple
+from typing import Dict, List, NewType, Set, Tuple
 
-from tickit.core.typedefs import DeviceID, Input, IoId, Output
-from tickit.utils.compat.functools import cached_property
+from tickit.core.typedefs import Changes, DeviceID, Input, IoId, Output
+from tickit.utils.compat.functools_compat import cached_property
 
-Wiring = NewType("Wiring", Dict[DeviceID, Dict[IoId, Iterable[Tuple[DeviceID, IoId]]]])
+Wiring = NewType("Wiring", Dict[DeviceID, Dict[IoId, List[Tuple[DeviceID, IoId]]]])
 
 
 class EventRouter:
@@ -37,7 +37,9 @@ class EventRouter:
 
     @cached_property
     def inverse_device_tree(self) -> Dict[DeviceID, Set[DeviceID]]:
-        inverse_tree = {dev: set() for dev in self.devices}
+        inverse_tree: Dict[DeviceID, Set[DeviceID]] = {
+            dev: set() for dev in self.devices
+        }
         for dev, deps in self.device_tree.items():
             for dep in deps:
                 inverse_tree[dep].add(dev)
@@ -59,5 +61,6 @@ class EventRouter:
         inputs: List[Input] = list()
         for out_id, out_val in output.changes.items():
             for in_dev, _ in self.wiring[output.source][out_id]:
-                inputs.append(Input(in_dev, output.time, {out_id: out_val}))
+                assert output.time is not None
+                inputs.append(Input(in_dev, output.time, Changes({out_id: out_val})))
         return inputs

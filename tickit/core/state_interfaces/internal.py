@@ -6,9 +6,9 @@ Messages = NewType("Messages", List[Message])
 
 
 class Singleton(type):
-    _instances = {}
+    _instances: Dict["Singleton", "Singleton"] = {}
 
-    def __call__(self, *args: Any, **kwargs: Any) -> None:
+    def __call__(self, *args: Any, **kwargs: Any) -> "Singleton":
         if self not in self._instances:
             self._instances[self] = super(Singleton, self).__call__(*args, **kwargs)
         return self._instances[self]
@@ -21,11 +21,11 @@ class InternalStateServer(metaclass=Singleton):
         self._topics[topic].append(message)
 
     def poll(self, topic: str, offset: int) -> Messages:
-        return self._topics[topic][offset:]
+        return Messages(self._topics[topic][offset:])
 
     def create_topic(self, topic: str) -> None:
         assert topic not in self._topics.keys()
-        self._topics[topic] = list()
+        self._topics[topic] = Messages(list())
 
     def remove_topic(self, topic: str) -> None:
         assert topic in self._topics.keys()
@@ -40,7 +40,7 @@ class InternalStateConsumer:
     def __init__(self, consume_topics: Iterable[str]) -> None:
         self.server = InternalStateServer()
         self.topics: Dict[str, int] = {topic: 0 for topic in consume_topics}
-        self.messages: Messages = list()
+        self.messages: Messages = Messages(list())
 
     async def consume(self) -> Optional[object]:
         for topic, offset in self.topics.items():
@@ -61,7 +61,7 @@ class InternalStateProducer:
 
     async def produce(self, topic: str, value: object) -> None:
         print("Producing {} to {}".format(value, topic))
-        self.server.push(topic, json.dumps(value.__dict__).encode("ascii"))
+        self.server.push(topic, Message(json.dumps(value.__dict__).encode("ascii")))
 
 
 class InternalStateTopicManager:

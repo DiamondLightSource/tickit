@@ -6,7 +6,7 @@
         {
             "type": "shell",
             "label": "Tests with coverage",
-            "command": "pipenv run tests tests",
+            "command": "pipenv run tests",
             "options": {
                 "cwd": "${workspaceRoot}"
             },

@@ -1,11 +1,11 @@
 import asyncio
 import bisect
 from time import time_ns
-from typing import Iterable, List, Optional, Set, Tuple
+from typing import Iterable, List, Mapping, Optional, Set, Tuple
 
 from tickit.core.event_router import EventRouter, Wiring
 from tickit.core.state_interfaces import StateConsumer, StateProducer, StateTopicManager
-from tickit.core.typedefs import DeviceID, Input, Output, SimTime, Wakeup
+from tickit.core.typedefs import Changes, DeviceID, Input, Output, SimTime, Wakeup
 from tickit.utils.topic_naming import input_topic, output_topic
 
 
@@ -20,7 +20,7 @@ class Manager:
         simulation_speed: float = 1.0,
     ):
         self.event_router = EventRouter(wiring)
-        self.simulation_time = initial_time
+        self.simulation_time = SimTime(initial_time)
         self.simulation_speed = simulation_speed
 
         self.state_topic_manager = state_topic_manager()
@@ -52,7 +52,9 @@ class Manager:
             self.progress(time - last_time)
 
     def progress(self, wall_time: int):
-        new_time = self.simulation_time + wall_time * self.simulation_speed
+        new_time = SimTime(
+            int(self.simulation_time + wall_time * self.simulation_speed)
+        )
         if self.wakeups:
             new_time = min(new_time, self.wakeups[0].when)
         self.simulation_time = new_time
@@ -66,7 +68,7 @@ class Manager:
         inputs: List[Input] = list()
         await self.schedule_possible_updates(inputs, to_update)
         while to_update:
-            response: Output = await self.handle_callbacks()
+            response: Optional[Output] = await self.handle_callbacks()
             if not response or response.time is None:
                 await asyncio.sleep(0.1)
                 continue
@@ -95,7 +97,9 @@ class Manager:
     ) -> Input:
         inputs = [input for input in inputs if input.target == device]
         return Input(
-            device, time, {k: v for input in inputs for k, v in input.changes.items()},
+            device,
+            time,
+            Changes({k: v for input in inputs for k, v in input.changes.items()}),
         )
 
     async def update_device(self, input: Input) -> None:
@@ -105,9 +109,12 @@ class Manager:
         output = await self.state_consumer.consume().__anext__()
         if not output:
             return None
+        assert isinstance(output, Mapping)
         output = Output(**output)
         if output.call_in is not None:
-            wakeup = Wakeup(output.source, self.simulation_time + output.call_in)
+            wakeup = Wakeup(
+                output.source, SimTime(self.simulation_time + output.call_in)
+            )
             print("Scheduling wakeup {}".format(wakeup))
             self.wakeups.insert(bisect.bisect(self.wakeups, wakeup), wakeup)
         return output
