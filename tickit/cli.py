@@ -21,7 +21,7 @@ from tickit.core.state_interfaces.kafka import (
     KafkaStateTopicManager,
 )
 from tickit.core.typedefs import DeviceConfig, DeviceID
-from tickit.utils import import_class
+from tickit.utils.dynamic_import import import_class
 
 parser = ArgumentParser(formatter_class=RawDescriptionHelpFormatter)
 
@@ -87,11 +87,11 @@ def main():
         asyncio.run(run_all_forever([manager, *device_simulations]))
 
 
-def read_config(config_path) -> Tuple[List[DeviceID], List[DeviceSimulation], Wiring]:
+def read_config(config_path) -> Tuple[List[DeviceID], List[Device], Wiring]:
     configs = [DeviceConfig(**config) for config in json.load(open(config_path, "r"))]
     names = [config.name for config in configs]
     devices: List[Device] = [import_class(config.device_class)() for config in configs]
-    wiring: Wiring = dict()
+    wiring: Wiring = Wiring(dict())
     for name, device in zip(names, devices):
         wiring[name] = {out_id: list() for out_id in device.outputs}
     for config in configs:

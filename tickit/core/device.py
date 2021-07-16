@@ -1,16 +1,16 @@
 from dataclasses import dataclass
-from typing import Dict, Iterable, Optional, Set
+from typing import Iterable, Optional, Set
 
 from tickit.core.adapter import Adapter
-from tickit.core.typedefs import IoId
-from tickit.utils.compat.functools import cached_property
-from tickit.utils.compat.typing import Protocol, runtime_checkable
+from tickit.core.typedefs import IoId, SimTime, State
+from tickit.utils.compat.functools_compat import cached_property
+from tickit.utils.compat.typing_compat import Protocol, runtime_checkable
 
 
 @dataclass
 class UpdateEvent:
-    state: Dict[str, object]
-    call_in: Optional[int]
+    state: State
+    call_in: Optional[SimTime]
 
 
 @runtime_checkable
@@ -23,5 +23,5 @@ class Device(Protocol):
     def adapters(self) -> Iterable[Adapter]:
         ...
 
-    def update(self, delta: int, inputs: Dict[str, object]) -> UpdateEvent:
+    def update(self, delta: SimTime, inputs: State) -> UpdateEvent:
         ...

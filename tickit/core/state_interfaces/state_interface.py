@@ -1,6 +1,6 @@
-from typing import Iterable, List, Optional
+from typing import AsyncIterator, Iterable, List, Optional
 
-from tickit.utils.compat.typing import Protocol, runtime_checkable
+from tickit.utils.compat.typing_compat import Protocol, runtime_checkable
 
 
 @runtime_checkable
@@ -8,8 +8,8 @@ class StateConsumer(Protocol):
     def __init__(self, consume_topics: Iterable[str]) -> None:
         ...
 
-    async def consume(self) -> Optional[object]:
-        ...
+    async def consume(self,) -> AsyncIterator[Optional[object]]:
+        yield NotImplementedError
 
 
 @runtime_checkable

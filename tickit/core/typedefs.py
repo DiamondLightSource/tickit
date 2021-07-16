@@ -3,7 +3,8 @@ from typing import Dict, NewType, Optional, Tuple
 
 DeviceID = NewType("DeviceID", str)
 IoId = NewType("IoId", str)
-Changes = NewType("Changes", Dict[str, object])
+State = NewType("State", Dict[IoId, object])
+Changes = NewType("Changes", Dict[IoId, object])
 SimTime = NewType("SimTime", int)
 
 
@@ -53,7 +54,7 @@ class Output:
     source: DeviceID
     time: Optional[SimTime]
     changes: Changes
-    call_in: Optional[int]
+    call_in: Optional[SimTime]
 
 
 @dataclass
