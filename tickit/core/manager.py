@@ -26,8 +26,8 @@ class Manager:
         self.state_topic_manager = state_topic_manager()
         output_topics, _ = self.create_device_topics()
 
-        self.state_consumer: StateConsumer = state_consumer(output_topics)
-        self.state_producer: StateProducer = state_producer()
+        self.state_consumer: StateConsumer[Output] = state_consumer(output_topics)
+        self.state_producer: StateProducer[Input] = state_producer()
         self.wakeups: List[Wakeup] = []
 
     def create_device_topics(self) -> Tuple[Set[str], Set[str]]:

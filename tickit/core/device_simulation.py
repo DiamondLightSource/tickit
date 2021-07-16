@@ -23,10 +23,10 @@ class DeviceSimulation:
         self.device = device
         self.last_time: SimTime = SimTime(0)
 
-        self.state_consumer: StateConsumer = state_consumer(
+        self.state_consumer: StateConsumer[Input] = state_consumer(
             [input_topic(self.device_id)]
         )
-        self.state_producer: StateProducer = state_producer()
+        self.state_producer: StateProducer[Output] = state_producer()
 
     async def run_forever(self):
         for adapter in self.device.adapters:

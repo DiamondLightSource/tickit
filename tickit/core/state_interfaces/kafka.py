@@ -1,13 +1,15 @@
 import json
-from typing import Iterable, List, Optional
+from typing import AsyncIterator, Generic, Iterable, List, Optional
 
 from kafka import KafkaConsumer
 from kafka.admin import KafkaAdminClient
 from kafka.admin.new_topic import NewTopic
 from kafka.producer.kafka import KafkaProducer
 
+from tickit.core.state_interfaces.state_interface import T
 
-class KafkaStateConsumer:
+
+class KafkaStateConsumer(Generic[T]):
     def __init__(self, consume_topics: Iterable[str]) -> None:
         self.consumer = KafkaConsumer(
             *consume_topics,
@@ -15,7 +17,7 @@ class KafkaStateConsumer:
             value_deserializer=lambda m: json.loads(m.decode("ascii"))
         )
 
-    async def consume(self) -> Optional[object]:
+    async def consume(self) -> AsyncIterator[Optional[T]]:
         while True:
             partitions = self.consumer.poll(max_records=1)
             for records in partitions.values():
@@ -25,13 +27,13 @@ class KafkaStateConsumer:
             yield None
 
 
-class KafkaStateProducer:
+class KafkaStateProducer(Generic[T]):
     def __init__(self) -> None:
         self.producer = KafkaProducer(
             value_serializer=lambda m: json.dumps(m).encode("ascii")
         )
 
-    async def produce(self, topic: str, value: object) -> None:
+    async def produce(self, topic: str, value: T) -> None:
         print("Producing {} to {}".format(value, topic))
         self.producer.send(topic, value.__dict__)
 

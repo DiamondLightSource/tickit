@@ -1,5 +1,7 @@
 import json
-from typing import Any, Dict, Iterable, List, NewType, Optional
+from typing import Any, AsyncIterator, Dict, Generic, Iterable, List, NewType, Optional
+
+from tickit.core.state_interfaces.state_interface import T
 
 Message = NewType("Message", bytes)
 Messages = NewType("Messages", List[Message])
@@ -36,13 +38,13 @@ class InternalStateServer(metaclass=Singleton):
         return list(self._topics.keys())
 
 
-class InternalStateConsumer:
+class InternalStateConsumer(Generic[T]):
     def __init__(self, consume_topics: Iterable[str]) -> None:
         self.server = InternalStateServer()
         self.topics: Dict[str, int] = {topic: 0 for topic in consume_topics}
         self.messages: Messages = Messages(list())
 
-    async def consume(self) -> Optional[object]:
+    async def consume(self) -> AsyncIterator[Optional[T]]:
         for topic, offset in self.topics.items():
             response = self.server.poll(topic, offset)
             self.topics[topic] += len(response)
@@ -55,11 +57,11 @@ class InternalStateConsumer:
             yield None
 
 
-class InternalStateProducer:
+class InternalStateProducer(Generic[T]):
     def __init__(self) -> None:
         self.server = InternalStateServer()
 
-    async def produce(self, topic: str, value: object) -> None:
+    async def produce(self, topic: str, value: T) -> None:
         print("Producing {} to {}".format(value, topic))
         self.server.push(topic, Message(json.dumps(value.__dict__).encode("ascii")))
 
