@@ -1,15 +1,77 @@
 from collections import deque
-from typing import Dict, List, NewType, Set, Tuple
+from typing import DefaultDict, Dict, List, Optional, Set, Tuple, Union, overload
 
 from tickit.core.typedefs import Changes, DeviceID, Input, IoId, Output
 from tickit.utils.compat.functools_compat import cached_property
 
-Wiring = NewType("Wiring", Dict[DeviceID, Dict[IoId, List[Tuple[DeviceID, IoId]]]])
+_Wiring = DefaultDict[DeviceID, DefaultDict[IoId, List[Tuple[DeviceID, IoId]]]]
+
+
+class Wiring(_Wiring):
+    def __init__(
+        self,
+        wiring: Optional[
+            Dict[DeviceID, Dict[IoId, List[Tuple[DeviceID, IoId]]]]
+        ] = None,
+    ) -> None:
+        _wiring: Dict[DeviceID, DefaultDict[IoId, List[Tuple[DeviceID, IoId]]]] = {
+            dev: DefaultDict(list, io) for dev, io in wiring.items()
+        } if wiring else dict()
+        return super().__init__(lambda: DefaultDict(list, dict()), _wiring)
+
+    @classmethod
+    def from_inverse_wiring(cls, inverse_wiring: "InverseWiring") -> "Wiring":
+        wiring: Wiring = cls()
+        for in_dev, in_ios in inverse_wiring.items():
+            for in_io, (out_dev, out_io) in in_ios.items():
+                wiring[out_dev][out_io].append((in_dev, in_io))
+        return wiring
+
+
+class InverseWiring(DefaultDict[DeviceID, DefaultDict[IoId, Tuple[DeviceID, IoId]]]):
+    def __init__(
+        self,
+        wiring: Optional[Dict[DeviceID, Dict[IoId, Tuple[DeviceID, IoId]]]] = None,
+    ) -> None:
+        _wiring: Dict[DeviceID, DefaultDict[IoId, Tuple[DeviceID, IoId]]] = {
+            dev: DefaultDict(None, io) for dev, io in wiring.items()
+        } if wiring else dict()
+        return super().__init__(lambda: DefaultDict(None, dict()), _wiring)
+
+    @classmethod
+    def from_wiring(cls, wiring: Wiring) -> "InverseWiring":
+        inverse_wiring: InverseWiring = cls()
+        for out_dev, out_ids in wiring.items():
+            for out_io, ports in out_ids.items():
+                for in_dev, in_io in ports:
+                    inverse_wiring[in_dev][in_io] = (out_dev, out_io)
+        return inverse_wiring
 
 
 class EventRouter:
+    _wiring: Wiring
+
+    @overload
     def __init__(self, wiring: Wiring) -> None:
-        self.wiring = wiring
+        ...
+
+    @overload
+    def __init__(self, wiring: InverseWiring) -> None:
+        ...
+
+    def __init__(self, wiring: Union[Wiring, InverseWiring]) -> None:
+        if isinstance(wiring, Wiring):
+            self._wiring = wiring
+        elif isinstance(wiring, InverseWiring):
+            self._wiring = Wiring.from_inverse_wiring(wiring)
+
+    @cached_property
+    def wiring(self) -> Wiring:
+        return self._wiring
+
+    @cached_property
+    def inverse_wiring(self) -> InverseWiring:
+        raise NotImplementedError
 
     @cached_property
     def devices(self) -> Set[DeviceID]:

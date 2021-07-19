@@ -1,9 +1,9 @@
 import asyncio
 import bisect
 from time import time_ns
-from typing import Iterable, List, Mapping, Optional, Set, Tuple
+from typing import Iterable, List, Mapping, Optional, Set, Tuple, Union
 
-from tickit.core.event_router import EventRouter, Wiring
+from tickit.core.event_router import EventRouter, InverseWiring, Wiring
 from tickit.core.state_interfaces import StateConsumer, StateProducer, StateTopicManager
 from tickit.core.typedefs import Changes, DeviceID, Input, Output, SimTime, Wakeup
 from tickit.utils.topic_naming import input_topic, output_topic
@@ -12,7 +12,7 @@ from tickit.utils.topic_naming import input_topic, output_topic
 class Manager:
     def __init__(
         self,
-        wiring: Wiring,
+        wiring: Union[Wiring, InverseWiring],
         state_consumer: StateConsumer,
         state_producer: StateProducer,
         state_topic_manager: StateTopicManager,
