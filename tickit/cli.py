@@ -7,7 +7,7 @@ from typing import List, Tuple
 from tickit import __version__
 from tickit.core import DeviceSimulation
 from tickit.core.device import Device
-from tickit.core.event_router import Wiring
+from tickit.core.event_router import InverseWiring
 from tickit.core.lifetime_runnable import run_all_forever
 from tickit.core.manager import Manager
 from tickit.core.state_interfaces.internal import (
@@ -87,15 +87,9 @@ def main():
         asyncio.run(run_all_forever([manager, *device_simulations]))
 
 
-def read_config(config_path) -> Tuple[List[DeviceID], List[Device], Wiring]:
+def read_config(config_path,) -> Tuple[List[DeviceID], List[Device], InverseWiring]:
     configs = [DeviceConfig(**config) for config in json.load(open(config_path, "r"))]
     names = [config.name for config in configs]
     devices: List[Device] = [import_class(config.device_class)() for config in configs]
-    wiring: Wiring = Wiring(dict())
-    for name, device in zip(names, devices):
-        wiring[name] = {out_id: list() for out_id in device.outputs}
-    for config in configs:
-        for in_id, (out_device, out_id) in config.inputs.items():
-            wiring[out_device][out_id].append((config.name, in_id))
-
-    return names, devices, wiring
+    inverse_wiring = InverseWiring({config.name: config.inputs for config in configs})
+    return names, devices, inverse_wiring
