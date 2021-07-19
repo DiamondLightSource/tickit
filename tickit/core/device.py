@@ -23,5 +23,5 @@ class Device(Protocol):
     def adapters(self) -> Iterable[Adapter]:
         ...
 
-    def update(self, delta: SimTime, inputs: State) -> UpdateEvent:
+    def update(self, time: SimTime, inputs: State) -> UpdateEvent:
         ...
