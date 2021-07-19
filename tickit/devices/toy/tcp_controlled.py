@@ -4,7 +4,7 @@ from typing import Iterable, Set
 from tickit.adapters import TcpAdapter
 from tickit.core.adapter import Adapter
 from tickit.core.device import Device, UpdateEvent
-from tickit.core.typedefs import IoId, State
+from tickit.core.typedefs import IoId, SimTime, State
 from tickit.utils.compat.functools_compat import cached_property
 
 
@@ -22,7 +22,7 @@ class TcpControlled(Device):
         self.tcp_server.link(self)
         return [self.tcp_server]
 
-    def update(self, delta: int, inputs: State) -> UpdateEvent:
+    def update(self, time: SimTime, inputs: State) -> UpdateEvent:
         return UpdateEvent(State({IoId("observed"): self.observed}), None)
 
     @tcp_server.command(r"O")

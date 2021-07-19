@@ -19,8 +19,8 @@ class Trampoline:
     def adapters(self) -> Iterable[Adapter]:
         return list()
 
-    def update(self, delta: int, inputs: State) -> UpdateEvent:
-        print("Boing! ({}, {})".format(delta, inputs))
+    def update(self, time: SimTime, inputs: State) -> UpdateEvent:
+        print("Boing! ({}, {})".format(time, inputs))
         return UpdateEvent(State(dict()), self.callback_period)
 
 
@@ -36,9 +36,7 @@ class RandomTrampoline:
     def adapters(self) -> Dict[str, Adapter]:
         return dict()
 
-    def update(self, delta: int, inputs: State) -> UpdateEvent:
+    def update(self, time: SimTime, inputs: State) -> UpdateEvent:
         output = randint(0, 255)
-        print(
-            "Boing! (delta: {}, inputs: {}, output: {})".format(delta, inputs, output)
-        )
+        print("Boing! (delta: {}, inputs: {}, output: {})".format(time, inputs, output))
         return UpdateEvent(State({IoId("output"): output}), self.callback_period)

@@ -21,7 +21,6 @@ class DeviceSimulation:
     ):
         self.device_id = device_id
         self.device = device
-        self.last_time: SimTime = SimTime(0)
 
         self.state_consumer: StateConsumer[Input] = state_consumer(
             [input_topic(self.device_id)]
@@ -40,8 +39,7 @@ class DeviceSimulation:
 
     async def on_tick(self, input: Input) -> None:
         self.inputs = State({**self.inputs, **State(input.changes)})
-        output = self.device.update(SimTime(input.time - self.last_time), self.inputs)
-        self.last_time = input.time
+        output = self.device.update(SimTime(input.time), self.inputs)
         changes = Changes(
             {
                 k: v
@@ -50,7 +48,7 @@ class DeviceSimulation:
             }
         )
         self.state = output.state
-        await self.output(self.last_time, changes, output.call_in)
+        await self.output(input.time, changes, output.call_in)
 
     async def output(
         self, time: Optional[SimTime], changes: Changes, call_in: Optional[SimTime],
