@@ -1,0 +1,13 @@
+- !!python/object:tickit.core.typedefs.DeviceConfig
+  adapters: []
+  device_class: tickit.devices.toy.trampoline.RandomTrampoline
+  inputs: {}
+  name: rand-tramp
+- !!python/object:tickit.core.typedefs.DeviceConfig
+  adapters: []
+  device_class: tickit.devices.toy.sink.Sink
+  inputs:
+    input: !!python/tuple
+    - rand-tramp
+    - output
+  name: tramp-sink
