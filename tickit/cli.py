@@ -1,11 +1,13 @@
 import asyncio
-import json
 import sys
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 from typing import List, Tuple
 
+import yaml
+
 from tickit import __version__
 from tickit.core import DeviceSimulation
+from tickit.core.adapter import Adapter
 from tickit.core.device import Device
 from tickit.core.event_router import InverseWiring
 from tickit.core.lifetime_runnable import run_all_forever
@@ -74,22 +76,28 @@ def main():
         )
         asyncio.run(run_all_forever([simulation]))
     if args.mode == "manager":
-        _, _, wiring = read_config(args.config_path)
+        _, _, _, wiring = read_config(args.config_path)
         manager = Manager(wiring, state_consumer, state_producer, state_topic_manager,)
         asyncio.run(run_all_forever([manager]))
     if args.mode == "all":
-        names, devices, wiring = read_config(args.config_path)
+        names, devices, adapterss, wiring = read_config(args.config_path)
         device_simulations = [
-            DeviceSimulation(name, device, state_consumer, state_producer)
-            for name, device in zip(names, devices)
+            DeviceSimulation(name, device, adapters, state_consumer, state_producer)
+            for name, device, adapters in zip(names, devices, adapterss)
         ]
         manager = Manager(wiring, state_consumer, state_producer, state_topic_manager,)
         asyncio.run(run_all_forever([manager, *device_simulations]))
 
 
-def read_config(config_path,) -> Tuple[List[DeviceID], List[Device], InverseWiring]:
-    configs = [DeviceConfig(**config) for config in json.load(open(config_path, "r"))]
+def read_config(
+    config_path,
+) -> Tuple[List[DeviceID], List[Device], List[List[Adapter]], InverseWiring]:
+    configs: List[DeviceConfig] = yaml.load(open(config_path, "r"), Loader=yaml.Loader)
     names = [config.name for config in configs]
-    devices: List[Device] = [import_class(config.device_class)() for config in configs]
+    devices: List[Device] = [import_class(config.device_class) for config in configs]
+    adapterss: List[List[Adapter]] = [
+        [import_class(adapter.adapter_class) for adapter in config.adapters]
+        for config in configs
+    ]
     inverse_wiring = InverseWiring({config.name: config.inputs for config in configs})
-    return names, devices, inverse_wiring
+    return names, devices, adapterss, inverse_wiring

@@ -1,15 +1,13 @@
-import re
-from typing import Iterable, Set
+from typing import Set
 
-from tickit.adapters import TcpAdapter
-from tickit.core.adapter import Adapter
-from tickit.core.device import Device, UpdateEvent
+from tickit.adapters.interpreters.string_regex import StringRegexInterpreter
+from tickit.adapters.servers.tcp import TcpServer
+from tickit.core.adapter import ComposedAdapter
+from tickit.core.device import UpdateEvent
 from tickit.core.typedefs import IoId, SimTime, State
-from tickit.utils.compat.functools_compat import cached_property
 
 
-class TcpControlled(Device):
-    tcp_server = TcpAdapter()
+class TcpControlled:
     observed: int = 0
     unobserved: int = 0
 
@@ -17,40 +15,28 @@ class TcpControlled(Device):
     def outputs(self) -> Set[IoId]:
         return {IoId("observed")}
 
-    @cached_property
-    def adapters(self) -> Iterable[Adapter]:
-        self.tcp_server.link(self)
-        return [self.tcp_server]
-
     def update(self, time: SimTime, inputs: State) -> UpdateEvent:
         return UpdateEvent(State({IoId("observed"): self.observed}), None)
 
-    @tcp_server.command(r"O")
-    def get_observed(self, message: str) -> str:
-        return str(self.observed)
 
-    @tcp_server.command(r"O=\d+\.?\d*", interrupt=True)
-    def set_observed(self, message: str) -> str:
-        try:
-            match = re.search(r"\d+\.?\d*", message)
-            if not match:
-                return "Could not extract value from command"
-            self.observed = int(match.group(0))
-            return "Observed set to {}".format(self.observed)
-        except ValueError:
-            return "Command gave invalid value"
+class TcpControlledAdapter(ComposedAdapter):
+    _interpreter = StringRegexInterpreter()
+    _server = TcpServer()
 
-    @tcp_server.command(r"U")
-    def get_unobserved(self, message: str) -> str:
-        return str(self.unobserved)
+    @_interpreter.command(r"O")
+    def get_observed(self) -> str:
+        return str(self._device.observed)
 
-    @tcp_server.command(r"U=\d+\.?\d*")
-    def set_unobserved(self, message: str) -> str:
-        try:
-            match = re.search(r"\d+\.?\d*", message)
-            if not match:
-                return "Could not extract value from command"
-            self.unobserved = int(match.group(0))
-            return "Unobserved set to {}".format(self.unobserved)
-        except ValueError:
-            return "Invalid value"
+    @_interpreter.command(r"O=(\d+\.?\d*)", interrupt=True)
+    def set_observed(self, value: int) -> str:
+        self._device.observed = value
+        return "Observed set to {}".format(self._device.observed)
+
+    @_interpreter.command(r"U")
+    def get_unobserved(self) -> str:
+        return str(self._device.unobserved)
+
+    @_interpreter.command(r"U=(\d+\.?\d*)")
+    def set_unobserved(self, value: int) -> str:
+        self._device.unobserved = value
+        return "Unobserved set to {}".format(self._device.unobserved)
