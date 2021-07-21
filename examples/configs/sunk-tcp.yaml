@@ -1,0 +1,15 @@
+- !!python/object:tickit.core.typedefs.DeviceConfig
+  adapters:
+  - !!python/object:tickit.core.typedefs.AdapterConfig
+    adapter_class: tickit.devices.toy.tcp_controlled.TcpControlledAdapter
+  device_class: tickit.devices.toy.tcp_controlled.TcpControlled
+  inputs: {}
+  name: tcp-contr
+- !!python/object:tickit.core.typedefs.DeviceConfig
+  adapters: []
+  device_class: tickit.devices.toy.sink.Sink
+  inputs:
+    input: !!python/tuple
+    - tcp-contr
+    - observed
+  name: contr-sink

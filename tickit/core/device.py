@@ -1,9 +1,7 @@
 from dataclasses import dataclass
-from typing import Iterable, Optional, Set
+from typing import Optional, Set
 
-from tickit.core.adapter import Adapter
 from tickit.core.typedefs import IoId, SimTime, State
-from tickit.utils.compat.functools_compat import cached_property
 from tickit.utils.compat.typing_compat import Protocol, runtime_checkable
 
 
@@ -17,10 +15,6 @@ class UpdateEvent:
 class Device(Protocol):
     @property
     def outputs(self) -> Set[IoId]:
-        ...
-
-    @cached_property
-    def adapters(self) -> Iterable[Adapter]:
         ...
 
     def update(self, time: SimTime, inputs: State) -> UpdateEvent:
