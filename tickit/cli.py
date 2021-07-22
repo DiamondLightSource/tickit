@@ -7,8 +7,7 @@ import yaml
 
 from tickit import __version__
 from tickit.core import DeviceSimulation
-from tickit.core.adapter import Adapter
-from tickit.core.device import Device
+from tickit.core.device import DeviceConfig
 from tickit.core.event_router import InverseWiring
 from tickit.core.lifetime_runnable import run_all_forever
 from tickit.core.manager import Manager
@@ -22,7 +21,6 @@ from tickit.core.state_interfaces.kafka import (
     KafkaStateProducer,
     KafkaStateTopicManager,
 )
-from tickit.core.typedefs import DeviceConfig, DeviceID
 from tickit.utils.dynamic_import import import_class
 
 parser = ArgumentParser(formatter_class=RawDescriptionHelpFormatter)
@@ -76,28 +74,20 @@ def main():
         )
         asyncio.run(run_all_forever([simulation]))
     if args.mode == "manager":
-        _, _, _, wiring = read_config(args.config_path)
+        _, wiring = read_config(args.config_path)
         manager = Manager(wiring, state_consumer, state_producer, state_topic_manager,)
         asyncio.run(run_all_forever([manager]))
     if args.mode == "all":
-        names, devices, adapterss, wiring = read_config(args.config_path)
+        configs, wiring = read_config(args.config_path)
         device_simulations = [
-            DeviceSimulation(name, device, adapters, state_consumer, state_producer)
-            for name, device, adapters in zip(names, devices, adapterss)
+            DeviceSimulation(config, state_consumer, state_producer)
+            for config in configs
         ]
         manager = Manager(wiring, state_consumer, state_producer, state_topic_manager,)
         asyncio.run(run_all_forever([manager, *device_simulations]))
 
 
-def read_config(
-    config_path,
-) -> Tuple[List[DeviceID], List[Device], List[List[Adapter]], InverseWiring]:
+def read_config(config_path,) -> Tuple[List[DeviceConfig], InverseWiring]:
     configs: List[DeviceConfig] = yaml.load(open(config_path, "r"), Loader=yaml.Loader)
-    names = [config.name for config in configs]
-    devices: List[Device] = [import_class(config.device_class) for config in configs]
-    adapterss: List[List[Adapter]] = [
-        [import_class(adapter.adapter_class) for adapter in config.adapters]
-        for config in configs
-    ]
     inverse_wiring = InverseWiring({config.name: config.inputs for config in configs})
-    return names, devices, adapterss, inverse_wiring
+    return configs, inverse_wiring

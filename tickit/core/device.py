@@ -1,7 +1,8 @@
 from dataclasses import dataclass
-from typing import Optional, Set
+from typing import Dict, List, Optional, Set, Tuple
 
-from tickit.core.typedefs import IoId, SimTime, State
+from tickit.core.adapter import AdapterConfig
+from tickit.core.typedefs import DeviceID, IoId, SimTime, State
 from tickit.utils.compat.typing_compat import Protocol, runtime_checkable
 
 
@@ -9,6 +10,14 @@ from tickit.utils.compat.typing_compat import Protocol, runtime_checkable
 class UpdateEvent:
     state: State
     call_in: Optional[SimTime]
+
+
+@dataclass
+class DeviceConfig:
+    name: DeviceID
+    device_class: str
+    adapters: List[AdapterConfig]
+    inputs: Dict[IoId, Tuple[DeviceID, IoId]]
 
 
 @runtime_checkable
