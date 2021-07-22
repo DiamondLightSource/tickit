@@ -1,24 +1,11 @@
 from dataclasses import dataclass
-from typing import Dict, List, NewType, Optional, Tuple
+from typing import Dict, NewType, Optional
 
 DeviceID = NewType("DeviceID", str)
 IoId = NewType("IoId", str)
 State = NewType("State", Dict[IoId, object])
 Changes = NewType("Changes", Dict[IoId, object])
 SimTime = NewType("SimTime", int)
-
-
-@dataclass
-class AdapterConfig:
-    adapter_class: str
-
-
-@dataclass
-class DeviceConfig:
-    name: DeviceID
-    device_class: str
-    adapters: List[AdapterConfig]
-    inputs: Dict[IoId, Tuple[DeviceID, IoId]]
 
 
 @dataclass

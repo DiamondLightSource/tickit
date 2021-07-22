@@ -1,15 +1,23 @@
-from typing import Set
+from dataclasses import dataclass
+from typing import Awaitable, Callable, Set
 
+from tickit.adapters.composed import ComposedAdapter, ComposedAdapterConfig
 from tickit.adapters.interpreters.string_regex import StringRegexInterpreter
-from tickit.adapters.servers.tcp import TcpServer
-from tickit.core.adapter import ComposedAdapter
-from tickit.core.device import UpdateEvent
+from tickit.core.device import Device, DeviceConfig, UpdateEvent
 from tickit.core.typedefs import IoId, SimTime, State
 
 
-class TcpControlled:
-    observed: int = 0
-    unobserved: int = 0
+@dataclass
+class StringControlledConfig(DeviceConfig):
+    device_class = "tickit.devices.toy.string_controlled.StringControlled"
+    initial_observed: int = 0
+    initual_unobserved: int = 42
+
+
+class StringControlled:
+    def __init__(self, config: StringControlledConfig) -> None:
+        self.observed = config.initial_observed
+        self.unobserved = config.initual_unobserved
 
     @property
     def outputs(self) -> Set[IoId]:
@@ -19,9 +27,21 @@ class TcpControlled:
         return UpdateEvent(State({IoId("observed"): self.observed}), None)
 
 
-class TcpControlledAdapter(ComposedAdapter):
+@dataclass
+class StringControlledAdapterConfig(ComposedAdapterConfig):
+    adapter_class = "tickit.devices.toy.string_controlled.StringControlledAdapter"
+
+
+class StringControlledAdapter(ComposedAdapter):
     _interpreter = StringRegexInterpreter()
-    _server = TcpServer()
+
+    def __init__(
+        self,
+        device: Device,
+        handle_interrupt: Callable[[], Awaitable[None]],
+        config: StringControlledAdapterConfig,
+    ) -> None:
+        super().__init__(device, handle_interrupt, config)
 
     @_interpreter.command(r"O")
     def get_observed(self) -> str:

@@ -1,10 +1,10 @@
 import asyncio
-from typing import Awaitable, Callable, Iterable, Optional, Type
+from typing import Awaitable, Callable, Optional
 
-from tickit.core.adapter import Adapter
-from tickit.core.device import Device
+from tickit.core.device import DeviceConfig
 from tickit.core.state_interfaces import StateConsumer, StateProducer
-from tickit.core.typedefs import Changes, DeviceID, Input, Output, SimTime, State
+from tickit.core.typedefs import Changes, Input, Output, SimTime, State
+from tickit.utils.dynamic_import import import_class
 from tickit.utils.topic_naming import input_topic, output_topic
 
 InterruptHandler = Callable[[], Awaitable[None]]
@@ -17,16 +17,17 @@ class DeviceSimulation:
 
     def __init__(
         self,
-        device_id: DeviceID,
-        device: Type[Device],
-        adapters: Iterable[Callable[[Device, InterruptHandler], Adapter]],
+        config: DeviceConfig,
         state_consumer: StateConsumer,
         state_producer: StateProducer,
     ):
-        self.device_id = device_id
-        self.device = device()
+        self.device_id = config.name
+        self.device = import_class(config.device_class)(config)
         self.adapters = [
-            adapter(self.device, self.handle_interrupt) for adapter in adapters
+            import_class(adapter.adapter_class)(
+                self.device, self.handle_interrupt, adapter
+            )
+            for adapter in config.adapters
         ]
 
         self.state_consumer: StateConsumer[Input] = state_consumer(

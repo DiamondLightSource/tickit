@@ -1,13 +1,13 @@
-- !!python/object:tickit.core.typedefs.DeviceConfig
+- !!python/object:tickit.devices.toy.string_controlled.StringControlledConfig
   adapters:
-  - !!python/object:tickit.core.typedefs.AdapterConfig
-    adapter_class: tickit.devices.toy.tcp_controlled.TcpControlledAdapter
-  device_class: tickit.devices.toy.tcp_controlled.TcpControlled
+  - !!python/object:tickit.devices.toy.string_controlled.StringControlledAdapterConfig
+    server_config: !!python/object:tickit.adapters.servers.tcp.TcpServerConfig
+      host: localhost
+      port: 25566
   inputs: {}
   name: tcp-contr
-- !!python/object:tickit.core.typedefs.DeviceConfig
+- !!python/object:tickit.devices.toy.sink.SinkConfig
   adapters: []
-  device_class: tickit.devices.toy.sink.Sink
   inputs:
     input: !!python/tuple
     - tcp-contr

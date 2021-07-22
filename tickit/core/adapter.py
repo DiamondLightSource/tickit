@@ -1,7 +1,6 @@
 import sys
+from dataclasses import dataclass
 from typing import Awaitable, Callable, Tuple, TypeVar
-
-from tickit.core.device import Device
 
 # TODO: Investigate why import from tickit.utils.compat.typing_compat causes mypy error:
 # >>> 54: error: Argument 1 to "handle" of "Interpreter" has incompatible type
@@ -13,6 +12,11 @@ else:
     from typing_extensions import Protocol, runtime_checkable
 
 T = TypeVar("T")
+
+
+@dataclass
+class AdapterConfig:
+    adapter_class: str
 
 
 @runtime_checkable
@@ -27,6 +31,11 @@ class Interpreter(Protocol[T]):
         ...
 
 
+@dataclass
+class ServerConfig:
+    server_class: str
+
+
 @runtime_checkable
 class Server(Protocol[T]):
     def __init__(self,) -> None:
@@ -34,25 +43,3 @@ class Server(Protocol[T]):
 
     async def run_forever(self, handler: Callable[[T], Awaitable[T]]) -> None:
         ...
-
-
-class ComposedAdapter:
-    _interpreter: Interpreter
-    _server: Server
-
-    def __init__(
-        self, device: Device, handle_interrupt: Callable[[], Awaitable[None]]
-    ) -> None:
-        assert isinstance(self._interpreter, Interpreter)
-        assert isinstance(self._server, Server)
-        self._device = device
-        self.handle_interrupt = handle_interrupt
-
-    async def run_forever(self) -> None:
-        async def handle(message: T) -> T:
-            reply, interrupt = await self._interpreter.handle(self, message)
-            if interrupt:
-                await self.handle_interrupt()
-            return reply
-
-        await self._server.run_forever(handle)
