@@ -10,6 +10,9 @@ class SinkConfig(DeviceConfig):
 
 
 class Sink:
+    def __init__(self, config: SinkConfig) -> None:
+        ...
+
     def update(self, time: SimTime, inputs: State) -> UpdateEvent:
         print("Sunk {}".format(inputs))
         return UpdateEvent(State(dict()), None)
