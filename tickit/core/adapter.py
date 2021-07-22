@@ -6,6 +6,7 @@ from tickit.core.device import Device
 # TODO: Investigate why import from tickit.utils.compat.typing_compat causes mypy error:
 # >>> 54: error: Argument 1 to "handle" of "Interpreter" has incompatible type
 #     "ComposedAdapter"; expected "Adapter"
+# See mypy issue for details: https://github.com/python/mypy/issues/10851
 if sys.version_info >= (3, 8):
     from typing import Protocol, runtime_checkable
 else:
