@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Awaitable, Callable, Set
+from typing import Awaitable, Callable
 
 from tickit.adapters.composed import ComposedAdapter, ComposedAdapterConfig
 from tickit.adapters.interpreters.string_regex import StringRegexInterpreter
@@ -18,10 +18,6 @@ class StringControlled:
     def __init__(self, config: StringControlledConfig) -> None:
         self.observed = config.initial_observed
         self.unobserved = config.initual_unobserved
-
-    @property
-    def outputs(self) -> Set[IoId]:
-        return {IoId("observed")}
 
     def update(self, time: SimTime, inputs: State) -> UpdateEvent:
         return UpdateEvent(State({IoId("observed"): self.observed}), None)

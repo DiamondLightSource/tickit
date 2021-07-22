@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from random import randint
-from typing import Set
 
 from tickit.core.device import DeviceConfig, UpdateEvent
 from tickit.core.typedefs import IoId, SimTime, State
@@ -16,10 +15,6 @@ class Trampoline:
     def __init__(self, config: TrampolineConfig) -> None:
         self.callback_period = SimTime(config.callback_period)
 
-    @property
-    def outputs(self) -> Set[IoId]:
-        return set()
-
     def update(self, time: SimTime, inputs: State) -> UpdateEvent:
         print("Boing! ({}, {})".format(time, inputs))
         return UpdateEvent(State(dict()), self.callback_period)
@@ -34,10 +29,6 @@ class RandomTrampolineConfig(DeviceConfig):
 class RandomTrampoline:
     def __init__(self, config: RandomTrampolineConfig) -> None:
         self.callback_period = SimTime(config.callback_period)
-
-    @property
-    def outputs(self) -> Set[IoId]:
-        return {IoId("output")}
 
     def update(self, time: SimTime, inputs: State) -> UpdateEvent:
         output = randint(0, 255)

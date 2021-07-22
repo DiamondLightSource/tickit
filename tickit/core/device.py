@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Dict, List, Optional, Tuple
 
 from tickit.core.adapter import AdapterConfig
 from tickit.core.typedefs import DeviceID, IoId, SimTime, State
@@ -22,9 +22,5 @@ class DeviceConfig:
 
 @runtime_checkable
 class Device(Protocol):
-    @property
-    def outputs(self) -> Set[IoId]:
-        ...
-
     def update(self, time: SimTime, inputs: State) -> UpdateEvent:
         ...
