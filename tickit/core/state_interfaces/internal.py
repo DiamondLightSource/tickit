@@ -70,11 +70,11 @@ class InternalStateTopicManager:
     def __init__(self) -> None:
         self.server = InternalStateServer()
 
-    def get_topics(self) -> List[str]:
+    async def get_topics(self) -> List[str]:
         return self.server.topics
 
-    def create_topic(self, topic: str) -> None:
+    async def create_topic(self, topic: str) -> None:
         self.server.create_topic(topic)
 
-    def remove_topic(self, topic: str) -> None:
+    async def remove_topic(self, topic: str) -> None:
         self.server.remove_topic(topic)

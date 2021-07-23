@@ -24,19 +24,19 @@ class Manager:
         self.simulation_speed = simulation_speed
 
         self.state_topic_manager = state_topic_manager()
-        output_topics, _ = self.create_device_topics()
+        output_topics, _ = asyncio.run(self.create_device_topics())
 
         self.state_consumer: StateConsumer[Output] = state_consumer(output_topics)
         self.state_producer: StateProducer[Input] = state_producer()
         self.wakeups: List[Wakeup] = []
 
-    def create_device_topics(self) -> Tuple[Set[str], Set[str]]:
+    async def create_device_topics(self) -> Tuple[Set[str], Set[str]]:
         output_topics = set(
             output_topic(device) for device in self.event_router.devices
         )
         input_topics = set(input_topic(device) for device in self.event_router.devices)
         for topic in set.union(input_topics, output_topics):
-            self.state_topic_manager.create_topic(topic)
+            await self.state_topic_manager.create_topic(topic)
         return output_topics, input_topics
 
     async def run_forever(self):

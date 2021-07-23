@@ -29,11 +29,11 @@ class StateTopicManager(Protocol):
     def __init__(self) -> None:
         ...
 
-    def get_topics(self) -> List[str]:
+    async def get_topics(self) -> List[str]:
         ...
 
-    def create_topic(self, topic: str) -> None:
+    async def create_topic(self, topic: str) -> None:
         ...
 
-    def remove_topic(self, topic: str) -> None:
+    async def remove_topic(self, topic: str) -> None:
         ...
