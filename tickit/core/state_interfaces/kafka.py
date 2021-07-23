@@ -44,12 +44,12 @@ class KafkaStateTopicManager:
         self.replication_factor = replication_factor
         self.admin_client = KafkaAdminClient()
 
-    def get_topics(self) -> List[str]:
+    async def get_topics(self) -> List[str]:
         return self.admin_client.list_topics()
 
-    def create_topic(self, topic: str) -> None:
+    async def create_topic(self, topic: str) -> None:
         topic = NewTopic(topic, self.num_partitions, self.replication_factor)
         self.admin_client.create_topics([topic])
 
-    def remove_topic(self, topic: str) -> None:
+    async def remove_topic(self, topic: str) -> None:
         self.admin_client.delete_topics([topic])
