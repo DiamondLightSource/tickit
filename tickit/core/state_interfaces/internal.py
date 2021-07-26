@@ -1,5 +1,16 @@
 import json
-from typing import Any, AsyncIterator, Dict, Generic, Iterable, List, NewType, Optional
+from collections import defaultdict
+from typing import (
+    Any,
+    AsyncIterator,
+    DefaultDict,
+    Dict,
+    Generic,
+    Iterable,
+    List,
+    NewType,
+    Optional,
+)
 
 from tickit.core.state_interfaces.state_interface import T
 
@@ -17,7 +28,7 @@ class Singleton(type):
 
 
 class InternalStateServer(metaclass=Singleton):
-    _topics: Dict[str, Messages] = dict()
+    _topics: DefaultDict[str, Messages] = defaultdict(lambda: Messages(list()))
 
     def push(self, topic: str, message: Message) -> None:
         self._topics[topic].append(message)
@@ -64,17 +75,3 @@ class InternalStateProducer(Generic[T]):
     async def produce(self, topic: str, value: T) -> None:
         print("Producing {} to {}".format(value, topic))
         self.server.push(topic, Message(json.dumps(value.__dict__).encode("ascii")))
-
-
-class InternalStateTopicManager:
-    def __init__(self) -> None:
-        self.server = InternalStateServer()
-
-    async def get_topics(self) -> List[str]:
-        return self.server.topics
-
-    async def create_topic(self, topic: str) -> None:
-        self.server.create_topic(topic)
-
-    async def remove_topic(self, topic: str) -> None:
-        self.server.remove_topic(topic)

@@ -1,6 +1,6 @@
 import asyncio
 import json
-from typing import AsyncIterator, Generic, Iterable, List, Optional
+from typing import AsyncIterator, Generic, Iterable, Optional
 
 from aiokafka import AIOKafkaConsumer, AIOKafkaProducer
 
@@ -32,14 +32,3 @@ class KafkaStateProducer(Generic[T]):
     async def produce(self, topic: str, value: T) -> None:
         print("Producing {} to {}".format(value, topic))
         self.producer.send(topic, value.__dict__)
-
-
-class KafkaStateTopicManager:
-    async def get_topics(self) -> List[str]:
-        raise NotImplementedError
-
-    async def create_topic(self, topic: str) -> None:
-        pass
-
-    async def remove_topic(self, topic: str) -> None:
-        pass

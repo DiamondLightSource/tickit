@@ -4,7 +4,7 @@ from time import time_ns
 from typing import Iterable, List, Mapping, Optional, Set, Tuple, Union
 
 from tickit.core.event_router import EventRouter, InverseWiring, Wiring
-from tickit.core.state_interfaces import StateConsumer, StateProducer, StateTopicManager
+from tickit.core.state_interfaces import StateConsumer, StateProducer
 from tickit.core.typedefs import Changes, DeviceID, Input, Output, SimTime, Wakeup
 from tickit.utils.topic_naming import input_topic, output_topic
 
@@ -15,32 +15,26 @@ class Manager:
         wiring: Union[Wiring, InverseWiring],
         state_consumer: StateConsumer,
         state_producer: StateProducer,
-        state_topic_manager: StateTopicManager,
         initial_time: int = 0,
         simulation_speed: float = 1.0,
     ):
         self.event_router = EventRouter(wiring)
         self.simulation_time = SimTime(initial_time)
         self.simulation_speed = simulation_speed
-        self.state_topic_manager = state_topic_manager
         self.state_consumer = state_consumer
         self.state_producer = state_producer
 
         self.wakeups: List[Wakeup] = []
 
-    async def create_device_topics(self) -> Tuple[Set[str], Set[str]]:
+    async def get_topics(self) -> Tuple[Set[str], Set[str]]:
         output_topics = set(
             output_topic(device) for device in self.event_router.devices
         )
         input_topics = set(input_topic(device) for device in self.event_router.devices)
-        for topic in set.union(input_topics, output_topics):
-            await self.state_topic_manager.create_topic(topic)
         return output_topics, input_topics
 
     async def run_forever(self):
-
-        self.state_topic_manager = self.state_topic_manager()
-        output_topics, _ = await self.create_device_topics()
+        output_topics, _ = await self.get_topics()
         self.state_consumer: StateConsumer[Output] = self.state_consumer(output_topics)
         self.state_producer: StateProducer[Input] = self.state_producer()
 
