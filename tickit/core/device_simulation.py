@@ -29,13 +29,15 @@ class DeviceSimulation:
             )
             for adapter in config.adapters
         ]
-
-        self.state_consumer: StateConsumer[Input] = state_consumer(
-            [input_topic(self.device_id)]
-        )
-        self.state_producer: StateProducer[Output] = state_producer()
+        self.state_consumer = state_consumer
+        self.state_producer = state_producer
 
     async def run_forever(self):
+        self.state_consumer: StateConsumer[Input] = self.state_consumer(
+            [input_topic(self.device_id)]
+        )
+        self.state_producer: StateProducer[Output] = self.state_producer()
+
         for adapter in self.adapters:
             asyncio.create_task(adapter.run_forever())
         while True:
