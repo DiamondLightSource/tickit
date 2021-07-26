@@ -17,17 +17,18 @@ class TcpServer:
         self.host = config.host
         self.port = config.port
 
-    async def run_forever(self, handler: Callable[[str], Awaitable[str]]) -> None:
+    async def run_forever(self, handler: Callable[[bytes], Awaitable[bytes]]) -> None:
         async def handle(
             reader: asyncio.StreamReader, writer: asyncio.StreamWriter
         ) -> None:
             while True:
                 data: bytes = await reader.read(1024)
-                message: str = data.decode().strip()
+                if data == b"":
+                    break
                 addr = writer.get_extra_info("peername")
 
-                print("Recieved {} from {}".format(message, addr))
-                reply = str.encode(str(await handler(message)) + "\r\n")
+                print("Recieved {!r} from {}".format(data, addr))
+                reply = str.encode(str(await handler(data)) + "\r\n")
                 print("Replying with {!r}".format(reply))
                 writer.write(reply)
                 await writer.drain()
