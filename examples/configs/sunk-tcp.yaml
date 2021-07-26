@@ -1,6 +1,6 @@
-- !!python/object:tickit.devices.toy.string_controlled.StringControlledConfig
+- !!python/object:tickit.devices.toy.remote_controlled.RemoteControlledConfig
   adapters:
-  - !!python/object:tickit.devices.toy.string_controlled.StringControlledAdapterConfig
+  - !!python/object:tickit.devices.toy.remote_controlled.RemoteControlledAdapterConfig
     server_config: !!python/object:tickit.adapters.servers.tcp.TcpServerConfig
       host: localhost
       port: 25566
