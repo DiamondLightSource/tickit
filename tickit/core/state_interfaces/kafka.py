@@ -1,35 +1,31 @@
+import asyncio
 import json
 from typing import AsyncIterator, Generic, Iterable, List, Optional
 
-from kafka import KafkaConsumer
-from kafka.admin import KafkaAdminClient
-from kafka.admin.new_topic import NewTopic
-from kafka.producer.kafka import KafkaProducer
+from aiokafka import AIOKafkaConsumer, AIOKafkaProducer
 
 from tickit.core.state_interfaces.state_interface import T
 
 
 class KafkaStateConsumer(Generic[T]):
     def __init__(self, consume_topics: Iterable[str]) -> None:
-        self.consumer = KafkaConsumer(
+        self.consumer = AIOKafkaConsumer(
             *consume_topics,
             auto_offset_reset="earliest",
             value_deserializer=lambda m: json.loads(m.decode("ascii"))
         )
+        asyncio.create_task(self.consumer.start())
 
     async def consume(self) -> AsyncIterator[Optional[T]]:
-        while True:
-            partitions = self.consumer.poll(max_records=1)
-            for records in partitions.values():
-                for record in records:
-                    print("Consumed {}".format(record.value))
-                    yield record.value
-            yield None
+        async for message in self.consumer:
+            print("Consumed {}".format(message))
+            yield message
+        yield None
 
 
 class KafkaStateProducer(Generic[T]):
     def __init__(self) -> None:
-        self.producer = KafkaProducer(
+        self.producer = AIOKafkaProducer(
             value_serializer=lambda m: json.dumps(m).encode("ascii")
         )
 
@@ -39,17 +35,11 @@ class KafkaStateProducer(Generic[T]):
 
 
 class KafkaStateTopicManager:
-    def __init__(self, num_partitions=1, replication_factor=1) -> None:
-        self.num_partitions = num_partitions
-        self.replication_factor = replication_factor
-        self.admin_client = KafkaAdminClient()
-
     async def get_topics(self) -> List[str]:
-        return self.admin_client.list_topics()
+        raise NotImplementedError
 
     async def create_topic(self, topic: str) -> None:
-        topic = NewTopic(topic, self.num_partitions, self.replication_factor)
-        self.admin_client.create_topics([topic])
+        pass
 
     async def remove_topic(self, topic: str) -> None:
-        self.admin_client.delete_topics([topic])
+        pass

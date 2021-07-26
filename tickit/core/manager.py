@@ -22,12 +22,10 @@ class Manager:
         self.event_router = EventRouter(wiring)
         self.simulation_time = SimTime(initial_time)
         self.simulation_speed = simulation_speed
+        self.state_topic_manager = state_topic_manager
+        self.state_consumer = state_consumer
+        self.state_producer = state_producer
 
-        self.state_topic_manager = state_topic_manager()
-        output_topics, _ = asyncio.run(self.create_device_topics())
-
-        self.state_consumer: StateConsumer[Output] = state_consumer(output_topics)
-        self.state_producer: StateProducer[Input] = state_producer()
         self.wakeups: List[Wakeup] = []
 
     async def create_device_topics(self) -> Tuple[Set[str], Set[str]]:
@@ -40,6 +38,12 @@ class Manager:
         return output_topics, input_topics
 
     async def run_forever(self):
+
+        self.state_topic_manager = self.state_topic_manager()
+        output_topics, _ = await self.create_device_topics()
+        self.state_consumer: StateConsumer[Output] = self.state_consumer(output_topics)
+        self.state_producer: StateProducer[Input] = self.state_producer()
+
         time = time_ns()
         await self.tick([Wakeup(device, 0) for device in self.event_router.devices])
         while True:
