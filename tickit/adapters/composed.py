@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Awaitable, Callable, TypeVar
+from typing import AsyncIterable, Awaitable, Callable, Optional, TypeVar
 
 from tickit.core.adapter import Interpreter, Server, ServerConfig
 from tickit.core.device import Device
@@ -32,11 +32,14 @@ class ComposedAdapter:
         self._device = device
         self.handle_interrupt = handle_interrupt
 
+    async def on_connect(self) -> AsyncIterable[Optional[T]]:
+        yield None
+
     async def run_forever(self) -> None:
-        async def handle(message: T) -> T:
+        async def handle(message: T) -> AsyncIterable[Optional[T]]:
             reply, interrupt = await self._interpreter.handle(self, message)
             if interrupt:
                 await self.handle_interrupt()
             return reply
 
-        await self._server.run_forever(handle)
+        await self._server.run_forever(self.on_connect, handle)

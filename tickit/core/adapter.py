@@ -1,6 +1,6 @@
 import sys
 from dataclasses import dataclass
-from typing import Awaitable, Callable, Tuple, TypeVar
+from typing import AsyncIterable, Awaitable, Callable, Optional, Tuple, TypeVar
 
 # TODO: Investigate why import from tickit.utils.compat.typing_compat causes mypy error:
 # >>> 54: error: Argument 1 to "handle" of "Interpreter" has incompatible type
@@ -27,7 +27,9 @@ class Adapter(Protocol):
 
 @runtime_checkable
 class Interpreter(Protocol[T]):
-    async def handle(self, adapter: Adapter, message: T) -> Tuple[T, bool]:
+    async def handle(
+        self, adapter: Adapter, message: T
+    ) -> Tuple[AsyncIterable[T], bool]:
         ...
 
 
@@ -41,5 +43,9 @@ class Server(Protocol[T]):
     def __init__(self,) -> None:
         ...
 
-    async def run_forever(self, handler: Callable[[T], Awaitable[T]]) -> None:
+    async def run_forever(
+        self,
+        on_connect: Callable[[], AsyncIterable[Optional[T]]],
+        handler: Callable[[T], Awaitable[AsyncIterable[Optional[T]]]],
+    ) -> None:
         ...
