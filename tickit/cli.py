@@ -11,11 +11,7 @@ from tickit.core.device import DeviceConfig
 from tickit.core.event_router import InverseWiring
 from tickit.core.lifetime_runnable import run_all_forever
 from tickit.core.manager import Manager
-from tickit.core.state_interfaces.internal import (
-    InternalStateConsumer,
-    InternalStateProducer,
-)
-from tickit.core.state_interfaces.kafka import KafkaStateConsumer, KafkaStateProducer
+from tickit.core.state_interfaces import state_interface
 from tickit.utils.dynamic_import import import_class
 
 parser = ArgumentParser(formatter_class=RawDescriptionHelpFormatter)
@@ -33,16 +29,23 @@ parser_device.add_argument("device_name", help="name given to device in simulati
 parser_device.add_argument(
     "device_class", help="dotted path of device e.g: tickit.devices.eiger.Eiger"
 )
-parser_device.add_argument("-b", "--backend", default="kafka", choices=["kafka"])
+parser_device.add_argument(
+    "-b", "--backend", default="kafka", choices=list(state_interface.interfaces(True))
+)
 
 parser_manager = subparsers.add_parser("manager")
 parser_manager.add_argument("config_path", help="path to simulation configuration json")
-parser_manager.add_argument("-b", "--backend", default="kafka", choices=["kafka"])
+parser_manager.add_argument(
+    "-b", "--backend", default="kafka", choices=list(state_interface.interfaces(True))
+)
 
 parser_all = subparsers.add_parser("all")
 parser_all.add_argument("config_path", help="path to simulation configuration json")
 parser_all.add_argument(
-    "-b", "--backend", default="internal", choices=["internal", "kafka"]
+    "-b",
+    "--backend",
+    default="internal",
+    choices=list(state_interface.interfaces(False)),
 )
 
 parser.add_argument("--version", action="version", version=__version__)
@@ -51,13 +54,7 @@ parser.add_argument("--version", action="version", version=__version__)
 def main():
     args = parser.parse_args(sys.argv[1:])
 
-    if args.backend == "internal":
-        state_consumer = InternalStateConsumer
-        state_producer = InternalStateProducer
-    elif args.backend == "kafka":
-        state_consumer = KafkaStateConsumer
-        state_producer = KafkaStateProducer
-
+    state_consumer, state_producer = state_interface.get(args.backend)
     if args.mode == "device":
         simulation = DeviceSimulation(
             args.device_name,
