@@ -97,8 +97,8 @@ class RemoteControlledAdapter(ComposedAdapter):
     async def get_hidden(self) -> None:
         ...
 
-    @_interpreter.command(r"O?(\d+)", format="utf-8")
-    async def yield_hello(self, n: int = 10) -> AsyncIterable[bytes]:
+    @_interpreter.command(r"O\?(\d+)", format="utf-8")
+    async def yield_observed(self, n: int = 10) -> AsyncIterable[bytes]:
         for i in range(1, int(n)):
             await asyncio.sleep(1.0)
             yield "Observed is {}".format(self._device.observed).encode("utf-8")
