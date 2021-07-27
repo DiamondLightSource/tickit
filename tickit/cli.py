@@ -14,13 +14,8 @@ from tickit.core.manager import Manager
 from tickit.core.state_interfaces.internal import (
     InternalStateConsumer,
     InternalStateProducer,
-    InternalStateTopicManager,
 )
-from tickit.core.state_interfaces.kafka import (
-    KafkaStateConsumer,
-    KafkaStateProducer,
-    KafkaStateTopicManager,
-)
+from tickit.core.state_interfaces.kafka import KafkaStateConsumer, KafkaStateProducer
 from tickit.utils.dynamic_import import import_class
 
 parser = ArgumentParser(formatter_class=RawDescriptionHelpFormatter)
@@ -59,11 +54,9 @@ def main():
     if args.backend == "internal":
         state_consumer = InternalStateConsumer
         state_producer = InternalStateProducer
-        state_topic_manager = InternalStateTopicManager
     elif args.backend == "kafka":
         state_consumer = KafkaStateConsumer
         state_producer = KafkaStateProducer
-        state_topic_manager = KafkaStateTopicManager
 
     if args.mode == "device":
         simulation = DeviceSimulation(
@@ -75,7 +68,7 @@ def main():
         asyncio.run(run_all_forever([simulation]))
     if args.mode == "manager":
         _, wiring = read_config(args.config_path)
-        manager = Manager(wiring, state_consumer, state_producer, state_topic_manager,)
+        manager = Manager(wiring, state_consumer, state_producer)
         asyncio.run(run_all_forever([manager]))
     if args.mode == "all":
         configs, wiring = read_config(args.config_path)
@@ -83,7 +76,7 @@ def main():
             DeviceSimulation(config, state_consumer, state_producer)
             for config in configs
         ]
-        manager = Manager(wiring, state_consumer, state_producer, state_topic_manager,)
+        manager = Manager(wiring, state_consumer, state_producer)
         asyncio.run(run_all_forever([manager, *device_simulations]))
 
 
