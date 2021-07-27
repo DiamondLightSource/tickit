@@ -70,8 +70,8 @@ class RegexInterpreter:
         return register
 
     @staticmethod
-    async def unknown_command() -> AsyncIterable[str]:
-        yield "Request does not match any known command"
+    async def unknown_command() -> AsyncIterable[bytes]:
+        yield b"Request does not match any known command"
 
     async def handle(
         self, adapter: Adapter, message: bytes
