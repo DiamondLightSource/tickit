@@ -3,6 +3,8 @@ from dataclasses import dataclass
 from typing import (
     Any,
     AnyStr,
+    AsyncIterable,
+    Awaitable,
     Callable,
     Generic,
     List,
@@ -14,11 +16,15 @@ from typing import (
 
 from tickit.core.adapter import Adapter
 
+CommandFunc = Union[
+    Callable[..., Awaitable[AnyStr]], Callable[..., AsyncIterable[AnyStr]]
+]
+
 
 @dataclass
 class RegexCommand(Generic[AnyStr]):
     regex: AnyStr
-    func: Callable[..., str]
+    func: CommandFunc
     interrupt: bool
     format: Optional[str] = None
 
@@ -31,8 +37,18 @@ class RegexCommand(Generic[AnyStr]):
                 return match.groups()
         return None
 
-    def __call__(self, adapter: Adapter, *args: Sequence[Any]) -> Tuple[str, bool]:
-        return self.func(adapter, *args), self.interrupt
+    @staticmethod
+    async def _wrap(resp: AnyStr) -> AsyncIterable[AnyStr]:
+        yield resp
+
+    async def __call__(
+        self, adapter: Adapter, *args: Sequence[Any]
+    ) -> Tuple[AsyncIterable[AnyStr], bool]:
+
+        resp = self.func(adapter, *args)
+        if not isinstance(resp, AsyncIterable):
+            resp = RegexCommand._wrap(await resp)
+        return resp, self.interrupt
 
 
 class RegexInterpreter:
@@ -47,15 +63,21 @@ class RegexInterpreter:
         interrupt: bool = False,
         format: Optional[str] = None,
     ) -> Callable:
-        def register(func: Callable[..., str]) -> Callable:
+        def register(func: CommandFunc) -> Callable:
             self.commands.append(RegexCommand(regex, func, interrupt, format))
             return func
 
         return register
 
-    async def handle(self, adapter: Adapter, message: bytes) -> Tuple[str, bool]:
+    @staticmethod
+    async def unknown_command() -> AsyncIterable[str]:
+        yield "Request does not match any known command"
+
+    async def handle(
+        self, adapter: Adapter, message: bytes
+    ) -> Tuple[AsyncIterable[Union[str, bytes]], bool]:
         for command in self.commands:
             args = command.parse(message)
             if args is not None:
-                return command(adapter, *args)
-        return "Request does not match any known command", False
+                return await command(adapter, *args)
+        return RegexInterpreter.unknown_command(), False
