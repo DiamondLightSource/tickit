@@ -18,12 +18,15 @@ class KafkaStateConsumer(Generic[C]):
             auto_offset_reset="earliest",
             value_deserializer=lambda m: json.loads(m.decode("ascii"))
         )
-        asyncio.create_task(self.consumer.start())
+        self._start = asyncio.create_task(self.consumer.start())
 
     async def consume(self) -> AsyncIterator[Optional[C]]:
-        async for message in self.consumer:
-            print("Consumed {}".format(message))
-            yield message
+        await self._start
+        paritions = await self.consumer.getmany()
+        for _, records in paritions.items():
+            for record in records:
+                print("Consumed {}".format(record.value))
+                yield record.value
         yield None
 
 
@@ -33,7 +36,9 @@ class KafkaStateProducer(Generic[P]):
         self.producer = AIOKafkaProducer(
             value_serializer=lambda m: json.dumps(m).encode("ascii")
         )
+        self._start = asyncio.create_task(self.producer.start())
 
     async def produce(self, topic: str, value: P) -> None:
+        await self._start
         print("Producing {} to {}".format(value, topic))
-        self.producer.send(topic, value.__dict__)
+        await self.producer.send(topic, value.__dict__)
