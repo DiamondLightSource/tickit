@@ -11,12 +11,14 @@ class TcpServerConfig(ServerConfig):
     server_class = "tickit.adapters.servers.tcp.TcpServer"
     host: str
     port: int
+    format: bytes = b"%b"
 
 
 class TcpServer:
     def __init__(self, config: TcpServerConfig) -> None:
         self.host = config.host
         self.port = config.port
+        self.format = config.format
 
     async def run_forever(
         self,
@@ -26,12 +28,12 @@ class TcpServer:
         tasks: List[asyncio.Task] = list()
 
         async def handle(reader: StreamReader, writer: StreamWriter) -> None:
-            async def reply(reply: AsyncIterable[bytes]) -> None:
-                async for rep in reply:
-                    if rep is None:
+            async def reply(replies: AsyncIterable[bytes]) -> None:
+                async for reply in replies:
+                    if reply is None:
                         continue
-                    print("Replying with {!r}".format(rep))
-                    writer.write(rep + b"\n\r")
+                    print("Replying with {!r}".format(reply))
+                    writer.write(self.format % reply)
                     if writer.is_closing():
                         break
                     await writer.drain()
