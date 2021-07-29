@@ -2,6 +2,8 @@
   adapters:
   - !!python/object:tickit.devices.toy.remote_controlled.RemoteControlledAdapterConfig
     server_config: !!python/object:tickit.adapters.servers.tcp.TcpServerConfig
+      format: !!binary |
+        JWINCg==
       host: localhost
       port: 25566
   inputs: {}
