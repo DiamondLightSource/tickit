@@ -1,10 +1,10 @@
 from dataclasses import dataclass
-from typing import Dict, NewType, Optional
+from typing import Mapping, NewType, Optional
 
 DeviceID = NewType("DeviceID", str)
 IoId = NewType("IoId", str)
-State = NewType("State", Dict[IoId, object])
-Changes = NewType("Changes", Dict[IoId, object])
+State = NewType("State", Mapping[str, object])
+Changes = NewType("Changes", Mapping[str, object])
 SimTime = NewType("SimTime", int)
 
 

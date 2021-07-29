@@ -6,7 +6,8 @@ from typing import AsyncIterable, Awaitable, Callable
 from tickit.adapters.composed import ComposedAdapter, ComposedAdapterConfig
 from tickit.adapters.interpreters.regex_command import RegexInterpreter
 from tickit.core.device import DeviceConfig, UpdateEvent
-from tickit.core.typedefs import IoId, SimTime, State
+from tickit.core.typedefs import SimTime, State
+from tickit.utils.compat.typing_compat import TypedDict
 
 
 @dataclass
@@ -18,13 +19,15 @@ class RemoteControlledConfig(DeviceConfig):
 
 
 class RemoteControlled:
+    Output = TypedDict("Output", {"observed": float})
+
     def __init__(self, config: RemoteControlledConfig) -> None:
         self.observed = config.initial_observed
         self.unobserved = config.initual_unobserved
         self.hidden = config.initial_hidden
 
     def update(self, time: SimTime, inputs: State) -> UpdateEvent:
-        return UpdateEvent(State({IoId("observed"): self.observed}), None)
+        return UpdateEvent(RemoteControlled.Output(observed=self.observed), None)
 
 
 @dataclass
