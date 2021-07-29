@@ -79,5 +79,5 @@ def satisfy_externality(
     )
 
 
-def get(name: str) -> Tuple[Type[StateConsumer], Type[StateProducer]]:
+def get_interface(name: str) -> Tuple[Type[StateConsumer], Type[StateProducer]]:
     return consumers[name][0], producers[name][0]
