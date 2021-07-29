@@ -2,7 +2,8 @@ from dataclasses import dataclass
 from random import randint
 
 from tickit.core.device import DeviceConfig, UpdateEvent
-from tickit.core.typedefs import IoId, SimTime, State
+from tickit.core.typedefs import SimTime, State
+from tickit.utils.compat.typing_compat import TypedDict
 
 
 @dataclass
@@ -27,10 +28,12 @@ class RandomTrampolineConfig(DeviceConfig):
 
 
 class RandomTrampoline:
+    Output = TypedDict("Output", {"output": int})
+
     def __init__(self, config: RandomTrampolineConfig) -> None:
         self.callback_period = SimTime(config.callback_period)
 
     def update(self, time: SimTime, inputs: State) -> UpdateEvent:
         output = randint(0, 255)
         print("Boing! (delta: {}, inputs: {}, output: {})".format(time, inputs, output))
-        return UpdateEvent(State({IoId("output"): output}), self.callback_period)
+        return UpdateEvent(RandomTrampoline.Output(output=0), self.callback_period)
