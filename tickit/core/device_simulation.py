@@ -41,9 +41,9 @@ class DeviceSimulation:
         for adapter in self.adapters:
             asyncio.create_task(adapter.run_forever())
         while True:
-            input = await self.state_consumer.consume().__anext__()
+            input: Input = await self.state_consumer.consume().__anext__()
             if input:
-                await self.on_tick(Input(**input))
+                await self.on_tick(input)
             await asyncio.sleep(0.1)
 
     async def on_tick(self, input: Input) -> None:

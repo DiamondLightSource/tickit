@@ -1,7 +1,7 @@
 import asyncio
 import bisect
 from time import time_ns
-from typing import Iterable, List, Mapping, Optional, Set, Tuple, Union
+from typing import Iterable, List, Optional, Set, Tuple, Union
 
 from tickit.core.event_router import EventRouter, InverseWiring, Wiring
 from tickit.core.state_interfaces import StateConsumer, StateProducer
@@ -104,11 +104,9 @@ class Manager:
         await self.state_producer.produce(input_topic(input.target), input)
 
     async def handle_callbacks(self) -> Optional[Output]:
-        output = await self.state_consumer.consume().__anext__()
+        output: Optional[Output] = await self.state_consumer.consume().__anext__()
         if not output:
             return None
-        assert isinstance(output, Mapping)
-        output = Output(**output)
         if output.call_in is not None:
             wakeup = Wakeup(
                 output.source, SimTime(self.simulation_time + output.call_in)
