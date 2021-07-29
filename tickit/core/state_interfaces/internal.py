@@ -1,12 +1,13 @@
-import json
 from collections import defaultdict
 from typing import (
+    Any,
     AsyncIterator,
     DefaultDict,
     Dict,
     Generic,
     Iterable,
     List,
+    NamedTuple,
     NewType,
     Optional,
     TypeVar,
@@ -18,7 +19,11 @@ from tickit.utils.singleton import Singleton
 C = TypeVar("C")
 P = TypeVar("P")
 
-Message = NewType("Message", bytes)
+
+class Message(NamedTuple):
+    value: Any
+
+
 Messages = NewType("Messages", List[Message])
 
 
@@ -57,9 +62,9 @@ class InternalStateConsumer(Generic[C]):
             self.topics[topic] += len(response)
             self.messages.extend(response)
         if self.messages:
-            message = json.loads(self.messages.pop(0).decode("ascii"))
-            print("Consumed {}".format(message))
-            yield message
+            value = self.messages.pop(0).value
+            print("Consumed {}".format(value))
+            yield value
         else:
             yield None
 
@@ -71,4 +76,4 @@ class InternalStateProducer(Generic[P]):
 
     async def produce(self, topic: str, value: P) -> None:
         print("Producing {} to {}".format(value, topic))
-        self.server.push(topic, Message(json.dumps(value.__dict__).encode("ascii")))
+        self.server.push(topic, Message(value=value))
