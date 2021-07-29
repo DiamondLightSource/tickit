@@ -1,5 +1,5 @@
 import asyncio
-from typing import Awaitable, Callable, Optional
+from typing import Awaitable, Callable, Optional, Type
 
 from tickit.core.device import DeviceConfig
 from tickit.core.state_interfaces import StateConsumer, StateProducer
@@ -18,8 +18,8 @@ class DeviceSimulation:
     def __init__(
         self,
         config: DeviceConfig,
-        state_consumer: StateConsumer,
-        state_producer: StateProducer,
+        state_consumer: Type[StateConsumer],
+        state_producer: Type[StateProducer],
     ):
         self.device_id = config.name
         self.device = import_class(config.device_class)(config)
@@ -29,14 +29,14 @@ class DeviceSimulation:
             )
             for adapter in config.adapters
         ]
-        self.state_consumer = state_consumer
-        self.state_producer = state_producer
+        self._state_consumer_cls = state_consumer
+        self._state_producer_cls = state_producer
 
     async def run_forever(self):
-        self.state_consumer: StateConsumer[Input] = self.state_consumer(
+        self.state_consumer: StateConsumer[Input] = self._state_consumer_cls(
             [input_topic(self.device_id)]
         )
-        self.state_producer: StateProducer[Output] = self.state_producer()
+        self.state_producer: StateProducer[Output] = self._state_producer_cls()
 
         for adapter in self.adapters:
             asyncio.create_task(adapter.run_forever())

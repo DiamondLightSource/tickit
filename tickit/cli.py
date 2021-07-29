@@ -1,83 +1,69 @@
 import asyncio
-import sys
-from argparse import ArgumentParser, RawDescriptionHelpFormatter
-from typing import List, Tuple
+from typing import Iterable, List, Tuple
 
+import click
 import yaml
+from click.core import Context
 
-from tickit import __version__
 from tickit.core import DeviceSimulation
 from tickit.core.device import DeviceConfig
 from tickit.core.event_router import InverseWiring
 from tickit.core.lifetime_runnable import run_all_forever
 from tickit.core.manager import Manager
-from tickit.core.state_interfaces import state_interface
-from tickit.utils.dynamic_import import import_class
-
-parser = ArgumentParser(formatter_class=RawDescriptionHelpFormatter)
-
-subparsers = parser.add_subparsers(
-    title="mode",
-    dest="mode",
-    description="device: run a single simulated device.\n"
-    + "manager: run the simulation manager\n"
-    + "all: run a collection of devices with a manager",
-)
-
-parser_device = subparsers.add_parser("device")
-parser_device.add_argument("device_name", help="name given to device in simulation")
-parser_device.add_argument(
-    "device_class", help="dotted path of device e.g: tickit.devices.eiger.Eiger"
-)
-parser_device.add_argument(
-    "-b", "--backend", default="kafka", choices=list(state_interface.interfaces(True))
-)
-
-parser_manager = subparsers.add_parser("manager")
-parser_manager.add_argument("config_path", help="path to simulation configuration json")
-parser_manager.add_argument(
-    "-b", "--backend", default="kafka", choices=list(state_interface.interfaces(True))
-)
-
-parser_all = subparsers.add_parser("all")
-parser_all.add_argument("config_path", help="path to simulation configuration json")
-parser_all.add_argument(
-    "-b",
-    "--backend",
-    default="internal",
-    choices=list(state_interface.interfaces(False)),
-)
-
-parser.add_argument("--version", action="version", version=__version__)
+from tickit.core.state_interfaces.state_interface import get_interface, interfaces
 
 
-def main():
-    args = parser.parse_args(sys.argv[1:])
+@click.group(invoke_without_command=True)
+@click.version_option()
+@click.pass_context
+def main(ctx: Context):
 
-    state_consumer, state_producer = state_interface.get(args.backend)
-    if args.mode == "device":
-        simulation = DeviceSimulation(
-            args.device_name,
-            import_class(args.device_class)(),
-            state_consumer,
-            state_producer,
-        )
-        asyncio.run(run_all_forever([simulation]))
-    if args.mode == "manager":
-        _, wiring = read_config(args.config_path)
-        manager = Manager(wiring, state_consumer, state_producer)
-        asyncio.run(run_all_forever([manager]))
-    if args.mode == "all":
-        configs, wiring = read_config(args.config_path)
-        device_simulations = [
-            DeviceSimulation(config, state_consumer, state_producer)
-            for config in configs
-        ]
-        manager = Manager(wiring, state_consumer, state_producer)
-        asyncio.run(run_all_forever([manager, *device_simulations]))
+    if ctx.invoked_subcommand is None:
+        click.echo(main.get_help(ctx))
 
 
-def read_config(config_path,) -> Tuple[List[DeviceConfig], InverseWiring]:
-    configs: List[DeviceConfig] = yaml.load(open(config_path, "r"), Loader=yaml.Loader)
-    inverse_wiring = InverseWiring({config.name: config.inputs for config in configs})
-    return configs, inverse_wiring
+@main.command(help="run a single simulated device")
+@click.argument("device")
+@click.argument("config_path")
+@click.option("--backend", default="kafka", type=click.Choice(interfaces(True)))
+def device(config_path, device, backend):
+    configs = read_configs(config_path)
+    config = next(config for config in configs if config.name == device)
+    device_simulations = create_device_simulations([config], backend)
+    asyncio.run(run_all_forever(device_simulations))
+
+
+@main.command(help="run the simulation manager")
+@click.argument("config_path")
+@click.option("--backend", default="kafka", type=click.Choice(interfaces(True)))
+def manager(config_path, backend):
+    configs = read_configs(config_path)
+    inverse_wiring = build_inverse_wiring(configs)
+    manager = Manager(inverse_wiring, *get_interface(backend))
+    asyncio.run(run_all_forever([manager]))
+
+
+@main.command(help="run a collection of devices with a manager")
+@click.argument("config_path")
+@click.option("--backend", default="internal", type=click.Choice(interfaces(False)))
+@click.pass_obj
+def all(config_path, backend):
+    configs = read_configs(config_path)
+    inverse_wiring = build_inverse_wiring(configs)
+    manager = Manager(inverse_wiring, *get_interface(backend))
+    device_simulations = create_device_simulations(configs, backend)
+    asyncio.run(run_all_forever([manager, *device_simulations]))
+
+
+def read_configs(config_path) -> Tuple[List[DeviceConfig], InverseWiring]:
+    return yaml.load(open(config_path, "r"), Loader=yaml.Loader)
+
+
+def build_inverse_wiring(configs: Iterable[DeviceConfig]) -> InverseWiring:
+    return InverseWiring({config.name: config.inputs for config in configs})
+
+
+def create_device_simulations(
+    configs: Iterable[DeviceConfig], backend: str
+) -> List[DeviceSimulation]:
+    return [DeviceSimulation(config, *get_interface(backend)) for config in configs]
