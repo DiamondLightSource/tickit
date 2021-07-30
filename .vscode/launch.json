@@ -9,14 +9,14 @@
             "type":"python",
             "request":"launch",
             "module":"tickit",
-            "args": ["examples/configs/sunk-trampoline.yaml", "all"]
+            "args": ["all", "examples/configs/sunk-trampoline.yaml"]
         },
         {
             "name":"Sunk TCP",
             "type":"python",
             "request":"launch",
             "module":"tickit",
-            "args": ["examples/configs/sunk-tcp.yaml", "all"]
+            "args": ["all", "examples/configs/sunk-tcp.yaml"]
         },
         {
             "name":"Python: Current File",
