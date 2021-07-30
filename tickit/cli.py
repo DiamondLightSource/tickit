@@ -46,7 +46,6 @@ def manager(config_path, backend):
 @main.command(help="run a collection of devices with a manager")
 @click.argument("config_path")
 @click.option("--backend", default="internal", type=click.Choice(interfaces(False)))
-@click.pass_obj
 def all(config_path, backend):
     configs = read_configs(config_path)
     inverse_wiring = build_inverse_wiring(configs)
