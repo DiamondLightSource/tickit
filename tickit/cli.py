@@ -5,8 +5,8 @@ import click
 import yaml
 from click.core import Context
 
-from tickit.core import DeviceSimulation
 from tickit.core.device import DeviceConfig
+from tickit.core.device_simulation import DeviceSimulation
 from tickit.core.event_router import InverseWiring
 from tickit.core.lifetime_runnable import run_all_forever
 from tickit.core.manager import Manager
