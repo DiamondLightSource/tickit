@@ -1,51 +1,34 @@
 import asyncio
 import struct
-from dataclasses import dataclass
-from typing import AsyncIterable, Awaitable, Callable
+from typing import AsyncIterable
 
-from tickit.adapters.composed import ComposedAdapter, ComposedAdapterConfig
+from tickit.adapters.composed import ComposedAdapter
 from tickit.adapters.interpreters.regex_command import RegexInterpreter
-from tickit.core.device import DeviceConfig, UpdateEvent
+from tickit.core.device import ConfigurableDevice, UpdateEvent
 from tickit.core.typedefs import SimTime, State
 from tickit.utils.compat.typing_compat import TypedDict
 
 
-@dataclass
-class RemoteControlledConfig(DeviceConfig):
-    device_class = "tickit.devices.toy.remote_controlled.RemoteControlled"
-    initial_observed: float = 0
-    initual_unobserved: float = 42
-    initial_hidden: float = 3.14
-
-
-class RemoteControlled:
+class RemoteControlled(ConfigurableDevice):
     Output = TypedDict("Output", {"observed": float})
 
-    def __init__(self, config: RemoteControlledConfig) -> None:
-        self.observed = config.initial_observed
-        self.unobserved = config.initual_unobserved
-        self.hidden = config.initial_hidden
+    def __init__(
+        self,
+        initial_observed: float = 0,
+        initial_unobserved: float = 42,
+        initial_hidden: float = 3.14,
+    ) -> None:
+        self.observed = initial_observed
+        self.unobserved = initial_unobserved
+        self.hidden = initial_hidden
 
     def update(self, time: SimTime, inputs: State) -> UpdateEvent:
         return UpdateEvent(RemoteControlled.Output(observed=self.observed), None)
 
 
-@dataclass
-class RemoteControlledAdapterConfig(ComposedAdapterConfig):
-    adapter_class = "tickit.devices.toy.remote_controlled.RemoteControlledAdapter"
-
-
 class RemoteControlledAdapter(ComposedAdapter):
     _interpreter = RegexInterpreter()
     _device: RemoteControlled
-
-    def __init__(
-        self,
-        device: RemoteControlled,
-        handle_interrupt: Callable[[], Awaitable[None]],
-        config: RemoteControlledAdapterConfig,
-    ) -> None:
-        super().__init__(device, handle_interrupt, config)
 
     async def on_connect(self) -> AsyncIterable[bytes]:
         while True:

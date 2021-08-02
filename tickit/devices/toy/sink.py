@@ -1,16 +1,9 @@
-from dataclasses import dataclass
-
-from tickit.core.device import DeviceConfig, UpdateEvent
+from tickit.core.device import ConfigurableDevice, UpdateEvent
 from tickit.core.typedefs import SimTime, State
 
 
-@dataclass
-class SinkConfig(DeviceConfig):
-    device_class = "tickit.devices.toy.sink.Sink"
-
-
-class Sink:
-    def __init__(self, config: SinkConfig) -> None:
+class Sink(ConfigurableDevice):
+    def __init__(self) -> None:
         ...
 
     def update(self, time: SimTime, inputs: State) -> UpdateEvent:

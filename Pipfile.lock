@@ -48,6 +48,13 @@
             ],
             "version": "==0.7.1"
         },
+        "apischema": {
+            "hashes": [
+                "sha256:6c6a8ea1278767140f3807b03cd9986ebe9baf1deb7aba3724504f2410644a45",
+                "sha256:7543fd50405154f8268323af4b8c0f74b9f6613c56051049ca7aa0fd5f115f9e"
+            ],
+            "version": "==0.15.5"
+        },
         "kafka-python": {
             "hashes": [
                 "sha256:04dfe7fea2b63726cd6f3e79a2d86e709d608d74406638c5da33a01d45a9d7e3",

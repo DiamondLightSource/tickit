@@ -4,7 +4,6 @@ from typing import Awaitable, Callable, Optional, Type
 from tickit.core.device import DeviceConfig
 from tickit.core.state_interfaces import StateConsumer, StateProducer
 from tickit.core.typedefs import Changes, Input, Output, SimTime, State
-from tickit.utils.dynamic_import import import_class
 from tickit.utils.topic_naming import input_topic, output_topic
 
 InterruptHandler = Callable[[], Awaitable[None]]
@@ -22,10 +21,10 @@ class DeviceSimulation:
         state_producer: Type[StateProducer],
     ):
         self.device_id = config.name
-        self.device = import_class(config.device_class)(config)
+        self.device = config.configures()(**config.__kwargs__)
         self.adapters = [
-            import_class(adapter.adapter_class)(
-                self.device, self.handle_interrupt, adapter
+            adapter.configures()(
+                self.device, self.handle_interrupt, **adapter.__kwargs__
             )
             for adapter in config.adapters
         ]
