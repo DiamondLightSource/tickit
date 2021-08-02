@@ -1,24 +1,15 @@
 import asyncio
 from asyncio.streams import StreamReader, StreamWriter
-from dataclasses import dataclass
 from typing import AsyncIterable, Awaitable, Callable, List
 
-from tickit.core.adapter import ServerConfig
+from tickit.core.adapter import ConfigurableServer
 
 
-@dataclass
-class TcpServerConfig(ServerConfig):
-    server_class = "tickit.adapters.servers.tcp.TcpServer"
-    host: str
-    port: int
-    format: bytes = b"%b"
-
-
-class TcpServer:
-    def __init__(self, config: TcpServerConfig) -> None:
-        self.host = config.host
-        self.port = config.port
-        self.format = config.format
+class TcpServer(ConfigurableServer):
+    def __init__(self, host: str, port: int, format: bytes = b"%b") -> None:
+        self.host = host
+        self.port = port
+        self.format = format
 
     async def run_forever(
         self,

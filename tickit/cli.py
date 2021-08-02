@@ -1,8 +1,7 @@
 import asyncio
-from typing import Iterable, List, Tuple
+from typing import Iterable, List
 
 import click
-import yaml
 from click.core import Context
 
 from tickit.core.device import DeviceConfig
@@ -11,6 +10,7 @@ from tickit.core.event_router import InverseWiring
 from tickit.core.lifetime_runnable import run_all_forever
 from tickit.core.manager import Manager
 from tickit.core.state_interfaces.state_interface import get_interface, interfaces
+from tickit.utils.configuration.loading import read_configs
 
 
 @click.group(invoke_without_command=True)
@@ -52,10 +52,6 @@ def all(config_path, backend):
     manager = Manager(inverse_wiring, *get_interface(backend))
     device_simulations = create_device_simulations(configs, backend)
     asyncio.run(run_all_forever([manager, *device_simulations]))
-
-
-def read_configs(config_path) -> Tuple[List[DeviceConfig], InverseWiring]:
-    return yaml.load(open(config_path, "r"), Loader=yaml.Loader)
 
 
 def build_inverse_wiring(configs: Iterable[DeviceConfig]) -> InverseWiring:

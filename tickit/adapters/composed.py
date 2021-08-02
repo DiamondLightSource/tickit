@@ -1,20 +1,12 @@
-from dataclasses import dataclass
 from typing import AsyncIterable, Awaitable, Callable, Optional, TypeVar
 
-from tickit.core.adapter import Interpreter, Server, ServerConfig
+from tickit.core.adapter import ConfigurableAdapter, Interpreter, Server, ServerConfig
 from tickit.core.device import Device
-from tickit.utils.dynamic_import import import_class
 
 T = TypeVar("T")
 
 
-@dataclass
-class ComposedAdapterConfig:
-    adapter_class: str
-    server_config: ServerConfig
-
-
-class ComposedAdapter:
+class ComposedAdapter(ConfigurableAdapter):
     _interpreter: Interpreter
     _server: Server
 
@@ -22,11 +14,9 @@ class ComposedAdapter:
         self,
         device: Device,
         handle_interrupt: Callable[[], Awaitable[None]],
-        composed_adapter_config: ComposedAdapterConfig,
+        server_config: ServerConfig,
     ) -> None:
-        self._server = import_class(composed_adapter_config.server_config.server_class)(
-            composed_adapter_config.server_config
-        )
+        self._server = server_config.configures()(**server_config.__kwargs__)
         assert isinstance(self._interpreter, Interpreter)
         assert isinstance(self._server, Server)
         self._device = device

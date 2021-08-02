@@ -1,12 +1,12 @@
-- !!python/object:tickit.devices.toy.trampoline.RandomTrampolineConfig
-  adapters: []
-  callback_period: 1000000000
-  inputs: {}
-  name: rand-tramp
-- !!python/object:tickit.devices.toy.sink.SinkConfig
-  adapters: []
-  inputs:
-    input: !!python/tuple
-    - rand-tramp
-    - output
-  name: tramp-sink
+- tickit.devices.toy.trampoline.RandomTrampoline:
+    adapters: []
+    callback_period: 1000000000
+    inputs: {}
+    name: rand_tramp
+- tickit.devices.toy.sink.Sink:
+    adapters: []
+    inputs:
+      input:
+      - rand_tramp
+      - output
+    name: tramp_sink

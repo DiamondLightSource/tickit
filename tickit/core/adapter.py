@@ -1,6 +1,18 @@
 import sys
 from dataclasses import dataclass
-from typing import AsyncIterable, Awaitable, Callable, Optional, Tuple, TypeVar
+from typing import (
+    TYPE_CHECKING,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Dict,
+    Optional,
+    Tuple,
+    Type,
+    TypeVar,
+)
+
+from tickit.utils.configuration.configurable import configurable, configurable_base
 
 # TODO: Investigate why import from tickit.utils.compat.typing_compat causes mypy error:
 # >>> 54: error: Argument 1 to "handle" of "Interpreter" has incompatible type
@@ -11,18 +23,36 @@ if sys.version_info >= (3, 8):
 else:
     from typing_extensions import Protocol, runtime_checkable
 
+if TYPE_CHECKING:
+    from tickit.core.device import Device
+
 T = TypeVar("T")
-
-
-@dataclass
-class AdapterConfig:
-    adapter_class: str
 
 
 @runtime_checkable
 class Adapter(Protocol):
+    def __init__(self, device: "Device", handle_interrupt: Callable, **kwargs) -> None:
+        ...
+
     async def run_forever(self) -> None:
         ...
+
+
+@configurable_base
+@dataclass
+class AdapterConfig:
+    @staticmethod
+    def configures() -> Type[Adapter]:
+        raise NotImplementedError
+
+    @property
+    def __kwargs__(self) -> Dict[str, object]:
+        raise NotImplementedError
+
+
+class ConfigurableAdapter:
+    def __init_subclass__(cls) -> None:
+        cls = configurable(AdapterConfig, ["device", "handle_interrupt"])(cls)
 
 
 @runtime_checkable
@@ -33,14 +63,9 @@ class Interpreter(Protocol[T]):
         ...
 
 
-@dataclass
-class ServerConfig:
-    server_class: str
-
-
 @runtime_checkable
 class Server(Protocol[T]):
-    def __init__(self,) -> None:
+    def __init__(self, **kwargs) -> None:
         ...
 
     async def run_forever(
@@ -49,3 +74,20 @@ class Server(Protocol[T]):
         handler: Callable[[T], Awaitable[AsyncIterable[Optional[T]]]],
     ) -> None:
         ...
+
+
+@configurable_base
+@dataclass
+class ServerConfig:
+    @staticmethod
+    def configures() -> Type[Server]:
+        raise NotImplementedError
+
+    @property
+    def __kwargs__(self):
+        raise NotImplementedError
+
+
+class ConfigurableServer:
+    def __init_subclass__(cls) -> None:
+        cls = configurable(ServerConfig)(cls)

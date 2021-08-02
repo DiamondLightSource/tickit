@@ -1,17 +1,20 @@
-- !!python/object:tickit.devices.toy.remote_controlled.RemoteControlledConfig
-  adapters:
-  - !!python/object:tickit.devices.toy.remote_controlled.RemoteControlledAdapterConfig
-    server_config: !!python/object:tickit.adapters.servers.tcp.TcpServerConfig
-      format: !!binary |
-        JWINCg==
-      host: localhost
-      port: 25566
-  inputs: {}
-  name: tcp-contr
-- !!python/object:tickit.devices.toy.sink.SinkConfig
-  adapters: []
-  inputs:
-    input: !!python/tuple
-    - tcp-contr
-    - observed
-  name: contr-sink
+- tickit.devices.toy.remote_controlled.RemoteControlled:
+    adapters:
+    - tickit.devices.toy.remote_controlled.RemoteControlledAdapter:
+        server_config:
+          tickit.adapters.servers.tcp.TcpServer:
+            format: JWINCg==
+            host: localhost
+            port: 25566
+    initial_hidden: 3.14
+    initial_observed: 42
+    initial_unobserved: 2.72
+    inputs: {}
+    name: tcp_contr
+- tickit.devices.toy.sink.Sink:
+    adapters: []
+    inputs:
+      input:
+      - tcp_contr
+      - observed
+    name: contr_sink
