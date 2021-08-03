@@ -108,6 +108,8 @@ def test_event_router_device_tree(event_router: EventRouter):
 
 def test_event_router_inverse_device_tree(event_router: EventRouter):
     assert {
+        "Out1": set(),
+        "Out2": set(),
         "Mid1": {"Out1", "Out2"},
         "In1": {"Mid1", "Out2"},
     } == event_router.inverse_device_tree

@@ -52,11 +52,11 @@ class EventRouter:
 
     @overload
     def __init__(self, wiring: Wiring) -> None:
-        ...
+        pass
 
     @overload
     def __init__(self, wiring: InverseWiring) -> None:
-        ...
+        pass
 
     def __init__(self, wiring: Union[Wiring, InverseWiring]) -> None:
         if isinstance(wiring, Wiring):
@@ -95,7 +95,7 @@ class EventRouter:
     @cached_property
     def inverse_device_tree(self) -> Dict[DeviceID, Set[DeviceID]]:
         inverse_tree: Dict[DeviceID, Set[DeviceID]] = {
-            dev: set() for dev in self.input_devices
+            dev: set() for dev in self.devices
         }
         for dev, deps in self.device_tree.items():
             for dep in deps:
