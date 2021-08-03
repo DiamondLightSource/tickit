@@ -6,10 +6,14 @@ from apischema import deserializer, serializer
 from apischema.conversions.conversions import Conversion
 from apischema.tagged_unions import Tagged, TaggedUnion, get_tagged
 
+from tickit.utils.compat.typing_compat import Protocol, runtime_checkable
+
 # Implementation adapted from apischema example: Class as tagged union of its subclasses
 # see: https://wyfo.github.io/apischema/examples/subclass_tagged_union/
 
 Func = TypeVar("Func", bound=Callable)
+Cls = TypeVar("Cls", bound=type)
+T = TypeVar("T", covariant=True)
 
 
 def rec_subclasses(cls: type) -> Iterator[type]:
@@ -17,9 +21,6 @@ def rec_subclasses(cls: type) -> Iterator[type]:
     for sub_cls in cls.__subclasses__():
         yield sub_cls
         yield from rec_subclasses(sub_cls)
-
-
-Cls = TypeVar("Cls", bound=type)
 
 
 def configurable_alias(sub: Type) -> str:
@@ -60,6 +61,17 @@ def configurable_base(cls: Cls) -> Cls:
     deserializer(lazy=deserialization, target=cls)
     serializer(lazy=serialization, source=cls)
     return cls
+
+
+@runtime_checkable
+class Config(Protocol[T]):
+    @staticmethod
+    def configures() -> Type[T]:
+        pass
+
+    @property
+    def __kwargs__(self) -> Dict[str, object]:
+        pass
 
 
 def configurable(template: Type, ignore: Sequence[str] = []) -> Callable[[Type], Type]:

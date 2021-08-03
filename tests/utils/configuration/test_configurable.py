@@ -4,7 +4,11 @@ from typing import List
 import apischema
 from pytest import fixture
 
-from tickit.utils.configuration.configurable import configurable, configurable_base
+from tickit.utils.configuration.configurable import (
+    Config,
+    configurable,
+    configurable_base,
+)
 
 
 @fixture
@@ -55,7 +59,7 @@ def test_serialization_consistency(TestBaseConfig, TestDerived, OtherTestDerived
 
 
 def test_configurable_adds_config(TestDerived):
-    assert hasattr(TestDerived, "Config")
+    assert isinstance(TestDerived.Config, Config)
 
 
 def test_config_fields(TestDerived):
