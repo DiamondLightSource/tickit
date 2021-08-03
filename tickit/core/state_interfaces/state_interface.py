@@ -15,7 +15,7 @@ from typing import (
 # See mypy issue for details: https://github.com/python/mypy/issues/10851
 if sys.version_info >= (3, 8):
     from typing import Protocol, runtime_checkable
-else:
+elif sys.version_info >= (3, 5):
     from typing_extensions import Protocol, runtime_checkable
 
 C = TypeVar("C", covariant=True)
