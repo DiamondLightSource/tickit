@@ -23,24 +23,6 @@ class Input:
     time: SimTime
     changes: Changes
 
-    def __or__(self, other):
-        assert isinstance(other, Input)
-        assert self.target == other.target
-        assert self.time == other.time
-        return Input(self.target, self.time, dict(self.state).__or__(other.state))
-
-    def __ror__(self, other):
-        assert isinstance(other, Input)
-        assert self.target == other.target
-        assert self.time == other.time
-        return Input(self.target, self.time, dict(other.state).__ror__(self.state))
-
-    def __ior__(self, other):
-        assert isinstance(other, Input)
-        assert self.target == other.target
-        assert self.time == other.time
-        return Input(self.target, self.time, self.state.__ior__(other.state))
-
 
 @dataclass
 class Output:
@@ -55,6 +37,6 @@ class Wakeup:
     device: DeviceID
     when: SimTime
 
-    def __lt__(self, other):
-        assert isinstance(other, Wakeup)
-        return self.when < other.when
+    def __lt__(self, value: "Wakeup") -> bool:
+        assert isinstance(value, Wakeup)
+        return self.when < value.when
