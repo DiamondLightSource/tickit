@@ -8,7 +8,7 @@ from tickit.utils.compat.typing_compat import Protocol, runtime_checkable
 @runtime_checkable
 class LifetimeRunnable(Protocol):
     async def run_forever(self) -> None:
-        ...
+        pass
 
 
 async def run_all_forever(runnables: Iterable[LifetimeRunnable]) -> None:

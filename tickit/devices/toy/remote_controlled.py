@@ -81,7 +81,7 @@ class RemoteControlledAdapter(ComposedAdapter):
 
     @_interpreter.command(r"H", format="utf-8")
     async def get_hidden(self) -> None:
-        ...
+        pass
 
     @_interpreter.command(r"O\?(\d+)", format="utf-8")
     async def yield_observed(self, n: int = 10) -> AsyncIterable[bytes]:

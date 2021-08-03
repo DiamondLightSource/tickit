@@ -32,10 +32,10 @@ T = TypeVar("T")
 @runtime_checkable
 class Adapter(Protocol):
     def __init__(self, device: "Device", handle_interrupt: Callable, **kwargs) -> None:
-        ...
+        pass
 
     async def run_forever(self) -> None:
-        ...
+        pass
 
 
 @configurable_base
@@ -60,20 +60,20 @@ class Interpreter(Protocol[T]):
     async def handle(
         self, adapter: Adapter, message: T
     ) -> Tuple[AsyncIterable[T], bool]:
-        ...
+        pass
 
 
 @runtime_checkable
 class Server(Protocol[T]):
     def __init__(self, **kwargs) -> None:
-        ...
+        pass
 
     async def run_forever(
         self,
         on_connect: Callable[[], AsyncIterable[Optional[T]]],
         handler: Callable[[T], Awaitable[AsyncIterable[Optional[T]]]],
     ) -> None:
-        ...
+        pass
 
 
 @configurable_base

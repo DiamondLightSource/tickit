@@ -30,7 +30,7 @@ def TestBase(TestBaseConfig):
 def TestDerived(TestBase):
     class TestDerived(TestBase):
         def __init__(self, derived_field: int) -> None:
-            ...
+            pass
 
     return TestDerived
 
@@ -39,7 +39,7 @@ def TestDerived(TestBase):
 def OtherTestDerived(TestBase):
     class OtherTestDerived(TestBase):
         def __init__(self, other_derived_field: float) -> None:
-            ...
+            pass
 
     return OtherTestDerived
 

@@ -16,7 +16,7 @@ class UpdateEvent:
 @runtime_checkable
 class Device(Protocol):
     def update(self, time: SimTime, inputs: State) -> UpdateEvent:
-        ...
+        pass
 
 
 @configurable_base

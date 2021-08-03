@@ -25,7 +25,7 @@ P = TypeVar("P", contravariant=True)
 @runtime_checkable
 class StateConsumer(Protocol[C]):
     def __init__(self, consume_topics: Iterable[str]) -> None:
-        ...
+        pass
 
     async def consume(self) -> AsyncIterator[Optional[C]]:
         if False:
@@ -35,10 +35,10 @@ class StateConsumer(Protocol[C]):
 @runtime_checkable
 class StateProducer(Protocol[P]):
     def __init__(self) -> None:
-        ...
+        pass
 
     async def produce(self, topic: str, value: P) -> None:
-        ...
+        pass
 
 
 StateInterface = TypeVar("StateInterface", StateConsumer, StateProducer)
