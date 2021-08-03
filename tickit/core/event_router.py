@@ -4,38 +4,37 @@ from typing import DefaultDict, Dict, List, Optional, Set, Tuple, Union, overloa
 from tickit.core.typedefs import Changes, DeviceID, Input, IoId, Output
 from tickit.utils.compat.functools_compat import cached_property
 
-_Wiring = DefaultDict[DeviceID, DefaultDict[IoId, List[Tuple[DeviceID, IoId]]]]
+_Default_Wiring = DefaultDict[DeviceID, DefaultDict[IoId, Set[Tuple[DeviceID, IoId]]]]
+_Wiring = Dict[DeviceID, Dict[IoId, Set[Tuple[DeviceID, IoId]]]]
+_Default_InverseWiring = DefaultDict[DeviceID, DefaultDict[IoId, Tuple[DeviceID, IoId]]]
+_Inverse_Wiring = Dict[DeviceID, Dict[IoId, Tuple[DeviceID, IoId]]]
 
 
-class Wiring(_Wiring):
-    def __init__(
-        self,
-        wiring: Optional[
-            Dict[DeviceID, Dict[IoId, List[Tuple[DeviceID, IoId]]]]
-        ] = None,
-    ) -> None:
-        _wiring: Dict[DeviceID, DefaultDict[IoId, List[Tuple[DeviceID, IoId]]]] = {
-            dev: DefaultDict(list, io) for dev, io in wiring.items()
-        } if wiring else dict()
-        return super().__init__(lambda: DefaultDict(list, dict()), _wiring)
+class Wiring(_Default_Wiring):
+    def __init__(self, wiring: Optional[_Wiring] = None,) -> None:
+        _wiring = (
+            {dev: DefaultDict(set, io) for dev, io in wiring.items()}
+            if wiring
+            else dict()
+        )
+        return super().__init__(lambda: DefaultDict(set, dict()), _wiring)
 
     @classmethod
     def from_inverse_wiring(cls, inverse_wiring: "InverseWiring") -> "Wiring":
         wiring: Wiring = cls()
         for in_dev, in_ios in inverse_wiring.items():
             for in_io, (out_dev, out_io) in in_ios.items():
-                wiring[out_dev][out_io].append((in_dev, in_io))
+                wiring[out_dev][out_io].add((in_dev, in_io))
         return wiring
 
 
-class InverseWiring(DefaultDict[DeviceID, DefaultDict[IoId, Tuple[DeviceID, IoId]]]):
-    def __init__(
-        self,
-        wiring: Optional[Dict[DeviceID, Dict[IoId, Tuple[DeviceID, IoId]]]] = None,
-    ) -> None:
-        _wiring: Dict[DeviceID, DefaultDict[IoId, Tuple[DeviceID, IoId]]] = {
-            dev: DefaultDict(None, io) for dev, io in wiring.items()
-        } if wiring else dict()
+class InverseWiring(_Default_InverseWiring):
+    def __init__(self, wiring: Optional[_Inverse_Wiring] = None,) -> None:
+        _wiring = (
+            {dev: DefaultDict(None, io) for dev, io in wiring.items()}
+            if wiring
+            else dict()
+        )
         return super().__init__(lambda: DefaultDict(None, dict()), _wiring)
 
     @classmethod
@@ -70,10 +69,6 @@ class EventRouter:
         return self._wiring
 
     @cached_property
-    def inverse_wiring(self) -> InverseWiring:
-        raise NotImplementedError
-
-    @cached_property
     def devices(self) -> Set[DeviceID]:
         return set.union(self.input_devices, self.output_devices)
 
@@ -100,7 +95,7 @@ class EventRouter:
     @cached_property
     def inverse_device_tree(self) -> Dict[DeviceID, Set[DeviceID]]:
         inverse_tree: Dict[DeviceID, Set[DeviceID]] = {
-            dev: set() for dev in self.devices
+            dev: set() for dev in self.input_devices
         }
         for dev, deps in self.device_tree.items():
             for dep in deps:
@@ -112,11 +107,10 @@ class EventRouter:
         to_crawl = deque([root])
         while to_crawl:
             dev = to_crawl.popleft()
-            if dev in dependants:
-                continue
-            dependants.add(dev)
-            if dev in self.device_tree.keys():
-                to_crawl.extend(self.device_tree[dev] - dependants)
+            if dev not in dependants:
+                dependants.add(dev)
+                if dev in self.device_tree.keys():
+                    to_crawl.extend(self.device_tree[dev] - dependants)
         return dependants
 
     def route(self, output: Output) -> List[Input]:
