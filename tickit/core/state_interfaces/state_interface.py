@@ -10,6 +10,7 @@ from typing import (
     Type,
     TypeVar,
 )
+from warnings import warn
 
 # TODO: Investigate why import from tickit.utils.compat.typing_compat causes mypy error
 # See mypy issue for details: https://github.com/python/mypy/issues/10851
@@ -57,8 +58,10 @@ def add(
         elif isinstance(interface, StateProducer):
             producers[name] = (interface, external)
         else:
-            Warning(
-                "{} is not {} or {}".format(interface, StateConsumer, StateProducer)
+            warn(
+                RuntimeWarning(
+                    "{} is not {} or {}".format(interface, StateConsumer, StateProducer)
+                )
             )
         return interface
 
