@@ -23,4 +23,4 @@ class RandomTrampoline(ConfigurableDevice):
     def update(self, time: SimTime, inputs: State) -> UpdateEvent:
         output = randint(0, 255)
         print("Boing! (delta: {}, inputs: {}, output: {})".format(time, inputs, output))
-        return UpdateEvent(RandomTrampoline.Output(output=0), self.callback_period)
+        return UpdateEvent(RandomTrampoline.Output(output=output), self.callback_period)
