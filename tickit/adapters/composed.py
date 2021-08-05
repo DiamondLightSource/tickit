@@ -23,13 +23,14 @@ class ComposedAdapter(ConfigurableAdapter):
         self.handle_interrupt = handle_interrupt
 
     async def on_connect(self) -> AsyncIterable[Optional[T]]:
-        yield None
+        if False:
+            yield None
+
+    async def handle_message(self, message: T) -> AsyncIterable[Optional[T]]:
+        reply, interrupt = await self._interpreter.handle(self, message)
+        if interrupt:
+            await self.handle_interrupt()
+        return reply
 
     async def run_forever(self) -> None:
-        async def handle(message: T) -> AsyncIterable[Optional[T]]:
-            reply, interrupt = await self._interpreter.handle(self, message)
-            if interrupt:
-                await self.handle_interrupt()
-            return reply
-
-        await self._server.run_forever(self.on_connect, handle)
+        await self._server.run_forever(self.on_connect, self.handle_message)
