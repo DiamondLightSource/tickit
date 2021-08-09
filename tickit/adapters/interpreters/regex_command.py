@@ -42,7 +42,7 @@ class RegexCommand(Generic[AnyStr]):
         yield resp
 
     async def __call__(
-        self, adapter: Adapter, *args: Sequence[Any]
+        self, adapter: Adapter, *args: Any
     ) -> Tuple[AsyncIterable[AnyStr], bool]:
 
         resp = self.func(adapter, *args)

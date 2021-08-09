@@ -1,7 +1,7 @@
 import asyncio
 
 import pytest
-from asyncmock import Mock, PropertyMock, create_autospec
+from mock import Mock, PropertyMock, create_autospec
 
 from tickit.adapters.composed import ComposedAdapter
 from tickit.adapters.interpreters.regex_command import RegexInterpreter

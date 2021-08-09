@@ -55,14 +55,6 @@
             ],
             "version": "==0.15.5"
         },
-        "asyncmock": {
-            "hashes": [
-                "sha256:c251889d542e98fe5f7ece2b5b8643b7d62b50a5657d34a4cbce8a1d5170d750",
-                "sha256:fd8bc4e7813251a8959d1140924ccba3adbbc7af885dba7047c67f73c0b664b1"
-            ],
-            "markers": "python_version >= '3.6'",
-            "version": "==0.4.2"
-        },
         "kafka-python": {
             "hashes": [
                 "sha256:04dfe7fea2b63726cd6f3e79a2d86e709d608d74406638c5da33a01d45a9d7e3",
@@ -99,6 +91,13 @@
         "tickit": {
             "editable": true,
             "path": "."
+        },
+        "types-mock": {
+            "hashes": [
+                "sha256:9bdafab236c0530fed36dbf18bc942633b2033bfda16551b2e4eb767341a8b8c",
+                "sha256:e052879bb0a7d78547cce3342ffdf4ec3e8d2eff8f237911c3c8e31ac7ea8c86"
+            ],
+            "version": "==0.1.3"
         },
         "types-pyyaml": {
             "hashes": [
