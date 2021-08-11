@@ -135,7 +135,7 @@ def test_event_router_dependants(
     [
         (
             Output(DeviceID("Out1"), SimTime(10), Changes({"Out1>1": 42}), None),
-            [Input(DeviceID("Mid1"), SimTime(10), Changes({"Out1>1": 42}))],
+            [Input(DeviceID("Mid1"), SimTime(10), Changes({"Mid1<1": 42}))],
         )
     ],
 )

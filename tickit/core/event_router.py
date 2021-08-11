@@ -116,7 +116,7 @@ class EventRouter:
     def route(self, output: Output) -> List[Input]:
         inputs: List[Input] = list()
         for out_id, out_val in output.changes.items():
-            for in_dev, _ in self.wiring[output.source][out_id]:
+            for in_dev, in_id in self.wiring[output.source][out_id]:
                 assert output.time is not None
-                inputs.append(Input(in_dev, output.time, Changes({out_id: out_val})))
+                inputs.append(Input(in_dev, output.time, Changes({in_id: out_val})))
         return inputs
