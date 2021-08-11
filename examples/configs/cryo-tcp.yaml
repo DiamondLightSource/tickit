@@ -1,0 +1,18 @@
+- tickit.devices.cryostream.cryostream.Cryostream:
+    adapters:
+    - tickit.devices.cryostream.cryostream.CryostreamAdapter:
+        server_config:
+          tickit.adapters.servers.tcp.TcpServer:
+            format: JWI=
+            host: localhost
+            port: 25565
+    inputs: {}
+    name: cryo
+- tickit.devices.toy.sink.Sink:
+    adapters: []
+    inputs:
+      input:
+      - cryo
+      - temperature
+    name: contr_sink
+
