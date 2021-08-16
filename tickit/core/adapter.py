@@ -38,6 +38,12 @@ class Adapter(Protocol):
         pass
 
 
+@runtime_checkable
+class ListeningAdapter(Adapter, Protocol):
+    def after_update(self):
+        pass
+
+
 @configurable_base
 @dataclass
 class AdapterConfig:
