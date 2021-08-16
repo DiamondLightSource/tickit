@@ -1,6 +1,7 @@
 import asyncio
 from typing import Awaitable, Callable, Optional, Type
 
+from tickit.core.adapter import ListeningAdapter
 from tickit.core.device import DeviceConfig
 from tickit.core.state_interfaces import StateConsumer, StateProducer
 from tickit.core.typedefs import Changes, Input, Output, SimTime, State
@@ -48,6 +49,9 @@ class DeviceSimulation:
     async def on_tick(self, input: Input) -> None:
         self.inputs = State({**self.inputs, **State(input.changes)})
         output = self.device.update(SimTime(input.time), self.inputs)
+        for adapter in self.adapters:
+            if isinstance(adapter, ListeningAdapter):
+                adapter.after_update()
         changes = Changes(
             {
                 k: v
