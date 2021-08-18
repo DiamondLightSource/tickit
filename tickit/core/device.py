@@ -7,7 +7,7 @@ from tickit.utils.compat.typing_compat import Protocol, runtime_checkable
 from tickit.utils.configuration.configurable import configurable, configurable_base
 
 
-@dataclass
+@dataclass(frozen=True)
 class UpdateEvent:
     state: State
     call_in: Optional[SimTime]

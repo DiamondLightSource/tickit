@@ -91,15 +91,16 @@ def test_regex_command_calls_func_with_args(
 
 
 @pytest.mark.parametrize(
-    ["regex", "func", "interrupt", "format"], [(r"TestMessage", None, False, "utf-8")],
+    ["regex", "interrupt", "format"], [(r"TestMessage", False, "utf-8")],
 )
 def test_regex_command_returns_iterable_reply(
-    regex_command: RegexCommand,
-    adapter: Adapter,
+    regex: str,
     async_iterable_command_func: Callable[..., AsyncIterable[AnyStr]],
     interrupt: bool,
+    format: str,
+    adapter: Adapter,
 ):
-    regex_command.func = async_iterable_command_func
+    regex_command = RegexCommand(regex, async_iterable_command_func, interrupt, format)
     args: Tuple = tuple()
     assert (async_iterable_command_func(adapter), interrupt) == asyncio.run(
         regex_command(adapter, *args)
@@ -107,14 +108,16 @@ def test_regex_command_returns_iterable_reply(
 
 
 @pytest.mark.parametrize(
-    ["regex", "func", "interrupt", "format"], [(r"TestMessage", None, False, "utf-8")],
+    ["regex", "interrupt", "format"], [(r"TestMessage", False, "utf-8")],
 )
 def test_regex_command_wraps_non_iterable_reply(
-    regex_command: RegexCommand,
-    adapter: Adapter,
+    regex: str,
     async_command_func: Callable[..., Awaitable[AnyStr]],
+    interrupt: bool,
+    format: str,
+    adapter: Adapter,
 ):
-    regex_command.func = async_command_func
+    regex_command = RegexCommand(regex, async_command_func, interrupt, format)
     args: Tuple = tuple()
     assert asyncio.run(async_command_func(adapter, *args)) == asyncio.run(
         asyncio.run(regex_command(adapter, *args))[0].__anext__()

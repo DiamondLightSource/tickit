@@ -21,7 +21,7 @@ CommandFunc = Union[
 ]
 
 
-@dataclass
+@dataclass(frozen=True)
 class RegexCommand(Generic[AnyStr]):
     regex: AnyStr
     func: CommandFunc
