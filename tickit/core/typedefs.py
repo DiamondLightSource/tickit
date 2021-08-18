@@ -8,7 +8,7 @@ Changes = NewType("Changes", Mapping[str, object])
 SimTime = NewType("SimTime", int)
 
 
-@dataclass
+@dataclass(frozen=True)
 class Port:
     device: DeviceID
     key: IoId
@@ -17,14 +17,14 @@ class Port:
         return (self.device, self.key).__hash__()
 
 
-@dataclass
+@dataclass(frozen=True)
 class Input:
     target: DeviceID
     time: SimTime
     changes: Changes
 
 
-@dataclass
+@dataclass(frozen=True)
 class Output:
     source: DeviceID
     time: Optional[SimTime]
@@ -32,7 +32,7 @@ class Output:
     call_in: Optional[SimTime]
 
 
-@dataclass
+@dataclass(frozen=True)
 class Wakeup:
     device: DeviceID
     when: SimTime
