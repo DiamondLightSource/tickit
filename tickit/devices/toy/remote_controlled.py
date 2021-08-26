@@ -61,7 +61,7 @@ class RemoteControlledAdapter(ComposedAdapter):
     async def get_unobserved_str(self) -> bytes:
         return str(self._device.unobserved).encode("utf-8")
 
-    @_interpreter.command(b"\x02(.{4})", interrupt=True)
+    @_interpreter.command(b"\x02(.{4})")
     async def set_unobserved_bytes(self, value: bytes) -> bytes:
         self._device.unobserved = struct.unpack(">f", value)[0]
         return struct.pack(">f", self._device.unobserved)
