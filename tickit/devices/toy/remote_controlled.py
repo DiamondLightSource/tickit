@@ -37,7 +37,7 @@ class RemoteControlledAdapter(ComposedAdapter):
 
     @_interpreter.command(b"\x01")
     async def get_observed_bytes(self) -> bytes:
-        return struct.pack(">i", self._device.observed)
+        return struct.pack(">f", self._device.observed)
 
     @_interpreter.command(r"O", format="utf-8")
     async def get_observed_str(self) -> bytes:
@@ -45,8 +45,8 @@ class RemoteControlledAdapter(ComposedAdapter):
 
     @_interpreter.command(b"\x01(.{4})", interrupt=True)
     async def set_observed_bytes(self, value: bytes) -> bytes:
-        self._device.observed = struct.unpack(">i", value)[0]
-        return struct.pack(">i", self._device.observed)
+        self._device.observed = struct.unpack(">f", value)[0]
+        return struct.pack(">f", self._device.observed)
 
     @_interpreter.command(r"O=(\d+\.?\d*)", interrupt=True, format="utf-8")
     async def set_observed_str(self, value: int) -> bytes:
@@ -55,7 +55,7 @@ class RemoteControlledAdapter(ComposedAdapter):
 
     @_interpreter.command(b"\x02")
     async def get_unobserved_bytes(self) -> bytes:
-        return struct.pack(">i", self._device.unobserved)
+        return struct.pack(">f", self._device.unobserved)
 
     @_interpreter.command(r"U", format="utf-8")
     async def get_unobserved_str(self) -> bytes:
@@ -63,8 +63,8 @@ class RemoteControlledAdapter(ComposedAdapter):
 
     @_interpreter.command(b"\x02(.{4})", interrupt=True)
     async def set_unobserved_bytes(self, value: bytes) -> bytes:
-        self._device.unobserved = struct.unpack(">i", value)[0]
-        return struct.pack(">i", self._device.unobserved)
+        self._device.unobserved = struct.unpack(">f", value)[0]
+        return struct.pack(">f", self._device.unobserved)
 
     @_interpreter.command(r"U=(\d+\.?\d*)", format="utf-8")
     async def set_unobserved_str(self, value: int) -> bytes:
