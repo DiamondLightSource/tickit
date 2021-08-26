@@ -49,7 +49,7 @@ class RemoteControlledAdapter(ComposedAdapter):
         return struct.pack(">f", self._device.observed)
 
     @_interpreter.command(r"O=(\d+\.?\d*)", interrupt=True, format="utf-8")
-    async def set_observed_str(self, value: int) -> bytes:
+    async def set_observed_str(self, value: float) -> bytes:
         self._device.observed = value
         return "Observed set to {}".format(self._device.observed).encode("utf-8")
 
@@ -67,7 +67,7 @@ class RemoteControlledAdapter(ComposedAdapter):
         return struct.pack(">f", self._device.unobserved)
 
     @_interpreter.command(r"U=(\d+\.?\d*)", format="utf-8")
-    async def set_unobserved_str(self, value: int) -> bytes:
+    async def set_unobserved_str(self, value: float) -> bytes:
         self._device.unobserved = value
         return "Unobserved set to {}".format(self._device.unobserved).encode("utf-8")
 
