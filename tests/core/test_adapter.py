@@ -27,7 +27,7 @@ def test_adapter_config_configures_raises_not_implemented():
 def test_adapter_config_kwargs_raises_not_implemented():
     adapter_config = AdapterConfig()
     with pytest.raises(NotImplementedError):
-        adapter_config.__kwargs__
+        adapter_config.kwargs
 
 
 def test_inherit_configurable_adapter_makes_configurable():
@@ -50,7 +50,7 @@ def test_server_config_configure_raises_not_implemented():
 def test_server_config_kwargs_raises_not_implemented():
     server_config = ServerConfig()
     with pytest.raises(NotImplementedError):
-        server_config.__kwargs__
+        server_config.kwargs
 
 
 def test_inherit_configurable_server_makes_configurable():

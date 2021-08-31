@@ -1,8 +1,7 @@
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Tuple, Type
+from typing import Optional, Type
 
-from tickit.core.adapter import AdapterConfig
-from tickit.core.typedefs import DeviceID, IoId, SimTime, State
+from tickit.core.typedefs import SimTime, State
 from tickit.utils.compat.typing_compat import Protocol, runtime_checkable
 from tickit.utils.configuration.configurable import configurable, configurable_base
 
@@ -22,16 +21,12 @@ class Device(Protocol):
 @configurable_base
 @dataclass
 class DeviceConfig:
-    name: DeviceID
-    adapters: List[AdapterConfig]
-    inputs: Dict[IoId, Tuple[DeviceID, IoId]]
-
     @staticmethod
     def configures() -> Type[Device]:
         raise NotImplementedError
 
     @property
-    def __kwargs__(self):
+    def kwargs(self):
         raise NotImplementedError
 
 

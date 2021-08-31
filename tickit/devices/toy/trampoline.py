@@ -1,5 +1,7 @@
 from random import randint
 
+from immutables import Map
+
 from tickit.core.device import ConfigurableDevice, UpdateEvent
 from tickit.core.typedefs import SimTime, State
 from tickit.utils.compat.typing_compat import TypedDict
@@ -11,7 +13,7 @@ class Trampoline(ConfigurableDevice):
 
     def update(self, time: SimTime, inputs: State) -> UpdateEvent:
         print("Boing! ({}, {})".format(time, inputs))
-        return UpdateEvent(State(dict()), self.callback_period)
+        return UpdateEvent(State(Map()), self.callback_period)
 
 
 class RandomTrampoline(ConfigurableDevice):

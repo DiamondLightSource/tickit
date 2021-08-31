@@ -2,6 +2,8 @@ import asyncio
 import struct
 from typing import AsyncIterable
 
+from immutables import Map
+
 from tickit.adapters.composed import ComposedAdapter
 from tickit.adapters.interpreters.regex_command import RegexInterpreter
 from tickit.core.device import ConfigurableDevice, UpdateEvent
@@ -34,7 +36,7 @@ class Cryostream(CryostreamBase, ConfigurableDevice):
                 Cryostream.Output(temperature=self.gas_temp),
                 call_in=SimTime(int(self.plat_duration * 1e10)),
             )
-        return UpdateEvent(State(dict()), call_in=None)
+        return UpdateEvent(State(Map()), call_in=None)
 
 
 class CryostreamAdapter(ComposedAdapter):

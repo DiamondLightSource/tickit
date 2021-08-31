@@ -70,7 +70,7 @@ class Config(Protocol[T]):
         pass
 
     @property
-    def __kwargs__(self) -> Dict[str, object]:
+    def kwargs(self) -> Dict[str, object]:
         pass
 
 
@@ -81,7 +81,7 @@ def configurable(template: Type, ignore: Sequence[str] = []) -> Callable[[Type],
         def configures() -> Type:
             return cls
 
-        def __kwargs__(self) -> Dict[str, object]:
+        def kwargs(self) -> Dict[str, object]:
             remove: Set[str] = set(template.__annotations__) if hasattr(
                 template, "__annotations__"
             ) else set()
@@ -98,7 +98,7 @@ def configurable(template: Type, ignore: Sequence[str] = []) -> Callable[[Type],
             bases=(template,),
             namespace={
                 "configures": staticmethod(configures),
-                "__kwargs__": property(__kwargs__),
+                "kwargs": property(kwargs),
             },
         )
 

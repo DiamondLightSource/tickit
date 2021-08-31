@@ -1,10 +1,14 @@
-- tickit.devices.toy.trampoline.RandomTrampoline:
+- tickit.core.components.device_simulation.DeviceSimulation:
     adapters: []
-    callback_period: 1000000000
+    config:
+      tickit.devices.toy.trampoline.RandomTrampoline:
+        callback_period: 1000000000
     inputs: {}
     name: rand_tramp
-- tickit.devices.toy.sink.Sink:
+- tickit.core.components.device_simulation.DeviceSimulation:
     adapters: []
+    config:
+      tickit.devices.toy.sink.Sink: {}
     inputs:
       input:
       - rand_tramp

@@ -1,5 +1,5 @@
 import asyncio
-from typing import AsyncIterator, Generic, Iterable, Optional, TypeVar
+from typing import Awaitable, Callable, Generic, Iterable, TypeVar
 
 import yaml
 from aiokafka import AIOKafkaConsumer, AIOKafkaProducer
@@ -13,22 +13,23 @@ P = TypeVar("P")
 
 @state_interface.add("kafka", True)
 class KafkaStateConsumer(Generic[C]):
-    def __init__(self, consume_topics: Iterable[str]) -> None:
+    def __init__(self, callback: Callable[[C], Awaitable[None]]) -> None:
         self.consumer = AIOKafkaConsumer(
-            *consume_topics,
+            None,
             auto_offset_reset="earliest",
-            value_deserializer=lambda m: yaml.load(m.decode("utf-8"), Loader=Loader)
+            value_deserializer=lambda m: yaml.load(m.decode("utf-8"), Loader=Loader),
         )
-        self._start = asyncio.create_task(self.consumer.start())
+        self.callback = callback
+        asyncio.create_task(self.run_forever())
 
-    async def consume(self) -> AsyncIterator[Optional[C]]:
-        await self._start
-        paritions = await self.consumer.getmany()
-        for _, records in paritions.items():
-            for record in records:
-                print("Consumed {}".format(record.value))
-                yield record.value
-        yield None
+    async def subscribe(self, topics: Iterable[str]):
+        self.consumer.subscribe(topics)
+
+    async def run_forever(self) -> None:
+        await self.consumer.start()
+        while True:
+            async for message in self.consumer:
+                await self.callback(message.value)
 
 
 @state_interface.add("kafka", True)
@@ -41,5 +42,4 @@ class KafkaStateProducer(Generic[P]):
 
     async def produce(self, topic: str, value: P) -> None:
         await self._start
-        print("Producing {} to {}".format(value, topic))
         await self.producer.send(topic, value)

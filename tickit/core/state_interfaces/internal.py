@@ -1,15 +1,15 @@
 from collections import defaultdict
 from typing import (
     Any,
-    AsyncIterator,
+    Awaitable,
+    Callable,
     DefaultDict,
-    Dict,
     Generic,
     Iterable,
     List,
     NamedTuple,
     NewType,
-    Optional,
+    Set,
     TypeVar,
 )
 
@@ -29,12 +29,18 @@ Messages = NewType("Messages", List[Message])
 
 class InternalStateServer(metaclass=Singleton):
     _topics: DefaultDict[str, Messages] = defaultdict(lambda: Messages(list()))
+    _subscribers: DefaultDict[str, Set["InternalStateConsumer"]] = defaultdict(set)
 
-    def push(self, topic: str, message: Message) -> None:
+    async def push(self, topic: str, message: Message) -> None:
         self._topics[topic].append(message)
+        for subscriber in self._subscribers[topic]:
+            await subscriber.add_message(message)
 
-    def poll(self, topic: str, offset: int) -> Messages:
-        return Messages(self._topics[topic][offset:])
+    async def subscribe(self, consumer: "InternalStateConsumer", topics: Iterable[str]):
+        for topic in topics:
+            self._subscribers[topic].add(consumer)
+            for message in self._topics[topic]:
+                await consumer.add_message(message)
 
     def create_topic(self, topic: str) -> None:
         assert topic not in self._topics.keys()
@@ -51,22 +57,15 @@ class InternalStateServer(metaclass=Singleton):
 
 @state_interface.add("internal", False)
 class InternalStateConsumer(Generic[C]):
-    def __init__(self, consume_topics: Iterable[str]) -> None:
+    def __init__(self, callback: Callable[[C], Awaitable[None]]) -> None:
         self.server = InternalStateServer()
-        self.topics: Dict[str, int] = {topic: 0 for topic in consume_topics}
-        self.messages: Messages = Messages(list())
+        self.callback = callback
 
-    async def consume(self) -> AsyncIterator[Optional[C]]:
-        for topic, offset in self.topics.items():
-            response = self.server.poll(topic, offset)
-            self.topics[topic] += len(response)
-            self.messages.extend(response)
-        if self.messages:
-            value = self.messages.pop(0).value
-            print("Consumed {}".format(value))
-            yield value
-        else:
-            yield None
+    async def subscribe(self, topics: Iterable[str]) -> None:
+        await self.server.subscribe(self, topics)
+
+    async def add_message(self, message: Message) -> None:
+        await self.callback(message.value)
 
 
 @state_interface.add("internal", False)
@@ -75,5 +74,4 @@ class InternalStateProducer(Generic[P]):
         self.server = InternalStateServer()
 
     async def produce(self, topic: str, value: P) -> None:
-        print("Producing {} to {}".format(value, topic))
-        self.server.push(topic, Message(value=value))
+        await self.server.push(topic, Message(value=value))

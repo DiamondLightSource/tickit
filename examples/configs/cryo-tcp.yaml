@@ -1,4 +1,4 @@
-- tickit.devices.cryostream.cryostream.Cryostream:
+- tickit.core.components.device_simulation.DeviceSimulation:
     adapters:
     - tickit.devices.cryostream.cryostream.CryostreamAdapter:
         server_config:
@@ -6,10 +6,14 @@
             format: JWI=
             host: localhost
             port: 25565
+    config:
+      tickit.devices.cryostream.cryostream.Cryostream: {}
     inputs: {}
     name: cryo
-- tickit.devices.toy.sink.Sink:
+- tickit.core.components.device_simulation.DeviceSimulation:
     adapters: []
+    config:
+      tickit.devices.toy.sink.Sink: {}
     inputs:
       input:
       - cryo

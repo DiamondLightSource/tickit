@@ -1,4 +1,3 @@
-import asyncio
 from typing import Type
 from unittest.mock import MagicMock
 
@@ -17,8 +16,9 @@ def TestLifetimeRunnable():
     return TestLifetimeRunnable
 
 
-def test_run_all_forever_runs(TestLifetimeRunnable: Type[LifetimeRunnable]):
+@pytest.mark.asyncio
+async def test_run_all_forever_runs(TestLifetimeRunnable: Type[LifetimeRunnable]):
     test_lifetime_runnable = TestLifetimeRunnable()
     test_lifetime_runnable.run_forever = MagicMock()  # type: ignore
-    asyncio.run(run_all_forever([test_lifetime_runnable]))
+    await run_all_forever([test_lifetime_runnable])
     test_lifetime_runnable.run_forever.assert_called_once_with()

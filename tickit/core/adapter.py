@@ -31,7 +31,9 @@ T = TypeVar("T")
 
 @runtime_checkable
 class Adapter(Protocol):
-    def __init__(self, device: "Device", handle_interrupt: Callable, **kwargs) -> None:
+    def __init__(
+        self, device: "Device", raise_interrupt: Callable[[], Awaitable[None]], **kwargs
+    ) -> None:
         pass
 
     async def run_forever(self) -> None:
@@ -52,13 +54,13 @@ class AdapterConfig:
         raise NotImplementedError
 
     @property
-    def __kwargs__(self) -> Dict[str, object]:
+    def kwargs(self) -> Dict[str, object]:
         raise NotImplementedError
 
 
 class ConfigurableAdapter:
     def __init_subclass__(cls) -> None:
-        cls = configurable(AdapterConfig, ["device", "handle_interrupt"])(cls)
+        cls = configurable(AdapterConfig, ["device", "raise_interrupt"])(cls)
 
 
 @runtime_checkable
@@ -90,7 +92,7 @@ class ServerConfig:
         raise NotImplementedError
 
     @property
-    def __kwargs__(self):
+    def kwargs(self):
         raise NotImplementedError
 
 

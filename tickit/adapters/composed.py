@@ -13,14 +13,14 @@ class ComposedAdapter(ConfigurableAdapter):
     def __init__(
         self,
         device: Device,
-        handle_interrupt: Callable[[], Awaitable[None]],
+        raise_interrupt: Callable[[], Awaitable[None]],
         server_config: ServerConfig,
     ) -> None:
-        self._server = server_config.configures()(**server_config.__kwargs__)
+        self._server = server_config.configures()(**server_config.kwargs)
         assert isinstance(self._interpreter, Interpreter)
         assert isinstance(self._server, Server)
         self._device = device
-        self.handle_interrupt = handle_interrupt
+        self.raise_interrupt = raise_interrupt
 
     async def on_connect(self) -> AsyncIterable[Optional[T]]:
         if False:
@@ -29,7 +29,7 @@ class ComposedAdapter(ConfigurableAdapter):
     async def handle_message(self, message: T) -> AsyncIterable[Optional[T]]:
         reply, interrupt = await self._interpreter.handle(self, message)
         if interrupt:
-            await self.handle_interrupt()
+            await self.raise_interrupt()
         return reply
 
     async def run_forever(self) -> None:

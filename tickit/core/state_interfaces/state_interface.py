@@ -1,15 +1,5 @@
 import sys
-from typing import (
-    AsyncIterator,
-    Callable,
-    Dict,
-    Iterable,
-    Optional,
-    Set,
-    Tuple,
-    Type,
-    TypeVar,
-)
+from typing import Awaitable, Callable, Dict, Iterable, Set, Tuple, Type, TypeVar
 from warnings import warn
 
 # TODO: Investigate why import from tickit.utils.compat.typing_compat causes mypy error
@@ -25,12 +15,11 @@ P = TypeVar("P", contravariant=True)
 
 @runtime_checkable
 class StateConsumer(Protocol[C]):
-    def __init__(self, consume_topics: Iterable[str]) -> None:
+    def __init__(self, callback: Callable[[C], Awaitable[None]]) -> None:
         pass
 
-    async def consume(self) -> AsyncIterator[Optional[C]]:
-        if False:
-            yield
+    async def subscribe(self, topics: Iterable[str]) -> None:
+        pass
 
 
 @runtime_checkable
@@ -53,10 +42,10 @@ def add(
     name: str, external: bool
 ) -> Callable[[Type[StateInterface]], Type[StateInterface]]:
     def wrap(interface: Type[StateInterface]) -> Type[StateInterface]:
-        if isinstance(interface, StateConsumer):
-            consumers[name] = (interface, external)
-        elif isinstance(interface, StateProducer):
+        if isinstance(interface, StateProducer):
             producers[name] = (interface, external)
+        elif isinstance(interface, StateConsumer):
+            consumers[name] = (interface, external)
         else:
             warn(
                 RuntimeWarning(
