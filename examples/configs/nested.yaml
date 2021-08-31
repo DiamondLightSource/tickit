@@ -1,0 +1,51 @@
+- tickit.core.components.device_simulation.DeviceSimulation:
+    adapters: []
+    config:
+      tickit.devices.toy.trampoline.RandomTrampoline:
+        callback_period: 10000000000
+    inputs: {}
+    name: random_trampoline
+- tickit.core.components.system_simulation.SystemSimulation:
+    components:
+    - tickit.core.components.device_simulation.DeviceSimulation:
+        adapters: []
+        config:
+          tickit.devices.toy.sink.Sink: {}
+        inputs:
+          sink_1:
+          - external
+          - input_1
+        name: internal_sink
+    - tickit.core.components.device_simulation.DeviceSimulation:
+        adapters:
+        - tickit.devices.toy.remote_controlled.RemoteControlledAdapter:
+            server_config:
+              tickit.adapters.servers.tcp.TcpServer:
+                format: JWINCg==
+                host: localhost
+                port: 25566
+        config:
+          tickit.devices.toy.remote_controlled.RemoteControlled:
+            initial_hidden: 3.14
+            initial_observed: 42
+            initial_unobserved: 2.72
+        inputs: {}
+        name: internal_tcp_controlled
+    inputs:
+      input_1:
+      - random_trampoline
+      - output
+    name: internal_tickit
+    expose:
+      output_1:
+        - internal_tcp_controlled
+        - observed
+- tickit.core.components.device_simulation.DeviceSimulation:
+    adapters: []
+    config:
+      tickit.devices.toy.sink.Sink: {}
+    inputs:
+      sink_1:
+      - internal_tickit
+      - output_1
+    name: external_sink

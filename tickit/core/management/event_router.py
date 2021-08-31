@@ -1,17 +1,24 @@
 from collections import deque
 from typing import DefaultDict, Dict, List, Optional, Set, Tuple, Union, overload
 
-from tickit.core.typedefs import Changes, DeviceID, Input, IoId, Output
+from immutables import Map
+
+from tickit.core.components.component import ComponentConfig
+from tickit.core.typedefs import Changes, ComponentID, Input, IoId, Output
 from tickit.utils.compat.functools_compat import cached_property
 
-_Default_Wiring = DefaultDict[DeviceID, DefaultDict[IoId, Set[Tuple[DeviceID, IoId]]]]
-_Wiring = Dict[DeviceID, Dict[IoId, Set[Tuple[DeviceID, IoId]]]]
-_Default_InverseWiring = DefaultDict[DeviceID, DefaultDict[IoId, Tuple[DeviceID, IoId]]]
-_Inverse_Wiring = Dict[DeviceID, Dict[IoId, Tuple[DeviceID, IoId]]]
+Default_Wiring_Struct = DefaultDict[
+    ComponentID, DefaultDict[IoId, Set[Tuple[ComponentID, IoId]]]
+]
+Wiring_Struct = Dict[ComponentID, Dict[IoId, Set[Tuple[ComponentID, IoId]]]]
+Default_InverseWiring_Struct = DefaultDict[
+    ComponentID, DefaultDict[IoId, Tuple[ComponentID, IoId]]
+]
+Inverse_Wiring_Struct = Dict[ComponentID, Dict[IoId, Tuple[ComponentID, IoId]]]
 
 
-class Wiring(_Default_Wiring):
-    def __init__(self, wiring: Optional[_Wiring] = None,) -> None:
+class Wiring(Default_Wiring_Struct):
+    def __init__(self, wiring: Optional[Wiring_Struct] = None,) -> None:
         _wiring = (
             {dev: DefaultDict(set, io) for dev, io in wiring.items()}
             if wiring
@@ -28,10 +35,10 @@ class Wiring(_Default_Wiring):
         return wiring
 
 
-class InverseWiring(_Default_InverseWiring):
-    def __init__(self, wiring: Optional[_Inverse_Wiring] = None,) -> None:
+class InverseWiring(Default_InverseWiring_Struct):
+    def __init__(self, wiring: Optional[Inverse_Wiring_Struct] = None,) -> None:
         _wiring = (
-            {dev: DefaultDict(None, io) for dev, io in wiring.items()}
+            {dev: DefaultDict(None, io) for dev, io in wiring.items() if io}
             if wiring
             else dict()
         )
@@ -45,6 +52,10 @@ class InverseWiring(_Default_InverseWiring):
                 for in_dev, in_io in ports:
                     inverse_wiring[in_dev][in_io] = (out_dev, out_io)
         return inverse_wiring
+
+    @classmethod
+    def from_component_configs(cls, configs: List[ComponentConfig]):
+        return cls({config.name: config.inputs for config in configs})
 
 
 class EventRouter:
@@ -69,15 +80,15 @@ class EventRouter:
         return self._wiring
 
     @cached_property
-    def devices(self) -> Set[DeviceID]:
-        return set.union(self.input_devices, self.output_devices)
+    def components(self) -> Set[ComponentID]:
+        return set.union(self.input_components, self.output_components)
 
     @cached_property
-    def output_devices(self) -> Set[DeviceID]:
+    def output_components(self) -> Set[ComponentID]:
         return set(self.wiring.keys())
 
     @cached_property
-    def input_devices(self) -> Set[DeviceID]:
+    def input_components(self) -> Set[ComponentID]:
         return set(
             dev
             for out in self.wiring.values()
@@ -86,37 +97,37 @@ class EventRouter:
         )
 
     @cached_property
-    def device_tree(self) -> Dict[DeviceID, Set[DeviceID]]:
+    def component_tree(self) -> Dict[ComponentID, Set[ComponentID]]:
         return {
             dev: set(dev for port in out.values() for dev, _ in port)
             for dev, out in self.wiring.items()
         }
 
     @cached_property
-    def inverse_device_tree(self) -> Dict[DeviceID, Set[DeviceID]]:
-        inverse_tree: Dict[DeviceID, Set[DeviceID]] = {
-            dev: set() for dev in self.devices
+    def inverse_component_tree(self) -> Dict[ComponentID, Set[ComponentID]]:
+        inverse_tree: Dict[ComponentID, Set[ComponentID]] = {
+            dev: set() for dev in self.components
         }
-        for dev, deps in self.device_tree.items():
+        for dev, deps in self.component_tree.items():
             for dep in deps:
                 inverse_tree[dep].add(dev)
         return inverse_tree
 
-    def dependants(self, root: DeviceID) -> Set[DeviceID]:
+    def dependants(self, root: ComponentID) -> Set[ComponentID]:
         dependants = set()
         to_crawl = deque([root])
         while to_crawl:
             dev = to_crawl.popleft()
             if dev not in dependants:
                 dependants.add(dev)
-                if dev in self.device_tree.keys():
-                    to_crawl.extend(self.device_tree[dev] - dependants)
+                if dev in self.component_tree.keys():
+                    to_crawl.extend(self.component_tree[dev] - dependants)
         return dependants
 
-    def route(self, output: Output) -> List[Input]:
-        inputs: List[Input] = list()
+    def route(self, output: Output) -> Set[Input]:
+        inputs: Set[Input] = set()
         for out_id, out_val in output.changes.items():
             for in_dev, in_id in self.wiring[output.source][out_id]:
                 assert output.time is not None
-                inputs.append(Input(in_dev, output.time, Changes({in_id: out_val})))
+                inputs.add(Input(in_dev, output.time, Changes(Map({in_id: out_val}))))
         return inputs

@@ -1,4 +1,4 @@
-- tickit.devices.toy.remote_controlled.RemoteControlled:
+- tickit.core.components.device_simulation.DeviceSimulation:
     adapters:
     - tickit.devices.toy.remote_controlled.RemoteControlledAdapter:
         server_config:
@@ -6,13 +6,17 @@
             format: JWINCg==
             host: localhost
             port: 25566
-    initial_hidden: 3.14
-    initial_observed: 42
-    initial_unobserved: 2.72
+    config:
+      tickit.devices.toy.remote_controlled.RemoteControlled:
+        initial_hidden: 3.14
+        initial_observed: 42
+        initial_unobserved: 2.72
     inputs: {}
     name: tcp_contr
-- tickit.devices.toy.sink.Sink:
+- tickit.core.components.device_simulation.DeviceSimulation:
     adapters: []
+    config:
+      tickit.devices.toy.sink.Sink: {}
     inputs:
       input:
       - tcp_contr

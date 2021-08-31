@@ -1,3 +1,5 @@
+from immutables import Map
+
 from tickit.core.device import ConfigurableDevice, UpdateEvent
 from tickit.core.typedefs import SimTime, State
 
@@ -7,5 +9,5 @@ class Sink(ConfigurableDevice):
         pass
 
     def update(self, time: SimTime, inputs: State) -> UpdateEvent:
-        print("Sunk {}".format(inputs))
-        return UpdateEvent(State(dict()), None)
+        print("Sunk {}".format({k: v for k, v in inputs.items()}))
+        return UpdateEvent(State(Map()), None)

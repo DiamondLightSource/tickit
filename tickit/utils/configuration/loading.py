@@ -6,13 +6,13 @@ from typing import Deque, List
 import apischema
 import yaml
 
-from tickit.core.device import DeviceConfig
+from tickit.core.components.component import ComponentConfig
 
 
-def read_configs(config_path) -> List[DeviceConfig]:
+def read_configs(config_path) -> List[ComponentConfig]:
     yaml_struct = yaml.load(open(config_path, "r"), Loader=yaml.Loader)
     load_modules(yaml_struct)
-    configs = apischema.deserialize(List[DeviceConfig], yaml_struct)
+    configs = apischema.deserialize(List[ComponentConfig], yaml_struct)
     return configs
 
 

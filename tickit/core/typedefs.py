@@ -1,42 +1,36 @@
 from dataclasses import dataclass
-from typing import Mapping, NewType, Optional
+from typing import Hashable, NewType, Optional
 
-DeviceID = NewType("DeviceID", str)
+from immutables import Map
+
+ComponentID = NewType("ComponentID", str)
 IoId = NewType("IoId", str)
-State = NewType("State", Mapping[str, object])
-Changes = NewType("Changes", Mapping[str, object])
+State = NewType("State", Map[str, Hashable])
+Changes = NewType("Changes", Map[str, Hashable])
 SimTime = NewType("SimTime", int)
 
 
 @dataclass(frozen=True)
-class Port:
-    device: DeviceID
-    key: IoId
-
-    def __hash__(self) -> int:
-        return (self.device, self.key).__hash__()
-
-
-@dataclass(frozen=True)
 class Input:
-    target: DeviceID
+    target: ComponentID
     time: SimTime
     changes: Changes
 
 
 @dataclass(frozen=True)
 class Output:
-    source: DeviceID
-    time: Optional[SimTime]
+    source: ComponentID
+    time: SimTime
     changes: Changes
     call_in: Optional[SimTime]
 
 
 @dataclass(frozen=True)
-class Wakeup:
-    device: DeviceID
-    when: SimTime
+class Interrupt:
+    source: ComponentID
 
-    def __lt__(self, value: "Wakeup") -> bool:
-        assert isinstance(value, Wakeup)
-        return self.when < value.when
+
+@dataclass(frozen=True)
+class Wakeup:
+    component: ComponentID
+    when: SimTime
