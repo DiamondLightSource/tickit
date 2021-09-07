@@ -20,15 +20,9 @@
         adapters:
         - tickit.devices.toy.remote_controlled.RemoteControlledAdapter:
             server_config:
-              tickit.adapters.servers.tcp.TcpServer:
-                format: JWINCg==
-                host: localhost
-                port: 25566
+              tickit.adapters.servers.tcp.TcpServer: {}
         config:
-          tickit.devices.toy.remote_controlled.RemoteControlled:
-            initial_hidden: 3.14
-            initial_observed: 42
-            initial_unobserved: 2.72
+          tickit.devices.toy.remote_controlled.RemoteControlled: {}
         inputs: {}
         name: internal_tcp_controlled
     inputs:

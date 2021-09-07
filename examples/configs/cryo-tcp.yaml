@@ -1,11 +1,6 @@
 - tickit.core.components.device_simulation.DeviceSimulation:
     adapters:
-    - tickit.devices.cryostream.cryostream.CryostreamAdapter:
-        server_config:
-          tickit.adapters.servers.tcp.TcpServer:
-            format: JWI=
-            host: localhost
-            port: 25565
+    - tickit.devices.cryostream.cryostream.CryostreamAdapter: {}
     config:
       tickit.devices.cryostream.cryostream.Cryostream: {}
     inputs: {}

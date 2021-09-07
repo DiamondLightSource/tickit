@@ -6,7 +6,9 @@ from tickit.core.adapter import ConfigurableServer
 
 
 class TcpServer(ConfigurableServer):
-    def __init__(self, host: str, port: int, format: bytes = b"%b") -> None:
+    def __init__(
+        self, host: str = "localhost", port: int = 25565, format: bytes = b"%b"
+    ) -> None:
         self.host = host
         self.port = port
         self.format = format
