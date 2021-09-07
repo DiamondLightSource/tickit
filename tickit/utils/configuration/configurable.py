@@ -1,5 +1,5 @@
 from dataclasses import is_dataclass, make_dataclass
-from inspect import signature
+from inspect import Parameter, signature
 from typing import Any, Callable, Dict, Iterator, Sequence, Set, Type, TypeVar
 
 from apischema import deserializer, serializer
@@ -87,13 +87,23 @@ def configurable(template: Type, ignore: Sequence[str] = []) -> Callable[[Type],
             ) else set()
             return {k: self.__dict__[k] for k in set(self.__dict__) - remove}
 
+        signature_items = set(
+            (name, param)
+            for typ in (template, cls)
+            for name, param in signature(typ).parameters.items()
+            if name not in ignore
+        )
+
         config_data_class: Type = make_dataclass(
             f"{cls.__name__}Config",
-            set(
-                (name, param.annotation)
-                for c in (template, cls)
-                for name, param in signature(c).parameters.items()
-                if name not in ignore
+            sorted(
+                (
+                    (name, param.annotation)
+                    if param.default is Parameter.empty
+                    else (name, param.annotation, param.default)
+                    for name, param in signature_items
+                ),
+                key=len,
             ),
             bases=(template,),
             namespace={

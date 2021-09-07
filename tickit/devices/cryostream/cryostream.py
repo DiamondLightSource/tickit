@@ -1,12 +1,13 @@
 import asyncio
 import struct
-from typing import AsyncIterable
+from typing import AsyncIterable, Awaitable, Callable
 
 from immutables import Map
 
 from tickit.adapters.composed import ComposedAdapter
 from tickit.adapters.interpreters.regex_command import RegexInterpreter
-from tickit.core.device import ConfigurableDevice, UpdateEvent
+from tickit.adapters.servers.tcp import TcpServer
+from tickit.core.device import ConfigurableDevice, Device, UpdateEvent
 from tickit.core.typedefs import SimTime, State
 from tickit.devices.cryostream.base import CryostreamBase
 from tickit.devices.cryostream.states import PhaseIds
@@ -42,6 +43,19 @@ class Cryostream(CryostreamBase, ConfigurableDevice):
 class CryostreamAdapter(ComposedAdapter):
     _interpreter = RegexInterpreter()
     _device = Cryostream
+
+    def __init__(
+        self,
+        device: Device,
+        raise_interrupt: Callable[[], Awaitable[None]],
+        host: str = "localhost",
+        port: int = 25565,
+    ) -> None:
+        super().__init__(
+            device,
+            raise_interrupt,
+            TcpServer.Config(format=b"%b", host=host, port=port),
+        )
 
     async def on_connect(self) -> AsyncIterable[bytes]:
         while True:
