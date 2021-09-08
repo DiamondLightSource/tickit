@@ -3,7 +3,7 @@
     - tickit.devices.toy.remote_controlled.RemoteControlledAdapter:
         server_config:
           tickit.adapters.servers.tcp.TcpServer:
-            format: JWINCg==
+            format: "%b\r\n"
     config:
       tickit.devices.toy.remote_controlled.RemoteControlled: {}
     inputs: {}

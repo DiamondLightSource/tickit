@@ -3,15 +3,19 @@ from asyncio.streams import StreamReader, StreamWriter
 from typing import AsyncIterable, Awaitable, Callable, List
 
 from tickit.core.adapter import ConfigurableServer
+from tickit.utils.byte_format import ByteFormat
 
 
 class TcpServer(ConfigurableServer):
     def __init__(
-        self, host: str = "localhost", port: int = 25565, format: bytes = b"%b"
+        self,
+        host: str = "localhost",
+        port: int = 25565,
+        format: ByteFormat = ByteFormat(b"%b"),
     ) -> None:
         self.host = host
         self.port = port
-        self.format = format
+        self.format = format.format
 
     async def run_forever(
         self,

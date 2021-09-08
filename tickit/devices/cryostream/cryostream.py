@@ -11,6 +11,7 @@ from tickit.core.device import ConfigurableDevice, Device, UpdateEvent
 from tickit.core.typedefs import SimTime, State
 from tickit.devices.cryostream.base import CryostreamBase
 from tickit.devices.cryostream.states import PhaseIds
+from tickit.utils.byte_format import ByteFormat
 from tickit.utils.compat.typing_compat import TypedDict
 
 _EXTENDED_STATUS = ">BBHHHBBHHHHHBBBBBBHHBBBBBBBBHH"
@@ -54,7 +55,7 @@ class CryostreamAdapter(ComposedAdapter):
         super().__init__(
             device,
             raise_interrupt,
-            TcpServer.Config(format=b"%b", host=host, port=port),
+            TcpServer.Config(format=ByteFormat(b"%b"), host=host, port=port),
         )
 
     async def on_connect(self) -> AsyncIterable[bytes]:
