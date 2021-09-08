@@ -21,11 +21,11 @@ class DeviceSimulation(BaseComponent):
         name: ComponentID,
         state_consumer: Type[StateConsumer],
         state_producer: Type[StateProducer],
-        config: DeviceConfig,
+        device: DeviceConfig,
         adapters: List[AdapterConfig],
     ):
         super().__init__(name, state_consumer, state_producer)
-        self.device = config.configures()(**config.kwargs)
+        self.device = device.configures()(**device.kwargs)
         self.adapters = [
             adapter.configures()(self.device, self.raise_interrupt, **adapter.kwargs)
             for adapter in adapters

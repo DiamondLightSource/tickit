@@ -1,6 +1,6 @@
 - tickit.core.components.device_simulation.DeviceSimulation:
     adapters: []
-    config:
+    device:
       tickit.devices.toy.trampoline.RandomTrampoline:
         callback_period: 10000000000
     inputs: {}
@@ -9,7 +9,7 @@
     components:
     - tickit.core.components.device_simulation.DeviceSimulation:
         adapters: []
-        config:
+        device:
           tickit.devices.toy.sink.Sink: {}
         inputs:
           sink_1:
@@ -19,9 +19,9 @@
     - tickit.core.components.device_simulation.DeviceSimulation:
         adapters:
         - tickit.devices.toy.remote_controlled.RemoteControlledAdapter:
-            server_config:
+            server:
               tickit.adapters.servers.tcp.TcpServer: {}
-        config:
+        device:
           tickit.devices.toy.remote_controlled.RemoteControlled: {}
         inputs: {}
         name: internal_tcp_controlled
@@ -36,7 +36,7 @@
         - observed
 - tickit.core.components.device_simulation.DeviceSimulation:
     adapters: []
-    config:
+    device:
       tickit.devices.toy.sink.Sink: {}
     inputs:
       sink_1:

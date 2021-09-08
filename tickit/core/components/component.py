@@ -8,8 +8,8 @@ from tickit.core.typedefs import (
     ComponentID,
     Input,
     Interrupt,
-    IoId,
     Output,
+    PortID,
     SimTime,
 )
 from tickit.utils.compat.typing_compat import Protocol, runtime_checkable
@@ -30,7 +30,7 @@ class Component(Protocol):
 @dataclass
 class ComponentConfig:
     name: ComponentID
-    inputs: Dict[IoId, Tuple[ComponentID, IoId]]
+    inputs: Dict[PortID, Tuple[ComponentID, PortID]]
 
     @staticmethod
     def configures() -> Type[Component]:

@@ -4,17 +4,17 @@ from typing import DefaultDict, Dict, List, Optional, Set, Tuple, Union, overloa
 from immutables import Map
 
 from tickit.core.components.component import ComponentConfig
-from tickit.core.typedefs import Changes, ComponentID, Input, IoId, Output
+from tickit.core.typedefs import Changes, ComponentID, Input, Output, PortID
 from tickit.utils.compat.functools_compat import cached_property
 
 Default_Wiring_Struct = DefaultDict[
-    ComponentID, DefaultDict[IoId, Set[Tuple[ComponentID, IoId]]]
+    ComponentID, DefaultDict[PortID, Set[Tuple[ComponentID, PortID]]]
 ]
-Wiring_Struct = Dict[ComponentID, Dict[IoId, Set[Tuple[ComponentID, IoId]]]]
+Wiring_Struct = Dict[ComponentID, Dict[PortID, Set[Tuple[ComponentID, PortID]]]]
 Default_InverseWiring_Struct = DefaultDict[
-    ComponentID, DefaultDict[IoId, Tuple[ComponentID, IoId]]
+    ComponentID, DefaultDict[PortID, Tuple[ComponentID, PortID]]
 ]
-Inverse_Wiring_Struct = Dict[ComponentID, Dict[IoId, Tuple[ComponentID, IoId]]]
+Inverse_Wiring_Struct = Dict[ComponentID, Dict[PortID, Tuple[ComponentID, PortID]]]
 
 
 class Wiring(Default_Wiring_Struct):

@@ -1,16 +1,16 @@
 - tickit.core.components.device_simulation.DeviceSimulation:
     adapters:
     - tickit.devices.toy.remote_controlled.RemoteControlledAdapter:
-        server_config:
+        server:
           tickit.adapters.servers.tcp.TcpServer:
             format: "%b\r\n"
-    config:
+    device:
       tickit.devices.toy.remote_controlled.RemoteControlled: {}
     inputs: {}
     name: tcp_contr
 - tickit.core.components.device_simulation.DeviceSimulation:
     adapters: []
-    config:
+    device:
       tickit.devices.toy.sink.Sink: {}
     inputs:
       input:

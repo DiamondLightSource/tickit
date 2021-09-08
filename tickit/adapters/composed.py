@@ -14,9 +14,9 @@ class ComposedAdapter(ConfigurableAdapter):
         self,
         device: Device,
         raise_interrupt: Callable[[], Awaitable[None]],
-        server_config: ServerConfig,
+        server: ServerConfig,
     ) -> None:
-        self._server = server_config.configures()(**server_config.kwargs)
+        self._server = server.configures()(**server.kwargs)
         assert isinstance(self._interpreter, Interpreter)
         assert isinstance(self._server, Server)
         self._device = device
