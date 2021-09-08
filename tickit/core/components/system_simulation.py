@@ -8,7 +8,7 @@ from tickit.core.components.component import (
 from tickit.core.management.event_router import InverseWiring
 from tickit.core.management.schedulers.slave import SlaveScheduler
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
-from tickit.core.typedefs import Changes, ComponentID, IoId, SimTime
+from tickit.core.typedefs import Changes, ComponentID, PortID, SimTime
 
 
 class SystemSimulation(BaseComponent):
@@ -18,7 +18,7 @@ class SystemSimulation(BaseComponent):
         components: List[ComponentConfig],
         state_consumer: Type[StateConsumer],
         state_producer: Type[StateProducer],
-        expose: Dict[IoId, Tuple[ComponentID, IoId]],
+        expose: Dict[PortID, Tuple[ComponentID, PortID]],
     ) -> None:
         super().__init__(name, state_consumer, state_producer)
         inverse_wiring = InverseWiring.from_component_configs(components)

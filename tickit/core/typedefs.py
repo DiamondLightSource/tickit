@@ -4,7 +4,7 @@ from typing import Hashable, NewType, Optional
 from immutables import Map
 
 ComponentID = NewType("ComponentID", str)
-IoId = NewType("IoId", str)
+PortID = NewType("PortID", str)
 State = NewType("State", Map[str, Hashable])
 Changes = NewType("Changes", Map[str, Hashable])
 SimTime = NewType("SimTime", int)
