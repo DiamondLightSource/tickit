@@ -37,7 +37,7 @@ class SystemSimulation(BaseComponent):
         for component_simulation in self.component_simulations:
             await component_simulation.run_forever()
         await self.scheduler.run_forever()
-        await super().set_up_state_interfaces()
+        await super().run_forever()
 
     async def on_tick(self, time: SimTime, changes: Changes) -> None:
         output_changes, call_in = await self.scheduler.on_tick(time, changes)
