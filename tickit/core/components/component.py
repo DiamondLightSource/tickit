@@ -1,3 +1,4 @@
+import asyncio
 from abc import abstractmethod
 from dataclasses import dataclass
 from typing import Dict, Iterable, List, Optional, Type, Union
@@ -82,6 +83,10 @@ class BaseComponent(ConfigurableComponent):
         self.state_producer: StateProducer[
             Union[Interrupt, Output]
         ] = self._state_producer_cls()
+
+    async def run_forever(self) -> None:
+        await self.set_up_state_interfaces()
+        await asyncio.Event().wait()
 
     @abstractmethod
     async def on_tick(self, time: SimTime, changes: Changes):
