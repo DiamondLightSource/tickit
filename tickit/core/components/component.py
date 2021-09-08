@@ -87,14 +87,14 @@ class BaseComponent(ConfigurableComponent):
         raise NotImplementedError
 
 
-def create_simulations(
+def create_components(
     configs: Iterable[ComponentConfig],
     state_consumer: Type[StateConsumer],
     state_producer: Type[StateProducer],
 ) -> List[Component]:
-    simulations: List[Component] = list()
+    components: List[Component] = list()
     for config in configs:
-        simulations.append(
+        components.append(
             config.configures()(
                 name=config.name,
                 state_consumer=state_consumer,
@@ -102,4 +102,4 @@ def create_simulations(
                 **config.kwargs
             )
         )
-    return simulations
+    return components

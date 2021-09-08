@@ -10,7 +10,7 @@ from tickit.core.components.component import (
     Component,
     ComponentConfig,
     ConfigurableComponent,
-    create_simulations,
+    create_components,
 )
 from tickit.core.state_interfaces.internal import (
     InternalStateConsumer,
@@ -157,7 +157,7 @@ def test_create_simulations_creates_configured(
     MockComponentConfig.kwargs.return_value = dict()
     config = MockComponentConfig(name=ComponentID("TestComponent"), inputs=dict())
 
-    create_simulations([config], MockConsumer, MockProducer)
+    create_components([config], MockConsumer, MockProducer)
     config.configures().assert_called_once_with(
         name=config.name, state_consumer=MockConsumer, state_producer=MockProducer,
     )
@@ -172,7 +172,7 @@ def test_create_simulations_creates_configured_with_kwargs(
     MockComponentConfig.kwargs = {"kwarg1": "One", "kwarg2": "Two"}
     config = MockComponentConfig(name=ComponentID("TestComponent"), inputs=dict())
 
-    create_simulations([config], MockConsumer, MockProducer)
+    create_components([config], MockConsumer, MockProducer)
     config.configures().assert_called_once_with(
         name=config.name,
         state_consumer=MockConsumer,
@@ -190,6 +190,6 @@ def test_create_simulations_returns_created_simulations(
     MockComponentConfig.kwargs.return_value = dict()
     config = MockComponentConfig(name=ComponentID("TestComponent"), inputs=dict())
 
-    assert [config.configures()()] == create_simulations(
+    assert [config.configures()()] == create_components(
         [config], MockConsumer, MockProducer
     )

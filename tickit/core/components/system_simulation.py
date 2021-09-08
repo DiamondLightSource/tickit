@@ -3,7 +3,7 @@ from typing import Dict, List, Tuple, Type
 from tickit.core.components.component import (
     BaseComponent,
     ComponentConfig,
-    create_simulations,
+    create_components,
 )
 from tickit.core.management.event_router import InverseWiring
 from tickit.core.management.schedulers.slave import SlaveScheduler
@@ -29,7 +29,7 @@ class SystemSimulation(BaseComponent):
             expose,
             self.raise_interrupt,
         )
-        self.component_simulations = create_simulations(
+        self.component_simulations = create_components(
             components, state_consumer, state_producer
         )
 
