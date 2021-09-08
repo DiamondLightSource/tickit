@@ -10,8 +10,6 @@
     device:
       tickit.devices.toy.sink.Sink: {}
     inputs:
-      input:
-      - cryo
-      - temperature
+      input: cryo:temperature
     name: contr_sink
 

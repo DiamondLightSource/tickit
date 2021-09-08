@@ -5,7 +5,15 @@ from immutables import Map
 from tickit.core.management.event_router import InverseWiring, Wiring
 from tickit.core.management.schedulers.base import BaseScheduler
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
-from tickit.core.typedefs import Changes, ComponentID, Input, Output, PortID, SimTime
+from tickit.core.typedefs import (
+    Changes,
+    ComponentID,
+    ComponentPort,
+    Input,
+    Output,
+    PortID,
+    SimTime,
+)
 
 
 class SlaveScheduler(BaseScheduler):
@@ -14,7 +22,7 @@ class SlaveScheduler(BaseScheduler):
         wiring: Union[Wiring, InverseWiring],
         state_consumer: Type[StateConsumer],
         state_producer: Type[StateProducer],
-        expose: Dict[PortID, Tuple[ComponentID, PortID]],
+        expose: Dict[PortID, ComponentPort],
         raise_interrupt: Callable[[], Awaitable[None]],
     ) -> None:
         wiring = self.add_exposing_wiring(wiring, expose)
@@ -24,8 +32,7 @@ class SlaveScheduler(BaseScheduler):
 
     @staticmethod
     def add_exposing_wiring(
-        wiring: Union[Wiring, InverseWiring],
-        expose: Dict[PortID, Tuple[ComponentID, PortID]],
+        wiring: Union[Wiring, InverseWiring], expose: Dict[PortID, ComponentPort],
     ) -> InverseWiring:
         if isinstance(wiring, Wiring):
             wiring = InverseWiring.from_wiring(wiring)

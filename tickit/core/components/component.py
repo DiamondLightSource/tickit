@@ -1,11 +1,12 @@
 from abc import abstractmethod
 from dataclasses import dataclass
-from typing import Dict, Iterable, List, Optional, Tuple, Type, Union
+from typing import Dict, Iterable, List, Optional, Type, Union
 
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import (
     Changes,
     ComponentID,
+    ComponentPort,
     Input,
     Interrupt,
     Output,
@@ -30,7 +31,7 @@ class Component(Protocol):
 @dataclass
 class ComponentConfig:
     name: ComponentID
-    inputs: Dict[PortID, Tuple[ComponentID, PortID]]
+    inputs: Dict[PortID, ComponentPort]
 
     @staticmethod
     def configures() -> Type[Component]:

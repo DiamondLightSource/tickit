@@ -6,19 +6,27 @@ from mock import AsyncMock, MagicMock
 
 from tickit.core.management.event_router import Inverse_Wiring_Struct, InverseWiring
 from tickit.core.management.ticker import Ticker
-from tickit.core.typedefs import Changes, ComponentID, Input, Output, PortID, SimTime
+from tickit.core.typedefs import (
+    Changes,
+    ComponentID,
+    ComponentPort,
+    Input,
+    Output,
+    PortID,
+    SimTime,
+)
 
 
 @pytest.fixture
 def inverse_wiring_struct() -> Inverse_Wiring_Struct:
     return {
         ComponentID("Mid1"): {
-            PortID("Mid1<1"): (ComponentID("Out1"), PortID("Out1>1")),
-            PortID("Mid1<2"): (ComponentID("Ext1"), PortID("Ext1>1")),
+            PortID("Mid1<1"): ComponentPort(ComponentID("Out1"), PortID("Out1>1")),
+            PortID("Mid1<2"): ComponentPort(ComponentID("Ext1"), PortID("Ext1>1")),
         },
         ComponentID("In1"): {
-            PortID("In1<1"): (ComponentID("Mid1"), PortID("Mid1>1")),
-            PortID("In1<2"): (ComponentID("Ext1"), PortID("Ext1>1")),
+            PortID("In1<1"): ComponentPort(ComponentID("Mid1"), PortID("Mid1>1")),
+            PortID("In1<2"): ComponentPort(ComponentID("Ext1"), PortID("Ext1>1")),
         },
     }
 
