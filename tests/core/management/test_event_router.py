@@ -5,23 +5,31 @@ from immutables import Map
 
 from tickit.core.components.component import ComponentConfig
 from tickit.core.management.event_router import EventRouter, InverseWiring, Wiring
-from tickit.core.typedefs import Changes, ComponentID, Input, Output, PortID, SimTime
+from tickit.core.typedefs import (
+    Changes,
+    ComponentID,
+    ComponentPort,
+    Input,
+    Output,
+    PortID,
+    SimTime,
+)
 
 
 @pytest.fixture
 def wiring_struct():
     return {
         ComponentID("Out1"): {
-            PortID("Out1>1"): {(ComponentID("Mid1"), PortID("Mid1<1"))}
+            PortID("Out1>1"): {ComponentPort(ComponentID("Mid1"), PortID("Mid1<1"))}
         },
         ComponentID("Out2"): {
             PortID("Out2>1"): {
-                (ComponentID("In1"), PortID("In1<2")),
-                (ComponentID("Mid1"), PortID("Mid1<2")),
+                ComponentPort(ComponentID("In1"), PortID("In1<2")),
+                ComponentPort(ComponentID("Mid1"), PortID("Mid1<2")),
             }
         },
         ComponentID("Mid1"): {
-            PortID("Mid1>1"): {(ComponentID("In1"), PortID("In1<1"))}
+            PortID("Mid1>1"): {ComponentPort(ComponentID("In1"), PortID("In1<1"))}
         },
     }
 
@@ -30,12 +38,12 @@ def wiring_struct():
 def inverse_wiring_struct():
     return {
         ComponentID("Mid1"): {
-            PortID("Mid1<1"): (ComponentID("Out1"), PortID("Out1>1")),
-            PortID("Mid1<2"): (ComponentID("Out2"), PortID("Out2>1")),
+            PortID("Mid1<1"): ComponentPort(ComponentID("Out1"), PortID("Out1>1")),
+            PortID("Mid1<2"): ComponentPort(ComponentID("Out2"), PortID("Out2>1")),
         },
         ComponentID("In1"): {
-            PortID("In1<1"): (ComponentID("Mid1"), PortID("Mid1>1")),
-            PortID("In1<2"): (ComponentID("Out2"), PortID("Out2>1")),
+            PortID("In1<1"): ComponentPort(ComponentID("Mid1"), PortID("Mid1>1")),
+            PortID("In1<2"): ComponentPort(ComponentID("Out2"), PortID("Out2>1")),
         },
     }
 
@@ -48,15 +56,15 @@ def component_configs_list():
         ComponentConfig(
             ComponentID("Mid1"),
             {
-                PortID("Mid1<1"): (ComponentID("Out1"), PortID("Out1>1")),
-                PortID("Mid1<2"): (ComponentID("Out2"), PortID("Out2>1")),
+                PortID("Mid1<1"): ComponentPort(ComponentID("Out1"), PortID("Out1>1")),
+                PortID("Mid1<2"): ComponentPort(ComponentID("Out2"), PortID("Out2>1")),
             },
         ),
         ComponentConfig(
             ComponentID("In1"),
             {
-                PortID("In1<1"): (ComponentID("Mid1"), PortID("Mid1>1")),
-                PortID("In1<2"): (ComponentID("Out2"), PortID("Out2>1")),
+                PortID("In1<1"): ComponentPort(ComponentID("Mid1"), PortID("Mid1>1")),
+                PortID("In1<2"): ComponentPort(ComponentID("Out2"), PortID("Out2>1")),
             },
         ),
     ]

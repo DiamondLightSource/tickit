@@ -10,7 +10,5 @@
     device:
       tickit.devices.toy.sink.Sink: {}
     inputs:
-      input:
-      - rand_tramp
-      - output
+      input: rand_tramp:output
     name: tramp_sink

@@ -13,7 +13,5 @@
     device:
       tickit.devices.toy.sink.Sink: {}
     inputs:
-      input:
-      - tcp_contr
-      - observed
+      input: tcp_contr:observed
     name: contr_sink

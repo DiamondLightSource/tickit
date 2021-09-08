@@ -12,9 +12,7 @@
         device:
           tickit.devices.toy.sink.Sink: {}
         inputs:
-          sink_1:
-          - external
-          - input_1
+          sink_1: external:input_1
         name: internal_sink
     - tickit.core.components.device_simulation.DeviceSimulation:
         adapters:
@@ -26,20 +24,14 @@
         inputs: {}
         name: internal_tcp_controlled
     inputs:
-      input_1:
-      - random_trampoline
-      - output
+      input_1: random_trampoline:output
     name: internal_tickit
     expose:
-      output_1:
-        - internal_tcp_controlled
-        - observed
+      output_1: internal_tcp_controlled:observed
 - tickit.core.components.device_simulation.DeviceSimulation:
     adapters: []
     device:
       tickit.devices.toy.sink.Sink: {}
     inputs:
-      sink_1:
-      - internal_tickit
-      - output_1
+      sink_1: internal_tickit:output_1
     name: external_sink
