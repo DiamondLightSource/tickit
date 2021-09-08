@@ -3,7 +3,7 @@ import asyncio
 import click
 from click.core import Context
 
-from tickit.core.components.component import create_simulations
+from tickit.core.components.component import create_components
 from tickit.core.lifetime_runnable import run_all_forever
 from tickit.core.management.event_router import InverseWiring
 from tickit.core.management.schedulers.master import MasterScheduler
@@ -20,15 +20,15 @@ def main(ctx: Context):
         click.echo(main.get_help(ctx))
 
 
-@main.command(help="run a single simulated device")
-@click.argument("device")
+@main.command(help="run a single simulated component")
+@click.argument("component")
 @click.argument("config_path")
 @click.option("--backend", default="kafka", type=click.Choice(list(interfaces(True))))
-def device(config_path, device, backend):
+def component(config_path, component, backend):
     configs = read_configs(config_path)
-    config = next(config for config in configs if config.name == device)
-    device_simulations = create_simulations([config], *get_interface(backend))
-    asyncio.run(run_all_forever(device_simulations))
+    config = next(config for config in configs if config.name == component)
+    components = create_components([config], *get_interface(backend))
+    asyncio.run(run_all_forever(components))
 
 
 @main.command(help="run the simulation scheduler")
@@ -50,5 +50,5 @@ def all(config_path, backend):
     configs = read_configs(config_path)
     inverse_wiring = InverseWiring.from_component_configs(configs)
     scheduler = MasterScheduler(inverse_wiring, *get_interface(backend))
-    device_simulations = create_simulations(configs, *get_interface(backend))
-    asyncio.run(run_all_forever([scheduler, *device_simulations]))
+    components = create_components(configs, *get_interface(backend))
+    asyncio.run(run_all_forever([scheduler, *components]))
