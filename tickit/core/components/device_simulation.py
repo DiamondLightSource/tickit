@@ -32,7 +32,6 @@ class DeviceSimulation(BaseComponent):
         ]
 
     async def run_forever(self):
-        await super().set_up_state_interfaces()
         for adapter in self.adapters:
             asyncio.create_task(adapter.run_forever())
         await super().run_forever()
