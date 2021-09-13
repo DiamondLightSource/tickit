@@ -1,10 +1,13 @@
 import asyncio
+import logging
 from typing import Awaitable, Callable, Dict, Optional, Set, Union
 
 from immutables import Map
 
 from tickit.core.management.event_router import EventRouter, InverseWiring, Wiring
 from tickit.core.typedefs import Changes, ComponentID, Input, Output, SimTime
+
+LOGGER = logging.getLogger(__name__)
 
 
 class Ticker:
@@ -28,7 +31,7 @@ class Ticker:
 
     async def _start_tick(self, time: SimTime, update_components: Set[ComponentID]):
         self.time = time
-        print("Doing tick @ {}".format(self.time))
+        LOGGER.debug("Doing tick @ {}".format(self.time))
         self.inputs: Set[Input] = set()
         self.to_update = {
             c: None

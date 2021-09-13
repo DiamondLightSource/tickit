@@ -1,4 +1,5 @@
 import asyncio
+import logging
 import struct
 from typing import AsyncIterable
 
@@ -7,6 +8,8 @@ from tickit.adapters.interpreters.regex_command import RegexInterpreter
 from tickit.core.device import ConfigurableDevice, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.compat.typing_compat import TypedDict
+
+LOGGER = logging.getLogger(__name__)
 
 
 class RemoteControlled(ConfigurableDevice):
@@ -80,7 +83,7 @@ class RemoteControlledAdapter(ComposedAdapter):
 
     @_interpreter.command(r"H=(\d+\.?\d*)", format="utf-8")
     async def set_hidden(self, value: float) -> None:
-        print("Hidden set to {}".format(self._device.hidden))
+        LOGGER.info("Hidden set to {}".format(self._device.hidden))
 
     @_interpreter.command(r"H", format="utf-8")
     async def get_hidden(self) -> None:

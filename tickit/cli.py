@@ -1,4 +1,5 @@
 import asyncio
+import logging
 
 import click
 from click.core import Context
@@ -13,8 +14,15 @@ from tickit.utils.configuration.loading import read_configs
 
 @click.group(invoke_without_command=True)
 @click.version_option()
+@click.option(
+    "--log-level",
+    default="DEBUG",
+    type=click.Choice(["CRITICAL", "ERROR", "WARNING", "INFO", "DEBUG"]),
+    help="The minimum level of severity for a log message to be printed to the console",
+)
 @click.pass_context
-def main(ctx: Context):
+def main(ctx: Context, log_level: str):
+    logging.basicConfig(level=log_level)
 
     if ctx.invoked_subcommand is None:
         click.echo(main.get_help(ctx))

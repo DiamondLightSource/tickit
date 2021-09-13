@@ -1,4 +1,5 @@
 import asyncio
+import logging
 from abc import abstractmethod
 from dataclasses import dataclass
 from typing import Dict, Iterable, List, Optional, Type, Union
@@ -17,6 +18,8 @@ from tickit.core.typedefs import (
 from tickit.utils.compat.typing_compat import Protocol, runtime_checkable
 from tickit.utils.configuration.configurable import configurable, configurable_base
 from tickit.utils.topic_naming import input_topic, output_topic
+
+LOGGER = logging.getLogger(__name__)
 
 
 @runtime_checkable
@@ -62,7 +65,7 @@ class BaseComponent(ConfigurableComponent):
         self._state_producer_cls = state_producer
 
     async def handle_input(self, input: Input):
-        print("{} got {}".format(self.name, input))
+        LOGGER.debug("{} got {}".format(self.name, input))
         await self.on_tick(input.time, input.changes)
 
     async def output(

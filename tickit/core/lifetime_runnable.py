@@ -16,6 +16,8 @@ async def run_all_forever(runnables: Iterable[LifetimeRunnable]) -> None:
         try:
             await runnable.run_forever()
         except Exception as e:
+            # These are prints rather than logging because we just want the
+            # result going directly to stdout.
             print("Task exception: {}".format(e))
             print(traceback.format_exc())
 

@@ -1,8 +1,11 @@
+import logging
 from ctypes import c_short, c_ubyte, c_ushort
 from typing import Union
 
 from tickit.devices.cryostream.states import AlarmCodes, PhaseIds, RunModes
 from tickit.devices.cryostream.status import ExtendedStatus, Status
+
+LOGGER = logging.getLogger(__name__)
 
 
 class CryostreamBase:
@@ -161,7 +164,7 @@ class CryostreamBase:
         :return:
         """
         if self.phase_id == PhaseIds.HOLD.value:
-            print("Cannot return to previous command")  # Todo keep commands
+            LOGGER.warn("Cannot return to previous command")  # Todo keep commands
 
     async def stop(self) -> None:
         """
