@@ -179,9 +179,18 @@ def test_event_router_dependants(
     [
         (
             Output(
-                ComponentID("Out1"), SimTime(10), Changes(Map({"Out1>1": 42})), None
+                ComponentID("Out1"),
+                SimTime(10),
+                Changes(Map({PortID("Out1>1"): 42})),
+                None,
             ),
-            {Input(ComponentID("Mid1"), SimTime(10), Changes(Map({"Mid1<1": 42})))},
+            {
+                Input(
+                    ComponentID("Mid1"),
+                    SimTime(10),
+                    Changes(Map({PortID("Mid1<1"): 42})),
+                )
+            },
         )
     ],
 )

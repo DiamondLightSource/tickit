@@ -3,20 +3,20 @@ from typing import Optional
 
 import pytest
 
-from tickit.core.device import DeviceConfig, UpdateEvent
-from tickit.core.typedefs import SimTime, State
+from tickit.core.device import DeviceConfig, DeviceUpdate, OutMap
+from tickit.core.typedefs import SimTime
 
 
-def test_update_event_is_dataclass():
-    assert is_dataclass(UpdateEvent)
+def test_device_update_is_dataclass():
+    assert is_dataclass(DeviceUpdate)
 
 
-def test_update_event_has_state():
-    assert State == UpdateEvent.__annotations__["state"]
+def test_device_update_has_state():
+    assert OutMap == DeviceUpdate.__annotations__["outputs"]
 
 
-def test_update_event_has_call_in():
-    assert Optional[SimTime] == UpdateEvent.__annotations__["call_in"]
+def test_device_update_has_call_in():
+    assert Optional[SimTime] == DeviceUpdate.__annotations__["call_in"]
 
 
 def test_device_config_is_dataclass():

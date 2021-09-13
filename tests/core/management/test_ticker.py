@@ -54,18 +54,28 @@ def test_ticker_collate_inputs_collates_inputs(ticker: Ticker):
     assert Input(
         ComponentID("Target"),
         SimTime(100),
-        Changes(Map({"TargetOne": 42, "TargetTwo": 3.14})),
+        Changes(Map({PortID("TargetOne"): 42, PortID("TargetTwo"): 3.14})),
     ) == ticker.collate_inputs(
         {
-            Input(ComponentID("Target"), SimTime(100), Changes(Map({"TargetOne": 42}))),
             Input(
-                ComponentID("Target"), SimTime(100), Changes(Map({"TargetTwo": 3.14}))
+                ComponentID("Target"),
+                SimTime(100),
+                Changes(Map({PortID("TargetOne"): 42})),
             ),
             Input(
-                ComponentID("Other"), SimTime(100), Changes(Map({"TargetOne": "wrong"}))
+                ComponentID("Target"),
+                SimTime(100),
+                Changes(Map({PortID("TargetTwo"): 3.14})),
             ),
             Input(
-                ComponentID("Target"), SimTime(200), Changes(Map({"TargetOne": False}))
+                ComponentID("Other"),
+                SimTime(100),
+                Changes(Map({PortID("TargetOne"): "wrong"})),
+            ),
+            Input(
+                ComponentID("Target"),
+                SimTime(200),
+                Changes(Map({PortID("TargetOne"): False})),
             ),
         },
         ComponentID("Target"),
@@ -89,13 +99,17 @@ async def test_ticker_schedule_possible_updates_schedules_only_possible(ticker: 
 async def test_ticker_schedule_possible_updates_passes_inputs(ticker: Ticker):
     ticker.time = SimTime(42)
     ticker.inputs = {
-        Input(ComponentID("Out1"), SimTime(42), Changes(Map({"TestChange": 3.14})))
+        Input(
+            ComponentID("Out1"), SimTime(42), Changes(Map({PortID("TestChange"): 3.14}))
+        )
     }
     ticker.to_update = {ComponentID("Out1"): None}
     ticker.update_component = AsyncMock()
     await ticker.schedule_possible_updates()
     ticker.update_component.assert_called_once_with(
-        Input(ComponentID("Out1"), SimTime(42), Changes(Map({"TestChange": 3.14})))
+        Input(
+            ComponentID("Out1"), SimTime(42), Changes(Map({PortID("TestChange"): 3.14}))
+        )
     )
 
 

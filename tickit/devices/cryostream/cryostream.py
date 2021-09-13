@@ -2,13 +2,11 @@ import asyncio
 import struct
 from typing import AsyncIterable, Awaitable, Callable
 
-from immutables import Map
-
 from tickit.adapters.composed import ComposedAdapter
 from tickit.adapters.interpreters.regex_command import RegexInterpreter
 from tickit.adapters.servers.tcp import TcpServer
-from tickit.core.device import ConfigurableDevice, Device, UpdateEvent
-from tickit.core.typedefs import SimTime, State
+from tickit.core.device import ConfigurableDevice, Device, DeviceUpdate
+from tickit.core.typedefs import SimTime
 from tickit.devices.cryostream.base import CryostreamBase
 from tickit.devices.cryostream.states import PhaseIds
 from tickit.utils.byte_format import ByteFormat
@@ -18,27 +16,29 @@ _EXTENDED_STATUS = ">BBHHHBBHHHHHBBBBBBHHBBBBBBBBHH"
 
 
 class Cryostream(CryostreamBase, ConfigurableDevice):
-    Output = TypedDict("Output", {"temperature": float})
+    Inputs: TypedDict = TypedDict("Inputs", {})
+    Outputs: TypedDict = TypedDict("Outputs", {"temperature": float})
 
     def __init__(self) -> None:
         super().__init__()
         self.phase_id: int = PhaseIds.HOLD.value
         self.callback_period: SimTime = SimTime(int(1e9))
 
-    def update(self, time: SimTime, inputs: State) -> UpdateEvent:
+    def update(
+        self, time: SimTime, inputs: "Cryostream.Inputs"
+    ) -> DeviceUpdate["Cryostream.Outputs"]:
         if self.phase_id in (PhaseIds.RAMP.value, PhaseIds.COOL.value):
             self.gas_temp = self.update_temperature(time)
-            return UpdateEvent(
-                Cryostream.Output(temperature=self.gas_temp),
-                call_in=self.callback_period,
+            return DeviceUpdate(
+                Cryostream.Outputs(temperature=self.gas_temp), self.callback_period
             )
         if self.phase_id == PhaseIds.PLAT.value:
             self.phase_id = PhaseIds.HOLD.value
-            return UpdateEvent(
-                Cryostream.Output(temperature=self.gas_temp),
-                call_in=SimTime(int(self.plat_duration * 1e10)),
+            return DeviceUpdate(
+                Cryostream.Outputs(temperature=self.gas_temp),
+                SimTime(int(self.plat_duration * 1e10)),
             )
-        return UpdateEvent(State(Map()), call_in=None)
+        return DeviceUpdate(Cryostream.Outputs(temperature=self.gas_temp), None)
 
 
 class CryostreamAdapter(ComposedAdapter):
