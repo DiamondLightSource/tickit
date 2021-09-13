@@ -1,13 +1,13 @@
 from dataclasses import dataclass
-from typing import Hashable, NewType, Optional
+from typing import Hashable, Mapping, NewType, Optional
 
 from apischema import deserializer, serializer
 from immutables import Map
 
 ComponentID = NewType("ComponentID", str)
 PortID = NewType("PortID", str)
-State = NewType("State", Map[str, Hashable])
-Changes = NewType("Changes", Map[str, Hashable])
+State = NewType("State", Mapping[PortID, Hashable])
+Changes = NewType("Changes", Map[PortID, Hashable])
 SimTime = NewType("SimTime", int)
 
 

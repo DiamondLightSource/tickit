@@ -4,13 +4,14 @@ from typing import AsyncIterable
 
 from tickit.adapters.composed import ComposedAdapter
 from tickit.adapters.interpreters.regex_command import RegexInterpreter
-from tickit.core.device import ConfigurableDevice, UpdateEvent
-from tickit.core.typedefs import SimTime, State
+from tickit.core.device import ConfigurableDevice, DeviceUpdate
+from tickit.core.typedefs import SimTime
 from tickit.utils.compat.typing_compat import TypedDict
 
 
 class RemoteControlled(ConfigurableDevice):
-    Output = TypedDict("Output", {"observed": float})
+    Inputs: TypedDict = TypedDict("Inputs", {})
+    Outputs: TypedDict = TypedDict("Outputs", {"observed": float})
 
     def __init__(
         self,
@@ -22,8 +23,10 @@ class RemoteControlled(ConfigurableDevice):
         self.unobserved = initial_unobserved
         self.hidden = initial_hidden
 
-    def update(self, time: SimTime, inputs: State) -> UpdateEvent:
-        return UpdateEvent(RemoteControlled.Output(observed=self.observed), None)
+    def update(
+        self, time: SimTime, inputs: "RemoteControlled.Inputs"
+    ) -> DeviceUpdate["RemoteControlled.Outputs"]:
+        return DeviceUpdate(RemoteControlled.Outputs(observed=self.observed), None)
 
 
 class RemoteControlledAdapter(ComposedAdapter):

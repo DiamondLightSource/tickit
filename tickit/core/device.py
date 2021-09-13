@@ -1,20 +1,23 @@
 from dataclasses import dataclass
-from typing import Optional, Type
+from typing import Generic, Hashable, Mapping, Optional, Type, TypeVar
 
-from tickit.core.typedefs import SimTime, State
+from tickit.core.typedefs import SimTime
 from tickit.utils.compat.typing_compat import Protocol, runtime_checkable
 from tickit.utils.configuration.configurable import configurable, configurable_base
 
+InMap = TypeVar("InMap", bound=Mapping[str, Hashable])
+OutMap = TypeVar("OutMap", bound=Mapping[str, Hashable])
 
-@dataclass(frozen=True)
-class UpdateEvent:
-    state: State
+
+@dataclass
+class DeviceUpdate(Generic[OutMap]):
+    outputs: OutMap
     call_in: Optional[SimTime]
 
 
 @runtime_checkable
-class Device(Protocol):
-    def update(self, time: SimTime, inputs: State) -> UpdateEvent:
+class Device(Protocol[InMap, OutMap]):
+    def update(self, time: SimTime, inputs: InMap) -> DeviceUpdate[OutMap]:
         pass
 
 

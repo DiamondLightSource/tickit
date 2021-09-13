@@ -7,14 +7,14 @@ from tickit.core.adapter import AdapterConfig, ListeningAdapter
 from tickit.core.components.component import BaseComponent
 from tickit.core.device import DeviceConfig
 from tickit.core.state_interfaces import StateConsumer, StateProducer
-from tickit.core.typedefs import Changes, ComponentID, SimTime, State
+from tickit.core.typedefs import Changes, ComponentID, PortID, SimTime, State
 
 InterruptHandler = Callable[[], Awaitable[None]]
 
 
 class DeviceSimulation(BaseComponent):
-    state: State = State(Map())
-    device_inputs: Dict[str, Hashable] = dict()
+    last_outputs: State = State(dict())
+    device_inputs: Dict[PortID, Hashable] = dict()
 
     def __init__(
         self,
@@ -38,7 +38,9 @@ class DeviceSimulation(BaseComponent):
 
     async def on_tick(self, time: SimTime, changes: Changes) -> None:
         self.device_inputs = {**self.device_inputs, **changes}
-        output = self.device.update(SimTime(time), State(Map(self.device_inputs)))
+        device_update = self.device.update(
+            SimTime(time), State(Map(self.device_inputs))
+        )
         for adapter in self.adapters:
             if isinstance(adapter, ListeningAdapter):
                 adapter.after_update()
@@ -46,10 +48,10 @@ class DeviceSimulation(BaseComponent):
             Map(
                 {
                     k: v
-                    for k, v in output.state.items()
-                    if k not in self.state or not self.state[k] == v
+                    for k, v in device_update.outputs.items()
+                    if k not in self.last_outputs or not self.last_outputs[k] == v
                 }
             )
         )
-        self.state = output.state
-        await self.output(time, changes, output.call_in)
+        self.last_outputs = device_update.outputs
+        await self.output(time, changes, device_update.call_in)
