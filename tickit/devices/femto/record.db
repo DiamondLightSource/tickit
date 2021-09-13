@@ -1,0 +1,7 @@
+record(ao, "$(device):GAIN") {
+  field(DTYP, "Hy8001")
+  field(OMSL, "supervisory")
+  field(OUT, "#C1 S0 @")
+  field(DESC, "Gain value")
+  field(EGU, "A")
+}
