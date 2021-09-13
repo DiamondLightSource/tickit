@@ -1,9 +1,12 @@
 import asyncio
+import logging
 from asyncio.streams import StreamReader, StreamWriter
 from typing import AsyncIterable, Awaitable, Callable, List
 
 from tickit.core.adapter import ConfigurableServer
 from tickit.utils.byte_format import ByteFormat
+
+LOGGER = logging.getLogger(__name__)
 
 
 class TcpServer(ConfigurableServer):
@@ -29,7 +32,7 @@ class TcpServer(ConfigurableServer):
                 async for reply in replies:
                     if reply is None:
                         continue
-                    print("Replying with {!r}".format(reply))
+                    LOGGER.debug("Replying with {!r}".format(reply))
                     writer.write(self.format % reply)
                     if writer.is_closing():
                         break
@@ -43,7 +46,7 @@ class TcpServer(ConfigurableServer):
                     break
                 addr = writer.get_extra_info("peername")
 
-                print("Recieved {!r} from {}".format(data, addr))
+                LOGGER.debug("Recieved {!r} from {}".format(data, addr))
                 tasks.append(asyncio.create_task(reply(await handler(data))))
 
             await asyncio.wait(tasks)

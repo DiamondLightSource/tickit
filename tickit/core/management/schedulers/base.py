@@ -1,3 +1,4 @@
+import logging
 from abc import abstractmethod
 from typing import Type, Union
 
@@ -7,6 +8,8 @@ from tickit.core.state_interfaces import StateConsumer, StateProducer
 from tickit.core.typedefs import ComponentID, Input, Interrupt, Output, SimTime, Wakeup
 from tickit.utils.priority_queue import ManyAsyncPriorityQueue
 from tickit.utils.topic_naming import input_topic, output_topic
+
+LOGGER = logging.getLogger(__name__)
 
 
 class BaseScheduler:
@@ -33,7 +36,7 @@ class BaseScheduler:
         await self.state_producer.produce(input_topic(input.target), input)
 
     async def handle_message(self, message: Union[Interrupt, Output]) -> None:
-        print("Scheduler got {}".format(message))
+        LOGGER.debug("Scheduler got {}".format(message))
         if isinstance(message, Output):
             await self.ticker.propagate(message)
             if message.call_in is not None:
@@ -56,5 +59,5 @@ class BaseScheduler:
 
     async def add_wakeup(self, component: ComponentID, when: SimTime) -> None:
         wakeup = Wakeup(component, when)
-        print("Scheduling {}".format(wakeup))
+        LOGGER.debug("Scheduling {}".format(wakeup))
         await self.wakeups.put((wakeup.when, wakeup))

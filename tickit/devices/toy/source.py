@@ -1,8 +1,11 @@
+import logging
 from typing import Any
 
 from tickit.core.device import ConfigurableDevice, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.compat.typing_compat import TypedDict
+
+LOGGER = logging.getLogger(__name__)
 
 
 class Source(ConfigurableDevice):
@@ -15,5 +18,5 @@ class Source(ConfigurableDevice):
     def update(
         self, time: SimTime, inputs: "Source.Inputs"
     ) -> DeviceUpdate["Source.Outputs"]:
-        print("Sourced {}".format(self.value))
+        LOGGER.debug("Sourced {}".format(self.value))
         return DeviceUpdate(Source.Outputs(value=self.value), None)

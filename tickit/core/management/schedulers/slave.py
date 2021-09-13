@@ -1,3 +1,4 @@
+import logging
 from typing import Awaitable, Callable, Dict, Optional, Set, Tuple, Type, Union
 
 from immutables import Map
@@ -14,6 +15,8 @@ from tickit.core.typedefs import (
     PortID,
     SimTime,
 )
+
+LOGGER = logging.getLogger(__name__)
 
 
 class SlaveScheduler(BaseScheduler):
@@ -79,6 +82,6 @@ class SlaveScheduler(BaseScheduler):
         await self.setup()
 
     async def schedule_interrupt(self, source: ComponentID) -> None:
-        print("Adding {} to interrupts".format(source))
+        LOGGER.debug("Adding {} to interrupts".format(source))
         self.interrupts.add(source)
         await self.raise_interrupt()
