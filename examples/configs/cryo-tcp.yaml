@@ -8,7 +8,7 @@
 - tickit.core.components.device_simulation.DeviceSimulation:
     adapters: []
     device:
-      tickit.devices.toy.sink.Sink: {}
+      tickit.devices.sink.Sink: {}
     inputs:
       input: cryo:temperature
     name: contr_sink

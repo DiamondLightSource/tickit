@@ -122,7 +122,7 @@ async def test_command_interpreter_handle_skips_unparsed(
         Adapter,
         test_method=AsyncMock(
             __command__=MagicMock(
-                Command, interrupt=interrupt, parse=MagicMock(return_value=None),
+                Command, interrupt=interrupt, parse=MagicMock(return_value=None)
             ),
             return_value="DummyReply",
         ),

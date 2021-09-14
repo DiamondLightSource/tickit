@@ -31,7 +31,9 @@ def test_adapter_config_kwargs_raises_not_implemented():
 
 
 def test_inherit_configurable_adapter_makes_configurable():
-    assert isinstance(type("Adapter", (ConfigurableAdapter,), dict()).Config, Config)
+    assert isinstance(
+        type("Adapter", (ConfigurableAdapter,), dict()).AdapterConfig, Config
+    )
 
 
 def test_server_config_is_dataclass():
@@ -54,4 +56,6 @@ def test_server_config_kwargs_raises_not_implemented():
 
 
 def test_inherit_configurable_server_makes_configurable():
-    assert isinstance(type("Server", (ConfigurableServer,), dict()).Config, Config)
+    assert isinstance(
+        type("Server", (ConfigurableServer,), dict()).ServerConfig, Config
+    )

@@ -12,6 +12,13 @@ from tickit.core.typedefs import Changes, ComponentID, ComponentPort, PortID, Si
 
 
 class SystemSimulation(BaseComponent):
+    """A component containing a slave scheduler and several components
+
+    A component which acts as a nested tickit simulation by wrapping a slave scheduler
+    and a set of internal components, this component delegates core behaviour to the
+    components within it, whilst outputting their requests for wakeups and interrupts.
+    """
+
     def __init__(
         self,
         name: ComponentID,
@@ -20,6 +27,20 @@ class SystemSimulation(BaseComponent):
         state_producer: Type[StateProducer],
         expose: Dict[PortID, ComponentPort],
     ) -> None:
+        """A constructor of the system simulation
+
+        Args:
+            name (ComponentID): The unique identifier of the system simulation
+            components (List[ComponentConfig]): A list of immutable component
+                configuration data containers, used to construct internal components
+            state_consumer (Type[StateConsumer]): The state consumer class to be used
+                by the component
+            state_producer (Type[StateProducer]): The state producer class to be used
+                by the component
+            expose (Dict[PortID, ComponentPort]): A mapping of outputs which
+                the system simulation exposes and the corresponding output of an
+                internal component
+        """
         super().__init__(name, state_consumer, state_producer)
         inverse_wiring = InverseWiring.from_component_configs(components)
         self.scheduler = SlaveScheduler(
@@ -34,11 +55,27 @@ class SystemSimulation(BaseComponent):
         )
 
     async def run_forever(self):
+        """An asynchronous method which sets up state interfaces, the scheduler and components
+
+        An asynchronous method starts the run_forever method of each component, runs
+        the scheduler, and sets up externally facing state interfaces
+        """
         for component_simulation in self.component_simulations:
             await component_simulation.run_forever()
         await self.scheduler.run_forever()
         await super().run_forever()
 
     async def on_tick(self, time: SimTime, changes: Changes) -> None:
+        """An asynchronous method which delegates core behaviour to the slave scheduler
+
+        An asynchronous method which delegates core behaviour of computing changes and
+        determining a callback period to the slave shceduler and sends the resulting
+        Output
+
+        Args:
+            time (SimTime): The current simulation time (in nanoseconds)
+            changes (Changes): A mapping of changed component inputs and their new
+                values
+        """
         output_changes, call_in = await self.scheduler.on_tick(time, changes)
         await self.output(time, output_changes, call_in)

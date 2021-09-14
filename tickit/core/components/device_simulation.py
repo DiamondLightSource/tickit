@@ -1,20 +1,27 @@
 import asyncio
-from typing import Awaitable, Callable, Dict, Hashable, List, Type
+from typing import Awaitable, Callable, Dict, Hashable, List, Mapping, Type, cast
 
 from immutables import Map
 
 from tickit.core.adapter import AdapterConfig, ListeningAdapter
 from tickit.core.components.component import BaseComponent
-from tickit.core.device import DeviceConfig
+from tickit.core.device import DeviceConfig, DeviceUpdate
 from tickit.core.state_interfaces import StateConsumer, StateProducer
-from tickit.core.typedefs import Changes, ComponentID, PortID, SimTime, State
+from tickit.core.typedefs import Changes, ComponentID, SimTime, State
 
 InterruptHandler = Callable[[], Awaitable[None]]
 
 
 class DeviceSimulation(BaseComponent):
+    """A component containing a device and the corresponding adapters
+
+    A component which thinly wraps a device and the corresponding adapters, this
+    component delegates core behaviour to the update method of the device, whilst
+    allowing adapters to raise interrupts.
+    """
+
     last_outputs: State = State(dict())
-    device_inputs: Dict[PortID, Hashable] = dict()
+    device_inputs: Dict[str, Hashable] = dict()
 
     def __init__(
         self,
@@ -24,6 +31,19 @@ class DeviceSimulation(BaseComponent):
         device: DeviceConfig,
         adapters: List[AdapterConfig],
     ):
+        """A constructor of the device simulation
+
+        Args:
+            name (ComponentID):  The unique identifier of the device simulation
+            state_consumer (Type[StateConsumer]): The state consumer class to be used
+                by the component
+            state_producer (Type[StateProducer]): The state producer class to be used
+                by the component
+            config (DeviceConfig): An immuatable device configuration data container,
+                used to construct the device
+            adapters (List[AdapterConfig]): A list of immutable adapter configuration
+                data containers, used to construct adapters
+        """
         super().__init__(name, state_consumer, state_producer)
         self.device = device.configures()(**device.kwargs)
         self.adapters = [
@@ -32,19 +52,35 @@ class DeviceSimulation(BaseComponent):
         ]
 
     async def run_forever(self):
+        """An asynchronous method which sets up state interfaces and runs adapters"""
         for adapter in self.adapters:
             asyncio.create_task(adapter.run_forever())
         await super().run_forever()
 
     async def on_tick(self, time: SimTime, changes: Changes) -> None:
-        self.device_inputs = {**self.device_inputs, **changes}
-        device_update = self.device.update(
-            SimTime(time), State(Map(self.device_inputs))
+        """An asynchronous method which delegates core behaviour to the device
+
+        An asynchronous method which updates device inputs according to external
+        changes, delegates core behaviour to the device update method, informs
+        ListeningAdapters of the update, computes changes to the state of the component
+        and sends the resulting Output.
+
+        Args:
+            time (SimTime): The current simulation time (in nanoseconds)
+            changes (Changes): A mapping of changed component inputs and their new
+                values
+        """
+        self.device_inputs = {
+            **self.device_inputs,
+            **cast(Mapping[str, Hashable], changes),
+        }
+        device_update: DeviceUpdate = self.device.update(
+            SimTime(time), self.device_inputs
         )
         for adapter in self.adapters:
             if isinstance(adapter, ListeningAdapter):
                 adapter.after_update()
-        changes = Changes(
+        out_changes = Changes(
             Map(
                 {
                     k: v
@@ -54,4 +90,4 @@ class DeviceSimulation(BaseComponent):
             )
         )
         self.last_outputs = device_update.outputs
-        await self.output(time, changes, device_update.call_in)
+        await self.output(time, out_changes, device_update.call_in)
