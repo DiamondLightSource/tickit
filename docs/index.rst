@@ -34,10 +34,8 @@ Technical reference material, for classes, methods, APIs, commands, and contribu
 
 .. rst-class:: endcolumns
 
-About the documentation
-~~~~~~~~~~~~~~~~~~~~~~~
-
-`Why is the documentation structured this way? <https://documentation.divio.com>`_
+Contents
+--------
 
 .. toctree::
     :caption: Tutorials
@@ -45,6 +43,10 @@ About the documentation
     :maxdepth: 1
 
     tutorials/installation
+    tutorials/running-a-simulation
+    tutorials/creating-a-simulation
+    tutorials/creating-a-device
+    tutorials/creating-an-adapter
 
 .. toctree::
     :caption: How-to Guides
@@ -58,7 +60,8 @@ About the documentation
     :name: explanations
     :maxdepth: 1
 
-    explanations/why-is-something-so
+    explanations/glossary
+    explanations/how-component-updates-are-ordered
 
 .. rst-class:: no-margin-after-ul
 
@@ -71,3 +74,8 @@ About the documentation
     reference/contributing
 
 * :ref:`genindex`
+
+About the documentation
+~~~~~~~~~~~~~~~~~~~~~~~
+
+`Why is the documentation structured this way? <https://documentation.divio.com>`_

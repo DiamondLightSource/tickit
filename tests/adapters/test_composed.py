@@ -4,17 +4,17 @@ from mock import MagicMock, Mock, PropertyMock, create_autospec
 from tickit.adapters.composed import ComposedAdapter
 from tickit.adapters.servers.tcp import TcpServer
 from tickit.core.adapter import Interpreter
-from tickit.devices.toy.remote_controlled import RemoteControlled
+from tickit.core.device import Device
 
 
 @pytest.fixture
 def MockDevice() -> Mock:
-    return create_autospec(RemoteControlled, instance=False)
+    return create_autospec(Device, instance=False)
 
 
 @pytest.fixture
 def mock_device() -> Mock:
-    return create_autospec(RemoteControlled, instance=True)
+    return create_autospec(Device, instance=True)
 
 
 @pytest.fixture
@@ -29,12 +29,12 @@ def mock_server() -> Mock:
 
 @pytest.fixture
 def MockServerConfig() -> Mock:
-    return create_autospec(TcpServer.Config, instance=False)
+    return create_autospec(TcpServer.TcpServerConfig, instance=False)
 
 
 @pytest.fixture
 def mock_server_config() -> Mock:
-    return create_autospec(TcpServer.Config, instance=True)
+    return create_autospec(TcpServer.TcpServerConfig, instance=True)
 
 
 @pytest.fixture
@@ -66,7 +66,7 @@ def raise_interrupt():
 
 @pytest.fixture
 def composed_adapter(
-    mock_device: Mock, raise_interrupt: Mock, mock_server: Mock, mock_interpreter: Mock,
+    mock_device: Mock, raise_interrupt: Mock, mock_server: Mock, mock_interpreter: Mock
 ):
     return type("TestComposedAdapter", (ComposedAdapter,), {})(
         mock_device, raise_interrupt, mock_server, mock_interpreter
