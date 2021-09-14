@@ -5,6 +5,7 @@ from typing import AsyncIterable, Awaitable, Callable
 from tickit.adapters.composed import ComposedAdapter
 from tickit.adapters.interpreters.command import CommandInterpreter, RegexCommand
 from tickit.adapters.servers.tcp import TcpServer
+from tickit.core.adapter import ConfigurableAdapter
 from tickit.core.device import ConfigurableDevice, Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.devices.cryostream.base import CryostreamBase
@@ -41,7 +42,7 @@ class Cryostream(CryostreamBase, ConfigurableDevice):
         return DeviceUpdate(Cryostream.Outputs(temperature=self.gas_temp), None)
 
 
-class CryostreamAdapter(ComposedAdapter):
+class CryostreamAdapter(ComposedAdapter, ConfigurableAdapter):
     _device = Cryostream
 
     def __init__(
@@ -54,7 +55,7 @@ class CryostreamAdapter(ComposedAdapter):
         super().__init__(
             device,
             raise_interrupt,
-            TcpServer.Config(format=ByteFormat(b"%b"), host=host, port=port),
+            TcpServer(format=ByteFormat(b"%b"), host=host, port=port),
             CommandInterpreter(),
         )
 
