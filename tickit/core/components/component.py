@@ -122,7 +122,7 @@ class BaseComponent(ConfigurableComponent):
         self,
         time: SimTime,
         changes: Changes,
-        call_in: Optional[SimTime],
+        call_at: Optional[SimTime],
     ) -> None:
         """An asynchronous method which constructs and sends an Output message
 
@@ -137,7 +137,7 @@ class BaseComponent(ConfigurableComponent):
                 to be awoken
         """
         await self.state_producer.produce(
-            output_topic(self.name), Output(self.name, time, changes, call_in)
+            output_topic(self.name), Output(self.name, time, changes, call_at)
         )
 
     async def raise_interrupt(self) -> None:

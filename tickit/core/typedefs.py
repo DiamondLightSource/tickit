@@ -79,7 +79,7 @@ class Output:
     source: ComponentID
     time: SimTime
     changes: Changes
-    call_in: Optional[SimTime]
+    call_at: Optional[SimTime]
 
 
 @dataclass(frozen=True)

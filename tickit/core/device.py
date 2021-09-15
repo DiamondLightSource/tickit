@@ -21,7 +21,7 @@ class DeviceUpdate(Generic[OutMap]):
     """
 
     outputs: OutMap
-    call_in: Optional[SimTime]
+    call_at: Optional[SimTime]
 
 
 @runtime_checkable

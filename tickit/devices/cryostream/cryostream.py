@@ -31,13 +31,14 @@ class Cryostream(CryostreamBase, ConfigurableDevice):
         if self.phase_id in (PhaseIds.RAMP.value, PhaseIds.COOL.value):
             self.gas_temp = self.update_temperature(time)
             return DeviceUpdate(
-                Cryostream.Outputs(temperature=self.gas_temp), self.callback_period
+                Cryostream.Outputs(temperature=self.gas_temp),
+                SimTime(time + self.callback_period),
             )
         if self.phase_id == PhaseIds.PLAT.value:
             self.phase_id = PhaseIds.HOLD.value
             return DeviceUpdate(
                 Cryostream.Outputs(temperature=self.gas_temp),
-                SimTime(int(self.plat_duration * 1e10)),
+                SimTime(time + int(self.plat_duration * 1e10)),
             )
         return DeviceUpdate(Cryostream.Outputs(temperature=self.gas_temp), None)
 

@@ -42,7 +42,7 @@ class Trampoline(ConfigurableDevice):
                 requests a callback after the configured callback period
         """
         LOGGER.debug("Boing! ({}, {})".format(time, inputs))
-        return DeviceUpdate(Trampoline.Outputs(), self.callback_period)
+        return DeviceUpdate(Trampoline.Outputs(), SimTime(time + self.callback_period))
 
 
 class RandomTrampoline(ConfigurableDevice):
@@ -83,5 +83,6 @@ class RandomTrampoline(ConfigurableDevice):
             "Boing! (delta: {}, inputs: {}, output: {})".format(time, inputs, output)
         )
         return DeviceUpdate(
-            RandomTrampoline.Outputs(output=output), self.callback_period
+            RandomTrampoline.Outputs(output=output),
+            SimTime(time + self.callback_period),
         )

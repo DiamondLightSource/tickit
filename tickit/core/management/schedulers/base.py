@@ -35,18 +35,6 @@ class BaseScheduler:
         self._state_consumer_cls = state_consumer
         self._state_producer_cls = state_producer
 
-    async def schedule_wakeup(
-        self, source: ComponentID, time: SimTime, call_in: SimTime
-    ) -> None:
-        """A asynchronous method which schedules a wakeup at time + call_in
-
-        Args:
-            source (ComponentID): The component which should be updated
-            time (SimTime): The time at which the wakeup is requested
-            call_in (SimTime): The time in which the wakeup should occur
-        """
-        await self.add_wakeup(source, SimTime(time + call_in))
-
     @abstractmethod
     async def schedule_interrupt(self, source: ComponentID) -> None:
         """An abstract asynchronous method which should schedule an interrupt immediately
@@ -78,10 +66,8 @@ class BaseScheduler:
         LOGGER.debug("Scheduler got {}".format(message))
         if isinstance(message, Output):
             await self.ticker.propagate(message)
-            if message.call_in is not None:
-                await self.schedule_wakeup(
-                    message.source, message.time, message.call_in
-                )
+            if message.call_at is not None:
+                await self.add_wakeup(message.source, message.call_at)
         if isinstance(message, Interrupt):
             await self.schedule_interrupt(message.source)
 

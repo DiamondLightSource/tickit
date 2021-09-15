@@ -90,9 +90,11 @@ class Shutter(ConfigurableDevice):
                 SimTime(time - self.last_time),
             )
         self.last_time = time
-        call_in = None if self.position == self.target_position else SimTime(int(1e8))
+        call_at = (
+            None if self.position == self.target_position else SimTime(time + int(1e8))
+        )
         output_flux = inputs["flux"] * self.position
-        return DeviceUpdate(Shutter.Outputs(flux=output_flux), call_in)
+        return DeviceUpdate(Shutter.Outputs(flux=output_flux), call_at)
 
 
 class ShutterAdapter(ComposedAdapter, ConfigurableAdapter):

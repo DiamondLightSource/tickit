@@ -37,7 +37,7 @@ def test_output_has_changes():
 
 
 def test_output_has_call_in():
-    assert Optional[SimTime] == Output.__annotations__["call_in"]
+    assert Optional[SimTime] == Output.__annotations__["call_at"]
 
 
 def test_wakeup_is_dataclass():

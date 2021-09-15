@@ -16,7 +16,7 @@ def test_device_update_has_state():
 
 
 def test_device_update_has_call_in():
-    assert Optional[SimTime] == DeviceUpdate.__annotations__["call_in"]
+    assert Optional[SimTime] == DeviceUpdate.__annotations__["call_at"]
 
 
 def test_device_config_is_dataclass():
