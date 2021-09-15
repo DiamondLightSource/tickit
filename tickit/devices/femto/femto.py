@@ -58,7 +58,9 @@ class CurrentDevice(ConfigurableDevice):
         print(
             "Output! (delta: {}, inputs: {}, output: {})".format(time, inputs, output)
         )
-        return DeviceUpdate(CurrentDevice.Output(output=output), self.callback_period)
+        return DeviceUpdate(
+            CurrentDevice.Output(output=output), SimTime(time + self.callback_period)
+        )
 
 
 class FemtoAdapter(EpicsAdapter):

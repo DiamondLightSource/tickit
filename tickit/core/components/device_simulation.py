@@ -93,4 +93,4 @@ class DeviceSimulation(BaseComponent):
             )
         )
         self.last_outputs = device_update.outputs
-        await self.output(time, out_changes, device_update.call_in)
+        await self.output(time, out_changes, device_update.call_at)
