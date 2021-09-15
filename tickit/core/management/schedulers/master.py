@@ -43,17 +43,17 @@ class MasterScheduler(BaseScheduler):
         await super().setup()
         self.new_wakeup: asyncio.Event = asyncio.Event()
 
-    async def add_wakeup(self, component: ComponentID, when: SimTime) -> None:
-        """An asynchronous method which adds a wakeup to the priority queue and sets a flag
+    def add_wakeup(self, component: ComponentID, when: SimTime) -> None:
+        """A method which adds a wakeup to the priority queue and sets a flag
 
-        An asynchronous method which adds a wakeup to the priority queue and sets a
-        flag indicating that a new wakeup has been added
+        A method which adds a wakeup to the priority queue and sets a flag indicating
+        that a new wakeup has been added
 
         Args:
             component (ComponentID): The component which should be updated
             when (SimTime): The simulation time at which the update should occur
         """
-        await super().add_wakeup(component, when)
+        super().add_wakeup(component, when)
         self.new_wakeup.set()
 
     async def run_forever(self) -> None:
@@ -70,20 +70,24 @@ class MasterScheduler(BaseScheduler):
         )
         self.last_time = time_ns()
         while True:
-            _, wakeups = await self.wakeups.get_all_tie()
+            if not self.wakeups:
+                await self.new_wakeup.wait()
+            components, when = self.get_first_wakeups()
+            assert when is not None
             self.new_wakeup.clear()
 
-            current: asyncio.Future = asyncio.sleep(self.sleep_time(wakeups[0].when))
+            current: asyncio.Future = asyncio.sleep(self.sleep_time(when))
             new = asyncio.create_task(self.new_wakeup.wait())
             which, _ = await asyncio.wait(
                 {current, new}, return_when=asyncio.tasks.FIRST_COMPLETED
             )
 
             if new in which:
-                await self.wakeups.put_many((wakeup.when, wakeup) for wakeup in wakeups)
                 continue
 
-            await self.ticker(wakeups[0].when, {wakeup.component for wakeup in wakeups})
+            for component in components:
+                del self.wakeups[component]
+            await self.ticker(when, {component for component in components})
             self.last_time = time_ns()
 
     async def schedule_interrupt(self, source: ComponentID) -> None:
@@ -97,7 +101,7 @@ class MasterScheduler(BaseScheduler):
         Args:
             source (ComponentID): The component which should be updated
         """
-        await self.add_wakeup(
+        self.add_wakeup(
             source,
             SimTime(
                 self.ticker.time
