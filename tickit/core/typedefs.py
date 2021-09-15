@@ -91,16 +91,3 @@ class Interrupt:
     """
 
     source: ComponentID
-
-
-@dataclass(frozen=True)
-class Wakeup:
-    """An immutable data container for scheduling Component wakeups
-
-    Args:
-        component: The Component which should be awoken
-        when: The simulation time at which the component should be awoken
-    """
-
-    component: ComponentID
-    when: SimTime

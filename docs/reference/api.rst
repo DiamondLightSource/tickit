@@ -268,12 +268,6 @@ API
             ``tickit.utils.configuration.loading``
             --------------------------------------
 
-    .. automodule:: tickit.utils.priority_queue
-        :members:
-
-        ``tickit.utils.priority_queue``
-        -------------------------------
-
     .. automodule:: tickit.utils.singleton
         :members:
         :special-members: __call__

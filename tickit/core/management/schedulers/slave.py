@@ -122,24 +122,24 @@ class SlaveScheduler(BaseScheduler):
                 slave scheduler should be called again
         """
 
+        wakeup_components = {
+            component for component, when in self.wakeups.items() if when <= time
+        }
         root_components: Set[ComponentID] = {
             *self.interrupts,
-            *(wakeup.component for wakeup in await self.wakeups.all_lt(time)),
+            *wakeup_components,
             ComponentID("external"),
         }
+        for component in wakeup_components:
+            del self.wakeups[component]
         self.interrupts.clear()
 
         self.input_changes = changes
         self.output_changes = Changes(Map())
         await self.ticker(time, root_components)
 
-        call_in = None
-        if not self.wakeups.empty():
-            priority, wakeup = await self.wakeups.get()
-            call_in = SimTime(wakeup.when - time)
-            self.wakeups.put((priority, wakeup))
-
-        return self.output_changes, call_in
+        _, call_at = self.get_first_wakeups()
+        return self.output_changes, call_at
 
     async def run_forever(self) -> None:
         """An asynchronous method which delegates to setup to run continiously"""

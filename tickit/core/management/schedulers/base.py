@@ -1,12 +1,11 @@
 import logging
 from abc import abstractmethod
-from typing import Type, Union
+from typing import Dict, Optional, Set, Tuple, Type, Union
 
 from tickit.core.management.event_router import InverseWiring, Wiring
 from tickit.core.management.ticker import Ticker
 from tickit.core.state_interfaces import StateConsumer, StateProducer
-from tickit.core.typedefs import ComponentID, Input, Interrupt, Output, SimTime, Wakeup
-from tickit.utils.priority_queue import ManyAsyncPriorityQueue
+from tickit.core.typedefs import ComponentID, Input, Interrupt, Output, SimTime
 from tickit.utils.topic_naming import input_topic, output_topic
 
 LOGGER = logging.getLogger(__name__)
@@ -34,6 +33,7 @@ class BaseScheduler:
         self._wiring = wiring
         self._state_consumer_cls = state_consumer
         self._state_producer_cls = state_producer
+        self.wakeups: Dict[ComponentID, SimTime] = dict()
 
     @abstractmethod
     async def schedule_interrupt(self, source: ComponentID) -> None:
@@ -67,7 +67,7 @@ class BaseScheduler:
         if isinstance(message, Output):
             await self.ticker.propagate(message)
             if message.call_at is not None:
-                await self.add_wakeup(message.source, message.call_at)
+                self.add_wakeup(message.source, message.call_at)
         if isinstance(message, Interrupt):
             await self.schedule_interrupt(message.source)
 
@@ -86,15 +86,34 @@ class BaseScheduler:
             {output_topic(component) for component in self.ticker.components}
         )
         self.state_producer: StateProducer[Input] = self._state_producer_cls()
-        self.wakeups: ManyAsyncPriorityQueue[Wakeup] = ManyAsyncPriorityQueue()
 
-    async def add_wakeup(self, component: ComponentID, when: SimTime) -> None:
-        """An asynchronous method which adds a wakeup to the priority queue
+    def add_wakeup(self, component: ComponentID, when: SimTime) -> None:
+        """A method which adds a wakeup to the mapping
 
         Args:
             component (ComponentID): The component which should be updated
             when (SimTime): The simulation time at which the update should occur
         """
-        wakeup = Wakeup(component, when)
-        LOGGER.debug("Scheduling {}".format(wakeup))
-        await self.wakeups.put((wakeup.when, wakeup))
+        LOGGER.debug("Scheduling {} for wakeup at {}".format(component, when))
+        self.wakeups[component] = when
+
+    def get_first_wakeups(self) -> Tuple[Set[ComponentID], Optional[SimTime]]:
+        """A method which returns the components which are due for update first and the time
+
+        A method which returns a set of components which are due for update first and
+        the simulation time at which the updates are scheduled. Or an empty set and
+        None if no wakeups are scheduled
+
+        Returns:
+            Tuple[Set[ComponentID], Optional[SimTime]]: A tuple containing the set of
+                components which are scheduled for the first wakeup and the time at
+                which the wakeup should occur. Or an empty set and None if no wakeups
+                are scheduled
+        """
+        if not self.wakeups:
+            return set(), None
+        first = min(self.wakeups.values())
+        components = {
+            component for component, when in self.wakeups.items() if when == first
+        }
+        return components, first

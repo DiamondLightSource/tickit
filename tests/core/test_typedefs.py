@@ -1,7 +1,7 @@
 from dataclasses import is_dataclass
 from typing import Optional
 
-from tickit.core.typedefs import Changes, ComponentID, Input, Output, SimTime, Wakeup
+from tickit.core.typedefs import Changes, ComponentID, Input, Output, SimTime
 
 
 def test_input_is_dataclass():
@@ -38,15 +38,3 @@ def test_output_has_changes():
 
 def test_output_has_call_in():
     assert Optional[SimTime] == Output.__annotations__["call_at"]
-
-
-def test_wakeup_is_dataclass():
-    assert is_dataclass(Wakeup)
-
-
-def test_wakeup_has_component():
-    assert ComponentID == Wakeup.__annotations__["component"]
-
-
-def test_wakeup_has_when():
-    assert SimTime == Wakeup.__annotations__["when"]
