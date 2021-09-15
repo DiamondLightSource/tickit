@@ -1,3 +1,4 @@
+import asyncio
 from typing import Dict, List, Type
 
 from tickit.core.components.component import (
@@ -5,6 +6,7 @@ from tickit.core.components.component import (
     ComponentConfig,
     create_components,
 )
+from tickit.core.lifetime_runnable import run_all
 from tickit.core.management.event_router import InverseWiring
 from tickit.core.management.schedulers.slave import SlaveScheduler
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
@@ -60,10 +62,9 @@ class SystemSimulation(BaseComponent):
         An asynchronous method starts the run_forever method of each component, runs
         the scheduler, and sets up externally facing state interfaces
         """
-        for component_simulation in self.component_simulations:
-            await component_simulation.run_forever()
-        await self.scheduler.run_forever()
-        await super().run_forever()
+        tasks = run_all((*self.component_simulations, self.scheduler))
+        await self.set_up_state_interfaces()
+        await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
 
     async def on_tick(self, time: SimTime, changes: Changes) -> None:
         """An asynchronous method which delegates core behaviour to the slave scheduler

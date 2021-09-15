@@ -1,6 +1,6 @@
 import asyncio
 import traceback
-from typing import Iterable
+from typing import Iterable, List
 
 from tickit.utils.compat.typing_compat import Protocol, runtime_checkable
 
@@ -13,15 +13,17 @@ class LifetimeRunnable(Protocol):
         pass
 
 
-async def run_all_forever(runnables: Iterable[LifetimeRunnable]) -> None:
+def run_all(runnables: Iterable[LifetimeRunnable]) -> List[asyncio.Task]:
     """Asynchronously runs the run_forever method of each lifetime runnable
 
     Creates and runs an asyncio task for the run_forever method of each lifetime
     runnable. Calls to the run_forever method are wrapped with an error handler.
-    This function blocks until all run_forever methods have completed.
 
     Args:
         runnables: An iterable of objects which implement run_forever
+
+    Returns:
+        List[asyncio.Task]: A list of asyncio tasks for the runnables
     """
 
     async def run_with_error_handling(runnable: LifetimeRunnable) -> None:
@@ -33,9 +35,19 @@ async def run_all_forever(runnables: Iterable[LifetimeRunnable]) -> None:
             print("Task exception: {}".format(e))
             print(traceback.format_exc())
 
-    await asyncio.wait(
-        [
-            asyncio.create_task(run_with_error_handling(runnable))
-            for runnable in runnables
-        ]
-    )
+    return [
+        asyncio.create_task(run_with_error_handling(runnable)) for runnable in runnables
+    ]
+
+
+async def run_all_forever(runnables: Iterable[LifetimeRunnable]) -> None:
+    """Asynchronously runs the run_forever method of each lifetime runnable
+
+    Creates and runs an asyncio task for the run_forever method of each lifetime
+    runnable. Calls to the run_forever method are wrapped with an error handler.
+    This function blocks until all run_forever methods have completed.
+
+    Args:
+        runnables: An iterable of objects which implement run_forever
+    """
+    await asyncio.wait(run_all(runnables))
