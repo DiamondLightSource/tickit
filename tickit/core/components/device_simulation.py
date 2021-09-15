@@ -6,6 +6,7 @@ from immutables import Map
 from tickit.core.adapter import AdapterConfig, ListeningAdapter
 from tickit.core.components.component import BaseComponent
 from tickit.core.device import DeviceConfig, DeviceUpdate
+from tickit.core.lifetime_runnable import run_all
 from tickit.core.state_interfaces import StateConsumer, StateProducer
 from tickit.core.typedefs import Changes, ComponentID, SimTime, State
 
@@ -53,9 +54,11 @@ class DeviceSimulation(BaseComponent):
 
     async def run_forever(self):
         """An asynchronous method which sets up state interfaces and runs adapters"""
-        for adapter in self.adapters:
-            asyncio.create_task(adapter.run_forever())
-        await super().run_forever()
+
+        tasks = run_all(self.adapters)
+        await self.set_up_state_interfaces()
+        if tasks:
+            await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
 
     async def on_tick(self, time: SimTime, changes: Changes) -> None:
         """An asynchronous method which delegates core behaviour to the device

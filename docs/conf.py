@@ -72,6 +72,7 @@ nitpick_ignore = [
     ("py:class", "Changes"),
     ("py:class", "SimTime"),
     ("py:class", "immutables._map.Map"),
+    ("py:class", "_asyncio.Task"),
 ]
 
 # Both the class’ and the __init__ method’s docstring are concatenated and
