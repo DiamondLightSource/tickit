@@ -1,19 +1,11 @@
-from typing import Set
+from typing import Dict, Hashable, Mapping, Set
 
 import pytest
 from immutables import Map
 
 from tickit.core.components.component import ComponentConfig
 from tickit.core.management.event_router import EventRouter, InverseWiring, Wiring
-from tickit.core.typedefs import (
-    Changes,
-    ComponentID,
-    ComponentPort,
-    Input,
-    Output,
-    PortID,
-    SimTime,
-)
+from tickit.core.typedefs import Changes, ComponentID, ComponentPort, PortID
 
 
 @pytest.fixture
@@ -175,26 +167,19 @@ def test_event_router_dependants(
 
 
 @pytest.mark.parametrize(
-    ["output", "expected"],
+    ["source", "changes", "expected"],
     [
         (
-            Output(
-                ComponentID("Out1"),
-                SimTime(10),
-                Changes(Map({PortID("Out1>1"): 42})),
-                None,
-            ),
-            {
-                Input(
-                    ComponentID("Mid1"),
-                    SimTime(10),
-                    Changes(Map({PortID("Mid1<1"): 42})),
-                )
-            },
+            ComponentID("Out1"),
+            Changes(Map({PortID("Out1>1"): 42})),
+            {ComponentID("Mid1"): {PortID("Mid1<1"): 42}},
         )
     ],
 )
 def test_event_router_route(
-    event_router: EventRouter, output: Output, expected: Set[Input]
+    event_router: EventRouter,
+    source: ComponentID,
+    changes: Mapping[PortID, Hashable],
+    expected: Dict[ComponentID, Dict[PortID, object]],
 ):
-    assert expected == event_router.route(output)
+    assert expected == event_router.route(source, changes)

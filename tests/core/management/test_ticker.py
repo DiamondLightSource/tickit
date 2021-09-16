@@ -1,3 +1,4 @@
+from collections import defaultdict
 from typing import List
 
 import pytest
@@ -50,43 +51,11 @@ def test_ticker_components_returns_components(ticker: Ticker):
     } == ticker.components
 
 
-def test_ticker_collate_inputs_collates_inputs(ticker: Ticker):
-    assert Input(
-        ComponentID("Target"),
-        SimTime(100),
-        Changes(Map({PortID("TargetOne"): 42, PortID("TargetTwo"): 3.14})),
-    ) == ticker.collate_inputs(
-        {
-            Input(
-                ComponentID("Target"),
-                SimTime(100),
-                Changes(Map({PortID("TargetOne"): 42})),
-            ),
-            Input(
-                ComponentID("Target"),
-                SimTime(100),
-                Changes(Map({PortID("TargetTwo"): 3.14})),
-            ),
-            Input(
-                ComponentID("Other"),
-                SimTime(100),
-                Changes(Map({PortID("TargetOne"): "wrong"})),
-            ),
-            Input(
-                ComponentID("Target"),
-                SimTime(200),
-                Changes(Map({PortID("TargetOne"): False})),
-            ),
-        },
-        ComponentID("Target"),
-        SimTime(100),
-    )
-
-
 @pytest.mark.asyncio
 async def test_ticker_schedule_possible_updates_schedules_only_possible(ticker: Ticker):
     ticker.time = SimTime(42)
-    ticker.inputs = set()
+    ticker.inputs = defaultdict(dict)
+    ticker.roots = {ComponentID("Out1"), ComponentID("Mid1")}
     ticker.to_update = {ComponentID("Out1"): None, ComponentID("Mid1"): None}
     ticker.update_component = AsyncMock()
     await ticker.schedule_possible_updates()
@@ -98,11 +67,10 @@ async def test_ticker_schedule_possible_updates_schedules_only_possible(ticker: 
 @pytest.mark.asyncio
 async def test_ticker_schedule_possible_updates_passes_inputs(ticker: Ticker):
     ticker.time = SimTime(42)
-    ticker.inputs = {
-        Input(
-            ComponentID("Out1"), SimTime(42), Changes(Map({PortID("TestChange"): 3.14}))
-        )
-    }
+    ticker.inputs = defaultdict(
+        dict, {ComponentID("Out1"): {PortID("TestChange"): 3.14}}
+    )
+    ticker.roots = set()
     ticker.to_update = {ComponentID("Out1"): None}
     ticker.update_component = AsyncMock()
     await ticker.schedule_possible_updates()
@@ -136,7 +104,8 @@ async def test_ticker_propagate_raises_unexpected_time(ticker: Ticker):
 @pytest.mark.asyncio
 async def test_ticker_propagate_schedules_next(ticker: Ticker):
     ticker.time = SimTime(42)
-    ticker.inputs = set()
+    ticker.inputs = defaultdict(dict)
+    ticker.roots = {ComponentID("Mid1")}
     ticker.to_update = {ComponentID("Out1"): None, ComponentID("Mid1"): None}
     ticker.update_component = AsyncMock()
     await ticker.propagate(
@@ -150,7 +119,8 @@ async def test_ticker_propagate_schedules_next(ticker: Ticker):
 @pytest.mark.asyncio
 async def test_ticker_propagate_sets_finished_once_complete(ticker: Ticker):
     ticker.time = SimTime(42)
-    ticker.inputs = set()
+    ticker.inputs = defaultdict(dict)
+    ticker.roots = set()
     ticker.to_update = {ComponentID("Out1"): None}
     ticker.update_component = AsyncMock()
     await ticker.propagate(
@@ -168,7 +138,7 @@ async def test_ticker_start_tick_sets_time(ticker: Ticker):
 @pytest.mark.asyncio
 async def test_ticker_start_tick_sets_empty_inputs(ticker: Ticker):
     await ticker._start_tick(SimTime(42), set())
-    assert set() == ticker.inputs
+    assert defaultdict(dict, {}) == ticker.inputs
 
 
 @pytest.mark.asyncio
@@ -203,12 +173,18 @@ async def test_ticker_does_tick(ticker: Ticker):
 
     async def update_component(input: Input) -> None:
         updates.append(input)
+        if input.target == ComponentID("Mid1"):
+            await ticker.propagate(
+                Output(
+                    input.target, input.time, Changes(Map({PortID("Mid1>1"): 42})), None
+                )
+            )
         await ticker.propagate(Output(input.target, input.time, Changes(Map()), None))
 
     ticker.update_component = update_component
-    await ticker(SimTime(42), {ComponentID("Ext1")})
+    await ticker(SimTime(42), {ComponentID("Ext1"), ComponentID("Mid1")})
     assert [
         Input(ComponentID("Ext1"), SimTime(42), Changes(Map())),
         Input(ComponentID("Mid1"), SimTime(42), Changes(Map())),
-        Input(ComponentID("In1"), SimTime(42), Changes(Map())),
+        Input(ComponentID("In1"), SimTime(42), Changes(Map({PortID("In1<1"): 42}))),
     ] == updates

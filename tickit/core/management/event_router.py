@@ -1,17 +1,8 @@
-from collections import deque
-from typing import DefaultDict, Dict, List, Optional, Set, Union, overload
-
-from immutables import Map
+from collections import defaultdict, deque
+from typing import DefaultDict, Dict, List, Mapping, Optional, Set, Union, overload
 
 from tickit.core.components.component import ComponentConfig
-from tickit.core.typedefs import (
-    Changes,
-    ComponentID,
-    ComponentPort,
-    Input,
-    Output,
-    PortID,
-)
+from tickit.core.typedefs import ComponentID, ComponentPort, PortID
 from tickit.utils.compat.functools_compat import cached_property
 
 #: A mapping of component output ports to component input ports with defaults
@@ -236,23 +227,26 @@ class EventRouter:
                     to_crawl.extend(self.component_tree[dev] - dependants)
         return dependants
 
-    def route(self, output: Output) -> Set[Input]:
-        """A method which generates a set of inputs which result from an output
+    def route(
+        self, source: ComponentID, changes: Mapping[PortID, object]
+    ) -> DefaultDict[ComponentID, Dict[PortID, object]]:
+        """A method which generates a mapping of input changes resulting from output changes
 
-        A method which generates a set of inputs which result from the propagation of
-        an output according to the wiring
+        A method which generates a mapping of input changes which result from the
+        propagation of output changes according to the wiring
 
         Args:
-            output (Output): The output to propagate
+            source (ComponentID): The source component of the output changes
+            changes (Mapping[PortID, Hashable]): A mapping of changes to the outputs of
+                the source component
 
         Returns:
-            Set[Input]:
-                A set of inputs which result from the propagation of an output
-                according to the wiring
+            DefaultDict[ComponentID, Dict[PortID, Hashable]]:
+                A mapping of the input changes which result from the propagation of
+                output changes according to the wiring
         """
-        inputs: Set[Input] = set()
-        for out_id, out_val in output.changes.items():
-            for in_dev, in_id in self.wiring[output.source][out_id]:
-                assert output.time is not None
-                inputs.add(Input(in_dev, output.time, Changes(Map({in_id: out_val}))))
-        return inputs
+        routed: DefaultDict[ComponentID, Dict[PortID, object]] = defaultdict(dict)
+        for out_id, out_val in changes.items():
+            for in_dev, in_id in self.wiring[source][out_id]:
+                routed[in_dev][in_id] = out_val
+        return routed
