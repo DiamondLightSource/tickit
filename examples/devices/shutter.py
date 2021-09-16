@@ -12,7 +12,7 @@ from tickit.utils.byte_format import ByteFormat
 
 
 class Shutter(ConfigurableDevice):
-    """A toy device which downscales flux according to a set position
+    """A toy device which downscales flux according to a set position.
 
     A toy device which produces an output flux which is downscaled from the input flux
     according to an internal state position. The position may be altered by setting new
@@ -28,7 +28,7 @@ class Shutter(ConfigurableDevice):
     def __init__(
         self, default_position: float, initial_position: Optional[float] = None
     ) -> None:
-        """A constructor of the Shutter which configures the initial and default position
+        """A Shutter constructor  which configures the initial and default position.
 
         Args:
             default_position (float): The initial target position of the shutter
@@ -43,7 +43,7 @@ class Shutter(ConfigurableDevice):
 
     @staticmethod
     def move(position: float, target: float, rate: float, period: SimTime) -> float:
-        """A helper method used to compute the new position of a shutter
+        """A helper method used to compute the new position of a shutter.
 
         A helper method used to compute the new position of a shutter given a target
         position, a rate of change and a period over which the change occurs. Movement
@@ -66,15 +66,15 @@ class Shutter(ConfigurableDevice):
         return position
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
-        """The update method which moves the shutter and produces a downscaled flux
+        """The update method which moves the shutter and produces a downscaled flux.
 
         The update method which adjusts the position according to the target position,
         computes the transmitted flux and produces the output flux with a request to be
-        called back in 100ms if the if the shutter continues to move
+        called back in 100ms if the if the shutter continues to move.
 
         Args:
-            time (SimTime): The current simulation time (in nanoseconds)
-            inputs (State): A mapping of inputs to the device and their values
+            time (SimTime): The current simulation time (in nanoseconds).
+            inputs (State): A mapping of inputs to the device and their values.
 
         Returns:
             DeviceUpdate[Outputs]:
@@ -98,7 +98,7 @@ class Shutter(ConfigurableDevice):
 
 
 class ShutterAdapter(ComposedAdapter, ConfigurableAdapter):
-    """A toy composed adapter which gets shutter position and target and sets target"""
+    """A toy composed adapter which gets shutter position and target and sets target."""
 
     _device: Shutter
 
@@ -109,12 +109,12 @@ class ShutterAdapter(ComposedAdapter, ConfigurableAdapter):
         host: str = "localhost",
         port: int = 25565,
     ) -> None:
-        """A constructor of the Shutter adapter, which configures the TcpServer
+        """A Shutter which instantiates a TcpServer with configured host and port.
 
         Args:
             device (Device): The device which this adapter is attached to
             raise_interrupt (Callable): A callback to request that the device is
-                updated immediately
+                updated immediately.
             host (Optional[str]): The host address of the TcpServer. Defaults to
                 "localhost".
             port (Optional[int]): The bound port of the TcpServer. Defaults to 25565.
@@ -128,28 +128,28 @@ class ShutterAdapter(ComposedAdapter, ConfigurableAdapter):
 
     @RegexCommand(r"P\?", False, "utf-8")
     async def get_position(self) -> bytes:
-        """A regex string command which returns the utf-8 encoded value of position
+        """A regex string command which returns the utf-8 encoded value of position.
 
         Returns:
-            bytes: The utf-8 encoded value of position
+            bytes: The utf-8 encoded value of position.
         """
         return str(self._device.position).encode("utf-8")
 
     @RegexCommand(r"T\?", False, "utf-8")
     async def get_target(self) -> bytes:
-        """A regex string command which returns the utf-8 encoded value of target
+        """A regex string command which returns the utf-8 encoded value of target.
 
         Returns:
-            bytes: The utf-8 encoded value of target
+            bytes: The utf-8 encoded value of target.
         """
         return str(self._device.target_position).encode("utf-8")
 
     @RegexCommand(r"T=(\d+\.?\d*)", True, "utf-8")
     async def set_target(self, target: str) -> None:
-        """A regex string command which sets the target position of the shutter
+        """A regex string command which sets the target position of the shutter.
 
         Args:
-            target (str): The target position of the shutter
+            target (str): The target position of the shutter.
         """
         self._device.target_position = float(target)
         self._device.last_time = None
