@@ -15,7 +15,8 @@ importlib-metadata = "*"
 
 # Test and docs dependencies
 pytest-cov = "*"
-pytest-mypy = "*"
+# pytest-mypy 0.8.1 was segfaulting with python 3.7.12
+pytest-mypy = "!=0.8.1"
 pytest-flake8 = "*"
 pytest-black = "*"
 flake8-isort = "*"
