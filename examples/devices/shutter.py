@@ -1,5 +1,5 @@
 from random import random
-from typing import Awaitable, Callable, Optional, TypedDict
+from typing import Awaitable, Callable, Optional
 
 from tickit.adapters.composed import ComposedAdapter
 from tickit.adapters.interpreters.command.command_interpreter import CommandInterpreter
@@ -9,6 +9,7 @@ from tickit.core.adapter import ConfigurableAdapter
 from tickit.core.device import ConfigurableDevice, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.byte_format import ByteFormat
+from tickit.utils.compat.typing_compat import TypedDict
 
 
 class Shutter(ConfigurableDevice):
@@ -21,9 +22,9 @@ class Shutter(ConfigurableDevice):
     """
 
     #: A typed mapping containing the 'flux' input value
-    Inputs = TypedDict("Inputs", {"flux": float})
+    Inputs: TypedDict = TypedDict("Inputs", {"flux": float})
     #: A typed mapping containing the 'flux' output value
-    Outputs = TypedDict("Outputs", {"flux": float})
+    Outputs: TypedDict = TypedDict("Outputs", {"flux": float})
 
     def __init__(
         self, default_position: float, initial_position: Optional[float] = None
