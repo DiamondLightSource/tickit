@@ -24,7 +24,7 @@ sphinx-rtd-theme = "*"
 mock = "*"
 types-mock = "*"
 pytest-asyncio = "*"
-pytest = "<6"
+typed-ast = "*"
 
 [packages]
 # All other package requirements from setup.cfg
