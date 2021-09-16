@@ -1,0 +1,8 @@
+record(bo, "$(device):FILTER") {
+  field(DTYP, "$(DTYP)")
+  field(SCAN, "Passive")
+  field(ZNAM, "Out")
+  field(ONAM, "In")
+  field(VAL, "0")
+  field(OMSL, "closed_loop")
+}

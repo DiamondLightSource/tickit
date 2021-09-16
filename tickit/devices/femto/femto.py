@@ -3,9 +3,9 @@ from typing import Awaitable, Callable, Dict
 
 from softioc import builder
 
+from tickit.adapters.epicsadapter import EpicsAdapter, InputRecord, OutputRecord
 from tickit.core.device import ConfigurableDevice, Device, DeviceUpdate
 from tickit.core.typedefs import SimTime, State
-from tickit.devices.femto.epicsadapter import EpicsAdapter, InputRecord, OutputRecord
 from tickit.utils.compat.typing_compat import TypedDict
 
 

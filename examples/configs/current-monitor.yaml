@@ -1,7 +1,7 @@
 - tickit.core.components.device_simulation.DeviceSimulation:
     adapters: 
      - tickit.devices.femto.femto.FemtoAdapter: 
-        db_file: record.db
+        db_file: tickit/devices/femto/record.db 
     device:
       tickit.devices.femto.femto.Femto:
         name: "FEMTO"
