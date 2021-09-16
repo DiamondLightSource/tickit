@@ -2,7 +2,6 @@ import asyncio
 import os
 import re
 from dataclasses import dataclass
-from pathlib import Path
 from tempfile import NamedTemporaryFile
 from typing import Any, Callable, Dict
 
@@ -39,11 +38,10 @@ class EpicsAdapter(ConfigurableAdapter):
             print("Record {} updated to : {}".format(record.name, current_value))
 
     def build_ioc(self):
-
         builder.SetDeviceName(self.device_name)
 
         # From PythonSoftIOC: Load the base records without DTYP fields
-        with open(Path(__file__).parent / self.db_file, "rb") as inp:
+        with open(self.db_file, "rb") as inp:
             with NamedTemporaryFile(suffix=".db", delete=False) as out:
                 for line in inp.readlines():
                     if not re.match(rb"\s*field\s*\(\s*DTYP", line):
