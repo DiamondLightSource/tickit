@@ -1,0 +1,461 @@
+
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>examples.devices.remote_controlled &mdash; tickit 0.0+untagged.g5be6c30 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/tickit-logo.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: rgb(7, 43, 93)" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> tickit
+          
+
+          
+            
+            <img src="../../../_static/tickit-logo.svg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                master
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+  <style>
+    /* style mobile top nav to look like main nav */
+    .wy-nav-top {
+        background: rgb(7, 43, 93)
+    }
+  </style>
+  
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/installation.html">Installation Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/running-a-simulation.html">Running a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/creating-a-simulation.html">Creating a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/creating-a-device.html">Creating a Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/creating-an-adapter.html">Creating an Adapter</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">How-to Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../how-to/accomplish-a-task.html">How to accomplish a task</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Explanations</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../explanations/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../explanations/how-component-updates-are-ordered.html">How component updates are ordered</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/contributing.html">Contributing</a></li>
+</ul>
+
+            
+          
+  <!-- Include Index in the sidebar -->
+  <!-- https://stackoverflow.com/a/37843854 -->
+  <a href="../../../genindex.html">Index</a>
+  <!-- Include all versions of the docs -->
+  <!-- https://holzhaus.github.io/sphinx-multiversion/master/templates.html -->
+  
+
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">tickit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>examples.devices.remote_controlled</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for examples.devices.remote_controlled</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">struct</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">AsyncIterable</span><span class="p">,</span> <span class="n">Awaitable</span><span class="p">,</span> <span class="n">Callable</span>
+
+<span class="kn">from</span> <span class="nn">tickit.adapters.composed</span> <span class="kn">import</span> <span class="n">ComposedAdapter</span>
+<span class="kn">from</span> <span class="nn">tickit.adapters.interpreters.command</span> <span class="kn">import</span> <span class="n">CommandInterpreter</span><span class="p">,</span> <span class="n">RegexCommand</span>
+<span class="kn">from</span> <span class="nn">tickit.core.adapter</span> <span class="kn">import</span> <span class="n">ConfigurableAdapter</span><span class="p">,</span> <span class="n">ServerConfig</span>
+<span class="kn">from</span> <span class="nn">tickit.core.device</span> <span class="kn">import</span> <span class="n">ConfigurableDevice</span><span class="p">,</span> <span class="n">DeviceUpdate</span>
+<span class="kn">from</span> <span class="nn">tickit.core.typedefs</span> <span class="kn">import</span> <span class="n">SimTime</span>
+<span class="kn">from</span> <span class="nn">tickit.utils.compat.typing_compat</span> <span class="kn">import</span> <span class="n">TypedDict</span>
+
+<span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="RemoteControlled"><a class="viewcode-back" href="../../../reference/api.html#examples.devices.remote_controlled.RemoteControlled">[docs]</a><span class="k">class</span> <span class="nc">RemoteControlled</span><span class="p">(</span><span class="n">ConfigurableDevice</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A trivial toy device which is controlled by an adapter&quot;&quot;&quot;</span>
+
+    <span class="c1">#: An empty typed mapping of device inputs</span>
+    <span class="n">Inputs</span><span class="p">:</span> <span class="n">TypedDict</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Inputs&quot;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="c1">#: A typed mapping containing the &#39;observed&#39; output value</span>
+    <span class="n">Outputs</span><span class="p">:</span> <span class="n">TypedDict</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Outputs&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;observed&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">})</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">initial_observed</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">initial_unobserved</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">42</span><span class="p">,</span>
+        <span class="n">initial_hidden</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">3.14</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A constructor of the sink, which configures some initial values</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            initial_observed (float): The initial value of the observed device property.</span>
+<span class="sd">                Defaults to 0.</span>
+<span class="sd">            initial_unobserved (float): The initial value of the unobserved device</span>
+<span class="sd">                property. Defaults to 42.</span>
+<span class="sd">            initial_hidden (float): The initial value of the hidden device property.</span>
+<span class="sd">                Defaults to 3.14.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observed</span> <span class="o">=</span> <span class="n">initial_observed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unobserved</span> <span class="o">=</span> <span class="n">initial_unobserved</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="n">initial_hidden</span>
+
+<div class="viewcode-block" id="RemoteControlled.update"><a class="viewcode-back" href="../../../reference/api.html#examples.devices.remote_controlled.RemoteControlled.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">SimTime</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">Inputs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeviceUpdate</span><span class="p">[</span><span class="n">Outputs</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;The update method which produces an output mapping containing the observed value</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            time (SimTime): The current simulation time (in nanoseconds)</span>
+<span class="sd">            inputs (State): A mapping of inputs to the device and their values</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            DeviceUpdate[Outputs]:</span>
+<span class="sd">                The produced update event which contains the observed value, the device</span>
+<span class="sd">                never requests a callback</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">DeviceUpdate</span><span class="p">(</span><span class="n">RemoteControlled</span><span class="o">.</span><span class="n">Outputs</span><span class="p">(</span><span class="n">observed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">observed</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="RemoteControlledAdapter"><a class="viewcode-back" href="../../../reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter">[docs]</a><span class="k">class</span> <span class="nc">RemoteControlledAdapter</span><span class="p">(</span><span class="n">ComposedAdapter</span><span class="p">,</span> <span class="n">ConfigurableAdapter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A trivial composed adapter which gets and sets device properties&quot;&quot;&quot;</span>
+
+    <span class="n">_device</span><span class="p">:</span> <span class="n">RemoteControlled</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">device</span><span class="p">:</span> <span class="n">RemoteControlled</span><span class="p">,</span>
+        <span class="n">raise_interrupt</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">Awaitable</span><span class="p">[</span><span class="kc">None</span><span class="p">]],</span>
+        <span class="n">server</span><span class="p">:</span> <span class="n">ServerConfig</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A constructor of the Shutter adapter, which builds the TcpServer</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            device (Device): The device which this adapter is attached to</span>
+<span class="sd">            raise_interrupt (Callable): A callback to request that the device is</span>
+<span class="sd">                updated immediately</span>
+<span class="sd">            server (ServerConfig): The immutable data container used to configure a</span>
+<span class="sd">                server</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">device</span><span class="p">,</span>
+            <span class="n">raise_interrupt</span><span class="p">,</span>
+            <span class="n">server</span><span class="o">.</span><span class="n">configures</span><span class="p">()(</span><span class="o">**</span><span class="n">server</span><span class="o">.</span><span class="n">kwargs</span><span class="p">),</span>
+            <span class="n">CommandInterpreter</span><span class="p">(),</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="RemoteControlledAdapter.on_connect"><a class="viewcode-back" href="../../../reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.on_connect">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">on_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterable</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;An on_connect method which continiously sends the unobserved value to the client</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            AsyncIterable[bytes]:</span>
+<span class="sd">                An asynchronous iterable which regularly outputs the unobserved value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">5.0</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="s2">&quot;U is </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">unobserved</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RemoteControlledAdapter.get_observed_bytes"><a class="viewcode-back" href="../../../reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.get_observed_bytes">[docs]</a>    <span class="nd">@RegexCommand</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x01</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_observed_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A regex bytes command which returns the byte encoded value of observed</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bytes: The big endian float encoded value of observed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&gt;f&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">observed</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RemoteControlledAdapter.get_observed_str"><a class="viewcode-back" href="../../../reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.get_observed_str">[docs]</a>    <span class="nd">@RegexCommand</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;O&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_observed_str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A regex string command which returns the utf-8 encoded value of observed</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bytes: The utf-8 encoded value of observed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">observed</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RemoteControlledAdapter.set_observed_bytes"><a class="viewcode-back" href="../../../reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.set_observed_bytes">[docs]</a>    <span class="nd">@RegexCommand</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x01</span><span class="s2">(.</span><span class="si">{4}</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">interrupt</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">set_observed_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A regex bytes command which sets and echos the value of observed</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            value (bytes): The new big endian float encoded value of observed</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bytes: The big endian float encoded value of observed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">observed</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;f&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&gt;f&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">observed</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RemoteControlledAdapter.set_observed_str"><a class="viewcode-back" href="../../../reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.set_observed_str">[docs]</a>    <span class="nd">@RegexCommand</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;O=(\d+\.?\d*)&quot;</span><span class="p">,</span> <span class="n">interrupt</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">set_observed_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A regex string command which sets and echos the value of observed</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            value (int): The new value of observed</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bytes: The utf-8 encoded value of observed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">observed</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="s2">&quot;Observed set to </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">observed</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RemoteControlledAdapter.get_unobserved_bytes"><a class="viewcode-back" href="../../../reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.get_unobserved_bytes">[docs]</a>    <span class="nd">@RegexCommand</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x02</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_unobserved_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A regex bytes command which returns the byte encoded value of unobserved</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bytes: The big endian float encoded value of unobserved</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&gt;f&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">unobserved</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RemoteControlledAdapter.get_unobserved_str"><a class="viewcode-back" href="../../../reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.get_unobserved_str">[docs]</a>    <span class="nd">@RegexCommand</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;U&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_unobserved_str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A regex string command which returns the utf-8 encoded value of unobserved</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bytes: The utf-8 encoded value of unobserved</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">unobserved</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RemoteControlledAdapter.set_unobserved_bytes"><a class="viewcode-back" href="../../../reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.set_unobserved_bytes">[docs]</a>    <span class="nd">@RegexCommand</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x02</span><span class="s2">(.</span><span class="si">{4}</span><span class="s2">)&quot;</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">set_unobserved_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A regex bytes command which sets and echos the value of unobserved</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            value (bytes): The new big endian float encoded value of unobserved</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bytes: The big endian float encoded value of unobserved</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">unobserved</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;f&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&gt;f&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">unobserved</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RemoteControlledAdapter.set_unobserved_str"><a class="viewcode-back" href="../../../reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.set_unobserved_str">[docs]</a>    <span class="nd">@RegexCommand</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;U=(\d+\.?\d*)&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">set_unobserved_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A regex string command which sets and echos the value of unobserved</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            value (int): The new value of unobserved</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bytes: The utf-8 encoded value of unobserved</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">unobserved</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="s2">&quot;Unobserved set to </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">unobserved</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RemoteControlledAdapter.misc"><a class="viewcode-back" href="../../../reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.misc">[docs]</a>    <span class="nd">@RegexCommand</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="mh">0x1F95A</span><span class="p">),</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">misc</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A regex string command which returns a utf-8 encoded character</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bytes: A utf-8 encoded character</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">chr</span><span class="p">(</span><span class="mh">0x1F430</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RemoteControlledAdapter.set_hidden"><a class="viewcode-back" href="../../../reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.set_hidden">[docs]</a>    <span class="nd">@RegexCommand</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;H=(\d+\.?\d*)&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">set_hidden</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A regex string command which sets the value of hidden</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            value (float): The new value of hidden</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Hidden set to </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">hidden</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="RemoteControlledAdapter.get_hidden"><a class="viewcode-back" href="../../../reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.get_hidden">[docs]</a>    <span class="nd">@RegexCommand</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;H&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_hidden</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A regex string command which returns nothing, hidden cannot be shown&quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="RemoteControlledAdapter.yield_observed"><a class="viewcode-back" href="../../../reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.yield_observed">[docs]</a>    <span class="nd">@RegexCommand</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;O\?(\d+)&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">yield_observed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterable</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;A regex string command which sends observed numerous times</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            n (int): The number of times which observed should be sent. Defaults to 10.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            AsyncIterable[bytes]:</span>
+<span class="sd">                An asynchronous iterable which yields the value of observed the</span>
+<span class="sd">                specified number of times with a fixed delay</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="p">)):</span>
+            <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="s2">&quot;Observed is </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">observed</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Diamond Light Source.
+
+    </p>
+  </div> 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

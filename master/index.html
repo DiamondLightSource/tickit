@@ -8,12 +8,14 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>tickit &mdash; tickit 0.0+untagged.gff10fb9 documentation</title>
+  <title>tickit &mdash; tickit 0.0+untagged.g5be6c30 documentation</title>
   
 
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
   <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
 
@@ -34,6 +36,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
@@ -102,19 +105,24 @@
               
             
             
-              <p class="caption"><span class="caption-text">Tutorials</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/installation.html">Installation Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/running-a-simulation.html">Running a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/creating-a-simulation.html">Creating a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/creating-a-device.html">Creating a Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/creating-an-adapter.html">Creating an Adapter</a></li>
 </ul>
-<p class="caption"><span class="caption-text">How-to Guides</span></p>
+<p class="caption" role="heading"><span class="caption-text">How-to Guides</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="how-to/accomplish-a-task.html">How to accomplish a task</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Explanations</span></p>
+<p class="caption" role="heading"><span class="caption-text">Explanations</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="explanations/why-is-something-so.html">Why is something the way it is</a></li>
+<li class="toctree-l1"><a class="reference internal" href="explanations/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="explanations/how-component-updates-are-ordered.html">How component updates are ordered</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="reference/api.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reference/contributing.html">Contributing</a></li>
@@ -127,11 +135,6 @@
   <a href="genindex.html">Index</a>
   <!-- Include all versions of the docs -->
   <!-- https://holzhaus.github.io/sphinx-multiversion/master/templates.html -->
-  
-  <p class="caption"><span class="caption-text">Versions</span></p>
-  <ul>
-    <li><a href="index.html">master</a></li>
-  </ul>
   
 
         </div>
@@ -200,7 +203,8 @@
   <div class="section" id="tickit">
 <h1>tickit<a class="headerlink" href="#tickit" title="Permalink to this headline">¶</a></h1>
 <p><a class="reference external" href="https://github.com/dls-controls/tickit/actions?query=workflow%3A%22Code+CI%22"><img alt="Code CI" src="https://github.com/dls-controls/tickit/workflows/Code%20CI/badge.svg?branch=master" /></a> <a class="reference external" href="https://github.com/dls-controls/tickit/actions?query=workflow%3A%22Docs+CI%22"><img alt="Docs CI" src="https://github.com/dls-controls/tickit/workflows/Docs%20CI/badge.svg?branch=master" /></a> <a class="reference external" href="https://codecov.io/gh/dls-controls/tickit"><img alt="Test Coverage" src="https://codecov.io/gh/dls-controls/tickit/branch/master/graph/badge.svg" /></a> <a class="reference external" href="https://pypi.org/project/tickit"><img alt="Latest PyPI version" src="https://img.shields.io/pypi/v/tickit.svg" /></a> <a class="reference external" href="https://opensource.org/licenses/Apache-2.0"><img alt="Apache License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" /></a></p>
-<p>Event-based device simulation framework.</p>
+<p>An event-based multi-device simulation framework providing configuration and
+orchestration of complex multi-device simulations.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 18%" />
@@ -218,7 +222,54 @@
 </tr>
 </tbody>
 </table>
-<p>TODO</p>
+<p>An example device which emits a random value between <em>0</em> and <em>255</em> whenever
+called and asks to be called again once the simulation has progressed by the
+<code class="docutils literal notranslate"><span class="pre">callback_period</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randint</span>
+
+<span class="kn">from</span> <span class="nn">tickit.core.device</span> <span class="kn">import</span> <span class="n">ConfigurableDevice</span><span class="p">,</span> <span class="n">DeviceUpdate</span>
+<span class="kn">from</span> <span class="nn">tickit.core.typedefs</span> <span class="kn">import</span> <span class="n">SimTime</span>
+<span class="kn">from</span> <span class="nn">tickit.utils.compat.typing_compat</span> <span class="kn">import</span> <span class="n">TypedDict</span>
+
+<span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+                <span class="n">requests</span> <span class="n">a</span> <span class="n">callback</span> <span class="n">after</span> <span class="n">the</span> <span class="n">configured</span> <span class="n">callback</span> <span class="n">period</span>
+        <span class="k">return</span> <span class="n">DeviceUpdate</span><span class="p">(</span><span class="n">Trampoline</span><span class="o">.</span><span class="n">Outputs</span><span class="p">(),</span> <span class="n">SimTime</span><span class="p">(</span><span class="n">time</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback_period</span><span class="p">))</span>
+
+
+    <span class="n">Outputs</span><span class="p">:</span> <span class="n">TypedDict</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Outputs&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">})</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback_period</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1e9</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">Args</span><span class="p">:</span>
+            <span class="n">time</span> <span class="p">(</span><span class="n">SimTime</span><span class="p">):</span> <span class="n">The</span> <span class="n">current</span> <span class="n">simulation</span> <span class="n">time</span> <span class="p">(</span><span class="ow">in</span> <span class="n">nanoseconds</span><span class="p">)</span>
+            <span class="n">inputs</span> <span class="p">(</span><span class="n">State</span><span class="p">):</span> <span class="n">A</span> <span class="n">mapping</span> <span class="n">of</span> <span class="n">inputs</span> <span class="n">to</span> <span class="n">the</span> <span class="n">device</span> <span class="ow">and</span> <span class="n">their</span> <span class="n">values</span>
+</pre></div>
+</div>
+<p>An example simulation defines a <strong>RemoteControlled</strong> device named <strong>tcp_contr</strong>
+and a <strong>Sink</strong> device named <strong>contr_sink</strong>. The <strong>observed</strong> output of
+<strong>tcp_contr</strong> is wired to the <strong>input</strong> input of <strong>contr_sink</strong>. Additionally,
+extenal control of <strong>tcp_contr</strong> is afforded by a <strong>RemoteControlledAdapter</strong>
+which is exposed extenally through a <strong>TCPServer</strong>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">tickit.core.components.device_simulation.DeviceSimulation</span><span class="p">:</span>
+    <span class="nt">adapters</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">examples.devices.remote_controlled.RemoteControlledAdapter</span><span class="p">:</span>
+        <span class="nt">server</span><span class="p">:</span>
+          <span class="nt">tickit.adapters.servers.tcp.TcpServer</span><span class="p">:</span>
+            <span class="nt">format</span><span class="p">:</span> <span class="s">&quot;%b\r\n&quot;</span>
+    <span class="nt">device</span><span class="p">:</span>
+      <span class="nt">examples.devices.remote_controlled.RemoteControlled</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
+    <span class="nt">inputs</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tcp_contr</span>
+<span class="p p-Indicator">-</span> <span class="nt">tickit.core.components.device_simulation.DeviceSimulation</span><span class="p">:</span>
+    <span class="nt">adapters</span><span class="p">:</span> <span class="p p-Indicator">[]</span>
+    <span class="nt">device</span><span class="p">:</span>
+      <span class="nt">tickit.devices.sink.Sink</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
+    <span class="nt">inputs</span><span class="p">:</span>
+      <span class="nt">input</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tcp_contr:observed</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">contr_sink</span>
+</pre></div>
+</div>
 <div class="section" id="how-the-documentation-is-structured">
 <h2>How the documentation is structured<a class="headerlink" href="#how-the-documentation-is-structured" title="Permalink to this headline">¶</a></h2>
 <div class="columns section" id="tutorials">
@@ -237,29 +288,34 @@
 <h3><a class="reference internal" href="#id4"><span class="std std-ref">Reference</span></a><a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h3>
 <p>Technical reference material, for classes, methods, APIs, commands, and contributing to the project.</p>
 </div>
-<div class="endcolumns section" id="about-the-documentation">
-<h3>About the documentation<a class="headerlink" href="#about-the-documentation" title="Permalink to this headline">¶</a></h3>
-<p><a class="reference external" href="https://documentation.divio.com">Why is the documentation structured this way?</a></p>
+</div>
+<div class="endcolumns section" id="contents">
+<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound" id="id1">
-<p class="caption"><span class="caption-text">Tutorials</span></p>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/installation.html">Installation Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/running-a-simulation.html">Running a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/creating-a-simulation.html">Creating a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/creating-a-device.html">Creating a Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/creating-an-adapter.html">Creating an Adapter</a></li>
 </ul>
 </div>
 <div class="toctree-wrapper compound" id="id2">
-<p class="caption"><span class="caption-text">How-to Guides</span></p>
+<p class="caption" role="heading"><span class="caption-text">How-to Guides</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="how-to/accomplish-a-task.html">How to accomplish a task</a></li>
 </ul>
 </div>
 <div class="toctree-wrapper compound" id="id3">
-<p class="caption"><span class="caption-text">Explanations</span></p>
+<p class="caption" role="heading"><span class="caption-text">Explanations</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="explanations/why-is-something-so.html">Why is something the way it is</a></li>
+<li class="toctree-l1"><a class="reference internal" href="explanations/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="explanations/how-component-updates-are-ordered.html">How component updates are ordered</a></li>
 </ul>
 </div>
 <div class="toctree-wrapper no-margin-after-ul compound" id="id4">
-<p class="caption"><span class="caption-text">Reference</span></p>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="reference/api.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reference/contributing.html">Contributing</a></li>
@@ -268,6 +324,9 @@
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 </ul>
+<div class="section" id="about-the-documentation">
+<h3>About the documentation<a class="headerlink" href="#about-the-documentation" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://documentation.divio.com">Why is the documentation structured this way?</a></p>
 </div>
 </div>
 </div>
