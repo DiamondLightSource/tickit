@@ -22,9 +22,9 @@ class Shutter(ConfigurableDevice):
     """
 
     #: A typed mapping containing the 'flux' input value
-    Inputs = TypedDict("Inputs", {"flux": float})
+    Inputs: TypedDict = TypedDict("Inputs", {"flux": float})
     #: A typed mapping containing the 'flux' output value
-    Outputs = TypedDict("Outputs", {"flux": float})
+    Outputs: TypedDict = TypedDict("Outputs", {"flux": float})
 
     def __init__(
         self, default_position: float, initial_position: Optional[float] = None
