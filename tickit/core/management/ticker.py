@@ -1,11 +1,21 @@
 import asyncio
 import logging
-from typing import Awaitable, Callable, Dict, Optional, Set, Union
+from collections import defaultdict
+from typing import (
+    Awaitable,
+    Callable,
+    DefaultDict,
+    Dict,
+    Hashable,
+    Optional,
+    Set,
+    Union,
+)
 
 from immutables import Map
 
 from tickit.core.management.event_router import EventRouter, InverseWiring, Wiring
-from tickit.core.typedefs import Changes, ComponentID, Input, Output, SimTime
+from tickit.core.typedefs import Changes, ComponentID, Input, Output, PortID, SimTime
 
 LOGGER = logging.getLogger(__name__)
 
@@ -72,11 +82,14 @@ class Ticker:
                 update
         """
         self.time = time
+        self.roots = update_components
         LOGGER.debug("Doing tick @ {}".format(self.time))
-        self.inputs: Set[Input] = set()
+        self.inputs: DefaultDict[ComponentID, Dict[PortID, Hashable]] = defaultdict(
+            dict
+        )
         self.to_update = {
             c: None
-            for component in update_components
+            for component in self.roots
             for c in self.event_router.dependants(component)
         }
 
@@ -87,51 +100,30 @@ class Ticker:
         dependencies, as determined by the intersection of the components first order
         dependencies and the set of componets which still require an update
         """
-        self.to_update.update(
-            {
-                component: asyncio.create_task(
+
+        def required_dependencies(component) -> Set[ComponentID]:
+            return self.event_router.inverse_component_tree[component].intersection(
+                self.to_update
+            )
+
+        updating: Dict[ComponentID, asyncio.Task] = dict()
+        skipping: Set[ComponentID] = set()
+        for component, task in self.to_update.items():
+            if task is not None or required_dependencies(component):
+                continue
+            if self.inputs[component] or component in self.roots:
+                updating[component] = asyncio.create_task(
                     self.update_component(
-                        self.collate_inputs(self.inputs, component, self.time)
+                        Input(
+                            component, self.time, Changes(Map(self.inputs[component]))
+                        )
                     )
                 )
-                for component, task in self.to_update.items()
-                if task is None
-                and not self.event_router.inverse_component_tree[
-                    component
-                ].intersection(self.to_update)
-            }
-        )
-
-    def collate_inputs(
-        self, inputs: Set[Input], component: ComponentID, time: SimTime
-    ) -> Input:
-        """A utility method for collating the changes across multiple component inputs
-
-        Args:
-            inputs (Set[Input]): A set of all inputs
-            component (ComponentID): The component for which the inputs should be
-                collated
-            time (SimTime): The time at which the inputs should be collated
-
-        Returns:
-            Input:
-                An input to the component at the time specified with changes collated
-                from each relevent input in the inputs set
-        """
-        return Input(
-            component,
-            time,
-            Changes(
-                Map(
-                    {
-                        k: v
-                        for input in inputs
-                        if input.target == component and input.time == time
-                        for k, v in input.changes.items()
-                    }
-                )
-            ),
-        )
+            else:
+                skipping.add(component)
+        self.to_update.update(updating)
+        for component in skipping:
+            del self.to_update[component]
 
     async def propagate(self, output: Output) -> None:
         """An asynchronous message which propagates the output of an updated component
@@ -147,7 +139,11 @@ class Ticker:
         assert output.source in self.to_update.keys()
         assert output.time == self.time
         self.to_update.pop(output.source)
-        self.inputs.update(self.event_router.route(output))
+
+        changes = self.event_router.route(output.source, output.changes)
+        for component, change in changes.items():
+            self.inputs[component].update(change)
+
         await self.schedule_possible_updates()
         if not self.to_update:
             self.finished.set()
