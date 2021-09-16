@@ -66,31 +66,38 @@ def MockProducer():
 
 
 @pytest.fixture
-def base_component(
-    MockConsumer: Type[StateConsumer], MockProducer: Type[StateProducer]
+def TestComponent():
+    return type("TestComponent", (BaseComponent,), dict())
+
+
+@pytest.fixture
+def test_component(
+    TestComponent: Type[BaseComponent],
+    MockConsumer: Type[StateConsumer],
+    MockProducer: Type[StateProducer],
 ):
-    return BaseComponent(
+    return TestComponent(
         ComponentID("TestBase"), MockConsumer, MockProducer
     )  # type: ignore
 
 
 @pytest.mark.asyncio
 async def test_base_component_handle_input_awaits_on_tick(
-    base_component: BaseComponent,
+    test_component: BaseComponent,
 ):
-    base_component.on_tick = AsyncMock()  # type: ignore
-    await base_component.handle_input(
+    test_component.on_tick = AsyncMock()  # type: ignore
+    await test_component.handle_input(
         Input(ComponentID("Test"), SimTime(42), Changes(Map()))
     )
-    base_component.on_tick.assert_awaited_once_with(SimTime(42), Changes(Map()))
+    test_component.on_tick.assert_awaited_once_with(SimTime(42), Changes(Map()))
 
 
 @pytest.mark.asyncio
-async def test_base_component_output_sends_output(base_component: BaseComponent):
-    await base_component.set_up_state_interfaces()
-    base_component.state_producer.produce = AsyncMock()  # type: ignore
-    await base_component.output(SimTime(42), Changes(Map()), None)
-    base_component.state_producer.produce.assert_awaited_once_with(
+async def test_base_component_output_sends_output(test_component: BaseComponent):
+    await test_component.set_up_state_interfaces()
+    test_component.state_producer.produce = AsyncMock()  # type: ignore
+    await test_component.output(SimTime(42), Changes(Map()), None)
+    test_component.state_producer.produce.assert_awaited_once_with(
         output_topic(ComponentID("TestBase")),
         Output(ComponentID("TestBase"), SimTime(42), Changes(Map()), None),
     )
@@ -98,12 +105,12 @@ async def test_base_component_output_sends_output(base_component: BaseComponent)
 
 @pytest.mark.asyncio
 async def test_base_component_raise_interrupt_sends_output(
-    base_component: BaseComponent,
+    test_component: BaseComponent,
 ):
-    await base_component.set_up_state_interfaces()
-    base_component.state_producer.produce = AsyncMock()  # type: ignore
-    await base_component.raise_interrupt()
-    base_component.state_producer.produce.assert_awaited_once_with(
+    await test_component.set_up_state_interfaces()
+    test_component.state_producer.produce = AsyncMock()  # type: ignore
+    await test_component.raise_interrupt()
+    test_component.state_producer.produce.assert_awaited_once_with(
         output_topic(ComponentID("TestBase")),
         Interrupt(ComponentID("TestBase")),
     )
@@ -111,42 +118,46 @@ async def test_base_component_raise_interrupt_sends_output(
 
 @pytest.mark.asyncio
 async def test_base_component_set_up_state_interfaces_creates_consumer(
-    MockConsumer: Type[StateConsumer], MockProducer: Type[StateProducer]
+    TestComponent: Type[BaseComponent],
+    MockConsumer: Type[StateConsumer],
+    MockProducer: Type[StateProducer],
 ):
-    base_component = BaseComponent(
+    test_coponent = TestComponent(
         ComponentID("TestBase"), MockConsumer, MockProducer
     )  # type: ignore
-    await base_component.set_up_state_interfaces()
-    assert base_component.state_consumer == MockConsumer(AsyncMock())
+    await test_coponent.set_up_state_interfaces()
+    assert test_coponent.state_consumer == MockConsumer(AsyncMock())
 
 
 @pytest.mark.asyncio
 async def test_base_component_set_up_state_interfaces_subscribes_consumer(
-    base_component: BaseComponent,
+    test_component: BaseComponent,
 ):
-    await base_component.set_up_state_interfaces()
-    base_component.state_consumer.subscribe.assert_called_once_with(  # type: ignore
+    await test_component.set_up_state_interfaces()
+    test_component.state_consumer.subscribe.assert_called_once_with(  # type: ignore
         [input_topic(ComponentID("TestBase"))]
     )
 
 
 @pytest.mark.asyncio
 async def test_base_component_set_up_state_interfaces_creates_producer(
-    MockConsumer: Type[StateConsumer], MockProducer: Type[StateProducer]
+    TestComponent: Type[BaseComponent],
+    MockConsumer: Type[StateConsumer],
+    MockProducer: Type[StateProducer],
 ):
-    base_component = BaseComponent(
+    test_component = TestComponent(
         ComponentID("TestBase"), MockConsumer, MockProducer
     )  # type: ignore
-    await base_component.set_up_state_interfaces()
-    assert base_component.state_producer == MockProducer()
+    await test_component.set_up_state_interfaces()
+    assert test_component.state_producer == MockProducer()
 
 
 @pytest.mark.asyncio
 async def test_base_component_on_tick_raises_not_implemented(
-    base_component: BaseComponent,
+    test_component: BaseComponent,
 ):
     with pytest.raises(NotImplementedError):
-        await base_component.on_tick(SimTime(42), Changes(Map()))
+        await test_component.on_tick(SimTime(42), Changes(Map()))
 
 
 def test_create_simulations_creates_configured(
