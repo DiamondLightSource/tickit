@@ -1,0 +1,17 @@
+- tickit.core.components.device_simulation.DeviceSimulation:
+    adapters:
+    - examples.devices.remote_controlled.RemoteControlledAdapter:
+        server:
+          tickit.adapters.servers.tcp.TcpServer:
+            format: "%b\r\n"
+    device:
+      examples.devices.remote_controlled.RemoteControlled: {}
+    inputs: {}
+    name: tcp_contr
+- tickit.core.components.device_simulation.DeviceSimulation:
+    adapters: []
+    device:
+      tickit.devices.sink.Sink: {}
+    inputs:
+      input: tcp_contr:observed
+    name: contr_sink

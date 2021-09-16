@@ -12,12 +12,20 @@
 import os
 import sys
 
+from sphinx.domains.python import PythonDomain
+
 import tickit  # noqa
 
 sys.path.insert(0, os.path.abspath(os.path.join(__file__, "..", "..")))
 
 
 # -- General configuration ------------------------------------------------
+
+
+# Workaround for NewType as autodata, to be removed when issue is resolved
+# see: https://github.com/sphinx-doc/sphinx/issues/9560
+assert PythonDomain.object_types["data"].roles == ("data", "obj")
+PythonDomain.object_types["data"].roles = ("data", "class", "obj")
 
 # General information about the project.
 project = "tickit"
@@ -37,6 +45,8 @@ else:
 extensions = [
     # Use this for generating API docs
     "sphinx.ext.autodoc",
+    # Use this to link to section labels across pages
+    "sphinx.ext.autosectionlabel",
     # This can parse google style docstrings
     "sphinx.ext.napoleon",
     # For linking to external sphinx documentation
@@ -45,8 +55,6 @@ extensions = [
     "sphinx.ext.viewcode",
     # Adds the inheritance-diagram generation directive
     "sphinx.ext.inheritance_diagram",
-    # Add multiple versions of documentation on CI
-    "sphinx_multiversion",
 ]
 
 # If true, Sphinx will warn about all references where the target cannot
@@ -57,7 +65,15 @@ nitpicky = True
 # generating warnings in "nitpicky mode". Note that type should include the
 # domain name if present. Example entries would be ('py:func', 'int') or
 # ('envvar', 'LD_LIBRARY_PATH').
-nitpick_ignore = [("py:func", "int")]
+nitpick_ignore = [
+    ("py:class", "ComponentID"),
+    ("py:class", "PortID"),
+    ("py:class", "State"),
+    ("py:class", "Changes"),
+    ("py:class", "SimTime"),
+    ("py:class", "immutables._map.Map"),
+    ("py:class", "_asyncio.Task"),
+]
 
 # Both the class’ and the __init__ method’s docstring are concatenated and
 # inserted into the main body of the autoclass directive
@@ -68,6 +84,9 @@ autodoc_member_order = "bysource"
 
 # Don't inherit docstrings from baseclasses
 autodoc_inherit_docstrings = False
+
+# Add type hints to both signature and description
+autodoc_typehints = "both"
 
 # Output graphviz directive produced images in a scalable format
 graphviz_output_format = "svg"
@@ -133,11 +152,3 @@ html_css_files = ["theme_overrides.css"]
 # Logo
 html_logo = "images/tickit-logo.svg"
 html_favicon = "images/tickit-logo.ico"
-
-# sphinx-multiversion config
-smv_rebuild_tags = False
-smv_tag_whitelist = r"^\d+\.\d+.*$"  # only document tags with form 0.9*
-smv_branch_whitelist = r"^master$"  # only branch to document is master
-smv_outputdir_format = "{ref.name}"
-smv_prefer_remote_refs = False
-smv_remote_whitelist = "origin|github"

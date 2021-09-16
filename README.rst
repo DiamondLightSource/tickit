@@ -3,7 +3,8 @@ tickit
 
 |code_ci| |docs_ci| |coverage| |pypi_version| |license|
 
-Event-based device simulation framework.
+An event-based multi-device simulation framework providing configuration and
+orchestration of complex multi-device simulations.
 
 ============== ==============================================================
 PyPI           ``pip install tickit``
@@ -11,7 +12,22 @@ Source code    https://github.com/dls-controls/tickit
 Documentation  https://dls-controls.github.io/tickit
 ============== ==============================================================
 
-TODO
+An example device which emits a random value between *0* and *255* whenever
+called and asks to be called again once the simulation has progressed by the
+``callback_period``:
+
+.. literalinclude:: ../examples/devices/trampoline.py
+    :language: python
+    :lines: 1-9, 42, 45-47, 54-56, 72-74
+
+An example simulation defines a **RemoteControlled** device named **tcp_contr**
+and a **Sink** device named **contr_sink**. The **observed** output of
+**tcp_contr** is wired to the **input** input of **contr_sink**. Additionally,
+extenal control of **tcp_contr** is afforded by a **RemoteControlledAdapter**
+which is exposed extenally through a **TCPServer**:
+
+.. literalinclude:: ../examples/configs/sunk-tcp.yaml
+    :language: yaml
 
 
 .. |code_ci| image:: https://github.com/dls-controls/tickit/workflows/Code%20CI/badge.svg?branch=master
