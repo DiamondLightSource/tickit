@@ -9,7 +9,7 @@ from tickit.core.typedefs import ComponentID, SimTime
 
 
 class MasterScheduler(BaseScheduler):
-    """A master scheduler which orchestrates the running of a tickit simulation"""
+    """A master scheduler which orchestrates the running of a tickit simulation."""
 
     def __init__(
         self,
@@ -19,15 +19,15 @@ class MasterScheduler(BaseScheduler):
         initial_time: int = 0,
         simulation_speed: float = 1.0,
     ) -> None:
-        """A constructor of the master sheduler which stores values for reference
+        """A master sheduler constructor  which stores values for reference.
 
         Args:
             wiring (Union[Wiring, InverseWiring]): A wiring or inverse wiring object
-                representing the connections between components in the system
+                representing the connections between components in the system.
             state_consumer (Type[StateConsumer]): The state consumer class to be used
-                by the component
+                by the component.
             state_producer (Type[StateProducer]): The state producer class to be used
-                by the component
+                by the component.
             initial_time (int): The initial time of the simulation (in nanoseconds).
                 Defaults to 0.
             simulation_speed (float): The rate at which simulation time progresses with
@@ -39,29 +39,29 @@ class MasterScheduler(BaseScheduler):
         self.simulation_speed = simulation_speed
 
     async def setup(self) -> None:
-        """An asynchronous method which does base setup and creates a new wakeup flag"""
+        """Performs base setup and creates an awaitable flag to indicate new wakeups."""
         await super().setup()
         self.new_wakeup: asyncio.Event = asyncio.Event()
 
     def add_wakeup(self, component: ComponentID, when: SimTime) -> None:
-        """A method which adds a wakeup to the priority queue and sets a flag
+        """Adds a wakeup to the priority queue and sets an awaitable flag.
 
-        A method which adds a wakeup to the priority queue and sets a flag indicating
-        that a new wakeup has been added
+        A method which adds a wakeup to the priority queue and sets a awaitable flag
+        indicating that a new wakeup has been added.
 
         Args:
-            component (ComponentID): The component which should be updated
-            when (SimTime): The simulation time at which the update should occur
+            component (ComponentID): The component which should be updated.
+            when (SimTime): The simulation time at which the update should occur.
         """
         super().add_wakeup(component, when)
         self.new_wakeup.set()
 
     async def run_forever(self) -> None:
-        """An asynchronous method which continiously schedules ticks as requested
+        """Performs an intial tick then continiously schedules ticks according to wakeups.
 
         An asynchronous method which initially performs setup and an initial tick in
         which all components are updated, subsequently ticks are performed as requested
-        by components of the simulation according to the simulation speed
+        by components of the simulation according to the simulation speed.
         """
         await self.setup()
         await self.ticker(
@@ -91,15 +91,15 @@ class MasterScheduler(BaseScheduler):
             self.last_time = time_ns()
 
     async def schedule_interrupt(self, source: ComponentID) -> None:
-        """An asynchronous method which schedules an interrupt immediately
+        """Schedules the interrupt of a component immediately.
 
         An asynchronous method which implements the superclass abstract, an interrupt
         is sheduled as an immediate wakeup. This is achieved by giving the wakeup a
         simulation time equal to the simulation time of the last tick plus the real
-        world time which has passed, adjusted by the simulation speed
+        world time which has passed, adjusted by the simulation speed.
 
         Args:
-            source (ComponentID): The component which should be updated
+            source (ComponentID): The source component which should be updated.
         """
         self.add_wakeup(
             source,
@@ -110,13 +110,13 @@ class MasterScheduler(BaseScheduler):
         )
 
     def sleep_time(self, when: SimTime) -> float:
-        """A method which computes the real world time until a specified simulation time
+        """Computes the real world time until a specified simulation time.
 
         Args:
-            when (SimTime): The simulation time to be reached
+            when (SimTime): The simulation time to be reached.
 
         Returns:
-            float: The real world duration before the simulation time is reached
+            float: The real world duration before the simulation time is reached.
         """
         return (
             (when - self.ticker.time) / self.simulation_speed

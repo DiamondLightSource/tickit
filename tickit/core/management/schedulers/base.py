@@ -12,7 +12,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 class BaseScheduler:
-    """A base scheduler class which implements logic common to all schedulers"""
+    """A base scheduler class which implements logic common to all schedulers."""
 
     def __init__(
         self,
@@ -20,15 +20,15 @@ class BaseScheduler:
         state_consumer: Type[StateConsumer],
         state_producer: Type[StateProducer],
     ) -> None:
-        """A constructor which stores wiring and state interface classes for reference
+        """A constructor which stores inputs and creates an empty wakeups mapping.
 
         Args:
             wiring (Union[Wiring, InverseWiring]): A wiring or inverse wiring object
-                representing the connections between components in the system
+                representing the connections between components in the system.
             state_consumer (Type[StateConsumer]): The state consumer class to be used
-                by the component
+                by the component.
             state_producer (Type[StateProducer]): The state producer class to be used
-                by the component
+                by the component.
         """
         self._wiring = wiring
         self._state_consumer_cls = state_consumer
@@ -37,31 +37,32 @@ class BaseScheduler:
 
     @abstractmethod
     async def schedule_interrupt(self, source: ComponentID) -> None:
-        """An abstract asynchronous method which should schedule an interrupt immediately
+        """An abstract asynchronous method which should schedule an interrupt immediately.
 
         Args:
-            source (ComponentID): The component which should be updated
+            source (ComponentID): The component which should be updated.
         """
         raise NotImplementedError
 
     async def update_component(self, input: Input) -> None:
-        """An asynchronous method which sends an input to the input topic of a component
+        """Sends a message with an input to the input topic of a component.
 
         Args:
-            input (Input): The input message to be sent to the component
+            input (Input): The input to be included in the message sent to the
+                component.
         """
         await self.state_producer.produce(input_topic(input.target), input)
 
     async def handle_message(self, message: Union[Interrupt, Output]) -> None:
-        """An asynchronous method which handles messages produced by the state consumer
+        """A callback to handle interrupts or outputs produced by the state consumer.
 
-        An asynchronous method which handles interrupt and output messages produced by
+        An asynchronous callback which handles interrupt and output messages produced by
         the state consumer; For Outputs, changes are propagated and wakeups scheduled
-        if required, whilst handling of interrupts is deferred
+        if required, whilst handling of interrupts is deferred.
 
         Args:
             message (Union[Interrupt, Output]): An Interrupt or Output produced by the
-                state consumer
+                state consumer.
         """
         LOGGER.debug("Scheduler got {}".format(message))
         if isinstance(message, Output):
@@ -72,11 +73,11 @@ class BaseScheduler:
             await self.schedule_interrupt(message.source)
 
     async def setup(self) -> None:
-        """An asynchronous method which initializes asynchronous components of the scheduler
+        """Instantiates and configures the ticker and state interfaces.
 
         An asynchronous setup method which creates a ticker, a state consumer which is
         subscribed to the output topics of each component in the system, a state
-        producer to produce component inputs, and initializes the async priority queue
+        producer to produce component inputs.
         """
         self.ticker = Ticker(self._wiring, self.update_component)
         self.state_consumer: StateConsumer[
@@ -88,27 +89,27 @@ class BaseScheduler:
         self.state_producer: StateProducer[Input] = self._state_producer_cls()
 
     def add_wakeup(self, component: ComponentID, when: SimTime) -> None:
-        """A method which adds a wakeup to the mapping
+        """Adds a wakeup to the mapping.
 
         Args:
-            component (ComponentID): The component which should be updated
-            when (SimTime): The simulation time at which the update should occur
+            component (ComponentID): The component which should be updated.
+            when (SimTime): The simulation time at which the update should occur.
         """
         LOGGER.debug("Scheduling {} for wakeup at {}".format(component, when))
         self.wakeups[component] = when
 
     def get_first_wakeups(self) -> Tuple[Set[ComponentID], Optional[SimTime]]:
-        """A method which returns the components which are due for update first and the time
+        """Gets the components which are due for update first and the wakeup time.
 
         A method which returns a set of components which are due for update first and
         the simulation time at which the updates are scheduled. Or an empty set and
-        None if no wakeups are scheduled
+        None if no wakeups are scheduled.
 
         Returns:
             Tuple[Set[ComponentID], Optional[SimTime]]: A tuple containing the set of
                 components which are scheduled for the first wakeup and the time at
                 which the wakeup should occur. Or an empty set and None if no wakeups
-                are scheduled
+                are scheduled.
         """
         if not self.wakeups:
             return set(), None
