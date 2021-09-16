@@ -527,9 +527,10 @@
         },
         "pydocstyle": {
             "hashes": [
-                "sha256:4167fe954b8f27ebbbef2fbcf73c6e8ad1e7bb31488fce44a69fdfc4b0cd0fae"
+                "sha256:1d41b7c459ba0ee6c345f2eb9ae827cab14a7533a88c5c6f7e94923f72df92dc",
+                "sha256:6987826d6775056839940041beef5c08cc7e3d71d63149b48e36727f70144dc4"
             ],
-            "version": "==5.0.1"
+            "version": "==6.1.1"
         },
         "pyflakes": {
             "hashes": [
