@@ -30,13 +30,20 @@ class KafkaStateConsumer(Generic[C]):
             callback (Callable[[C], Awaitable[None]]): An asynchronous handler function
                 for consumed values
         """
+
+        async def run_forever() -> None:
+            await self.consumer.start()
+            while True:
+                async for message in self.consumer:
+                    await self.callback(message.value)
+
         self.consumer = AIOKafkaConsumer(
             None,
             auto_offset_reset="earliest",
             value_deserializer=lambda m: yaml.load(m.decode("utf-8"), Loader=Loader),
         )
         self.callback = callback
-        asyncio.create_task(self.run_forever())
+        asyncio.create_task(run_forever())
 
     async def subscribe(self, topics: Iterable[str]):
         """An asynchronous method which subscribes the consumer to the given topics
@@ -45,12 +52,6 @@ class KafkaStateConsumer(Generic[C]):
             topics (Iterable[str]): An iterable of topics to subscribe to
         """
         self.consumer.subscribe(topics)
-
-    async def run_forever(self) -> None:
-        await self.consumer.start()
-        while True:
-            async for message in self.consumer:
-                await self.callback(message.value)
 
 
 @state_interface.add("kafka", True)
