@@ -55,6 +55,5 @@ class RegexCommand(Generic[AnyStr]):
         if isinstance(message, type(self.regex)):
             match = re.fullmatch(self.regex, message)
             if match:
-                # TODO: Check if matched args are of correct type
                 return match.groups()
         return None

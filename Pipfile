@@ -10,7 +10,6 @@ black = "==21.7b0"
 mypy = "*"
 typed-ast = "*"
 atomicwrites = "*"
-typing-extensions = "*"
 importlib-metadata = "*"
 # Test and docs dependencies
 pytest-cov = "*"
@@ -22,10 +21,13 @@ isort = ">5.0"
 sphinx-rtd-theme = "*"
 mock = "*"
 types-mock = "*"
+types-PyYAML = "*"
 pytest-asyncio = "*"
 pytest-pydocstyle = "*"
 
 [packages]
+# Required by immutables
+typing-extensions = "*"
 # All other package requirements from setup.cfg
 tickit = {editable = true, path = "."}
 
