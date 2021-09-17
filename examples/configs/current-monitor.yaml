@@ -1,10 +1,10 @@
 - tickit.core.components.device_simulation.DeviceSimulation:
     adapters: 
      - tickit.devices.femto.femto.FemtoAdapter: 
-        db_file: tickit/devices/femto/record.db 
+        ioc_name: FEMTO
+        db_file: tickit/devices/femto/record.db
     device:
       tickit.devices.femto.femto.Femto:
-        name: "FEMTO"
         initial_gain: 2.5
         initial_current: 0.0
     inputs:
