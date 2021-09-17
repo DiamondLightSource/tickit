@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>tickit &mdash; tickit 0.0+untagged.g2c5ed9f documentation</title>
+  <title>tickit &mdash; tickit 0.0+untagged.g665ffe1 documentation</title>
   
 
   
@@ -225,25 +225,23 @@ orchestration of complex multi-device simulations.</p>
 <p>An example device which emits a random value between <em>0</em> and <em>255</em> whenever
 called and asks to be called again once the simulation has progressed by the
 <code class="docutils literal notranslate"><span class="pre">callback_period</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randint</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">RandomTrampoline</span><span class="p">(</span><span class="n">ConfigurableDevice</span><span class="p">):</span>
 
-<span class="kn">from</span> <span class="nn">tickit.core.device</span> <span class="kn">import</span> <span class="n">ConfigurableDevice</span><span class="p">,</span> <span class="n">DeviceUpdate</span>
-<span class="kn">from</span> <span class="nn">tickit.core.typedefs</span> <span class="kn">import</span> <span class="n">SimTime</span>
-<span class="kn">from</span> <span class="nn">tickit.utils.compat.typing_compat</span> <span class="kn">import</span> <span class="n">TypedDict</span>
+<span class="n">Inputs</span><span class="p">:</span> <span class="n">TypedDict</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Inputs&quot;</span><span class="p">,</span> <span class="p">{})</span>
+<span class="n">Outputs</span><span class="p">:</span> <span class="n">TypedDict</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Outputs&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">})</span>
 
-<span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback_period</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1e9</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">callback_period</span> <span class="o">=</span> <span class="n">SimTime</span><span class="p">(</span><span class="n">callback_period</span><span class="p">)</span>
 
-                <span class="n">requests</span> <span class="n">a</span> <span class="n">callback</span> <span class="n">after</span> <span class="n">the</span> <span class="n">configured</span> <span class="n">callback</span> <span class="n">period</span>
-        <span class="k">return</span> <span class="n">DeviceUpdate</span><span class="p">(</span><span class="n">Trampoline</span><span class="o">.</span><span class="n">Outputs</span><span class="p">(),</span> <span class="n">SimTime</span><span class="p">(</span><span class="n">time</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback_period</span><span class="p">))</span>
-
-
-    <span class="n">Outputs</span><span class="p">:</span> <span class="n">TypedDict</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Outputs&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">})</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback_period</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1e9</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">Args</span><span class="p">:</span>
-            <span class="n">time</span> <span class="p">(</span><span class="n">SimTime</span><span class="p">):</span> <span class="n">The</span> <span class="n">current</span> <span class="n">simulation</span> <span class="n">time</span> <span class="p">(</span><span class="ow">in</span> <span class="n">nanoseconds</span><span class="p">)</span>
-            <span class="n">inputs</span> <span class="p">(</span><span class="n">State</span><span class="p">):</span> <span class="n">A</span> <span class="n">mapping</span> <span class="n">of</span> <span class="n">inputs</span> <span class="n">to</span> <span class="n">the</span> <span class="n">device</span> <span class="ow">and</span> <span class="n">their</span> <span class="n">values</span>
+<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">SimTime</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">Inputs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeviceUpdate</span><span class="p">[</span><span class="n">Outputs</span><span class="p">]:</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+    <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+        <span class="s2">&quot;Boing! (delta: </span><span class="si">{}</span><span class="s2">, inputs: </span><span class="si">{}</span><span class="s2">, output: </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">DeviceUpdate</span><span class="p">(</span>
+        <span class="n">RandomTrampoline</span><span class="o">.</span><span class="n">Outputs</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">),</span>
+        <span class="n">SimTime</span><span class="p">(</span><span class="n">time</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback_period</span><span class="p">),</span>
+    <span class="p">)</span>
 </pre></div>
 </div>
 <p>An example simulation defines a <strong>RemoteControlled</strong> device named <strong>tcp_contr</strong>
@@ -255,18 +253,18 @@ which is exposed extenally through a <strong>TCPServer</strong>:</p>
     <span class="nt">adapters</span><span class="p">:</span>
     <span class="p p-Indicator">-</span> <span class="nt">examples.devices.remote_controlled.RemoteControlledAdapter</span><span class="p">:</span>
         <span class="nt">server</span><span class="p">:</span>
-          <span class="nt">tickit.adapters.servers.tcp.TcpServer</span><span class="p">:</span>
+        <span class="nt">tickit.adapters.servers.tcp.TcpServer</span><span class="p">:</span>
             <span class="nt">format</span><span class="p">:</span> <span class="s">&quot;%b\r\n&quot;</span>
     <span class="nt">device</span><span class="p">:</span>
-      <span class="nt">examples.devices.remote_controlled.RemoteControlled</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
+    <span class="nt">examples.devices.remote_controlled.RemoteControlled</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
     <span class="nt">inputs</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
     <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tcp_contr</span>
 <span class="p p-Indicator">-</span> <span class="nt">tickit.core.components.device_simulation.DeviceSimulation</span><span class="p">:</span>
     <span class="nt">adapters</span><span class="p">:</span> <span class="p p-Indicator">[]</span>
     <span class="nt">device</span><span class="p">:</span>
-      <span class="nt">tickit.devices.sink.Sink</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
+    <span class="nt">tickit.devices.sink.Sink</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
     <span class="nt">inputs</span><span class="p">:</span>
-      <span class="nt">input</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tcp_contr:observed</span>
+    <span class="nt">input</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tcp_contr:observed</span>
     <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">contr_sink</span>
 </pre></div>
 </div>
