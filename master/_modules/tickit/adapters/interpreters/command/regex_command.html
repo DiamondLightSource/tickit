@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>tickit.adapters.interpreters.command.regex_command &mdash; tickit 0.0+untagged.g544c638 documentation</title>
+  <title>tickit.adapters.interpreters.command.regex_command &mdash; tickit 0.0+untagged.g2c5ed9f documentation</title>
   
 
   
@@ -248,7 +248,6 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regex</span><span class="p">)):</span>
             <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regex</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
-                <span class="c1"># TODO: Check if matched args are of correct type</span>
                 <span class="k">return</span> <span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
         <span class="k">return</span> <span class="kc">None</span></div></div>
 </pre></div>
