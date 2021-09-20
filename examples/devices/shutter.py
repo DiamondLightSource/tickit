@@ -29,7 +29,7 @@ class Shutter(ConfigurableDevice):
     def __init__(
         self, default_position: float, initial_position: Optional[float] = None
     ) -> None:
-        """A Shutter constructor  which configures the initial and default position.
+        """A Shutter constructor which configures the initial and default position.
 
         Args:
             default_position (float): The initial target position of the shutter
