@@ -34,7 +34,7 @@ config, as:
     
     - tickit.core.components.device_simulation.DeviceSimulation:
         adapters: []
-        config:
+        device:
           examples.devices.trampoline.RandomTrampoline:
             callback_period: 1000000000
         inputs: {}
@@ -48,7 +48,7 @@ of ``rand_tramp`` as ``input``. As such we may extend our config, as:
     
     - tickit.core.components.device_simulation.DeviceSimulation:
         adapters: []
-        config:
+        device:
           examples.devices.trampoline.RandomTrampoline:
             callback_period: 1000000000
         inputs: {}
@@ -59,8 +59,7 @@ of ``rand_tramp`` as ``input``. As such we may extend our config, as:
           tickit.devices.sink.Sink: {}
         inputs:
           input:
-          - rand_tramp
-          - output
+          - rand_tramp:output
         name: tramp_sink
 
 Running the Simulation
