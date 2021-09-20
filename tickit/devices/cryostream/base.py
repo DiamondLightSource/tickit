@@ -9,6 +9,8 @@ LOGGER = logging.getLogger(__name__)
 
 
 class CryostreamBase:
+    """A base class for cryostream device logic."""
+
     min_temp: int = 8000  # cK
     max_temp: int = 40000  # ck
     min_rate: int = 1
@@ -20,7 +22,7 @@ class CryostreamBase:
     random_value: int = 20  # for status packet unknown values
 
     def __init__(self) -> None:
-
+        """A CryostreamBase constructor which assigns initial values."""
         self.run_mode: int = 0
         self.phase_id: int = 0
         self.alarm_code: int = 0
@@ -32,9 +34,7 @@ class CryostreamBase:
         self.time_at_last_update: float = 0.0
 
     async def restart(self) -> None:
-        """
-        Stop Cryostream and re-initialise system back to Ready
-        """
+        """Stop Cryostream and re-initialise system back to Ready."""
         start_target_temp = 10000
         await self.stop()
         self.run_mode = RunModes.STARTUP.value
@@ -45,10 +45,12 @@ class CryostreamBase:
             self.run_mode = RunModes.STARTUPFAIL.value
 
     async def ramp(self, ramp_rate: int, target_temp: int) -> None:
-        """
-        Change gas temperature to a set value at a controlled rate
-        """
+        """Change gas temperature to a set value at a controlled rate.
 
+        Args:
+            ramp_rate (int): The rate at which the temperature should change.
+            target_temp (int): The target temperature.
+        """
         if ramp_rate < self.min_rate or ramp_rate > self.max_rate:
             self.alarm_code = AlarmCodes.TEMP_CONTROL_ERROR
         else:
@@ -81,11 +83,11 @@ class CryostreamBase:
             self.gas_flow = 5
 
     async def plat(self, duration: int) -> None:
-        """
-        Maintain the current temperature for a set amount of time
-        :return:
-        """
+        """Maintain the current temperature for a set amount of time.
 
+        Args:
+            duration (int): The duration for which the temperature should be held.
+        """
         if duration < self.min_plat_duration or duration > self.max_plat_duration:
             raise Exception("Duration set to less than minimum plat duration time")
         if duration > self.max_plat_duration:
@@ -97,20 +99,16 @@ class CryostreamBase:
         self.phase_id = PhaseIds.PLAT.value
 
     async def hold(self) -> None:
-        """
-        Stay at the current temperature indefinitely with no ability to resume
-        the previous command
-        :return:
-        """
-
+        """Maintain the current temperature indefinitely."""
         self.run_mode = RunModes.RUN.value
         self.phase_id = PhaseIds.HOLD.value
         self._target_temp = self.gas_temp
 
     async def cool(self, target_temp: int) -> None:
-        """
-        Make gas temperature decrease to a set value as quickly as possible
-        :return:
+        """Make gas temperature decrease to a set value as quickly as possible.
+
+        Args:
+            target_temp (int): The target temperature.
         """
         self.run_mode = RunModes.RUN
         self.phase_id = PhaseIds.COOL.value
@@ -118,10 +116,10 @@ class CryostreamBase:
         await self.ramp(self.default_ramp_rate, self._target_temp)
 
     async def end(self, ramp_rate: int) -> None:
-        """
-        Bring the gas temperature to 300 K, at which point the gas flow
-        is halted and the system stops.
-        :return:
+        """Bring the gas temperature to 300 K at ramp rate, then halt and stop.
+
+        Args:
+            ramp_rate (int): The rate at which the temperature should change.
         """
         if self.run_mode not in (5, 6):
             self.phase_id = PhaseIds.END.value
@@ -133,12 +131,7 @@ class CryostreamBase:
                 self.run_mode = RunModes.SHUTDOWNFAIL.value
 
     async def purge(self) -> None:
-        """
-        Gas flow is halted and the whole system brought up to 300 K
-        using its internal heaters, at which point the system stops
-        :return:
-
-        """
+        """Bring the gas temperature to 300 K at max rate, then halt and stop."""
         if self.run_mode not in (5, 6):
             self.phase_id = PhaseIds.PURGE.value
             self.gas_flow = 0
@@ -150,37 +143,32 @@ class CryostreamBase:
                 self.run_mode = RunModes.SHUTDOWNFAIL.value
 
     async def pause(self) -> None:
-        """
-        Interrupt the current commands and maintain the current gas
-        temperature until instructed otherwise by a RESUME command
-        :return:
-        """
+        """Interrupt and maintain the current gas temperature until resumed."""
         # Todo interrupt other commands from running
         ...
 
     async def resume(self) -> None:
-        """
-        Resume the previous command before the SUSPEND command was given
-        :return:
-        """
+        """Resume the previous command."""
         if self.phase_id == PhaseIds.HOLD.value:
             LOGGER.warn("Cannot return to previous command")  # Todo keep commands
 
     async def stop(self) -> None:
-        """
-        Gas flow is halted and the system is stopped at the current
-        temperature.
-        """
+        """Gas flow is halted and the system is stopped at the current temperature."""
         if self.run_mode not in (5, 6):
             self.gas_flow = 0
             self._target_temp = self.gas_temp
             self.run_mode = RunModes.SHUTDOWNOK.value
 
     async def turbo(self, turbo_on: int) -> None:
-        """
+        """Set turbo mode to use maximum achievable flow.
+
         The system will use 10 l/min gas flow except above 310 K
         Above 310 K available heater power limits the maximum achievable
-        flow to 5 l/min
+        flow to 5 l/min.
+
+        Args:
+            turbo_on (int): The desired turbo mode, where 0 denotes off and 1 denotes
+                on.
         """
         if turbo_on == 1:
             self.turbo_mode = 1
@@ -191,8 +179,15 @@ class CryostreamBase:
         else:
             self.turbo_mode = 0
 
-    def update_temperature(self, time: float):
+    def update_temperature(self, time: float) -> int:
+        """Update the Cryostream gas temperature according to mode and time.
 
+        Args:
+            time (float): The current simulation time (in nanoseconds).
+
+        Returns:
+            int: The current gas temperature.
+        """
         delta_time = (time - self.time_at_last_update) / 1e9
         difference = self._target_temp - self.gas_temp
         if (self.gas_temp - self._target_temp) < 10:
@@ -206,6 +201,12 @@ class CryostreamBase:
         return self.gas_temp
 
     async def set_status_format(self, status_format: int) -> None:
+        """Sets the status packet format.
+
+        Args:
+            status_format (int): The status packet format, where 0 denotes a standard
+                status packet and 1 denotes an extended status packet.
+        """
         if status_format == 0:
             self.status = Status(
                 length=c_ubyte(32).value,  # 0R
@@ -275,6 +276,15 @@ class CryostreamBase:
             self.extended_status.turbo_mode = c_ubyte(self.turbo_mode).value
 
     async def get_status(self, status_format: int) -> Union[Status, ExtendedStatus]:
+        """Get a Status or ExtendedStatus packet.
+
+        Args:
+            status_format (int): The status packet format, where 0 denotes a standard
+                status packet and 1 denotes an extended status packet.
+
+        Returns:
+            Union[Status, ExtendedStatus]: The status packet.
+        """
         if status_format == 0:
             return self.status
         if status_format == 1:
