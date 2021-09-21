@@ -17,10 +17,13 @@ _EXTENDED_STATUS = ">BBHHHBBHHHHHBBBBBBHHBBBBBBBBHH"
 
 
 class Cryostream(CryostreamBase, ConfigurableDevice):
+    """Configurable Cryostream Class."""
+
     Inputs: TypedDict = TypedDict("Inputs", {})
     Outputs: TypedDict = TypedDict("Outputs", {"temperature": float})
 
     def __init__(self) -> None:
+        """Initialise a Cryostream object."""
         super().__init__()
         self.phase_id: int = PhaseIds.HOLD.value
         self.callback_period: SimTime = SimTime(int(1e9))
@@ -28,6 +31,12 @@ class Cryostream(CryostreamBase, ConfigurableDevice):
     def update(
         self, time: SimTime, inputs: "Cryostream.Inputs"
     ) -> DeviceUpdate["Cryostream.Outputs"]:
+        """Update the device based on on current phase.
+
+        Checks the phase of operation the device is currently in and
+        implements the changes to the attributes of the device according
+        to how much time has passed since previous update.
+        """
         if self.phase_id in (PhaseIds.RAMP.value, PhaseIds.COOL.value):
             self.gas_temp = self.update_temperature(time)
             return DeviceUpdate(
@@ -44,6 +53,8 @@ class Cryostream(CryostreamBase, ConfigurableDevice):
 
 
 class CryostreamAdapter(ComposedAdapter, ConfigurableAdapter):
+    """Adapter for the Cryostream class."""
+
     _device = Cryostream
 
     def __init__(
@@ -53,6 +64,7 @@ class CryostreamAdapter(ComposedAdapter, ConfigurableAdapter):
         host: str = "localhost",
         port: int = 25565,
     ) -> None:
+        """Initialise a CryostreamAdapter object."""
         super().__init__(
             device,
             raise_interrupt,
@@ -61,6 +73,7 @@ class CryostreamAdapter(ComposedAdapter, ConfigurableAdapter):
         )
 
     async def on_connect(self) -> AsyncIterable[bytes]:
+        """Run on establishing connection."""
         while True:
             await asyncio.sleep(2.0)
             await self._device.set_status_format(1)
@@ -69,55 +82,67 @@ class CryostreamAdapter(ComposedAdapter, ConfigurableAdapter):
 
     @RegexCommand(b"\\x02\\x0a", interrupt=True)
     async def restart(self) -> None:
+        """Restart the device."""
         await self._device.restart()
 
     @RegexCommand(b"\\x02\\x0d", interrupt=True)
     async def hold(self) -> None:
+        """Set the device in hold mode."""
         await self._device.hold()
 
     @RegexCommand(b"\\x02\\x10", interrupt=True)
     async def purge(self) -> None:
+        """Set the device in purge mode."""
         await self._device.purge()
 
     @RegexCommand(b"\\x02\\x11", interrupt=True)
     async def pause(self) -> None:
+        """Pause the current phase."""
         await self._device.pause()
 
     @RegexCommand(b"\\x02\\x12", interrupt=True)
     async def resume(self) -> None:
+        """Resume the paused phase."""
         await self._device.resume()
 
     @RegexCommand(b"\\x02\\x13", interrupt=True)
     async def stop(self) -> None:
+        """Stop the current phase."""
         await self._device.stop()
 
     @RegexCommand(b"\\x03\\x14([\\x00\\x01])", interrupt=True)
     async def turbo(self, turbo_on: bytes) -> None:
+        """Set the device in turbo mode."""
         turbo_on = struct.unpack(">B", turbo_on)[0]
         await self._device.turbo(turbo_on)
 
     # Todo set status format not interrupt
     @RegexCommand(b"\\x03\\x28([\\x00\\x01])", interrupt=False)
     async def set_status_format(self, status_format: bytes) -> None:
+        """Set the status format of the device."""
         status_format = struct.unpack(">B", status_format)[0]
         await self._device.set_status_format(status_format)
 
     @RegexCommand(b"\\x04\\x0c(.{2})", interrupt=True)
     async def plat(self, duration: bytes) -> None:
+        """Set the device in plat mode (plateau)."""
         duration = struct.unpack(">H", duration)[0]
         await self._device.plat(duration)
 
     @RegexCommand(b"\\x04\\x0f(.{2})", interrupt=True)
     async def end(self, ramp_rate: bytes) -> None:
+        """Halt the operation of the device."""
         ramp_rate = struct.unpack(">H", ramp_rate)[0]
         await self._device.end(ramp_rate)
 
     @RegexCommand(b"\\x04\\x0e(.{2})", interrupt=True)
     async def cool(self, target_temp: bytes) -> None:
+        """Set the device in cooling mode."""
         target_temp = struct.unpack(">H", target_temp)[0]
         await self._device.cool(target_temp)
 
     @RegexCommand(b"\\x06\\x0b(.{2,4})", interrupt=True)
     async def ramp(self, values: bytes) -> None:
+        """Set the device in ramp mode (heating)."""
         ramp_rate, target_temp = struct.unpack(">HH", values)
         await self._device.ramp(ramp_rate, target_temp)

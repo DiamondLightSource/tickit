@@ -4,6 +4,8 @@ from dataclasses import dataclass
 
 @dataclass
 class Status:
+    """Dataclass containing the status data of a Cryostream object."""
+
     length: int
     type_status: int
     gas_set_point: int
@@ -29,6 +31,7 @@ class Status:
     status_bytes_string: str = ">BBHHhBBHHHHHBBBBBBHHBB"
 
     def pack(self) -> bytes:
+        """Converts the status data into a bytes object."""
         status_bytes = struct.pack(
             self.status_bytes_string,
             self.length,
@@ -60,7 +63,8 @@ class Status:
 
 @dataclass
 class ExtendedStatus:
-    """
+    """Dataclass containing the extended status data for a CryoStream object.
+
     Chars have a size of 1 byte, shorts have a size of 2 bytes
     All temperatures are in centi-Kelvin 80K is reported as 8000
     """
@@ -98,6 +102,7 @@ class ExtendedStatus:
     extended_packet_string: str = ">BBHHhBBHHHHHBBBBBBHHBBBBBBBBHH"
 
     def pack(self) -> bytes:
+        """Converts the status data into a bytes object."""
         extended_status_bytes = struct.pack(
             self.extended_packet_string,
             self.length,
