@@ -67,7 +67,8 @@ which consists of ``outputs`` - a mapping of output ports and their value - and
 .. code-block:: python
 
     from random import random
-    from typing import Optional, TypedDict
+    from typing import Optional
+    from typing_extensions import TypedDict
 
     from tickit.core.device import ConfigurableDevice, DeviceUpdate
     from tickit.core.typedefs import SimTime
