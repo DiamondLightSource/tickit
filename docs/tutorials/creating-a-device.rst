@@ -62,7 +62,7 @@ The core logic of the device will be implemented in the ``update`` method which
 recieves the arguments ``time`` - the current simulation time in nanoseconds - and
 ``inputs`` - a mapping of input ports to their value - and returns an `DeviceUpdate`
 which consists of ``outputs`` - a mapping of output ports and their value - and
-``call_at`` - the duration in which the device should next be updated.
+``call_at`` - the time at which the device should next be updated.
 
 .. code-block:: python
 
