@@ -28,7 +28,7 @@ class TcpServer(ConfigurableServer):
         """
         self.host = host
         self.port = port
-        self.format = format.format
+        self.format = format
 
     async def run_forever(
         self,
