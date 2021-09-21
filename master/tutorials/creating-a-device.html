@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Creating a Device &mdash; tickit 0.0+untagged.g665ffe1 documentation</title>
+  <title>Creating a Device &mdash; tickit 0.0+untagged.g2b983a3 documentation</title>
   
 
   
@@ -265,9 +265,10 @@ if the device inherits <a class="reference internal" href="../reference/api.html
 recieves the arguments <code class="docutils literal notranslate"><span class="pre">time</span></code> - the current simulation time in nanoseconds - and
 <code class="docutils literal notranslate"><span class="pre">inputs</span></code> - a mapping of input ports to their value - and returns an <a class="reference internal" href="../reference/api.html#tickit.core.device.DeviceUpdate" title="tickit.core.device.DeviceUpdate"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DeviceUpdate</span></code></a>
 which consists of <code class="docutils literal notranslate"><span class="pre">outputs</span></code> - a mapping of output ports and their value - and
-<code class="docutils literal notranslate"><span class="pre">call_in</span></code> - the duration in which the device should next be updated.</p>
+<code class="docutils literal notranslate"><span class="pre">call_at</span></code> - the time at which the device should next be updated.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">random</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TypedDict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">TypedDict</span>
 
 <span class="kn">from</span> <span class="nn">tickit.core.device</span> <span class="kn">import</span> <span class="n">ConfigurableDevice</span><span class="p">,</span> <span class="n">DeviceUpdate</span>
 <span class="kn">from</span> <span class="nn">tickit.core.typedefs</span> <span class="kn">import</span> <span class="n">SimTime</span>
@@ -302,9 +303,9 @@ which consists of <code class="docutils literal notranslate"><span class="pre">o
                 <span class="n">SimTime</span><span class="p">(</span><span class="n">time</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_time</span><span class="p">),</span>
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">last_time</span> <span class="o">=</span> <span class="n">time</span>
-        <span class="n">call_in</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_position</span> <span class="k">else</span> <span class="n">SimTime</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mf">1e8</span><span class="p">))</span>
+        <span class="n">call_at</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_position</span> <span class="k">else</span> <span class="n">SimTime</span><span class="p">(</span><span class="n">time</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1e8</span><span class="p">))</span>
         <span class="n">output_flux</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;flux&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span>
-        <span class="k">return</span> <span class="n">DeviceUpdate</span><span class="p">(</span><span class="n">Shutter</span><span class="o">.</span><span class="n">Outputs</span><span class="p">(</span><span class="n">flux</span><span class="o">=</span><span class="n">output_flux</span><span class="p">),</span> <span class="n">call_in</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">DeviceUpdate</span><span class="p">(</span><span class="n">Shutter</span><span class="o">.</span><span class="n">Outputs</span><span class="p">(</span><span class="n">flux</span><span class="o">=</span><span class="n">output_flux</span><span class="p">),</span> <span class="n">call_at</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

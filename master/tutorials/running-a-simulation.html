@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Running a Simulation &mdash; tickit 0.0+untagged.g665ffe1 documentation</title>
+  <title>Running a Simulation &mdash; tickit 0.0+untagged.g2b983a3 documentation</title>
   
 
   
@@ -207,11 +207,11 @@
             
   <div class="section" id="running-a-simulation">
 <h1>Running a Simulation<a class="headerlink" href="#running-a-simulation" title="Permalink to this headline">¶</a></h1>
-<p>This tutorial shows how to run a tikit simulation both within a single process
+<p>This tutorial shows how to run a tickit simulation both within a single process
 and distributed across multiple processes.</p>
 <div class="section" id="within-a-single-process">
 <h2>Within a Single Process<a class="headerlink" href="#within-a-single-process" title="Permalink to this headline">¶</a></h2>
-<p>Tickit simulations may be launched within a single process by exectuing a command of
+<p>Tickit simulations may be launched within a single process by executing a command of
 the following format <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">tickit</span> <span class="pre">all</span> <span class="pre">[OPTIONS]</span> <span class="pre">CONFIG_PATH</span></code> in which <code class="docutils literal notranslate"><span class="pre">all</span></code>
 denotes that both a <a class="reference internal" href="../reference/api.html#tickit.core.management.schedulers.master.MasterScheduler" title="tickit.core.management.schedulers.master.MasterScheduler"><code class="xref any py py-class docutils literal notranslate"><span class="pre">MasterScheduler</span></code></a> and the components defined in the config should
 be started within the process.</p>
@@ -244,7 +244,7 @@ Scheduler got Output<span class="o">(</span><span class="nv">source</span><span 
 <div class="section" id="across-multiple-processes">
 <h2>Across Multiple Processes<a class="headerlink" href="#across-multiple-processes" title="Permalink to this headline">¶</a></h2>
 <p>In order to run across multiple processes a message broking service must be utilized.
-As such, prior to launching any instances of Tickit a message broker must be laucnhed;
+As such, prior to launching any instances of Tickit a message broker must be launched;
 In this example we will use apache kafka (the default distributed broker for Tickit),
 which may be installed and launched according to steps 1 and 2 of the
 <a class="reference external" href="https://kafka.apache.org/quickstart">apache kafka quickstart guide</a>.</p>

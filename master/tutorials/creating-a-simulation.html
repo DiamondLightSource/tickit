@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Creating a Simulation &mdash; tickit 0.0+untagged.g665ffe1 documentation</title>
+  <title>Creating a Simulation &mdash; tickit 0.0+untagged.g2b983a3 documentation</title>
   
 
   
@@ -234,7 +234,7 @@ and with no mapped inputs - denoted in YAML by <code class="docutils literal not
 config, as:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">tickit.core.components.device_simulation.DeviceSimulation</span><span class="p">:</span>
     <span class="nt">adapters</span><span class="p">:</span> <span class="p p-Indicator">[]</span>
-    <span class="nt">config</span><span class="p">:</span>
+    <span class="nt">device</span><span class="p">:</span>
       <span class="nt">examples.devices.trampoline.RandomTrampoline</span><span class="p">:</span>
         <span class="nt">callback_period</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1000000000</span>
     <span class="nt">inputs</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
@@ -246,7 +246,7 @@ will be named <code class="docutils literal notranslate"><span class="pre">tramp
 of <code class="docutils literal notranslate"><span class="pre">rand_tramp</span></code> as <code class="docutils literal notranslate"><span class="pre">input</span></code>. As such we may extend our config, as:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">tickit.core.components.device_simulation.DeviceSimulation</span><span class="p">:</span>
     <span class="nt">adapters</span><span class="p">:</span> <span class="p p-Indicator">[]</span>
-    <span class="nt">config</span><span class="p">:</span>
+    <span class="nt">device</span><span class="p">:</span>
       <span class="nt">examples.devices.trampoline.RandomTrampoline</span><span class="p">:</span>
         <span class="nt">callback_period</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1000000000</span>
     <span class="nt">inputs</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
@@ -257,8 +257,7 @@ of <code class="docutils literal notranslate"><span class="pre">rand_tramp</span
       <span class="nt">tickit.devices.sink.Sink</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
     <span class="nt">inputs</span><span class="p">:</span>
       <span class="nt">input</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rand_tramp</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">output</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rand_tramp:output</span>
     <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tramp_sink</span>
 </pre></div>
 </div>
