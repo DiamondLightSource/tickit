@@ -58,7 +58,7 @@ class TcpServer(ConfigurableServer):
                     if reply is None:
                         continue
                     LOGGER.debug("Replying with {!r}".format(reply))
-                    writer.write(self.format % reply)
+                    writer.write(self.format.deserialize(reply))
                     if writer.is_closing():
                         break
                     await writer.drain()
