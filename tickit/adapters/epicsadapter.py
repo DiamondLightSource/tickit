@@ -62,9 +62,7 @@ class EpicsAdapter(ConfigurableAdapter):
 
     @abstractmethod
     def on_db_load(self) -> None:
-        """Customises records that have been loaded into the simulation from the
-        db_file to suit the Python simulation.
-        """
+        """Customises records that have been loaded in to suit the simulation."""
         raise NotImplementedError
 
     def build_ioc(self) -> None:

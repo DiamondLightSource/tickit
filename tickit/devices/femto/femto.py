@@ -22,10 +22,8 @@ class Femto(ConfigurableDevice):
         """Initialise the Femto device class.
 
         Args:
-            initial_gain (float, optional): The initial amplified difference between
-                the input and output signals. Defaults to 2.5.
-            initial_current (float, optional): The input signal current.
-                Defaults to 0.0.
+            initial_gain (float, optional): The initial amplified difference between the input and output signals. Defaults to 2.5.
+            initial_current (float, optional): The input signal current. Defaults to 0.0.
         """
         self.gain: float = initial_gain
         self._current: float = initial_current
@@ -93,8 +91,7 @@ class CurrentDevice(ConfigurableDevice):
         """Initialise the current device.
 
         Args:
-            callback_period (int, optional): The duration in which the device should
-                next be updated. Defaults to int(1e9).
+            callback_period (int, optional): The duration in which the device should next be updated. Defaults to int(1e9).
         """
         self.callback_period = SimTime(callback_period)
 
@@ -139,10 +136,8 @@ class FemtoAdapter(EpicsAdapter):
 
         Args:
             device (Device): The Femto device class.
-            raise_interrupt (Callable[[], Awaitable[None]]): A method used to request
-                an immediate update of the device.
-            db_file (str, optional): The name of the database file.
-                Defaults to "record.db".
+            raise_interrupt (Callable[[], Awaitable[None]]): A method used to request an immediate update of the device.
+            db_file (str, optional): The name of the database file. Defaults to "record.db".
             ioc_name (str, optional): The name of the IOC. Defaults to "FEMTO".
         """
         super().__init__(db_file, ioc_name)
@@ -166,7 +161,7 @@ class FemtoAdapter(EpicsAdapter):
         await self.raise_interrupt()
 
     def on_db_load(self) -> None:
-
+        """Customises records that have been loaded in to suit the simulation."""
         self.input_record = builder.aIn("GAIN_RBV")
         self.output_record = builder.aOut(
             "GAIN", initial_value=self._device.get_gain(), on_update=self.callback
