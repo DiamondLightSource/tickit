@@ -63,7 +63,7 @@ appending a line break and a ``CommandInterpreter``.
             super().__init__(
                 device,
                 raise_interrupt,
-                TcpServer(host, port, b"%b\r\n"),
+                TcpServer(host, port, ByteFormat(b"%b\r\n")),
                 CommandInterpreter(),
             )
 
