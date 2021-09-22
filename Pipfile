@@ -24,6 +24,7 @@ types-mock = "*"
 types-PyYAML = "*"
 pytest-asyncio = "*"
 pytest-pydocstyle = "*"
+charset-normalizer = "*"
 
 [packages]
 # Required by immutables

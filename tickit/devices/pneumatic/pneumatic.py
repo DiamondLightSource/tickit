@@ -79,7 +79,7 @@ class PneumaticAdapter(EpicsAdapter):
         self._device.set_state(value)
         await self.raise_interrupt()
 
-    def records(self):
+    def on_db_load(self):
 
         self.state_rbv = builder.boolIn("FILTER_RBV")
 

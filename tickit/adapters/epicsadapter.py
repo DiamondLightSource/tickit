@@ -61,8 +61,10 @@ class EpicsAdapter(ConfigurableAdapter):
             print("Record {} updated to : {}".format(record.name, current_value))
 
     @abstractmethod
-    def records(self) -> None:
-        """Creates softIOC records."""
+    def on_db_load(self) -> None:
+        """Customises records that have been loaded into the simulation from the
+        db_file to suit the Python simulation.
+        """
         raise NotImplementedError
 
     def build_ioc(self) -> None:
@@ -79,7 +81,7 @@ class EpicsAdapter(ConfigurableAdapter):
         softioc.dbLoadDatabase(out.name, substitutions=f"device={self.ioc_name}")
         os.unlink(out.name)
 
-        self.records()
+        self.on_db_load()
 
         softioc.devIocStats(self.ioc_name)
 
