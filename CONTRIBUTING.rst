@@ -13,7 +13,7 @@ the scope of the project.
 Running the tests
 -----------------
 
-To get the source source code and run the unit tests, run::
+To get the source code and run the unit tests, run::
 
     $ git clone git://github.com/dls-controls/tickit.git
     $ cd tickit

@@ -1,13 +1,13 @@
 Running a Simulation
 ====================
 
-This tutorial shows how to run a tikit simulation both within a single process
+This tutorial shows how to run a tickit simulation both within a single process
 and distributed across multiple processes.
 
 Within a Single Process
 -----------------------
 
-Tickit simulations may be launched within a single process by exectuing a command of
+Tickit simulations may be launched within a single process by executing a command of
 the following format ``python -m tickit all [OPTIONS] CONFIG_PATH`` in which ``all``
 denotes that both a `MasterScheduler` and the components defined in the config should
 be started within the process.
@@ -45,7 +45,7 @@ Across Multiple Processes
 -------------------------
 
 In order to run across multiple processes a message broking service must be utilized.
-As such, prior to launching any instances of Tickit a message broker must be laucnhed;
+As such, prior to launching any instances of Tickit a message broker must be launched;
 In this example we will use apache kafka (the default distributed broker for Tickit),
 which may be installed and launched according to steps 1 and 2 of the
 `apache kafka quickstart guide <https://kafka.apache.org/quickstart>`_.

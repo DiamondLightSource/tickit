@@ -63,7 +63,7 @@ appending a line break and a ``CommandInterpreter``.
             super().__init__(
                 device,
                 raise_interrupt,
-                TcpServer(hohost, port, b"%b\r\n"),
+                TcpServer(host, port, ByteFormat(b"%b\r\n")),
                 CommandInterpreter(),
             )
 
@@ -148,7 +148,7 @@ The shutter will be given a ShutterAdapter which uses the default configuration 
     - tickit.core.components.device_simulation.DeviceSimulation:
         adapters: []
         device:
-        tickit.devices.source.Source:
+          tickit.devices.source.Source:
             value: 42.0
         inputs: {}
         name: source
@@ -156,18 +156,18 @@ The shutter will be given a ShutterAdapter which uses the default configuration 
         adapters:
         - examples.devices.shutter.ShutterAdapter: {}
         device:
-        examples.devices.shutter.Shutter:
+          examples.devices.shutter.Shutter:
             default_position: 0.2
             initial_position: 0.24
         inputs:
-        flux: source:value
+          flux: source:value
         name: shutter
     - tickit.core.components.device_simulation.DeviceSimulation:
         adapters: []
         device:
-        tickit.devices.sink.Sink: {}
+          tickit.devices.sink.Sink: {}
         inputs:
-        flux: shutter:flux
+          flux: shutter:flux
         name: sink
 
 .. seealso::
