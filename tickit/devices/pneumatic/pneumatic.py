@@ -54,6 +54,13 @@ class Pneumatic(ConfigurableDevice):
         If the device is moving then the state of the device is updated.
         Otherwise nothing changes. In either case the current state of the
         device is returned.
+
+        Args:
+            time (SimTime): The time of the simulation in nanoseconds.
+            inputs (dict): The dict containing the input values of state of the device.
+
+        Returns:
+            DeviceUpdate: A container for the Device's outputs and a callback time.
         """
         if self.moving:
             callback_period = SimTime(int(1e9 / self.speed))
@@ -98,7 +105,11 @@ class PneumaticAdapter(EpicsAdapter):
         self.build_ioc()
 
     async def callback(self, value) -> None:
-        """Set the state of the device and await a response."""
+        """Set the state of the device and await a response.
+
+        Args:
+            value (bool): The value to set the state to.
+        """
         self._device.set_state(value)
         await self.raise_interrupt()
 
