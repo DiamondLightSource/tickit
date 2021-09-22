@@ -25,7 +25,11 @@ class Pneumatic(ConfigurableDevice):
         self.time_at_last_update: float = 0.0
 
     def set_speed(self, speed: float) -> None:
-        """Set the speed of movement for the device."""
+        """Set the speed of movement for the device.
+        
+        Args:
+            speed (float): The desired movement speed of the device.
+        """
         self.speed = speed
 
     def get_speed(self) -> float:
