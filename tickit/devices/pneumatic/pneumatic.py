@@ -47,8 +47,9 @@ class Pneumatic(ConfigurableDevice):
     def update(self, time: SimTime, inputs: dict) -> DeviceUpdate:
         """Run the update logic for the device.
 
-        If the device is moving then the state of the device is updated. Otherwise nothing changes. In either case the
-        current state of the device is returned.
+        If the device is moving then the state of the device is updated.
+        Otherwise nothing changes. In either case the current state of the
+        device is returned.
         """
         if self.moving:
             callback_period = SimTime(int(1e9 / self.speed))
@@ -63,7 +64,10 @@ class Pneumatic(ConfigurableDevice):
 
 
 class PneumaticAdapter(EpicsAdapter):
-    """An adapter for the Pneumatic class, connecting it to an external messaging protocol."""
+    """An adapter for the Pneumatic class.
+
+    Connects the device to an external messaging protocol.
+    """
 
     current_record: InputRecord
     input_record: InputRecord
