@@ -2,6 +2,8 @@ from enum import IntEnum
 
 
 class RunModes(IntEnum):
+    """An enumerator for Cryostream run modes."""
+
     STARTUP = 0
     STARTUPFAIL = 1
     STARTUPOK = 2
@@ -12,6 +14,8 @@ class RunModes(IntEnum):
 
 
 class PhaseIds(IntEnum):
+    """An enumerator for Cryostream phases."""
+
     RAMP = 0
     COOL = 1
     PLAT = 2
@@ -21,10 +25,7 @@ class PhaseIds(IntEnum):
 
 
 class AlarmCodes(IntEnum):
-    """
-    Each alarm has an alarm level, which is not included in the status packet but
-    may be read from the table below
-    """
+    """An enumerator for Cryostream alarm codes alarm levels."""
 
     NO_ERRORS = 0
     STOP_PRESSED = 1
@@ -86,6 +87,8 @@ class AlarmCodes(IntEnum):
 
 
 class HardwareType(IntEnum):
+    """An enumerator for Cryostream hardware types."""
+
     PLUS_SYSTEM = 1  # Max temp 500 K (Cryostream, Cobra and Smartstream)
     HAS_CRYOSHUTTER = 2  # 700 series Cryostream and Cobra
     SERIES_800 = 3
