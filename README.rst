@@ -1,5 +1,5 @@
 tickit
-===========================
+======
 
 |code_ci| |docs_ci| |coverage| |pypi_version| |license|
 
@@ -10,6 +10,7 @@ orchestration of complex multi-device simulations.
 PyPI           ``pip install tickit``
 Source code    https://github.com/dls-controls/tickit
 Documentation  https://dls-controls.github.io/tickit
+Changelog      https://github.com/dls-controls/tickit/blob/master/CHANGELOG.rst
 ============== ==============================================================
 
 An example device which emits a random value between *0* and *255* whenever
