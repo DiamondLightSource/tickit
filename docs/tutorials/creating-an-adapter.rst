@@ -148,26 +148,26 @@ The shutter will be given a ShutterAdapter which uses the default configuration 
     - tickit.core.components.device_simulation.DeviceSimulation:
         adapters: []
         device:
-            tickit.devices.source.Source:
-                value: 42.0
+          tickit.devices.source.Source:
+            value: 42.0
         inputs: {}
         name: source
     - tickit.core.components.device_simulation.DeviceSimulation:
         adapters:
         - examples.devices.shutter.ShutterAdapter: {}
         device:
-            examples.devices.shutter.Shutter:
-                default_position: 0.2
-                initial_position: 0.24
+          examples.devices.shutter.Shutter:
+            default_position: 0.2
+            initial_position: 0.24
         inputs:
-            flux: source:value
+          flux: source:value
         name: shutter
     - tickit.core.components.device_simulation.DeviceSimulation:
         adapters: []
         device:
-            tickit.devices.sink.Sink: {}
+          tickit.devices.sink.Sink: {}
         inputs:
-            flux: shutter:flux
+          flux: shutter:flux
         name: sink
 
 .. seealso::
