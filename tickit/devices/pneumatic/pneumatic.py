@@ -36,13 +36,10 @@ class Pneumatic(ConfigurableDevice):
         """Get the speed of movement of the device."""
         return self.speed
 
-    def set_state(self, value) -> None:
+    def set_state(self) -> None:
         """Toggles the target state of the device."""
         self.moving = True
-        if self.state:
-            self.target_state = False
-        else:
-            self.target_state = True
+        self.target_state = not self.state
 
     def get_state(self) -> bool:
         """Gets the current state of the device."""
