@@ -62,12 +62,13 @@ The core logic of the device will be implemented in the ``update`` method which
 recieves the arguments ``time`` - the current simulation time in nanoseconds - and
 ``inputs`` - a mapping of input ports to their value - and returns an `DeviceUpdate`
 which consists of ``outputs`` - a mapping of output ports and their value - and
-``call_in`` - the duration in which the device should next be updated.
+``call_at`` - the time at which the device should next be updated.
 
 .. code-block:: python
 
     from random import random
-    from typing import Optional, TypedDict
+    from typing import Optional
+    from typing_extensions import TypedDict
 
     from tickit.core.device import ConfigurableDevice, DeviceUpdate
     from tickit.core.typedefs import SimTime
@@ -102,9 +103,9 @@ which consists of ``outputs`` - a mapping of output ports and their value - and
                     SimTime(time - self.last_time),
                 )
             self.last_time = time
-            call_in = None if self.position == self.target_position else SimTime(int(1e8))
+            call_at = None if self.position == self.target_position else SimTime(time + int(1e8))
             output_flux = inputs["flux"] * self.position
-            return DeviceUpdate(Shutter.Outputs(flux=output_flux), call_in)
+            return DeviceUpdate(Shutter.Outputs(flux=output_flux), call_at)
 
 Using the Device
 ----------------
