@@ -107,7 +107,7 @@ class PneumaticAdapter(EpicsAdapter):
         Args:
             value (bool): The value to set the state to.
         """
-        self._device.set_state(value)
+        self._device.set_state()
         await self.raise_interrupt()
 
     def on_db_load(self):
