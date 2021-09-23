@@ -3,9 +3,9 @@ from typing import Awaitable, Callable, Dict, Hashable, List, Mapping, Type, cas
 
 from immutables import Map
 
-from tickit.core.adapter import AdapterConfig, ListeningAdapter
+from tickit.core.adapter import Adapter, ListeningAdapter
 from tickit.core.components.component import BaseComponent
-from tickit.core.device import DeviceConfig, DeviceUpdate
+from tickit.core.device import Device, DeviceUpdate
 from tickit.core.lifetime_runnable import run_all
 from tickit.core.state_interfaces import StateConsumer, StateProducer
 from tickit.core.typedefs import Changes, ComponentID, SimTime, State
@@ -29,8 +29,8 @@ class DeviceSimulation(BaseComponent):
         name: ComponentID,
         state_consumer: Type[StateConsumer],
         state_producer: Type[StateProducer],
-        device: DeviceConfig,
-        adapters: List[AdapterConfig],
+        device: Device,
+        adapters: List[Adapter],
     ):
         """A DeviceSimulation constructor which builds a device and adapters from config.
 
@@ -46,11 +46,11 @@ class DeviceSimulation(BaseComponent):
                 data containers, used to construct adapters.
         """
         super().__init__(name, state_consumer, state_producer)
-        self.device = device.configures()(**device.kwargs)
-        self.adapters = [
-            adapter.configures()(self.device, self.raise_interrupt, **adapter.kwargs)
-            for adapter in adapters
-        ]
+        self.device = device
+        for adapter in adapters:
+            adapter.device = device
+            adapter.raise_interrupt = self.raise_interrupt
+        self.adapters = adapters
 
     async def run_forever(self):
         """Sets up state interfaces, runs adapters and blocks until any complete."""

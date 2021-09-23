@@ -1,18 +1,13 @@
 import sys
-from dataclasses import dataclass
 from typing import (
     TYPE_CHECKING,
     AsyncIterable,
     Awaitable,
     Callable,
-    Dict,
     Optional,
     Tuple,
-    Type,
     TypeVar,
 )
-
-from tickit.utils.configuration.configurable import configurable, configurable_base
 
 # TODO: Investigate why import from tickit.utils.compat.typing_compat causes mypy error:
 # >>> 54: error: Argument 1 to "handle" of "Interpreter" has incompatible type
@@ -34,17 +29,8 @@ T = TypeVar("T")
 class Adapter(Protocol):
     """An interface for types which implement device adapters."""
 
-    def __init__(
-        self, device: "Device", raise_interrupt: Callable[[], Awaitable[None]], **kwargs
-    ) -> None:
-        """The Adapter constructor which takes device, raise_interrupt and key word arguments.
-
-        Args:
-            device (Device): The device which this adapter is attached to.
-            raise_interrupt (Callable): A callback to request that the device is
-                updated immediately.
-        """
-        pass
+    device: "Device"
+    raise_interrupt: Callable[[], Awaitable[None]]
 
     async def run_forever(self) -> None:
         """An asynchronous method allowing indefinite running of core adapter logic.
@@ -63,47 +49,6 @@ class ListeningAdapter(Adapter, Protocol):
     def after_update(self):
         """A method which is called immediately after the device updates."""
         pass
-
-
-@configurable_base
-@dataclass
-class AdapterConfig:
-    """A data container for adapter configuration.
-
-    A data container for adapter configuration which acts as a named union of subclasses
-    to facilitate automatic deserialization.
-    """
-
-    @staticmethod
-    def configures() -> Type[Adapter]:
-        """A static method which returns the Adapter class configured by this config.
-
-        Returns:
-            Type[Adapter]: The Adapter class configured by this config.
-        """
-        raise NotImplementedError
-
-    @property
-    def kwargs(self) -> Dict[str, object]:
-        """A property which returns the key word arguments of the configured adapter.
-
-        Returns:
-            Dict[str, object]: The key word argument of the configured Adapter.
-        """
-        raise NotImplementedError
-
-
-class ConfigurableAdapter:
-    """A mixin used to create an adapter with a configuration data container."""
-
-    def __init_subclass__(cls) -> None:
-        """A subclass init method which makes the subclass configurable.
-
-        A subclass init method which makes the subclass configurable with a
-        AdapterConfig template, ignoring the "device" and "raise_interrupt"
-        arguments.
-        """
-        cls = configurable(AdapterConfig, ["device", "raise_interrupt"])(cls)
 
 
 @runtime_checkable
@@ -153,43 +98,3 @@ class Server(Protocol[T]):
                 asynchronous iterable of replies.
         """
         pass
-
-
-@configurable_base
-@dataclass
-class ServerConfig:
-    """A data container for server configuration.
-
-    A data container for server configuration which acts as a named union of subclasses
-    to facilitate automatic deserialization.
-    """
-
-    @staticmethod
-    def configures() -> Type[Server]:
-        """A static method which returns the Adapter class configured by this config.
-
-        Returns:
-            Type[Server]: The Server class configured by this config.
-        """
-        raise NotImplementedError
-
-    @property
-    def kwargs(self) -> Dict[str, object]:
-        """A property which returns the key word arguments of the configured server.
-
-        Returns:
-            Dict[str, object]: The key word argument of the configured Server.
-        """
-        raise NotImplementedError
-
-
-class ConfigurableServer:
-    """A mixin used to create a server with a configuration data container."""
-
-    def __init_subclass__(cls) -> None:
-        """A subclass init method which makes the subclass configurable.
-
-        A subclass init method which makes the subclass configurable with a
-        ServerConfig template.
-        """
-        cls = configurable(ServerConfig)(cls)

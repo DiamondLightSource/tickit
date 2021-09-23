@@ -1,12 +1,36 @@
-import re
-from contextlib import suppress
 from importlib import import_module
-from typing import Deque, List
+from typing import Any, Dict, List, Optional, Type
 
-import apischema
 import yaml
+from apischema import deserialize
+from apischema.conversions import AnyConversion, Conversion
+from apischema.conversions.conversions import Conversion
+from apischema.conversions.converters import default_serialization
 
 from tickit.core.components.component import ComponentConfig
+
+
+def config_importing_conversion(typ: Type) -> Optional[AnyConversion]:
+    """Create a conversion that imports the module of a ComponentConfig.
+
+    When a ComponentConfig is requested from a dict, take its fully qualified
+    name from the tagged union dict and import it before deserializing it
+    """
+    if typ is ComponentConfig:
+
+        def conversion(d: Dict[str, Any]) -> ComponentConfig:
+            # We can't use the deserialization union above as the classes
+            # haven't been imported so won't appear in __subclasses__, so use a
+            # single element dict instead
+            assert len(d) == 1, d
+            fullname, args = list(d.items())[0]
+            pkg, clsname = fullname.rsplit(".", maxsplit=1)
+            cls = getattr(import_module(pkg), clsname)
+            return deserialize(cls, args)
+
+        return Conversion(conversion, source=dict, target=ComponentConfig)
+
+    return default_serialization(typ)
 
 
 def read_configs(config_path) -> List[ComponentConfig]:
@@ -23,32 +47,9 @@ def read_configs(config_path) -> List[ComponentConfig]:
         List[ComponentConfig]: A list of component configuration objects.
     """
     yaml_struct = yaml.load(open(config_path, "r"), Loader=yaml.Loader)
-    load_modules(yaml_struct)
-    configs = apischema.deserialize(List[ComponentConfig], yaml_struct)
+    configs = deserialize(
+        List[ComponentConfig],
+        yaml_struct,
+        default_conversion=config_importing_conversion,
+    )
     return configs
-
-
-def load_modules(yaml_struct) -> None:
-    """A utility function which loads modules referenced within a configuration yaml struct.
-
-    Args:
-        yaml_struct ([type]): The possibly nested yaml structure generated when a
-            configuration file is loaded.
-    """
-
-    def possibly_import_class(path: str) -> None:
-        if re.fullmatch(r"[\w+\.]+\.\w+", path):
-            with suppress(ModuleNotFoundError):
-                import_module(path)
-
-    to_crawl = Deque([yaml_struct])
-    while to_crawl:
-        cfg = to_crawl.popleft()
-        if isinstance(cfg, list):
-            to_crawl.extend(cfg)
-        elif isinstance(cfg, dict):
-            to_crawl.extend(cfg.values())
-            for key in cfg.keys():
-                possibly_import_class(str(key))
-        else:
-            possibly_import_class(str(cfg))

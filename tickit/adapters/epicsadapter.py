@@ -8,8 +8,6 @@ from typing import Any, Callable, Dict
 
 from softioc import asyncio_dispatcher, builder, softioc
 
-from tickit.core.adapter import ConfigurableAdapter
-
 
 @dataclass
 class InputRecord:
@@ -27,7 +25,7 @@ class OutputRecord:
     name: str
 
 
-class EpicsAdapter(ConfigurableAdapter):
+class EpicsAdapter:
     """An adapter implementation which acts as an EPICS IOC."""
 
     interrupt_records: Dict[InputRecord, Callable[[], Any]]
