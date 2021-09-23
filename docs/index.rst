@@ -4,43 +4,18 @@
 How the documentation is structured
 -----------------------------------
 
+Documentation is split into four categories, accessible from links in the side-bar.
+
 .. rst-class:: columns
 
-:ref:`tutorials`
-~~~~~~~~~~~~~~~~
+Tutorials
+~~~~~~~~~
 
 Tutorials for installation, library and commandline usage. New users start here.
 
-.. rst-class:: columns
-
-:ref:`how-to`
-~~~~~~~~~~~~~
-
-Practical step-by-step guides for the more experienced user.
-
-.. rst-class:: columns
-
-:ref:`explanations`
-~~~~~~~~~~~~~~~~~~~
-
-Explanation of how the library works and why it works that way.
-
-.. rst-class:: columns
-
-:ref:`reference`
-~~~~~~~~~~~~~~~~
-
-Technical reference material, for classes, methods, APIs, commands, and contributing to the project.
-
-.. rst-class:: endcolumns
-
-Contents
---------
-
 .. toctree::
     :caption: Tutorials
-    :name: tutorials
-    :maxdepth: 1
+    :hidden:
 
     tutorials/installation
     tutorials/running-a-simulation
@@ -48,32 +23,54 @@ Contents
     tutorials/creating-a-device
     tutorials/creating-an-adapter
 
+.. rst-class:: columns
+
+How-to Guides
+~~~~~~~~~~~~~
+
+Practical step-by-step guides for the more experienced user.
+
 .. toctree::
     :caption: How-to Guides
-    :name: how-to
-    :maxdepth: 1
+    :hidden:
 
     how-to/accomplish-a-task
 
+.. rst-class:: columns
+
+Explanations
+~~~~~~~~~~~~
+
+Explanation of how the library works and why it works that way.
+
 .. toctree::
     :caption: Explanations
-    :name: explanations
-    :maxdepth: 1
+    :hidden:
 
     explanations/glossary
     explanations/how-component-updates-are-ordered
 
-.. rst-class:: no-margin-after-ul
+.. rst-class:: columns
+
+Reference
+~~~~~~~~~
+
+Technical reference material, for classes, methods, APIs, commands, and contributing to the project.
+
+..
+    Index link below is a hack to make genindex.html a relative link
+    https://stackoverflow.com/a/31820846
 
 .. toctree::
     :caption: Reference
-    :name: reference
-    :maxdepth: 1
+    :hidden:
 
     reference/api
     reference/contributing
+    Changelog <https://github.com/dls-controls/tickit/blob/master/CHANGELOG.rst>
+    Index <genindex.html#http://>
 
-* :ref:`genindex`
+.. rst-class:: endcolumns
 
 About the documentation
 ~~~~~~~~~~~~~~~~~~~~~~~

@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "f0e3eb26c83df4661270f7fc95f1269377ef6fbdd304f0899b940a031ada2616"
+            "sha256": "2d5fb342cb5bdf9b7c37bc7acdf69dc3fc73fb88715826c8d1ee6c5c9e42acac"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -81,7 +81,6 @@
         },
         "epicsdbbuilder": {
             "hashes": [
-                "sha256:71610b0a22555d8285a67f0a0da38c7e0e40c702db163d47d5860d9c48f9d308",
                 "sha256:9e2dc365479215e9bb83e8fe3c643a682233da350c282c464925a15b079be77c",
                 "sha256:b628fc2de5176c102c976afe3342436149006b6da9910926b8602399d1c51b07",
                 "sha256:b98396e9b59a047b52b7a9393b7c6532f52997f0c211dbf1d057e32c196aae60"
@@ -741,8 +740,16 @@
                 "sha256:4d35a56f4508cfee4c4fb604373ede6feae2a306731d533f409ef5c3496fdbd8",
                 "sha256:eec6d497e4c2195fa0e8b2016b337532b8a699a68bcb22a512870e16925c6a5c"
             ],
-            "index": "pypi",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
             "version": "==1.0.0"
+        },
+        "sphinx-rtd-theme-github-versions": {
+            "hashes": [
+                "sha256:4cc018fdb1a2300b40ff62c6c3d0ec6901ecc0e3a2788f52a9b4768a2b0b6a70",
+                "sha256:f84b45baf536c01c2e62f26e8206dd69f0375d9c9b3769d56295292e6e00f43b"
+            ],
+            "index": "pypi",
+            "version": "==0.2"
         },
         "sphinxcontrib-applehelp": {
             "hashes": [
@@ -804,7 +811,7 @@
                 "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b",
                 "sha256:b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"
             ],
-            "markers": "python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'",
+            "markers": "python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2'",
             "version": "==0.10.2"
         },
         "tomli": {
@@ -878,11 +885,11 @@
         },
         "urllib3": {
             "hashes": [
-                "sha256:39fb8672126159acb139a7718dd10806104dec1e2f0f6c88aab05d17df10c8d4",
-                "sha256:f57b4c16c62fa2760b7e3d97c35b255512fb6b59a259730f36ba32ce9f8e342f"
+                "sha256:4987c65554f7a2dbf30c18fd48778ef124af6fab771a377103da0585e2336ece",
+                "sha256:c4fdf4019605b6e5423637e01bc9fe4daef873709a7973e195ceba0a62bbc844"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4'",
-            "version": "==1.26.6"
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4.0'",
+            "version": "==1.26.7"
         },
         "zipp": {
             "hashes": [
