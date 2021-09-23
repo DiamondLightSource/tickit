@@ -15,7 +15,7 @@ from tickit.core.typedefs import (
     SimTime,
 )
 from tickit.utils.compat.typing_compat import Protocol, runtime_checkable
-from tickit.utils.configuration.configurable import configurable, configurable_base
+from tickit.utils.configuration.configurable import as_tagged_union
 from tickit.utils.topic_naming import input_topic, output_topic
 
 LOGGER = logging.getLogger(__name__)
@@ -46,7 +46,7 @@ class Component(Protocol):
         pass
 
 
-@configurable_base
+@as_tagged_union
 @dataclass
 class ComponentConfig:
     """A data container for component configuration.
@@ -58,42 +58,14 @@ class ComponentConfig:
     name: ComponentID
     inputs: Dict[PortID, ComponentPort]
 
-    @staticmethod
-    def configures() -> Type[Component]:
-        """The Component class configured by this config type.
-
-        Returns:
-            Type[Component]: The Component class configured by this config type.
-        """
-        raise NotImplementedError
-
-    @property
-    def kwargs(self) -> Dict[str, object]:
-        """The key word arguments of the configured component.
-
-        Returns:
-            Dict[str, object]: The key word argument of the configured Component.
-        """
-        raise NotImplementedError
+    def __call__(
+        self, state_consumer: Type[StateConsumer], state_producer: Type[StateProducer]
+    ) -> "BaseComponent":
+        """Create the component from the given config."""
+        raise NotImplementedError(self)
 
 
-class ConfigurableComponent:
-    """A mixin used to create a component with a configuration data container."""
-
-    def __init_subclass__(cls) -> None:
-        """A subclass init method which makes the subclass configurable.
-
-        A subclass init method which makes the subclass configurable with a
-        ComponentConfig template, ignoring the "state_consumer" and "state_producer"
-        arguments.
-        """
-        cls = configurable(
-            ComponentConfig,
-            ignore=["state_consumer", "state_producer"],
-        )(cls)
-
-
-class BaseComponent(ConfigurableComponent):
+class BaseComponent:
     """A base class for compnents, implementing state interface related methods."""
 
     def __init__(
@@ -202,11 +174,9 @@ def create_components(
     components: List[Component] = list()
     for config in configs:
         components.append(
-            config.configures()(
-                name=config.name,
+            config(
                 state_consumer=state_consumer,
                 state_producer=state_producer,
-                **config.kwargs
             )
         )
     return components
