@@ -23,7 +23,7 @@ P = TypeVar("P")
 
 
 class Message(NamedTuple):
-    """An immutable data container for internal messages"""
+    """An immutable data container for internal messages."""
 
     value: Any
 
@@ -33,7 +33,7 @@ Messages = NewType("Messages", List[Message])
 
 
 class InternalStateServer(metaclass=Singleton):
-    """A singleton, in memory, publish/subscribe message store and router
+    """A singleton, in memory, publish/subscribe message store and router.
 
     A singleton, in memory, publish/subscribe message store and router. The single
     instance of this class holds a mapping of topics and a list of messages which have
@@ -48,32 +48,32 @@ class InternalStateServer(metaclass=Singleton):
     _subscribers: DefaultDict[str, Set["InternalStateConsumer"]] = defaultdict(set)
 
     async def push(self, topic: str, message: Message) -> None:
-        """An asynchronous method which propagates a message to subscribers and stores it
+        """An asynchronous method which propagates a message to subscribers and stores it.
 
         An asynchronous method which propagates the given message to consumers which
-        subscribe to the topic and stores the message in the topic -> messages mapping
+        subscribe to the topic and stores the message in the topic -> messages mapping.
 
         Args:
             topic (str): The topic on which the the message should be propagated and
-                stored
+                stored.
             message (Message): The message which should be propagated and stored on the
-                topic
+                topic.
         """
         self._topics[topic].append(message)
         for subscriber in self._subscribers[topic]:
             await subscriber.add_message(message)
 
     async def subscribe(self, consumer: "InternalStateConsumer", topics: Iterable[str]):
-        """An asynchronous method which adds a consumer to the topic subscriber list
+        """Subscribes the consumer to the given topics, so it is notified a message is added.
 
         An asynchronous method which adds a consumer to the subscriber list of each
         topic in the topics iterable. On subscription, previous messages on the topic
-        are immediately passed to the consumer
+        are immediately passed to the consumer.
 
         Args:
             consumer (InternalStateConsumer): The consumer which is subscribing to the
-                topic
-            topics (Iterable[str]): The topic which the consumer is to be subscribed to
+                topic.
+            topics (Iterable[str]): The topic which the consumer is to be subscribed to.
         """
         for topic in topics:
             self._subscribers[topic].add(consumer)
@@ -81,83 +81,88 @@ class InternalStateServer(metaclass=Singleton):
                 await consumer.add_message(message)
 
     def create_topic(self, topic: str) -> None:
-        """A method which creates a new topic as an empty message list
+        """Creates a new topic as an empty message list.
 
         Args:
-            topic (str): The topic to be created
+            topic (str): The topic to be created.
         """
         assert topic not in self._topics.keys()
         self._topics[topic] = Messages(list())
 
     def remove_topic(self, topic: str) -> None:
-        """A method which removes an existing topic
+        """Removes an existing topic and the corresponding message list.
 
         Args:
-            topic (str): The topic to be removed
+            topic (str): The topic to be removed.
         """
         assert topic in self._topics.keys()
         del self._topics[topic]
 
     @property
     def topics(self) -> List[str]:
-        """A property which lists the topics which currently exist
+        """A list of topics which currently exist.
 
         Returns:
-            List[str]: A list of topics which currently exist
+            List[str]: A list of topics which currently exist.
         """
         return list(self._topics.keys())
 
 
 @state_interface.add("internal", False)
 class InternalStateConsumer(Generic[C]):
-    """An internal, singleton based, implementation of the StateConsumer protocol
+    """An internal, singleton based, implementation of the StateConsumer protocol.
 
     A internal, singleton based, implementation of the StateConsumer protocol, this
     consumer can subscribe to InternalStateServer topics, upon recieving a message the
     consumer passes the value to the callback function passed during initialization, if
-    a topic is subscribed to which does not yet exist it is created
+    a topic is subscribed to which does not yet exist it is created.
     """
 
     def __init__(self, callback: Callable[[C], Awaitable[None]]) -> None:
-        """Gets an instance of the InternalStateServer for use in subscribe
+        """Gets an instance of the InternalStateServer for use in subscribe.
 
         Args:
             callback (Callable[[C], Awaitable[None]]): An asynchronous handler function
-                for consumed values
+                for consumed values.
         """
         self.server = InternalStateServer()
         self.callback = callback
 
     async def subscribe(self, topics: Iterable[str]) -> None:
-        """An asynchronous method which subscribes the consumer to the given topics
+        """Subscribes the consumer to the given topics, new messages are passed to the callback.
 
         Args:
-            topics (Iterable[str]): An iterable of topics to subscribe to
+            topics (Iterable[str]): An iterable of topics to subscribe to.
         """
         await self.server.subscribe(self, topics)
 
     async def add_message(self, message: Message) -> None:
+        """Adds a message to the consumer, triggering a callback.
+
+        Args:
+            message (Message): The message to be added to the consumer.
+        """
         await self.callback(message.value)
 
 
 @state_interface.add("internal", False)
 class InternalStateProducer(Generic[P]):
-    """An internal, singleton based, implementation of the StateProducer protocol
+    """An internal, singleton based, implementation of the StateProducer protocol.
 
     An internal, singleton based, implementation of the StateProducer protocol, this
     producer can produce a value to a InternalStateServer topic, if the topic does not
-    yet exist it is created
+    yet exist it is created.
     """
 
     def __init__(self) -> None:
-        """Gets an instance of the InternalStateServer for use in produce"""
+        """Gets an instance of the InternalStateServer for use in produce."""
         self.server = InternalStateServer()
 
     async def produce(self, topic: str, value: P) -> None:
-        """An asynchronous method which produces a value to the provided internal topic
+        """Produces a value to the provided topic.
 
         Args:
-            topic (str): The topic to which the value should be sent
-            value (P): The value to send to the provided topic
+            topic (str): The topic to which the value should be sent.
+            value (P): The value to send to the provided topic.
         """
         await self.server.push(topic, Message(value=value))

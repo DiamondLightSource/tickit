@@ -14,7 +14,7 @@ InterruptHandler = Callable[[], Awaitable[None]]
 
 
 class DeviceSimulation(BaseComponent):
-    """A component containing a device and the corresponding adapters
+    """A component containing a device and the corresponding adapters.
 
     A component which thinly wraps a device and the corresponding adapters, this
     component delegates core behaviour to the update method of the device, whilst
@@ -32,18 +32,18 @@ class DeviceSimulation(BaseComponent):
         device: DeviceConfig,
         adapters: List[AdapterConfig],
     ):
-        """A constructor of the device simulation
+        """A DeviceSimulation constructor which builds a device and adapters from config.
 
         Args:
-            name (ComponentID):  The unique identifier of the device simulation
+            name (ComponentID):  The unique identifier of the device simulation.
             state_consumer (Type[StateConsumer]): The state consumer class to be used
-                by the component
+                by the component.
             state_producer (Type[StateProducer]): The state producer class to be used
-                by the component
-            config (DeviceConfig): An immuatable device configuration data container,
-                used to construct the device
+                by the component.
+            device (DeviceConfig): An immuatable device configuration data container,
+                used to construct the device.
             adapters (List[AdapterConfig]): A list of immutable adapter configuration
-                data containers, used to construct adapters
+                data containers, used to construct adapters.
         """
         super().__init__(name, state_consumer, state_producer)
         self.device = device.configures()(**device.kwargs)
@@ -53,15 +53,14 @@ class DeviceSimulation(BaseComponent):
         ]
 
     async def run_forever(self):
-        """An asynchronous method which sets up state interfaces and runs adapters"""
-
+        """Sets up state interfaces, runs adapters and blocks until any complete."""
         tasks = run_all(self.adapters)
         await self.set_up_state_interfaces()
         if tasks:
             await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
 
     async def on_tick(self, time: SimTime, changes: Changes) -> None:
-        """An asynchronous method which delegates core behaviour to the device
+        """Delegates core behaviour to the device and calls adapter on_update.
 
         An asynchronous method which updates device inputs according to external
         changes, delegates core behaviour to the device update method, informs
@@ -69,9 +68,9 @@ class DeviceSimulation(BaseComponent):
         and sends the resulting Output.
 
         Args:
-            time (SimTime): The current simulation time (in nanoseconds)
+            time (SimTime): The current simulation time (in nanoseconds).
             changes (Changes): A mapping of changed component inputs and their new
-                values
+                values.
         """
         self.device_inputs = {
             **self.device_inputs,

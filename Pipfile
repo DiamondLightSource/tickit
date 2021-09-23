@@ -6,13 +6,11 @@ verify_ssl = true
 [dev-packages]
 # Pinning black stops us having to allow pre-releases globally
 black = "==21.7b0"
-
 # Pins to make lockfile usable on multiple Python versions and platforms
 mypy = "*"
 typed-ast = "*"
 atomicwrites = "*"
 importlib-metadata = "*"
-
 # Test and docs dependencies
 pytest-cov = "*"
 pytest-mypy = "*"
@@ -25,6 +23,7 @@ mock = "*"
 types-mock = "*"
 types-PyYAML = "*"
 pytest-asyncio = "*"
+pytest-pydocstyle = "*"
 
 [packages]
 # Required by immutables

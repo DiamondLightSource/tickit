@@ -23,24 +23,25 @@ LOGGER = logging.getLogger(__name__)
 
 @runtime_checkable
 class Component(Protocol):
-    """An interface for types which implement stand-alone simulation components
+    """An interface for types which implement stand-alone simulation components.
 
     An interface for types which implement stand-alone simulation components.
     Components define the top level building blocks of a tickit simulation (examples
     include the DeviceSimulation which host a device and corresponding adapter or a
-    SystemSimulation which hosts a SlaveScheduler and internal Components)"""
+    SystemSimulation which hosts a SlaveScheduler and internal Components).
+    """
 
     async def run_forever(self) -> None:
-        """An asynchronous method allowing indefinite running of core component logic"""
+        """An asynchronous method allowing indefinite running of core logic."""
         pass
 
     async def on_tick(self, time: SimTime, changes: Changes):
-        """An asynchronous method called whenever the component is to be updated
+        """An asynchronous method called whenever the component is to be updated.
 
         Args:
-            time (SimTime): The current simulation time (in nanoseconds)
+            time (SimTime): The current simulation time (in nanoseconds).
             changes (Changes): A mapping of changed component inputs and their new
-                values
+                values.
         """
         pass
 
@@ -48,10 +49,10 @@ class Component(Protocol):
 @configurable_base
 @dataclass
 class ComponentConfig:
-    """A data container for component configuration
+    """A data container for component configuration.
 
     A data container for component configuration which acts as a named union of
-    subclasses to facilitate automatic deserialization
+    subclasses to facilitate automatic deserialization.
     """
 
     name: ComponentID
@@ -59,27 +60,33 @@ class ComponentConfig:
 
     @staticmethod
     def configures() -> Type[Component]:
-        """A static method which returns the Component class configured by this config
+        """The Component class configured by this config type.
 
         Returns:
-            Type[Component]: The Component class configured by this config
+            Type[Component]: The Component class configured by this config type.
         """
         raise NotImplementedError
 
     @property
     def kwargs(self) -> Dict[str, object]:
-        """A property which returns the key word arguments of the configured component
+        """The key word arguments of the configured component.
 
         Returns:
-            Dict[str, object]: The key word argument of the configured Component
+            Dict[str, object]: The key word argument of the configured Component.
         """
         raise NotImplementedError
 
 
 class ConfigurableComponent:
-    """A mixin used to create a component with a configuration data container"""
+    """A mixin used to create a component with a configuration data container."""
 
     def __init_subclass__(cls) -> None:
+        """A subclass init method which makes the subclass configurable.
+
+        A subclass init method which makes the subclass configurable with a
+        ComponentConfig template, ignoring the "state_consumer" and "state_producer"
+        arguments.
+        """
         cls = configurable(
             ComponentConfig,
             ignore=["state_consumer", "state_producer"],
@@ -87,7 +94,7 @@ class ConfigurableComponent:
 
 
 class BaseComponent(ConfigurableComponent):
-    """A base class for compnents, implementing state interface related methods"""
+    """A base class for compnents, implementing state interface related methods."""
 
     def __init__(
         self,
@@ -95,24 +102,24 @@ class BaseComponent(ConfigurableComponent):
         state_consumer: Type[StateConsumer],
         state_producer: Type[StateProducer],
     ) -> None:
-        """A constructor of the component
+        """A BaseComponent constructor which stores state interface types.
 
         Args:
-            name (ComponentID): The unique identifier of the component
+            name (ComponentID): The unique identifier of the component.
             state_consumer (Type[StateConsumer]): The state consumer class to be used
-                by the component
+                by the component.
             state_producer (Type[StateProducer]): The state producer class to be used
-                by the component
+                by the component.
         """
         self.name = name
         self._state_consumer_cls = state_consumer
         self._state_producer_cls = state_producer
 
     async def handle_input(self, input: Input):
-        """An asynchronous method which delegates to on_tick when an input is recieved
+        """Calls on_tick when an input is recieved.
 
         Args:
-            input (Input): An immutable data container for Component inputs
+            input (Input): An immutable data container for Component inputs.
         """
         LOGGER.debug("{} got {}".format(self.name, input))
         await self.on_tick(input.time, input.changes)
@@ -123,32 +130,32 @@ class BaseComponent(ConfigurableComponent):
         changes: Changes,
         call_at: Optional[SimTime],
     ) -> None:
-        """An asynchronous method which constructs and sends an Output message
+        """Constructs and sends an Output message to the component output topic.
 
         An asynchronous method which constructs an Output message tagged with the
-        component name and sends it to the output topic of this component
+        component name and sends it to the output topic of this component.
 
         Args:
-            time (SimTime): The current time (in nanoseconds)
+            time (SimTime): The current time (in nanoseconds).
             changes (Changes): A mapping of the difference between the last observable
-                state and the current observable state
-            call_in (Optional[SimTime]): The duration afterwhich the component requests
-                to be awoken
+                state and the current observable state.
+            call_at (Optional[SimTime]): The simulation time at which the component
+                requests to be awoken.
         """
         await self.state_producer.produce(
             output_topic(self.name), Output(self.name, time, changes, call_at)
         )
 
     async def raise_interrupt(self) -> None:
-        """An asynchronous method which sends an Interrupt message
+        """Sends an Interrupt message to the component output topic.
 
         An asynchronous method whicb constructs an Interrupt message tagged with the
-        component name and sends it to the output topic of this component
+        component name and sends it to the output topic of this component.
         """
         await self.state_producer.produce(output_topic(self.name), Interrupt(self.name))
 
     async def set_up_state_interfaces(self):
-        """An asynchronous method which creates a state consumer and state producer
+        """Creates and configures a state consumer and state producer.
 
         An asynchronous method which creates a state consumer which is subscribed to
         the input topic of the component and calls back to handle_input, and a state
@@ -164,12 +171,12 @@ class BaseComponent(ConfigurableComponent):
 
     @abstractmethod
     async def on_tick(self, time: SimTime, changes: Changes):
-        """An abstract asynchronous method called whenever the component is to be updated
+        """An abstract asynchronous method which implements the core logic of the component.
 
         Args:
-            time (SimTime): The current simulation time (in nanoseconds)
+            time (SimTime): The current simulation time (in nanoseconds).
             changes (Changes): A mapping of changed component inputs and their new
-                values
+                values.
         """
         raise NotImplementedError
 
@@ -179,18 +186,18 @@ def create_components(
     state_consumer: Type[StateConsumer],
     state_producer: Type[StateProducer],
 ) -> List[Component]:
-    """A utility function for creating components from configs
+    """Creates a list of components from component config objects.
 
     Args:
         configs (Iterable[ComponentConfig]): An iterable of component configuration
-            data containers
+            data containers.
         state_consumer (Type[StateConsumer]): The state consumer class to be used by
-            the components
+            the components.
         state_producer (Type[StateProducer]): The state producer class to be used by
-            the components
+            the components.
 
     Returns:
-        List[Component]: A list of instantiated components
+        List[Component]: A list of instantiated components.
     """
     components: List[Component] = list()
     for config in configs:

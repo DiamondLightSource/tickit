@@ -13,11 +13,11 @@ OutMap = TypeVar("OutMap", bound=Mapping[str, Hashable])
 
 @dataclass
 class DeviceUpdate(Generic[OutMap]):
-    """An immutable data container for Device outputs and callback request time
+    """An immutable data container for Device outputs and callback request time.
 
     Args:
-        outputs: A mapping of device output keys and current values
-        call_in: The duration after which the component requests to be awoken
+        outputs: A mapping of device output keys and current values.
+        call_at: The simulation time at which the component requests to be awoken.
     """
 
     outputs: OutMap
@@ -26,10 +26,10 @@ class DeviceUpdate(Generic[OutMap]):
 
 @runtime_checkable
 class Device(Protocol):
-    """An interface for types which implement simulated devices"""
+    """An interface for types which implement simulated devices."""
 
     def update(self, time: SimTime, inputs: InMap) -> DeviceUpdate[OutMap]:
-        """A method which implements device behaviour according to the time and its inputs
+        """A method which implements device behaviour according to the time and its inputs.
 
         A method which implements the (typically physics based) changes which occur
         within the device in response to either the progression of time or the
@@ -38,8 +38,8 @@ class Device(Protocol):
         called again.
 
         Args:
-            time: The current simulation time (in nanoseconds)
-            inputs: A mapping of device inputs and their values
+            time: The current simulation time (in nanoseconds).
+            inputs: A mapping of device inputs and their values.
         """
         pass
 
@@ -47,33 +47,38 @@ class Device(Protocol):
 @configurable_base
 @dataclass
 class DeviceConfig:
-    """A data container for device configuration
+    """A data container for device configuration.
 
     A data container for device configuration which acts as a named union of subclasses
-    to facilitate automatic deserialization
+    to facilitate automatic deserialization.
     """
 
     @staticmethod
     def configures() -> Type[Device]:
-        """A static method which returns the Device class configured by this config
+        """A static method which returns the Device class configured by this config.
 
         Returns:
-            Type[Device]: The Device class configured by this config
+            Type[Device]: The Device class configured by this config.
         """
         raise NotImplementedError
 
     @property
     def kwargs(self) -> Dict[str, object]:
-        """A property which returns the key word arguments of the configured device
+        """A property which returns the key word arguments of the configured device.
 
         Returns:
-            Dict[str, object]: The key word argument of the configured Device
+            Dict[str, object]: The key word argument of the configured Device.
         """
         raise NotImplementedError
 
 
 class ConfigurableDevice:
-    """A mixin used to create a device with a configuration data container"""
+    """A mixin used to create a device with a configuration data container."""
 
     def __init_subclass__(cls) -> None:
+        """A subclass init method which makes the subclass configurable.
+
+        A subclass init method which makes the subclass configurable with a
+        DeviceConfig template.
+        """
         cls = configurable(DeviceConfig)(cls)
