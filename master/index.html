@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
@@ -8,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>tickit &mdash; tickit 0.0+untagged.g8d6e90f documentation</title>
+  <title>tickit &mdash; tickit 0.0+untagged.g3173744 documentation</title>
   
 
   
@@ -93,12 +92,6 @@
         
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
-  <style>
-    /* style mobile top nav to look like main nav */
-    .wy-nav-top {
-        background: rgb(7, 43, 93)
-    }
-  </style>
   
             
             
@@ -126,16 +119,47 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="reference/api.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reference/contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/dls-controls/tickit/blob/master/CHANGELOG.rst">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="genindex.html#http://">Index</a></li>
 </ul>
 
             
           
-  <!-- Include Index in the sidebar -->
-  <!-- https://stackoverflow.com/a/37843854 -->
-  <a href="genindex.html">Index</a>
-  <!-- Include all versions of the docs -->
-  <!-- https://holzhaus.github.io/sphinx-multiversion/master/templates.html -->
-  
+  <!-- Add versions for selected branches + tags -->
+  <p class="caption">
+    <span class="caption-text">Versions</span>
+  </p>
+  <ul id="versions"/>
+  <script>
+    // Add any branches to appear in the side pane here, tags will be added below
+    // Will only appear if docs are built and pushed in gh-pages
+    var versions = ['main', 'master'];
+    var dirs = new Set();
+    function addVersion(name) {
+      if (dirs.has(name)) {
+        var li = document.createElement("li");
+        var a = document.createElement("a");
+        a.href = 'https://dls-controls.github.io/tickit/' + name;
+        a.innerText = name;
+        li.appendChild(a)
+        document.getElementById('versions').appendChild(li);
+      }
+    }
+    Promise.all([
+      // Find gh-pages directories and populate `dirs`
+      fetch("https://api.github.com/repos/dls-controls/tickit/contents?ref=gh-pages")
+      .then(response => response.json())
+      .then(data => data.forEach(function(e) {
+        if (e.type == "dir") dirs.add(e.name);
+      })),
+      // Add tags to `versions`
+      fetch('https://api.github.com/repos/dls-controls/tickit/tags')
+        .then(response => response.json())
+        .then(data => data.forEach(function(e) {
+          versions.push(e.name);
+        }))
+      ]).then(_ => versions.forEach(addVersion))
+  </script>
 
         </div>
         
@@ -220,6 +244,9 @@ orchestration of complex multi-device simulations.</p>
 <tr class="row-odd"><td><p>Documentation</p></td>
 <td><p><a class="reference external" href="https://dls-controls.github.io/tickit">https://dls-controls.github.io/tickit</a></p></td>
 </tr>
+<tr class="row-even"><td><p>Changelog</p></td>
+<td><p><a class="reference external" href="https://github.com/dls-controls/tickit/blob/master/CHANGELOG.rst">https://github.com/dls-controls/tickit/blob/master/CHANGELOG.rst</a></p></td>
+</tr>
 </tbody>
 </table>
 <p>An example device which emits a random value between <em>0</em> and <em>255</em> whenever
@@ -270,59 +297,32 @@ which is exposed extenally through a <strong>TCPServer</strong>:</p>
 </div>
 <div class="section" id="how-the-documentation-is-structured">
 <h2>How the documentation is structured<a class="headerlink" href="#how-the-documentation-is-structured" title="Permalink to this headline">¶</a></h2>
+<p>Documentation is split into four categories, accessible from links in the side-bar.</p>
 <div class="columns section" id="tutorials">
-<h3><a class="reference internal" href="#id1"><span class="std std-ref">Tutorials</span></a><a class="headerlink" href="#tutorials" title="Permalink to this headline">¶</a></h3>
+<h3>Tutorials<a class="headerlink" href="#tutorials" title="Permalink to this headline">¶</a></h3>
 <p>Tutorials for installation, library and commandline usage. New users start here.</p>
+<div class="toctree-wrapper compound">
 </div>
-<div class="columns section" id="how-to">
-<h3><a class="reference internal" href="#id2"><span class="std std-ref">How-to Guides</span></a><a class="headerlink" href="#how-to" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="columns section" id="how-to-guides">
+<h3>How-to Guides<a class="headerlink" href="#how-to-guides" title="Permalink to this headline">¶</a></h3>
 <p>Practical step-by-step guides for the more experienced user.</p>
+<div class="toctree-wrapper compound">
+</div>
 </div>
 <div class="columns section" id="explanations">
-<h3><a class="reference internal" href="#id3"><span class="std std-ref">Explanations</span></a><a class="headerlink" href="#explanations" title="Permalink to this headline">¶</a></h3>
+<h3>Explanations<a class="headerlink" href="#explanations" title="Permalink to this headline">¶</a></h3>
 <p>Explanation of how the library works and why it works that way.</p>
+<div class="toctree-wrapper compound">
+</div>
 </div>
 <div class="columns section" id="reference">
-<h3><a class="reference internal" href="#id4"><span class="std std-ref">Reference</span></a><a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h3>
+<h3>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h3>
 <p>Technical reference material, for classes, methods, APIs, commands, and contributing to the project.</p>
+<div class="toctree-wrapper compound">
 </div>
 </div>
-<div class="endcolumns section" id="contents">
-<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound" id="id1">
-<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/installation.html">Installation Tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/running-a-simulation.html">Running a Simulation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/creating-a-simulation.html">Creating a Simulation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/creating-a-device.html">Creating a Device</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/creating-an-adapter.html">Creating an Adapter</a></li>
-</ul>
-</div>
-<div class="toctree-wrapper compound" id="id2">
-<p class="caption" role="heading"><span class="caption-text">How-to Guides</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="how-to/accomplish-a-task.html">How to accomplish a task</a></li>
-</ul>
-</div>
-<div class="toctree-wrapper compound" id="id3">
-<p class="caption" role="heading"><span class="caption-text">Explanations</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="explanations/glossary.html">Glossary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="explanations/how-component-updates-are-ordered.html">How component updates are ordered</a></li>
-</ul>
-</div>
-<div class="toctree-wrapper no-margin-after-ul compound" id="id4">
-<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="reference/api.html">API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="reference/contributing.html">Contributing</a></li>
-</ul>
-</div>
-<ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-</ul>
-<div class="section" id="about-the-documentation">
+<div class="endcolumns section" id="about-the-documentation">
 <h3>About the documentation<a class="headerlink" href="#about-the-documentation" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference external" href="https://documentation.divio.com">Why is the documentation structured this way?</a></p>
 </div>
