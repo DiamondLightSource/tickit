@@ -1,82 +1,38 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>tickit.utils.configuration.configurable &mdash; tickit 0.0+untagged.g3173744 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/theme_overrides.css" type="text/css" />
-
-  
-  
+  <title>tickit.utils.configuration.configurable &mdash; tickit 0.0+untagged.g1cf7099 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/theme_overrides.css" type="text/css" />
     <link rel="shortcut icon" href="../../../../_static/tickit-logo.ico"/>
-  
-
-  
-  
-
-  
-
-  
   <!--[if lt IE 9]>
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
         <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
         <script src="../../../../_static/jquery.js"></script>
         <script src="../../../../_static/underscore.js"></script>
         <script src="../../../../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
-
-    
+    <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: rgb(7, 43, 93)" >
-          
-
-          
             <a href="../../../../index.html" class="icon icon-home"> tickit
-          
-
-          
-            
             <img src="../../../../_static/tickit-logo.svg" class="logo" alt="Logo"/>
-          
           </a>
-
-          
-            
-            
               <div class="version">
                 master
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -84,19 +40,8 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
   
-            
-            
-              
-            
-            
               <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/installation.html">Installation Tutorial</a></li>
@@ -122,8 +67,6 @@
 <li class="toctree-l1"><a class="reference external" href="genindex.html#http://">Index</a></li>
 </ul>
 
-            
-          
   <!-- Add versions for selected branches + tags -->
   <p class="caption">
     <span class="caption-text">Versions</span>
@@ -161,66 +104,29 @@
   </script>
 
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: rgb(7, 43, 93)" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../../index.html">tickit</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
           <li><a href="../../../index.html">Module code</a> &raquo;</li>
-        
       <li>tickit.utils.configuration.configurable</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <h1>Source code for tickit.utils.configuration.configurable</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">is_dataclass</span><span class="p">,</span> <span class="n">make_dataclass</span>
 <span class="kn">from</span> <span class="nn">inspect</span> <span class="kn">import</span> <span class="n">Parameter</span><span class="p">,</span> <span class="n">signature</span>
@@ -244,13 +150,13 @@
 
 
 <div class="viewcode-block" id="rec_subclasses"><a class="viewcode-back" href="../../../../reference/api.html#tickit.utils.configuration.configurable.rec_subclasses">[docs]</a><span class="k">def</span> <span class="nf">rec_subclasses</span><span class="p">(</span><span class="bp">cls</span><span class="p">:</span> <span class="nb">type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">type</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Recursive implementation of type.__subclasses__</span>
+    <span class="sd">&quot;&quot;&quot;Recursive implementation of type.__subclasses__.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        cls (Type): The base class</span>
+<span class="sd">        cls (Type): The base class.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        Iterator[type]: An iterator of subclasses</span>
+<span class="sd">        Iterator[type]: An iterator of subclasses.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">sub_cls</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">():</span>
         <span class="k">yield</span> <span class="n">sub_cls</span>
@@ -258,39 +164,39 @@
 
 
 <div class="viewcode-block" id="configurable_alias"><a class="viewcode-back" href="../../../../reference/api.html#tickit.utils.configuration.configurable.configurable_alias">[docs]</a><span class="k">def</span> <span class="nf">configurable_alias</span><span class="p">(</span><span class="n">sub</span><span class="p">:</span> <span class="n">Type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;The alias of a configurable sub-class</span>
+    <span class="sd">&quot;&quot;&quot;Gets the alias of a configurable sub-class.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        sub (Type): The sub-class to be aliased</span>
+<span class="sd">        sub (Type): The sub-class to be aliased.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        str: The alias assigned to the sub-class</span>
+<span class="sd">        str: The alias assigned to the sub-class.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">sub</span><span class="o">.</span><span class="n">configures</span><span class="p">()</span><span class="o">.</span><span class="vm">__module__</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">sub</span><span class="o">.</span><span class="n">configures</span><span class="p">()</span><span class="o">.</span><span class="vm">__name__</span></div>
 
 
 <div class="viewcode-block" id="configurable_base"><a class="viewcode-back" href="../../../../reference/api.html#tickit.utils.configuration.configurable.configurable_base">[docs]</a><span class="k">def</span> <span class="nf">configurable_base</span><span class="p">(</span><span class="bp">cls</span><span class="p">:</span> <span class="n">Cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Cls</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;A decorator to make a config base class which can deserialize aliased sub-classes</span>
+    <span class="sd">&quot;&quot;&quot;A decorator to make a config base class which can deserialize aliased sub-classes.</span>
 
 <span class="sd">    A decorator which makes a config class the root of a tagged union of sub-classes</span>
 <span class="sd">    allowing for serialization and deserialization of config trees by class alias. The</span>
 <span class="sd">    function registers both an apischema serialization and an apischema deserialization</span>
 <span class="sd">    conversion for the base class which perform lookup based on a tagged union of</span>
-<span class="sd">    aliased sub-classes</span>
+<span class="sd">    aliased sub-classes.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        cls (Cls): The config base class</span>
+<span class="sd">        cls (Cls): The config base class.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        Cls: The modified config base class</span>
+<span class="sd">        Cls: The modified config base class.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">serialization</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Conversion</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Create an apischema Conversion with a converter for recursive sub-classes</span>
+        <span class="sd">&quot;&quot;&quot;Create an apischema Conversion with a converter for recursive sub-classes.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Conversion: An apischema Conversion with a converter for recursive</span>
-<span class="sd">                sub-classes</span>
+<span class="sd">                sub-classes.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">serialization_union</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span>
             <span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
@@ -310,10 +216,10 @@
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">deserialization</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Conversion</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Create an apischema Conversion which gets a sub-class by tag</span>
+        <span class="sd">&quot;&quot;&quot;Create an apischema Conversion which gets a sub-class by tag.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Conversion: An apischema Conversion which gets a sub-class by tag</span>
+<span class="sd">            Conversion: An apischema Conversion which gets a sub-class by tag.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">annotations</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">deserialization_namespace</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;__annotations__&quot;</span><span class="p">:</span> <span class="n">annotations</span><span class="p">}</span>
@@ -335,33 +241,33 @@
 
 <div class="viewcode-block" id="Config"><a class="viewcode-back" href="../../../../reference/api.html#tickit.utils.configuration.configurable.Config">[docs]</a><span class="nd">@runtime_checkable</span>
 <span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="n">Protocol</span><span class="p">[</span><span class="n">T</span><span class="p">]):</span>
-    <span class="sd">&quot;&quot;&quot;An interface for types which implement configurations&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;An interface for types which implement configurations.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Config.configures"><a class="viewcode-back" href="../../../../reference/api.html#tickit.utils.configuration.configurable.Config.configures">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">configures</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">[</span><span class="n">T</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;A static method which returns the class configured by this config</span>
+        <span class="sd">&quot;&quot;&quot;A static method which returns the class configured by this config.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Type[T]: The class configured by this config</span>
+<span class="sd">            Type[T]: The class configured by this config.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;A property which returns the key word arguments of the configured class</span>
+        <span class="sd">&quot;&quot;&quot;A property which returns the key word arguments of the configured class.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Dict[str, object]: The key word argument of the configured class</span>
+<span class="sd">            Dict[str, object]: The key word argument of the configured class.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="configurable"><a class="viewcode-back" href="../../../../reference/api.html#tickit.utils.configuration.configurable.configurable">[docs]</a><span class="k">def</span> <span class="nf">configurable</span><span class="p">(</span><span class="n">template</span><span class="p">:</span> <span class="n">Type</span><span class="p">,</span> <span class="n">ignore</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Type</span><span class="p">],</span> <span class="n">Type</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;A decorator to add a config data container sub-class to a class</span>
+    <span class="sd">&quot;&quot;&quot;A decorator to add a config data container sub-class to a class.</span>
 
 <span class="sd">    A decorator to make a class configurable by adding a config data container</span>
 <span class="sd">    sub-class which is typically registered against a configurable base class allowing</span>
-<span class="sd">    for serialization &amp; deserialization by union tagging</span>
+<span class="sd">    for serialization &amp; deserialization by union tagging.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        template (Type): A template dataclass from which fields are borrwoed</span>
@@ -369,18 +275,18 @@
 <span class="sd">            Defaults to [].</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        Callable[[Type], Type]: A decorator which adds the config data container</span>
+<span class="sd">        Callable[[Type], Type]: A decorator which adds the config data container.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="n">is_dataclass</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">add_config</span><span class="p">(</span><span class="bp">cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;A decorator to add a config data container sub-class to a class</span>
+        <span class="sd">&quot;&quot;&quot;A decorator to add a config data container sub-class to a class.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            cls (Type): The class to which the config data container should be added</span>
+<span class="sd">            cls (Type): The class to which the config data container should be added.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Type: The modified class</span>
+<span class="sd">            Type: The modified class.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">def</span> <span class="nf">configures</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">:</span>
@@ -427,38 +333,27 @@
 </pre></div>
 
            </div>
-           
           </div>
           <footer>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2021, Diamond Light Source.
+    <p>&#169; Copyright 2021, Diamond Light Source.</p>
+  </div>
 
-    </p>
-  </div> 
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

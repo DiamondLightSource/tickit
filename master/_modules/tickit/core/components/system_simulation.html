@@ -1,82 +1,38 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>tickit.core.components.system_simulation &mdash; tickit 0.0+untagged.g3173744 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/theme_overrides.css" type="text/css" />
-
-  
-  
+  <title>tickit.core.components.system_simulation &mdash; tickit 0.0+untagged.g1cf7099 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/theme_overrides.css" type="text/css" />
     <link rel="shortcut icon" href="../../../../_static/tickit-logo.ico"/>
-  
-
-  
-  
-
-  
-
-  
   <!--[if lt IE 9]>
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
         <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
         <script src="../../../../_static/jquery.js"></script>
         <script src="../../../../_static/underscore.js"></script>
         <script src="../../../../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
-
-    
+    <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: rgb(7, 43, 93)" >
-          
-
-          
             <a href="../../../../index.html" class="icon icon-home"> tickit
-          
-
-          
-            
             <img src="../../../../_static/tickit-logo.svg" class="logo" alt="Logo"/>
-          
           </a>
-
-          
-            
-            
               <div class="version">
                 master
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -84,19 +40,8 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
   
-            
-            
-              
-            
-            
               <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/installation.html">Installation Tutorial</a></li>
@@ -122,8 +67,6 @@
 <li class="toctree-l1"><a class="reference external" href="genindex.html#http://">Index</a></li>
 </ul>
 
-            
-          
   <!-- Add versions for selected branches + tags -->
   <p class="caption">
     <span class="caption-text">Versions</span>
@@ -161,66 +104,29 @@
   </script>
 
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: rgb(7, 43, 93)" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../../index.html">tickit</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
           <li><a href="../../../index.html">Module code</a> &raquo;</li>
-        
       <li>tickit.core.components.system_simulation</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <h1>Source code for tickit.core.components.system_simulation</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Type</span>
@@ -238,7 +144,7 @@
 
 
 <div class="viewcode-block" id="SystemSimulation"><a class="viewcode-back" href="../../../../reference/api.html#tickit.core.components.system_simulation.SystemSimulation">[docs]</a><span class="k">class</span> <span class="nc">SystemSimulation</span><span class="p">(</span><span class="n">BaseComponent</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A component containing a slave scheduler and several components</span>
+    <span class="sd">&quot;&quot;&quot;A component containing a slave scheduler and several components.</span>
 
 <span class="sd">    A component which acts as a nested tickit simulation by wrapping a slave scheduler</span>
 <span class="sd">    and a set of internal components, this component delegates core behaviour to the</span>
@@ -253,19 +159,19 @@
         <span class="n">state_producer</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">StateProducer</span><span class="p">],</span>
         <span class="n">expose</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">PortID</span><span class="p">,</span> <span class="n">ComponentPort</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;A constructor of the system simulation</span>
+        <span class="sd">&quot;&quot;&quot;A constructor which creates component simulations and adds exposing wiring.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            name (ComponentID): The unique identifier of the system simulation</span>
+<span class="sd">            name (ComponentID): The unique identifier of the system simulation.</span>
 <span class="sd">            components (List[ComponentConfig]): A list of immutable component</span>
-<span class="sd">                configuration data containers, used to construct internal components</span>
+<span class="sd">                configuration data containers, used to construct internal components.</span>
 <span class="sd">            state_consumer (Type[StateConsumer]): The state consumer class to be used</span>
-<span class="sd">                by the component</span>
+<span class="sd">                by the component.</span>
 <span class="sd">            state_producer (Type[StateProducer]): The state producer class to be used</span>
-<span class="sd">                by the component</span>
+<span class="sd">                by the component.</span>
 <span class="sd">            expose (Dict[PortID, ComponentPort]): A mapping of outputs which</span>
 <span class="sd">                the system simulation exposes and the corresponding output of an</span>
-<span class="sd">                internal component</span>
+<span class="sd">                internal component.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">state_consumer</span><span class="p">,</span> <span class="n">state_producer</span><span class="p">)</span>
         <span class="n">inverse_wiring</span> <span class="o">=</span> <span class="n">InverseWiring</span><span class="o">.</span><span class="n">from_component_configs</span><span class="p">(</span><span class="n">components</span><span class="p">)</span>
@@ -281,64 +187,54 @@
         <span class="p">)</span>
 
 <div class="viewcode-block" id="SystemSimulation.run_forever"><a class="viewcode-back" href="../../../../reference/api.html#tickit.core.components.system_simulation.SystemSimulation.run_forever">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run_forever</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;An asynchronous method which sets up state interfaces, the scheduler and components</span>
+        <span class="sd">&quot;&quot;&quot;Sets up state interfaces, the scheduler and components and blocks until any complete.</span>
 
 <span class="sd">        An asynchronous method starts the run_forever method of each component, runs</span>
-<span class="sd">        the scheduler, and sets up externally facing state interfaces</span>
+<span class="sd">        the scheduler, and sets up externally facing state interfaces. The method</span>
+<span class="sd">        blocks until and of the components or the scheduler complete.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">tasks</span> <span class="o">=</span> <span class="n">run_all</span><span class="p">((</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">component_simulations</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span><span class="p">))</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_up_state_interfaces</span><span class="p">()</span>
         <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">tasks</span><span class="p">,</span> <span class="n">return_when</span><span class="o">=</span><span class="n">asyncio</span><span class="o">.</span><span class="n">FIRST_COMPLETED</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SystemSimulation.on_tick"><a class="viewcode-back" href="../../../../reference/api.html#tickit.core.components.system_simulation.SystemSimulation.on_tick">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">on_tick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">SimTime</span><span class="p">,</span> <span class="n">changes</span><span class="p">:</span> <span class="n">Changes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;An asynchronous method which delegates core behaviour to the slave scheduler</span>
+        <span class="sd">&quot;&quot;&quot;Delegates core behaviour to the slave scheduler.</span>
 
 <span class="sd">        An asynchronous method which delegates core behaviour of computing changes and</span>
 <span class="sd">        determining a callback period to the slave shceduler and sends the resulting</span>
-<span class="sd">        Output</span>
+<span class="sd">        Output.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            time (SimTime): The current simulation time (in nanoseconds)</span>
+<span class="sd">            time (SimTime): The current simulation time (in nanoseconds).</span>
 <span class="sd">            changes (Changes): A mapping of changed component inputs and their new</span>
-<span class="sd">                values</span>
+<span class="sd">                values.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">output_changes</span><span class="p">,</span> <span class="n">call_in</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">on_tick</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">changes</span><span class="p">)</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">output_changes</span><span class="p">,</span> <span class="n">call_in</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
-           
           </div>
           <footer>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2021, Diamond Light Source.
+    <p>&#169; Copyright 2021, Diamond Light Source.</p>
+  </div>
 
-    </p>
-  </div> 
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>
