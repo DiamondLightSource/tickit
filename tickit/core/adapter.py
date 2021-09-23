@@ -25,12 +25,21 @@ if TYPE_CHECKING:
 T = TypeVar("T")
 
 
+# https://github.com/python/mypy/issues/708#issuecomment-647124281
+class RaiseInterrupt(Protocol):
+    """A raise_interrupt function that should be passed to `Adapter`."""
+
+    async def __call__(self) -> None:
+        """The actual call signature."""
+        pass
+
+
 @runtime_checkable
 class Adapter(Protocol):
     """An interface for types which implement device adapters."""
 
     device: "Device"
-    raise_interrupt: Callable[[], Awaitable[None]]
+    raise_interrupt: RaiseInterrupt
 
     async def run_forever(self) -> None:
         """An asynchronous method allowing indefinite running of core adapter logic.
