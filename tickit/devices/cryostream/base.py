@@ -88,10 +88,12 @@ class CryostreamBase:
         Args:
             duration (int): The duration for which the temperature should be held.
         """
-        if duration < self.min_plat_duration or duration > self.max_plat_duration:
-            raise Exception("Duration set to less than minimum plat duration time")
+
+        if duration < self.min_plat_duration:
+
+            raise ValueError("Duration set to less than minimum plat duration.")
         if duration > self.max_plat_duration:
-            raise Exception("Duration set to more than maximum plat duration time")
+            raise ValueError("Duration set to more than maximum plat duration.")
 
         self.plat_duration = duration
         self._target_temp = self.gas_temp
@@ -121,7 +123,10 @@ class CryostreamBase:
         Args:
             ramp_rate (int): The rate at which the temperature should change.
         """
-        if self.run_mode not in (5, 6):
+        if self.run_mode not in (
+            RunModes.SHUTDOWNOK.value,
+            RunModes.SHUTDOWNFAIL.value,
+        ):
             self.phase_id = PhaseIds.END.value
             await self.ramp(ramp_rate, self.default_temp_shutdown)
             if self.gas_temp == self.default_temp_shutdown:
@@ -132,7 +137,10 @@ class CryostreamBase:
 
     async def purge(self) -> None:
         """Bring the gas temperature to 300 K at max rate, then halt and stop."""
-        if self.run_mode not in (5, 6):
+        if self.run_mode not in (
+            RunModes.SHUTDOWNOK.value,
+            RunModes.SHUTDOWNFAIL.value,
+        ):
             self.phase_id = PhaseIds.PURGE.value
             self.gas_flow = 0
             await self.ramp(self.default_ramp_rate, self.default_temp_shutdown)
@@ -144,17 +152,20 @@ class CryostreamBase:
 
     async def pause(self) -> None:
         """Interrupt and maintain the current gas temperature until resumed."""
-        # Todo interrupt other commands from running
+        # TODO interrupt other commands from running
         ...
 
     async def resume(self) -> None:
         """Resume the previous command."""
         if self.phase_id == PhaseIds.HOLD.value:
-            LOGGER.warn("Cannot return to previous command")  # Todo keep commands
+            LOGGER.warn("Cannot return to previous command")  # TODO keep commands
 
     async def stop(self) -> None:
         """Gas flow is halted and the system is stopped at the current temperature."""
-        if self.run_mode not in (5, 6):
+        if self.run_mode not in (
+            RunModes.SHUTDOWNOK.value,
+            RunModes.SHUTDOWNFAIL.value,
+        ):
             self.gas_flow = 0
             self._target_temp = self.gas_temp
             self.run_mode = RunModes.SHUTDOWNOK.value
