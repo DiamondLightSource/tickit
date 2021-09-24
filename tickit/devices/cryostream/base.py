@@ -297,9 +297,20 @@ class CryostreamBase:
             Union[Status, ExtendedStatus]: The status packet.
         """
         if status_format == 0:
+            if hasattr(self, "status"):
+                pass
+            else:
+                await self.set_status_format(0)
+
             return self.status
+
         if status_format == 1:
+            if hasattr(self, "extended_status"):
+                pass
+            else:
+                await self.set_status_format(1)
 
             return self.extended_status
+
         else:
-            raise Exception("Key error")
+            raise ValueError("Invalid status format parameter.")
