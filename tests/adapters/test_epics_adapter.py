@@ -4,7 +4,7 @@ import pytest
 from mock import MagicMock, Mock, create_autospec
 
 from tickit.adapters.epicsadapter import EpicsAdapter
-from tickit.core.adapter import AdapterConfig, ConfigurableAdapter, Interpreter
+from tickit.core.adapter import ConfigurableAdapter, Interpreter
 from tickit.core.device import Device
 
 
