@@ -88,7 +88,6 @@ class CryostreamBase:
         Args:
             duration (int): The duration for which the temperature should be held.
         """
-
         if duration < self.min_plat_duration:
 
             raise ValueError("Duration set to less than minimum plat duration.")
