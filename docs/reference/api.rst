@@ -260,7 +260,7 @@ API
             :members:
 
             ``tickit.devices.cryostream.cryostream``
-            ------------------------------------------------
+            ----------------------------------------
         
     .. automodule:: tickit.devices.femto
 
