@@ -262,6 +262,18 @@ API
             ``tickit.devices.cryostream.cryostream``
             ----------------------------------------
         
+        .. automodule:: tickit.devices.cryostream.status
+            :members:
+
+            ``tickit.devices.cryostream.status``
+            ------------------------------------
+
+        .. automodule:: tickit.devices.cryostream.states   
+            :members:
+
+            ``tickit.device.cryostream.states``
+            -----------------------------------
+        
     .. automodule:: tickit.devices.femto
 
     ``tickit.devices.femto``
