@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tickit.devices.cryostream.cryostream &mdash; tickit 0.1+2.g8a1bff1 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/theme_overrides.css" type="text/css" />
+    <link rel="shortcut icon" href="../../../../_static/tickit-logo.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: rgb(7, 43, 93)" >
+            <a href="../../../../index.html" class="icon icon-home"> tickit
+            <img src="../../../../_static/tickit-logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                master
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+  
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/installation.html">Installation Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/running-a-simulation.html">Running a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/creating-a-simulation.html">Creating a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/creating-a-device.html">Creating a Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/creating-an-adapter.html">Creating an Adapter</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">How-to Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../how-to/accomplish-a-task.html">How to accomplish a task</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Explanations</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../explanations/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../explanations/how-component-updates-are-ordered.html">How component updates are ordered</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../reference/api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../reference/contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/dls-controls/tickit/blob/master/CHANGELOG.rst">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="genindex.html#http://">Index</a></li>
+</ul>
+
+  <!-- Add versions for selected branches + tags -->
+  <p class="caption">
+    <span class="caption-text">Versions</span>
+  </p>
+  <ul id="versions"/>
+  <script>
+    // Add any branches to appear in the side pane here, tags will be added below
+    // Will only appear if docs are built and pushed in gh-pages
+    var versions = ['main', 'master'];
+    var dirs = new Set();
+    function addVersion(name) {
+      if (dirs.has(name)) {
+        var li = document.createElement("li");
+        var a = document.createElement("a");
+        a.href = 'https://dls-controls.github.io/tickit/' + name;
+        a.innerText = name;
+        li.appendChild(a)
+        document.getElementById('versions').appendChild(li);
+      }
+    }
+    Promise.all([
+      // Find gh-pages directories and populate `dirs`
+      fetch("https://api.github.com/repos/dls-controls/tickit/contents?ref=gh-pages")
+      .then(response => response.json())
+      .then(data => data.forEach(function(e) {
+        if (e.type == "dir") dirs.add(e.name);
+      })),
+      // Add tags to `versions`
+      fetch('https://api.github.com/repos/dls-controls/tickit/tags')
+        .then(response => response.json())
+        .then(data => data.forEach(function(e) {
+          versions.push(e.name);
+        }))
+      ]).then(_ => versions.forEach(addVersion))
+  </script>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: rgb(7, 43, 93)" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">tickit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      <li>tickit.devices.cryostream.cryostream</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tickit.devices.cryostream.cryostream</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">struct</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">AsyncIterable</span><span class="p">,</span> <span class="n">Awaitable</span><span class="p">,</span> <span class="n">Callable</span>
+
+<span class="kn">from</span> <span class="nn">tickit.adapters.composed</span> <span class="kn">import</span> <span class="n">ComposedAdapter</span>
+<span class="kn">from</span> <span class="nn">tickit.adapters.interpreters.command</span> <span class="kn">import</span> <span class="n">CommandInterpreter</span><span class="p">,</span> <span class="n">RegexCommand</span>
+<span class="kn">from</span> <span class="nn">tickit.adapters.servers.tcp</span> <span class="kn">import</span> <span class="n">TcpServer</span>
+<span class="kn">from</span> <span class="nn">tickit.core.adapter</span> <span class="kn">import</span> <span class="n">ConfigurableAdapter</span>
+<span class="kn">from</span> <span class="nn">tickit.core.device</span> <span class="kn">import</span> <span class="n">ConfigurableDevice</span><span class="p">,</span> <span class="n">Device</span><span class="p">,</span> <span class="n">DeviceUpdate</span>
+<span class="kn">from</span> <span class="nn">tickit.core.typedefs</span> <span class="kn">import</span> <span class="n">SimTime</span>
+<span class="kn">from</span> <span class="nn">tickit.devices.cryostream.base</span> <span class="kn">import</span> <span class="n">CryostreamBase</span>
+<span class="kn">from</span> <span class="nn">tickit.devices.cryostream.states</span> <span class="kn">import</span> <span class="n">PhaseIds</span>
+<span class="kn">from</span> <span class="nn">tickit.utils.byte_format</span> <span class="kn">import</span> <span class="n">ByteFormat</span>
+<span class="kn">from</span> <span class="nn">tickit.utils.compat.typing_compat</span> <span class="kn">import</span> <span class="n">TypedDict</span>
+
+<span class="n">_EXTENDED_STATUS</span> <span class="o">=</span> <span class="s2">&quot;&gt;BBHHHBBHHHHHBBBBBBHHBBBBBBBBHH&quot;</span>
+
+
+<div class="viewcode-block" id="Cryostream"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.cryostream.Cryostream">[docs]</a><span class="k">class</span> <span class="nc">Cryostream</span><span class="p">(</span><span class="n">CryostreamBase</span><span class="p">,</span> <span class="n">ConfigurableDevice</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A Cryostream device, used for cooling of samples using cold gas.&quot;&quot;&quot;</span>
+
+    <span class="c1">#: An empty typed mapping of device inputs</span>
+    <span class="n">Inputs</span><span class="p">:</span> <span class="n">TypedDict</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Inputs&quot;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="c1">#: A typed mapping containing the &#39;temperature&#39; output value</span>
+    <span class="n">Outputs</span><span class="p">:</span> <span class="n">TypedDict</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Outputs&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">})</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A Cryostream constructor sets up initial internal values.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phase_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">PhaseIds</span><span class="o">.</span><span class="n">HOLD</span><span class="o">.</span><span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">callback_period</span><span class="p">:</span> <span class="n">SimTime</span> <span class="o">=</span> <span class="n">SimTime</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mf">1e9</span><span class="p">))</span>
+
+<div class="viewcode-block" id="Cryostream.update"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.cryostream.Cryostream.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">SimTime</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">Inputs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeviceUpdate</span><span class="p">[</span><span class="n">Outputs</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;The update method which changes the output temperature according to set modes.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            DeviceUpdate[Outputs]:</span>
+<span class="sd">                The produced update event which contains the value of the output</span>
+<span class="sd">                temperature, and requests callback if temperature should continue to</span>
+<span class="sd">                change.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">phase_id</span> <span class="ow">in</span> <span class="p">(</span><span class="n">PhaseIds</span><span class="o">.</span><span class="n">RAMP</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">PhaseIds</span><span class="o">.</span><span class="n">COOL</span><span class="o">.</span><span class="n">value</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gas_temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_temperature</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">DeviceUpdate</span><span class="p">(</span>
+                <span class="n">Cryostream</span><span class="o">.</span><span class="n">Outputs</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gas_temp</span><span class="p">),</span>
+                <span class="n">SimTime</span><span class="p">(</span><span class="n">time</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback_period</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">phase_id</span> <span class="o">==</span> <span class="n">PhaseIds</span><span class="o">.</span><span class="n">PLAT</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">phase_id</span> <span class="o">=</span> <span class="n">PhaseIds</span><span class="o">.</span><span class="n">HOLD</span><span class="o">.</span><span class="n">value</span>
+            <span class="k">return</span> <span class="n">DeviceUpdate</span><span class="p">(</span>
+                <span class="n">Cryostream</span><span class="o">.</span><span class="n">Outputs</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gas_temp</span><span class="p">),</span>
+                <span class="n">SimTime</span><span class="p">(</span><span class="n">time</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plat_duration</span> <span class="o">*</span> <span class="mf">1e10</span><span class="p">)),</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">DeviceUpdate</span><span class="p">(</span><span class="n">Cryostream</span><span class="o">.</span><span class="n">Outputs</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gas_temp</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="CryostreamAdapter"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter">[docs]</a><span class="k">class</span> <span class="nc">CryostreamAdapter</span><span class="p">(</span><span class="n">ComposedAdapter</span><span class="p">,</span> <span class="n">ConfigurableAdapter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A Cryostream TCP adapter which sends regular status packets and can set modes.&quot;&quot;&quot;</span>
+
+    <span class="n">_device</span><span class="p">:</span> <span class="n">Cryostream</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">device</span><span class="p">:</span> <span class="n">Device</span><span class="p">,</span>
+        <span class="n">raise_interrupt</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">Awaitable</span><span class="p">[</span><span class="kc">None</span><span class="p">]],</span>
+        <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>
+        <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">25565</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A CryostreamAdapter constructor which instantiates a TcpServer with host and port.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            device (Device): The device which this adapter is attached to</span>
+<span class="sd">            raise_interrupt (Callable): A callback to request that the device is</span>
+<span class="sd">                updated immediately.</span>
+<span class="sd">            host (Optional[str]): The host address of the TcpServer. Defaults to</span>
+<span class="sd">                &quot;localhost&quot;.</span>
+<span class="sd">            port (Optional[int]): The bound port of the TcpServer. Defaults to 25565.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">device</span><span class="p">,</span>
+            <span class="n">raise_interrupt</span><span class="p">,</span>
+            <span class="n">TcpServer</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="n">ByteFormat</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;%b&quot;</span><span class="p">),</span> <span class="n">host</span><span class="o">=</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">),</span>
+            <span class="n">CommandInterpreter</span><span class="p">(),</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="CryostreamAdapter.on_connect"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.on_connect">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">on_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterable</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;A method which continiously yields status packets.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            AsyncIterable[bytes]: An asyncronous iterable of packed Cryostream status</span>
+<span class="sd">                packets.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">set_status_format</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">status</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">get_status</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">status</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="CryostreamAdapter.restart"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.restart">[docs]</a>    <span class="nd">@RegexCommand</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">x02</span><span class="se">\\</span><span class="s2">x0a&quot;</span><span class="p">,</span> <span class="n">interrupt</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">restart</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A regex bytes command which restarts the Cryostream.&quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">restart</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="CryostreamAdapter.hold"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.hold">[docs]</a>    <span class="nd">@RegexCommand</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">x02</span><span class="se">\\</span><span class="s2">x0d&quot;</span><span class="p">,</span> <span class="n">interrupt</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">hold</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A regex bytes command which holds the current temperature.&quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">hold</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="CryostreamAdapter.purge"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.purge">[docs]</a>    <span class="nd">@RegexCommand</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">x02</span><span class="se">\\</span><span class="s2">x10&quot;</span><span class="p">,</span> <span class="n">interrupt</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">purge</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A regex bytes command which purges (immediately raise to 300K).&quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">purge</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="CryostreamAdapter.pause"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.pause">[docs]</a>    <span class="nd">@RegexCommand</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">x02</span><span class="se">\\</span><span class="s2">x11&quot;</span><span class="p">,</span> <span class="n">interrupt</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">pause</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A regex bytes command which pauses.&quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">pause</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="CryostreamAdapter.resume"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.resume">[docs]</a>    <span class="nd">@RegexCommand</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">x02</span><span class="se">\\</span><span class="s2">x12&quot;</span><span class="p">,</span> <span class="n">interrupt</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">resume</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A regex bytes command which resumes the last command.&quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">resume</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="CryostreamAdapter.stop"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.stop">[docs]</a>    <span class="nd">@RegexCommand</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">x02</span><span class="se">\\</span><span class="s2">x13&quot;</span><span class="p">,</span> <span class="n">interrupt</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A regex bytes command which stops gas flow.&quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="CryostreamAdapter.turbo"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.turbo">[docs]</a>    <span class="nd">@RegexCommand</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">x03</span><span class="se">\\</span><span class="s2">x14([</span><span class="se">\\</span><span class="s2">x00</span><span class="se">\\</span><span class="s2">x01])&quot;</span><span class="p">,</span> <span class="n">interrupt</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">turbo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">turbo_on</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A regex bytes command which enables / disables turbo mode.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            turbo_on (bytes): The desired turbo mode, where 0 denotes off and 1 denotes</span>
+<span class="sd">                on.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">turbo_on</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;B&quot;</span><span class="p">,</span> <span class="n">turbo_on</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">turbo</span><span class="p">(</span><span class="n">turbo_on</span><span class="p">)</span></div>
+
+    <span class="c1"># Todo set status format not interrupt</span>
+<div class="viewcode-block" id="CryostreamAdapter.set_status_format"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.set_status_format">[docs]</a>    <span class="nd">@RegexCommand</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">x03</span><span class="se">\\</span><span class="s2">x28([</span><span class="se">\\</span><span class="s2">x00</span><span class="se">\\</span><span class="s2">x01])&quot;</span><span class="p">,</span> <span class="n">interrupt</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">set_status_format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status_format</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A regex bytes command which sets the status packet format.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            status_format (bytes): The status packet format, where 0 denotes a standard</span>
+<span class="sd">                status packet and 1 denotes an extended status packet.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">status_format</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;B&quot;</span><span class="p">,</span> <span class="n">status_format</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">set_status_format</span><span class="p">(</span><span class="n">status_format</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CryostreamAdapter.plat"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.plat">[docs]</a>    <span class="nd">@RegexCommand</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">x04</span><span class="se">\\</span><span class="s2">x0c(.</span><span class="si">{2}</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">interrupt</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">plat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">duration</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A regex bytes command which maintains temperature for a set amount of time.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            duration (bytes): The duration for which the temperature should be held.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;H&quot;</span><span class="p">,</span> <span class="n">duration</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">plat</span><span class="p">(</span><span class="n">duration</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CryostreamAdapter.end"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.end">[docs]</a>    <span class="nd">@RegexCommand</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">x04</span><span class="se">\\</span><span class="s2">x0f(.</span><span class="si">{2}</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">interrupt</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ramp_rate</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A regex bytes command which brings the gas temperature to 300 K at ramp rate.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            ramp_rate (bytes): The rate at which the temperature should change.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ramp_rate</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;H&quot;</span><span class="p">,</span> <span class="n">ramp_rate</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">end</span><span class="p">(</span><span class="n">ramp_rate</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CryostreamAdapter.cool"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.cool">[docs]</a>    <span class="nd">@RegexCommand</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">x04</span><span class="se">\\</span><span class="s2">x0e(.</span><span class="si">{2}</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">interrupt</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">cool</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_temp</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A regex bytes command which makes decreases temperature to a set value.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            target_temp (bytes): The target temperature.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">target_temp</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;H&quot;</span><span class="p">,</span> <span class="n">target_temp</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">cool</span><span class="p">(</span><span class="n">target_temp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CryostreamAdapter.ramp"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.ramp">[docs]</a>    <span class="nd">@RegexCommand</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">x06</span><span class="se">\\</span><span class="s2">x0b(.{2,4})&quot;</span><span class="p">,</span> <span class="n">interrupt</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">ramp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Change gas temperature to a set value at a controlled rate.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            values (bytes): The rate at which the temperature should change and the</span>
+<span class="sd">                target temperature.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ramp_rate</span><span class="p">,</span> <span class="n">target_temp</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;HH&quot;</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">ramp</span><span class="p">(</span><span class="n">ramp_rate</span><span class="p">,</span> <span class="n">target_temp</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Diamond Light Source.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

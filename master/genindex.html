@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; tickit 0.1+1.ge5308e6 documentation</title>
+  <title>Index &mdash; tickit 0.1+2.g8a1bff1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -175,10 +175,10 @@
 </li>
       <li><a href="reference/api.html#tickit.core.state_interfaces.state_interface.add">add() (in module tickit.core.state_interfaces.state_interface)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/api.html#tickit.core.management.schedulers.slave.SlaveScheduler.add_exposing_wiring">add_exposing_wiring() (tickit.core.management.schedulers.slave.SlaveScheduler static method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/api.html#tickit.core.state_interfaces.internal.InternalStateConsumer.add_message">add_message() (tickit.core.state_interfaces.internal.InternalStateConsumer method)</a>
 </li>
       <li><a href="reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.add_wakeup">add_wakeup() (tickit.core.management.schedulers.base.BaseScheduler method)</a>
@@ -187,7 +187,13 @@
         <li><a href="reference/api.html#tickit.core.management.schedulers.master.MasterScheduler.add_wakeup">(tickit.core.management.schedulers.master.MasterScheduler method)</a>
 </li>
       </ul></li>
-      <li><a href="reference/api.html#tickit.core.adapter.ListeningAdapter.after_update">after_update() (tickit.core.adapter.ListeningAdapter method)</a>
+      <li><a href="reference/api.html#tickit.adapters.epicsadapter.EpicsAdapter.after_update">after_update() (tickit.adapters.epicsadapter.EpicsAdapter method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.core.adapter.ListeningAdapter.after_update">(tickit.core.adapter.ListeningAdapter method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.states.AlarmCodes">AlarmCodes (class in tickit.devices.cryostream.states)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -202,6 +208,8 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/api.html#tickit.core.management.schedulers.base.BaseScheduler">BaseScheduler (class in tickit.core.management.schedulers.base)</a>
+</li>
+      <li><a href="reference/api.html#tickit.adapters.epicsadapter.EpicsAdapter.build_ioc">build_ioc() (tickit.adapters.epicsadapter.EpicsAdapter method)</a>
 </li>
       <li><a href="reference/api.html#tickit.utils.byte_format.ByteFormat">ByteFormat (class in tickit.utils.byte_format)</a>
 </li>
@@ -221,6 +229,12 @@
       </ul></li>
       <li><a href="explanations/glossary.html#term-Callback"><strong>Callback</strong></a>
 </li>
+      <li><a href="reference/api.html#tickit.devices.femto.femto.FemtoAdapter.callback">callback() (tickit.devices.femto.femto.FemtoAdapter method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.devices.pneumatic.pneumatic.PneumaticAdapter.callback">(tickit.devices.pneumatic.pneumatic.PneumaticAdapter method)</a>
+</li>
+      </ul></li>
       <li><a href="reference/api.html#tickit.core.typedefs.Changes">Changes (in module tickit.core.typedefs)</a>
 </li>
       <li><a href="reference/api.html#tickit.utils.configuration.configurable.Cls">Cls (in module tickit.utils.configuration.configurable)</a>
@@ -249,8 +263,6 @@
         <li><a href="reference/api.html#tickit.core.management.ticker.Ticker.components">(tickit.core.management.ticker.Ticker property)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/api.html#tickit.adapters.composed.ComposedAdapter">ComposedAdapter (class in tickit.adapters.composed)</a>
 </li>
       <li><a href="reference/api.html#tickit.utils.configuration.configurable.Config">Config (class in tickit.utils.configuration.configurable)</a>
@@ -259,6 +271,8 @@
 </li>
       <li><a href="reference/api.html#tickit.utils.configuration.configurable.configurable_alias">configurable_alias() (in module tickit.utils.configuration.configurable)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/api.html#tickit.utils.configuration.configurable.configurable_base">configurable_base() (in module tickit.utils.configuration.configurable)</a>
 </li>
       <li><a href="reference/api.html#tickit.core.adapter.ConfigurableAdapter">ConfigurableAdapter (class in tickit.core.adapter)</a>
@@ -281,9 +295,33 @@
         <li><a href="reference/api.html#tickit.utils.configuration.configurable.Config.configures">(tickit.utils.configuration.configurable.Config static method)</a>
 </li>
       </ul></li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.base.CryostreamBase.cool">cool() (tickit.devices.cryostream.base.CryostreamBase method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.cool">(tickit.devices.cryostream.cryostream.CryostreamAdapter method)</a>
+</li>
+      </ul></li>
       <li><a href="reference/api.html#tickit.core.components.component.create_components">create_components() (in module tickit.core.components.component)</a>
 </li>
       <li><a href="reference/api.html#tickit.core.state_interfaces.internal.InternalStateServer.create_topic">create_topic() (tickit.core.state_interfaces.internal.InternalStateServer method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.Cryostream">Cryostream (class in tickit.devices.cryostream.cryostream)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.Cryostream.CryostreamConfig">Cryostream.CryostreamConfig (class in tickit.devices.cryostream.cryostream)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.Cryostream.Inputs">Cryostream.Inputs (class in tickit.devices.cryostream.cryostream)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.Cryostream.Outputs">Cryostream.Outputs (class in tickit.devices.cryostream.cryostream)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter">CryostreamAdapter (class in tickit.devices.cryostream.cryostream)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.CryostreamAdapterConfig">CryostreamAdapter.CryostreamAdapterConfig (class in tickit.devices.cryostream.cryostream)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.base.CryostreamBase">CryostreamBase (class in tickit.devices.cryostream.base)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.femto.femto.CurrentDevice">CurrentDevice (class in tickit.devices.femto.femto)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.femto.femto.CurrentDevice.CurrentDeviceConfig">CurrentDevice.CurrentDeviceConfig (class in tickit.devices.femto.femto)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -327,6 +365,16 @@
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.devices.cryostream.base.CryostreamBase.end">end() (tickit.devices.cryostream.base.CryostreamBase method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.end">(tickit.devices.cryostream.cryostream.CryostreamAdapter method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.adapters.epicsadapter.EpicsAdapter">EpicsAdapter (class in tickit.adapters.epicsadapter)</a>
+</li>
+      <li><a href="reference/api.html#tickit.adapters.epicsadapter.EpicsAdapter.EpicsAdapterConfig">EpicsAdapter.EpicsAdapterConfig (class in tickit.adapters.epicsadapter)</a>
+</li>
       <li><a href="reference/api.html#tickit.core.management.event_router.EventRouter">EventRouter (class in tickit.core.management.event_router)</a>
 </li>
       <li>
@@ -366,18 +414,28 @@
         <li><a href="reference/api.html#module-examples.devices.trampoline">module</a>
 </li>
       </ul></li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.status.ExtendedStatus">ExtendedStatus (class in tickit.devices.cryostream.status)</a>
+</li>
   </ul></td>
 </tr></table>
 
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.devices.femto.femto.Femto">Femto (class in tickit.devices.femto.femto)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.femto.femto.Femto.FemtoConfig">Femto.FemtoConfig (class in tickit.devices.femto.femto)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.femto.femto.FemtoAdapter">FemtoAdapter (class in tickit.devices.femto.femto)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.femto.femto.FemtoAdapter.FemtoAdapterConfig">FemtoAdapter.FemtoAdapterConfig (class in tickit.devices.femto.femto)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/api.html#tickit.core.management.event_router.InverseWiring.from_component_configs">from_component_configs() (tickit.core.management.event_router.InverseWiring class method)</a>
 </li>
       <li><a href="reference/api.html#tickit.core.management.event_router.Wiring.from_inverse_wiring">from_inverse_wiring() (tickit.core.management.event_router.Wiring class method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/api.html#tickit.core.management.event_router.InverseWiring.from_wiring">from_wiring() (tickit.core.management.event_router.InverseWiring class method)</a>
 </li>
       <li><a href="reference/api.html#tickit.utils.configuration.configurable.Func">Func (in module tickit.utils.configuration.configurable)</a>
@@ -388,7 +446,11 @@
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.devices.femto.femto.Femto.get_current">get_current() (tickit.devices.femto.femto.Femto method)</a>
+</li>
       <li><a href="reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.get_first_wakeups">get_first_wakeups() (tickit.core.management.schedulers.base.BaseScheduler method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.femto.femto.Femto.get_gain">get_gain() (tickit.devices.femto.femto.Femto method)</a>
 </li>
       <li><a href="reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.get_hidden">get_hidden() (examples.devices.remote_controlled.RemoteControlledAdapter method)</a>
 </li>
@@ -396,11 +458,17 @@
 </li>
       <li><a href="reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.get_observed_bytes">get_observed_bytes() (examples.devices.remote_controlled.RemoteControlledAdapter method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.get_observed_str">get_observed_str() (examples.devices.remote_controlled.RemoteControlledAdapter method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/api.html#examples.devices.shutter.ShutterAdapter.get_position">get_position() (examples.devices.shutter.ShutterAdapter method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.pneumatic.pneumatic.Pneumatic.get_speed">get_speed() (tickit.devices.pneumatic.pneumatic.Pneumatic method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.pneumatic.pneumatic.Pneumatic.get_state">get_state() (tickit.devices.pneumatic.pneumatic.Pneumatic method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.base.CryostreamBase.get_status">get_status() (tickit.devices.cryostream.base.CryostreamBase method)</a>
 </li>
       <li><a href="reference/api.html#examples.devices.shutter.ShutterAdapter.get_target">get_target() (examples.devices.shutter.ShutterAdapter method)</a>
 </li>
@@ -420,14 +488,22 @@
         <li><a href="reference/api.html#tickit.core.adapter.Interpreter.handle">(tickit.core.adapter.Interpreter method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/api.html#tickit.core.components.component.BaseComponent.handle_input">handle_input() (tickit.core.components.component.BaseComponent method)</a>
 </li>
       <li><a href="reference/api.html#tickit.adapters.composed.ComposedAdapter.handle_message">handle_message() (tickit.adapters.composed.ComposedAdapter method)</a>
 
       <ul>
         <li><a href="reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.handle_message">(tickit.core.management.schedulers.base.BaseScheduler method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.devices.cryostream.states.HardwareType">HardwareType (class in tickit.devices.cryostream.states)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.base.CryostreamBase.hold">hold() (tickit.devices.cryostream.base.CryostreamBase method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.hold">(tickit.devices.cryostream.cryostream.CryostreamAdapter method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -443,6 +519,8 @@
       <li><a href="reference/api.html#tickit.core.management.event_router.EventRouter.input_components">input_components (tickit.core.management.event_router.EventRouter property)</a>
 </li>
       <li><a href="reference/api.html#tickit.utils.topic_naming.input_topic">input_topic() (in module tickit.utils.topic_naming)</a>
+</li>
+      <li><a href="reference/api.html#tickit.adapters.epicsadapter.InputRecord">InputRecord (class in tickit.adapters.epicsadapter)</a>
 </li>
       <li><a href="reference/api.html#tickit.core.state_interfaces.state_interface.interfaces">interfaces() (in module tickit.core.state_interfaces.state_interface)</a>
 </li>
@@ -500,6 +578,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/api.html#tickit.core.lifetime_runnable.LifetimeRunnable">LifetimeRunnable (class in tickit.core.lifetime_runnable)</a>
 </li>
+      <li><a href="reference/api.html#tickit.adapters.epicsadapter.EpicsAdapter.link_input_on_interrupt">link_input_on_interrupt() (tickit.adapters.epicsadapter.EpicsAdapter method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/api.html#tickit.core.adapter.ListeningAdapter">ListeningAdapter (class in tickit.core.adapter)</a>
@@ -539,6 +619,8 @@
         <li><a href="reference/api.html#module-tickit.adapters">tickit.adapters</a>
 </li>
         <li><a href="reference/api.html#module-tickit.adapters.composed">tickit.adapters.composed</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.adapters.epicsadapter">tickit.adapters.epicsadapter</a>
 </li>
         <li><a href="reference/api.html#module-tickit.adapters.interpreters">tickit.adapters.interpreters</a>
 </li>
@@ -594,6 +676,24 @@
 </li>
         <li><a href="reference/api.html#module-tickit.devices">tickit.devices</a>
 </li>
+        <li><a href="reference/api.html#module-tickit.devices.cryostream">tickit.devices.cryostream</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.devices.cryostream.base">tickit.devices.cryostream.base</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.devices.cryostream.cryostream">tickit.devices.cryostream.cryostream</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.devices.cryostream.states">tickit.devices.cryostream.states</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.devices.cryostream.status">tickit.devices.cryostream.status</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.devices.femto">tickit.devices.femto</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.devices.femto.femto">tickit.devices.femto.femto</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.devices.pneumatic">tickit.devices.pneumatic</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.devices.pneumatic.pneumatic">tickit.devices.pneumatic.pneumatic</a>
+</li>
         <li><a href="reference/api.html#module-tickit.devices.sink">tickit.devices.sink</a>
 </li>
         <li><a href="reference/api.html#module-tickit.devices.source">tickit.devices.source</a>
@@ -628,6 +728,16 @@
       <ul>
         <li><a href="reference/api.html#tickit.adapters.composed.ComposedAdapter.on_connect">(tickit.adapters.composed.ComposedAdapter method)</a>
 </li>
+        <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.on_connect">(tickit.devices.cryostream.cryostream.CryostreamAdapter method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.adapters.epicsadapter.EpicsAdapter.on_db_load">on_db_load() (tickit.adapters.epicsadapter.EpicsAdapter method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.devices.femto.femto.FemtoAdapter.on_db_load">(tickit.devices.femto.femto.FemtoAdapter method)</a>
+</li>
+        <li><a href="reference/api.html#tickit.devices.pneumatic.pneumatic.PneumaticAdapter.on_db_load">(tickit.devices.pneumatic.pneumatic.PneumaticAdapter method)</a>
+</li>
       </ul></li>
       <li><a href="reference/api.html#tickit.core.components.component.BaseComponent.on_tick">on_tick() (tickit.core.components.component.BaseComponent method)</a>
 
@@ -653,6 +763,8 @@
 </li>
       <li><a href="reference/api.html#tickit.utils.topic_naming.output_topic">output_topic() (in module tickit.utils.topic_naming)</a>
 </li>
+      <li><a href="reference/api.html#tickit.adapters.epicsadapter.OutputRecord">OutputRecord (class in tickit.adapters.epicsadapter)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -667,14 +779,42 @@
         <li><a href="reference/api.html#tickit.core.state_interfaces.state_interface.P">(in module tickit.core.state_interfaces.state_interface)</a>
 </li>
       </ul></li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.status.ExtendedStatus.pack">pack() (tickit.devices.cryostream.status.ExtendedStatus method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.devices.cryostream.status.Status.pack">(tickit.devices.cryostream.status.Status method)</a>
+</li>
+      </ul></li>
       <li><a href="reference/api.html#tickit.adapters.interpreters.command.command_interpreter.Command.parse">parse() (tickit.adapters.interpreters.command.command_interpreter.Command method)</a>
 
       <ul>
         <li><a href="reference/api.html#tickit.adapters.interpreters.command.regex_command.RegexCommand.parse">(tickit.adapters.interpreters.command.regex_command.RegexCommand method)</a>
 </li>
       </ul></li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.base.CryostreamBase.pause">pause() (tickit.devices.cryostream.base.CryostreamBase method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.pause">(tickit.devices.cryostream.cryostream.CryostreamAdapter method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.states.PhaseIds">PhaseIds (class in tickit.devices.cryostream.states)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.base.CryostreamBase.plat">plat() (tickit.devices.cryostream.base.CryostreamBase method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.plat">(tickit.devices.cryostream.cryostream.CryostreamAdapter method)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.devices.pneumatic.pneumatic.Pneumatic">Pneumatic (class in tickit.devices.pneumatic.pneumatic)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.pneumatic.pneumatic.Pneumatic.PneumaticConfig">Pneumatic.PneumaticConfig (class in tickit.devices.pneumatic.pneumatic)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.pneumatic.pneumatic.PneumaticAdapter">PneumaticAdapter (class in tickit.devices.pneumatic.pneumatic)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.pneumatic.pneumatic.PneumaticAdapter.PneumaticAdapterConfig">PneumaticAdapter.PneumaticAdapterConfig (class in tickit.devices.pneumatic.pneumatic)</a>
+</li>
       <li><a href="reference/api.html#tickit.core.typedefs.PortID">PortID (in module tickit.core.typedefs)</a>
 </li>
       <li><a href="reference/api.html#tickit.core.state_interfaces.internal.InternalStateProducer.produce">produce() (tickit.core.state_interfaces.internal.InternalStateProducer method)</a>
@@ -687,6 +827,12 @@
       </ul></li>
       <li><a href="reference/api.html#tickit.core.management.ticker.Ticker.propagate">propagate() (tickit.core.management.ticker.Ticker method)</a>
 </li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.base.CryostreamBase.purge">purge() (tickit.devices.cryostream.base.CryostreamBase method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.purge">(tickit.devices.cryostream.cryostream.CryostreamAdapter method)</a>
+</li>
+      </ul></li>
       <li><a href="reference/api.html#tickit.core.state_interfaces.internal.InternalStateServer.push">push() (tickit.core.state_interfaces.internal.InternalStateServer method)</a>
 </li>
   </ul></td>
@@ -697,6 +843,12 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/api.html#tickit.core.components.component.BaseComponent.raise_interrupt">raise_interrupt() (tickit.core.components.component.BaseComponent method)</a>
 </li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.base.CryostreamBase.ramp">ramp() (tickit.devices.cryostream.base.CryostreamBase method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.ramp">(tickit.devices.cryostream.cryostream.CryostreamAdapter method)</a>
+</li>
+      </ul></li>
       <li><a href="reference/api.html#examples.devices.trampoline.RandomTrampoline">RandomTrampoline (class in examples.devices.trampoline)</a>
 </li>
       <li><a href="reference/api.html#examples.devices.trampoline.RandomTrampoline.RandomTrampolineConfig">RandomTrampoline.RandomTrampolineConfig (class in examples.devices.trampoline)</a>
@@ -721,8 +873,20 @@
 </li>
       <li><a href="reference/api.html#tickit.core.state_interfaces.internal.InternalStateServer.remove_topic">remove_topic() (tickit.core.state_interfaces.internal.InternalStateServer method)</a>
 </li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.base.CryostreamBase.restart">restart() (tickit.devices.cryostream.base.CryostreamBase method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.restart">(tickit.devices.cryostream.cryostream.CryostreamAdapter method)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.devices.cryostream.base.CryostreamBase.resume">resume() (tickit.devices.cryostream.base.CryostreamBase method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.resume">(tickit.devices.cryostream.cryostream.CryostreamAdapter method)</a>
+</li>
+      </ul></li>
       <li><a href="reference/api.html#tickit.core.management.event_router.EventRouter.route">route() (tickit.core.management.event_router.EventRouter method)</a>
 </li>
       <li><a href="reference/api.html#tickit.core.lifetime_runnable.run_all">run_all() (in module tickit.core.lifetime_runnable)</a>
@@ -750,7 +914,13 @@
 </li>
         <li><a href="reference/api.html#tickit.core.management.schedulers.slave.SlaveScheduler.run_forever">(tickit.core.management.schedulers.slave.SlaveScheduler method)</a>
 </li>
+        <li><a href="reference/api.html#tickit.devices.femto.femto.FemtoAdapter.run_forever">(tickit.devices.femto.femto.FemtoAdapter method)</a>
+</li>
+        <li><a href="reference/api.html#tickit.devices.pneumatic.pneumatic.PneumaticAdapter.run_forever">(tickit.devices.pneumatic.pneumatic.PneumaticAdapter method)</a>
+</li>
       </ul></li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.states.RunModes">RunModes (class in tickit.devices.cryostream.states)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -781,12 +951,26 @@
 </li>
       <li><a href="reference/api.html#tickit.core.adapter.ServerConfig">ServerConfig (class in tickit.core.adapter)</a>
 </li>
+      <li><a href="reference/api.html#tickit.devices.femto.femto.Femto.set_current">set_current() (tickit.devices.femto.femto.Femto method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.femto.femto.Femto.set_gain">set_gain() (tickit.devices.femto.femto.Femto method)</a>
+</li>
       <li><a href="reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.set_hidden">set_hidden() (examples.devices.remote_controlled.RemoteControlledAdapter method)</a>
 </li>
       <li><a href="reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.set_observed_bytes">set_observed_bytes() (examples.devices.remote_controlled.RemoteControlledAdapter method)</a>
 </li>
       <li><a href="reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.set_observed_str">set_observed_str() (examples.devices.remote_controlled.RemoteControlledAdapter method)</a>
 </li>
+      <li><a href="reference/api.html#tickit.devices.pneumatic.pneumatic.Pneumatic.set_speed">set_speed() (tickit.devices.pneumatic.pneumatic.Pneumatic method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.pneumatic.pneumatic.Pneumatic.set_state">set_state() (tickit.devices.pneumatic.pneumatic.Pneumatic method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.base.CryostreamBase.set_status_format">set_status_format() (tickit.devices.cryostream.base.CryostreamBase method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.set_status_format">(tickit.devices.cryostream.cryostream.CryostreamAdapter method)</a>
+</li>
+      </ul></li>
       <li><a href="reference/api.html#examples.devices.shutter.ShutterAdapter.set_target">set_target() (examples.devices.shutter.ShutterAdapter method)</a>
 </li>
       <li><a href="reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.set_unobserved_bytes">set_unobserved_bytes() (examples.devices.remote_controlled.RemoteControlledAdapter method)</a>
@@ -807,12 +991,12 @@
 </li>
       <li><a href="reference/api.html#examples.devices.shutter.Shutter.Outputs">Shutter.Outputs (class in examples.devices.shutter)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/api.html#examples.devices.shutter.Shutter.ShutterConfig">Shutter.ShutterConfig (class in examples.devices.shutter)</a>
 </li>
       <li><a href="reference/api.html#examples.devices.shutter.ShutterAdapter">ShutterAdapter (class in examples.devices.shutter)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/api.html#examples.devices.shutter.ShutterAdapter.ShutterAdapterConfig">ShutterAdapter.ShutterAdapterConfig (class in examples.devices.shutter)</a>
 </li>
       <li><a href="reference/api.html#tickit.core.typedefs.SimTime">SimTime (in module tickit.core.typedefs)</a>
@@ -847,6 +1031,14 @@
 </li>
       <li><a href="reference/api.html#tickit.core.state_interfaces.state_interface.StateProducer">StateProducer (class in tickit.core.state_interfaces.state_interface)</a>
 </li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.status.Status">Status (class in tickit.devices.cryostream.status)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.base.CryostreamBase.stop">stop() (tickit.devices.cryostream.base.CryostreamBase method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.stop">(tickit.devices.cryostream.cryostream.CryostreamAdapter method)</a>
+</li>
+      </ul></li>
       <li><a href="reference/api.html#tickit.core.state_interfaces.internal.InternalStateConsumer.subscribe">subscribe() (tickit.core.state_interfaces.internal.InternalStateConsumer method)</a>
 
       <ul>
@@ -908,6 +1100,13 @@
 
       <ul>
         <li><a href="reference/api.html#module-tickit.adapters.composed">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.adapters.epicsadapter
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.adapters.epicsadapter">module</a>
 </li>
       </ul></li>
       <li>
@@ -1022,8 +1221,6 @@
         <li><a href="reference/api.html#module-tickit.core.management.event_router">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     tickit.core.management.schedulers
 
@@ -1052,6 +1249,8 @@
         <li><a href="reference/api.html#module-tickit.core.management.schedulers.slave">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     tickit.core.management.ticker
 
@@ -1099,6 +1298,69 @@
 
       <ul>
         <li><a href="reference/api.html#module-tickit.devices">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.devices.cryostream
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.devices.cryostream">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.devices.cryostream.base
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.devices.cryostream.base">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.devices.cryostream.cryostream
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.devices.cryostream.cryostream">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.devices.cryostream.states
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.devices.cryostream.states">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.devices.cryostream.status
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.devices.cryostream.status">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.devices.femto
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.devices.femto">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.devices.femto.femto
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.devices.femto.femto">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.devices.pneumatic
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.devices.pneumatic">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.devices.pneumatic.pneumatic
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.devices.pneumatic.pneumatic">module</a>
 </li>
       </ul></li>
       <li>
@@ -1174,6 +1436,12 @@
 </li>
       <li><a href="reference/api.html#examples.devices.trampoline.Trampoline.TrampolineConfig">Trampoline.TrampolineConfig (class in examples.devices.trampoline)</a>
 </li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.base.CryostreamBase.turbo">turbo() (tickit.devices.cryostream.base.CryostreamBase method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.turbo">(tickit.devices.cryostream.cryostream.CryostreamAdapter method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -1193,6 +1461,14 @@
 </li>
         <li><a href="reference/api.html#tickit.core.device.Device.update">(tickit.core.device.Device method)</a>
 </li>
+        <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.Cryostream.update">(tickit.devices.cryostream.cryostream.Cryostream method)</a>
+</li>
+        <li><a href="reference/api.html#tickit.devices.femto.femto.CurrentDevice.update">(tickit.devices.femto.femto.CurrentDevice method)</a>
+</li>
+        <li><a href="reference/api.html#tickit.devices.femto.femto.Femto.update">(tickit.devices.femto.femto.Femto method)</a>
+</li>
+        <li><a href="reference/api.html#tickit.devices.pneumatic.pneumatic.Pneumatic.update">(tickit.devices.pneumatic.pneumatic.Pneumatic method)</a>
+</li>
         <li><a href="reference/api.html#tickit.devices.sink.Sink.update">(tickit.devices.sink.Sink method)</a>
 </li>
         <li><a href="reference/api.html#tickit.devices.source.Source.update">(tickit.devices.source.Source method)</a>
@@ -1206,6 +1482,8 @@
         <li><a href="reference/api.html#tickit.core.management.schedulers.slave.SlaveScheduler.update_component">(tickit.core.management.schedulers.slave.SlaveScheduler method)</a>
 </li>
       </ul></li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.base.CryostreamBase.update_temperature">update_temperature() (tickit.devices.cryostream.base.CryostreamBase method)</a>
+</li>
   </ul></td>
 </tr></table>
 
