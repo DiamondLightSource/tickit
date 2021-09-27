@@ -61,6 +61,10 @@ nitpick_ignore = [
     ("py:class", "SimTime"),
     ("py:class", "immutables._map.Map"),
     ("py:class", "_asyncio.Task"),
+    ("py:class", "tickit.devices.cryostream.status.Status"),
+    ("py:class", "tickit.devices.cryostream.status.ExtendedStatus"),
+    ("py:class", "optional"),
+    ("py:class", "class"),
 ]
 
 # Both the class’ and the __init__ method’s docstring are concatenated and

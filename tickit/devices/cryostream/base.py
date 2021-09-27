@@ -276,14 +276,16 @@ class CryostreamBase:
             self.extended_status.turbo_mode = c_ubyte(self.turbo_mode).value
 
     async def get_status(self, status_format: int) -> Union[Status, ExtendedStatus]:
-        """Get a Status or ExtendedStatus packet.
+        """Get a status packet corresponding to the specified format.
 
         Args:
             status_format (int): The status packet format, where 0 denotes a standard
                 status packet and 1 denotes an extended status packet.
 
         Returns:
-            Union[Status, ExtendedStatus]: The status packet.
+            Union[
+                tickit.devices.cryostream.status.Status,
+                tickit.devices.cryostream.status.ExtendedStatus]: The status packet.
         """
         if status_format == 0:
             return self.status
