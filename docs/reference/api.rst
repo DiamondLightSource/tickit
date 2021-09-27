@@ -271,7 +271,7 @@ API
             :members:
         
         ``tickit.devices.femto.femto``
-        ---------------------------------
+        ------------------------------
 
     .. automodule:: tickit.devices.pneumatic
     
