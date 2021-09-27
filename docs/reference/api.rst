@@ -265,24 +265,24 @@ API
     .. automodule:: tickit.devices.femto
 
     ``tickit.devices.femto``
-    -------------------------
+    ------------------------
 
         .. automodule:: tickit.devices.femto.femto
             :members:
         
-        ``tickit.devices.femto.femto``
-        ---------------------------------
+            ``tickit.devices.femto.femto``
+            ------------------------------
 
     .. automodule:: tickit.devices.pneumatic
     
     ``tickit.devices.pneumatic``
-    ------------------------------
+    ----------------------------
 
         .. automodule:: tickit.devices.pneumatic.pneumatic
             :members:
         
-        ``tickit.devices.pneumatic.pneumatic``
-        -----------------------------------------
+            ``tickit.devices.pneumatic.pneumatic``
+            --------------------------------------
 
 .. automodule:: tickit.utils
 
