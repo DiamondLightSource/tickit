@@ -1,0 +1,18 @@
+- tickit.core.components.device_simulation.DeviceSimulation:
+    adapters: []
+    device:
+      tickit.devices.source.Source:
+        value: False
+    inputs: {}
+    name: source
+- tickit.core.components.device_simulation.DeviceSimulation:
+    adapters:
+      - examples.devices.eiger.EigerAdapter: {}
+    device:
+      examples.devices.eiger.Eiger:
+        trigger: False
+        num_images: 3600
+        block_size: 1000
+    inputs:
+      trigger: source:value
+    name: eiger

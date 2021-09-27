@@ -1,7 +1,7 @@
-# import asyncio
-
 # import json
+import asyncio
 import logging
+from typing import AsyncIterable, Awaitable, Callable
 
 from aiohttp import web
 
@@ -41,16 +41,13 @@ class HttpServer(ConfigurableServer):
 
     async def run_forever(
         self,
-        # on_connect: Callable[[], AsyncIterable[bytes]],
-        # handler: Callable[[bytes], Awaitable[AsyncIterable[bytes]]],
+        on_connect: Callable[[], AsyncIterable[bytes]],
+        handler: Callable[[bytes], Awaitable[AsyncIterable[bytes]]],
     ) -> None:
         """Runs the HTTP server indefinitely on the configured host and port.
 
         An asynchronous method used to run the server indefinitely on the configured
-        host and port. Upon client connection, messages from the on_connect iterable
-        will be sent. Upon recieving a message the server will delegate handling of it
-        to the handler. Replies will be formatted according to the configured format
-        string.
+        host and port.
 
         Args:
             on_connect (Callable[[], AsyncIterable[bytes]]): An asynchronous iterable
@@ -59,7 +56,8 @@ class HttpServer(ConfigurableServer):
                 asynchronous message handler which returns an asynchronous iterable of
                 replies.
         """
-        # tasks: List[asyncio.Task] = list()
+
+        app = web.Application()
 
         @routes.get("/")
         async def handle(request):
@@ -74,7 +72,11 @@ class HttpServer(ConfigurableServer):
         async def handle_get(request):  # self, json: Dict[str, Any]) -> None:
             return web.Response(text="Your data: {}".format(request.match_info["data"]))
 
-        app = web.Application()
         app.add_routes(routes)
 
-        web.run_app(app)
+        runner = web.AppRunner(app)
+        await runner.setup()
+        site = web.TCPSite(runner, host=self.host, port=self.port)
+        await site.start()
+
+        await asyncio.Event().wait()
