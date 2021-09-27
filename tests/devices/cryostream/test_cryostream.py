@@ -72,12 +72,38 @@ async def test_cryostream_update_end(cryostream: Cryostream):
         time_update: Optional[SimTime] = device_update.call_at
 
         if time_update is None:
-            # time = SimTime(int(time) + int(1e9))
             continue
         else:
             time = time_update
 
-    assert device_update.outputs["temperature"] == cryostream.default_temp_shutdown
+    max_diff = 10
+    margin_of_error = np.array([+max_diff, -max_diff])
+    assert any(
+        device_update.outputs["temperature"] + margin_of_error
+        == cryostream.default_temp_shutdown
+    )
+
+
+@pytest.mark.asyncio
+async def test_cryostream_update_plat(cryostream: Cryostream):
+    starting_temperature = cryostream.gas_temp
+    await cryostream.plat(5)
+    assert cryostream.phase_id == PhaseIds.PLAT.value
+
+    time = SimTime(0)
+    time_update: Optional[SimTime] = time
+    device_update: DeviceUpdate
+    while time_update is not None:
+        logging.info(f"Running time step: {time}")
+        device_update = cryostream.update(time, inputs={})
+        time_update = device_update.call_at
+
+        if time_update is None:
+            continue
+        else:
+            time = time_update
+
+    assert device_update.outputs["temperature"] == starting_temperature
 
 
 # # # # # CryostreamAdapter Tests # # # # #
