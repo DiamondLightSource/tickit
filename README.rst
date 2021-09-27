@@ -53,15 +53,15 @@ which is exposed extenally through a **TCPServer**:
             tickit.adapters.servers.tcp.TcpServer:
                 format: "%b\r\n"
         device:
-        examples.devices.remote_controlled.RemoteControlled: {}
+          examples.devices.remote_controlled.RemoteControlled: {}
         inputs: {}
         name: tcp_contr
     - tickit.core.components.device_simulation.DeviceSimulation:
         adapters: []
         device:
-        tickit.devices.sink.Sink: {}
+          tickit.devices.sink.Sink: {}
         inputs:
-        input: tcp_contr:observed
+          input: tcp_contr:observed
         name: contr_sink
 
 
