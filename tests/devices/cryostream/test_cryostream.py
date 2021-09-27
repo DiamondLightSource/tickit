@@ -2,6 +2,7 @@ import logging
 import struct
 from typing import Optional
 
+import numpy as np
 import pytest
 from mock import Mock
 from mock.mock import create_autospec
@@ -43,13 +44,16 @@ async def test_cryostream_update_cool(cryostream: Cryostream):
         time_update: Optional[SimTime] = device_update.call_at
 
         if time_update is None:
-            time = SimTime(int(time) + int(7e9))
+            time = SimTime(int(time) + int(1e9))
             continue
         else:
             time = time_update
 
-    device_update = cryostream.update(time, inputs={})
-    assert device_update.outputs["temperature"] == target_temperature
+    max_diff = 10
+    margin_of_error = np.array([+max_diff, -max_diff])
+    assert any(
+        (device_update.outputs["temperature"] + margin_of_error) == target_temperature
+    )
 
 
 @pytest.mark.asyncio
@@ -68,7 +72,8 @@ async def test_cryostream_update_end(cryostream: Cryostream):
         time_update: Optional[SimTime] = device_update.call_at
 
         if time_update is None:
-            time = SimTime(int(time) + int(1e9))
+            # time = SimTime(int(time) + int(1e9))
+            continue
         else:
             time = time_update
 

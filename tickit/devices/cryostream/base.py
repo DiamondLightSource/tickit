@@ -200,7 +200,7 @@ class CryostreamBase:
         """
         delta_time = (time - self.time_at_last_update) / 1e9
         difference = self._target_temp - self.gas_temp
-        if (self.gas_temp - self._target_temp) < 10:
+        if abs(self.gas_temp - self._target_temp) < 10:
             self.phase_id = PhaseIds.HOLD.value
         delta_temp = self.gas_flow * delta_time
         if difference < 0:
