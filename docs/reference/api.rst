@@ -99,6 +99,12 @@ API
         
         ``tickit.adapters.composed``
         ----------------------------
+    
+    .. automodule:: tickit.adapters.epicsadapter
+        :members:
+
+        ``tickit.adapters.epicsadapter``
+        --------------------------------
 
 .. automodule:: tickit.core
 
@@ -239,6 +245,44 @@ API
         ``tickit.devices.source``
         -----------------------------
 
+    .. automodule:: tickit.devices.cryostream
+
+    ``tickit.devices.cryostream``
+    -----------------------------
+
+        .. automodule:: tickit.devices.cryostream.base
+            :members:
+            
+            ``tickit.devices.cryostream.base``
+            ----------------------------------
+        
+        .. automodule:: tickit.devices.cryostream.cryostream
+            :members:
+
+            ``tickit.devices.cryostream.cryostream``
+            ------------------------------------------------
+        
+    .. automodule:: tickit.devices.femto
+
+    ``tickit.devices.femto``
+    -------------------------
+
+        .. automodule:: tickit.devices.femto.femto
+            :members:
+        
+        ``tickit.devices.femto.femto``
+        ---------------------------------
+
+    .. automodule:: tickit.devices.pneumatic
+    
+    ``tickit.devices.pneumatic``
+    ------------------------------
+
+        .. automodule:: tickit.devices.pneumatic.pneumatic
+            :members:
+        
+        ``tickit.devices.pneumatic.pneumatic``
+        -----------------------------------------
 
 .. automodule:: tickit.utils
 
