@@ -1,24 +1,24 @@
 from dataclasses import dataclass
-from typing import AnyStr, Awaitable, Callable, Generic, Optional, Sequence
+from typing import AnyStr, Callable, Generic
 
-from aiohttp.web import Request, get, put
 from aiohttp.web_routedef import RouteDef
 
 
 @dataclass(frozen=True)
 class HTTPEndpoint(Generic[AnyStr]):
-    """A decorator to register an adapter method as a HTTP Endpoint.
+    """A decorator to register a device adapter method as a HTTP Endpoint.
 
     Args:
-        route (str): The URL that will point to a specific endpoint.
+        url (str): The URL that will point to a specific endpoint.
+        method (str): The method to use when using this endpoint.
+        name (str): The name of the route.
+        include_json (bool): A flag to indicate whether the route should include json.
         interrupt (bool): A flag indicating whether calling of the method should
             raise an adapter interrupt. Defaults to False.
-        format (Optional[str]): The message decoding format to be used for string
-            based interpretation. Defaults to None.
 
     Returns:
         Callable:
-            A decorator which registers the adapter method as a message handler.
+            A decorator which registers the adapter method as an endpoint.
     """
 
     url: str
@@ -28,29 +28,28 @@ class HTTPEndpoint(Generic[AnyStr]):
     interrupt: bool = False
 
     def __call__(self, func: Callable) -> Callable:
-        """A decorator which registers the adapter method as a message handler.
+        """A decorator which registers the adapter method as an endpoint.
 
         Args:
-            func (Callable): The adapter method to be registered as a command.
+            func (Callable): The adapter method to be registered as an endpoint.
 
         Returns:
-            Callable: The registered adapter method.
+            Callable: The registered adapter endpoint.
         """
         setattr(func, "__endpoint__", self)
         return func
 
-    def parse(self, func: Callable) -> RouteDef:
-        """Performs the parsing of the URL and extracts any info if it's a get request.
+    def define(self, func: Callable) -> RouteDef:
+        """Performs the construction of the endpoint RouteDef for the HTTP Server.
 
-        A method which performs pasing of the URL to extract, otherwise the method
-        returns None.
+        A method which performs the construction of the route definition of the method,
+         URL and handler function for the endpoint, to then return to the HTTP Server.
 
         Args:
-            url (str): The URL to be parsed.
+            func (Callable): The handler funcion to be attached to the route
+            definition for the endpoint.
 
         Returns:
-            Optional[AnyStr]:
-                If any data is passed to the endpoint, a str is returned,
-                otherwise the method returns None.
+            RouteDef: The route definition for the endpoint.
         """
         return RouteDef(self.method, self.url, func, {})

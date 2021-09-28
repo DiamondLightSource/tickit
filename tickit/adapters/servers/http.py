@@ -3,7 +3,7 @@ import asyncio
 import logging
 
 # from asyncio.streams import StreamReader, StreamWriter
-from typing import AsyncIterable, Awaitable, Callable, List
+from typing import List
 
 from aiohttp import web
 
@@ -44,15 +44,7 @@ class HTTPServer(ConfigurableServer):
 
         An asynchronous method used to run the server indefinitely on the configured
         host and port.
-
-        Args:
-            on_connect (Callable[[], AsyncIterable[bytes]]): An asynchronous iterable
-                of messages to be sent upon client connection.
-            handler (Callable[[bytes], Awaitable[AsyncIterable[bytes]]]): An
-                asynchronous message handler which returns an asynchronous iterable of
-                replies.
         """
-
         # @self.routes.get("/")
         # async def handle(request):
         #     return web.Response(text="Hello world!")
@@ -64,12 +56,11 @@ class HTTPServer(ConfigurableServer):
         site = web.TCPSite(runner, host=self.host, port=self.port)
         await site.start()
 
-        await asyncio.Event().wait()
-
-    async def shutdown(server, handler, app):
-        server.close()
-        await server.wait_closed()
-        app.client.close()  # db connection closed
-        await app.shutdown()
-        await handler.finish_connections(10.0)
-        await app.cleanup()
+        try:
+            await asyncio.Event().wait()
+        except KeyboardInterrupt:
+            pass
+        finally:
+            # TODO: This doesn't work yet due to asyncio's own exception handler
+            await self.app.shutdown()
+            await self.app.cleanup()

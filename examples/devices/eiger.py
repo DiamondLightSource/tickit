@@ -14,6 +14,10 @@ from tickit.utils.compat.typing_compat import TypedDict
 
 
 class Eiger(ConfigurableDevice):
+    """A device class for the Eiger detector.
+
+    ...
+    """
 
     Inputs: TypedDict = TypedDict("Inputs", {"trigger": bool})
 
@@ -25,13 +29,17 @@ class Eiger(ConfigurableDevice):
         num_images: Optional[int] = 3600,
         block_size: Optional[int] = 1000,
     ) -> None:
-        """[summary]
+        """An Eiger constructor which configures the ... .
 
         Args:
-            num_images (int, optional): [description]. Defaults to 3600.
-            block_size (int, optional): [description]. Defaults to 1000.
+            trigger (bool): A flag to indicate whether the Eiger has received a trigger
+            signal. Defauls to False.
+            num_images (int, optional): The number of images to capture of the
+            diffraction pattern of the sample after a trigger signal has been received.
+            Defaults to 3600.
+            block_size (int, optional): The block size of images each file writer can
+            write. Defaults to 1000.
         """
-
         self.trigger = trigger
         self.num_images = num_images
         self.block_size = block_size
@@ -41,6 +49,7 @@ class Eiger(ConfigurableDevice):
 
 
 class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
+    """An Eiger adapter which parses the commands sent to the HTTP server."""
 
     _device: Eiger
 
@@ -51,7 +60,16 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
         host: str = "localhost",
         port: int = 8080,
     ) -> None:
+        """An Eiger which instantiates a HTTPServer with configured host and port.
 
+        Args:
+            device (Eiger): The Eiger device
+            raise_interrupt (Callable): A callback to request that the device is
+            updated immediately.
+            host (Optional[str]): The host address of the HTTPServer. Defaults to
+            "localhost".
+            port (Optional[str]): The bound port of the HTTPServer. Defaults to 8080.
+        """
         super().__init__(
             device,
             raise_interrupt,
@@ -59,12 +77,25 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
         )
 
     @HTTPEndpoint("/command/foo/", method="PUT", name="command")
-    async def handle_put(self, request):  # self, data: int) -> str:
+    async def handle_put(self, request) -> web.Response:
+        """A HTTP endpoint for sending a command to the Eiger.
 
+        Args:
+            request (web.Request): [description]
+
+        Returns:
+            web.Response: [description]
+        """
         return web.Response(text=str("put data"))
 
     @HTTPEndpoint("/info/bar/{data}", method="GET", name="info")
-    async def handle_get(self, request):  # self, json: Dict[str, Any]) -> None:
-        return web.Response(text="Your data: {}".format(request.match_info["data"]))
+    async def handle_get(self, request) -> web.Response:
+        """A HTTP endpoint for requesting data from the Eiger.
 
-    # app.add_routes(routes)
+        Args:
+            request (web.Request): [description]
+
+        Returns:
+            web.Response: [description]
+        """
+        return web.Response(text="Your data: {}".format(request.match_info["data"]))
