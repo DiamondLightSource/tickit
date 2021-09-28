@@ -1,4 +1,3 @@
-import asyncio
 from contextlib import nullcontext as does_not_raise
 from random import getrandbits
 from typing import Any, Dict
@@ -15,9 +14,10 @@ def rand_bool() -> bool:
     return bool(getrandbits(1))
 
 
-def test_restart():
+@pytest.mark.asyncio
+async def test_restart():
     cryostream_base = CryostreamBase()
-    asyncio.run(cryostream_base.restart())
+    await cryostream_base.restart()
     assert cryostream_base.run_mode in (
         RunModes.STARTUPOK.value,
         RunModes.STARTUPFAIL.value,
@@ -234,9 +234,10 @@ async def test_purge(test_params: Dict[str, Any]):
 #     await cryostream_base.resume()
 
 
-def test_stop():
+@pytest.mark.asyncio
+async def test_stop():
     cryostream_base = CryostreamBase()
-    asyncio.run(cryostream_base.stop())
+    await cryostream_base.stop()
     assert cryostream_base.gas_flow == 0
     assert cryostream_base._target_temp == cryostream_base.gas_temp
     assert cryostream_base.run_mode == RunModes.SHUTDOWNOK.value
@@ -249,10 +250,11 @@ def test_stop():
         {"temp": 300, "expected_gas_flow": 10},
     ],
 )
-def test_turbo(test_params):
+@pytest.mark.asyncio
+async def test_turbo(test_params):
     cryostream_base = CryostreamBase()
     cryostream_base.gas_temp = test_params["temp"]
-    asyncio.run(cryostream_base.turbo(1))
+    await cryostream_base.turbo(1)
     assert cryostream_base.turbo_mode == 1
     assert cryostream_base.gas_flow == test_params["expected_gas_flow"]
 
@@ -265,19 +267,21 @@ def test_update_temperature():
     assert cryostream_base.gas_temp == cryostream_base._target_temp
 
 
-def test_set_status_format():
+@pytest.mark.asyncio
+async def test_set_status_format():
     cryostream_base = CryostreamBase()
-    asyncio.run(cryostream_base.set_status_format(0))
+    await cryostream_base.set_status_format(0)
     assert isinstance(cryostream_base.status, Status)
 
-    asyncio.run(cryostream_base.set_status_format(1))
+    await cryostream_base.set_status_format(1)
     assert isinstance(cryostream_base.extended_status, ExtendedStatus)
 
 
+@pytest.mark.asyncio
 def test_get_status():
     cryostream_base = CryostreamBase()
-    status = asyncio.run(cryostream_base.get_status(0))
+    status = cryostream_base.get_status(0)
     assert isinstance(status, Status)
 
-    extended_status = asyncio.run(cryostream_base.get_status(1))
+    extended_status = cryostream_base.get_status(1)
     assert isinstance(extended_status, ExtendedStatus)
