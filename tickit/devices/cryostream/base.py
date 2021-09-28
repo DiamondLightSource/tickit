@@ -55,8 +55,10 @@ class CryostreamBase:
             self.alarm_code = AlarmCodes.TEMP_CONTROL_ERROR
         else:
             self.ramp_rate = ramp_rate
+
         if target_temp < self.min_temp or target_temp > self.max_temp:
             self.alarm_code = AlarmCodes.TEMP_CONTROL_ERROR
+            # note that the target temperature is not changed.
         else:
             self._target_temp = target_temp
 
@@ -80,6 +82,9 @@ class CryostreamBase:
         ):
             self.gas_flow = 10
         else:
+            # NOTE: It does not seem like this code can be reached.
+            # It is not possible to set the target temperature above 90000ck with
+            # this function.
             self.gas_flow = 5
 
     async def plat(self, duration: int) -> None:
