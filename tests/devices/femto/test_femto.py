@@ -77,6 +77,13 @@ def test_femto_adapter_constructor(femto_adapter: FemtoAdapter):
 
 
 @pytest.mark.asyncio
+async def test_run_forever(femto_adapter: FemtoAdapter):
+    femto_adapter.build_ioc = Mock(femto_adapter.build_ioc)
+    await femto_adapter.run_forever()
+    femto_adapter.build_ioc.assert_called_once()
+
+
+@pytest.mark.asyncio
 async def test_femto_adapter_callback(femto_adapter: FemtoAdapter):
     await femto_adapter.callback(2.0)
     femto_adapter._device.set_gain.assert_called_with(2.0)
@@ -84,9 +91,6 @@ async def test_femto_adapter_callback(femto_adapter: FemtoAdapter):
 
 
 def test_on_db_load(femto_adapter: FemtoAdapter):
-    # patcher_config = {"method.return_value": "input_record"}
-    # with patch("softioc.builder.aIn") as mock_aIn:
-    # with patch("softioc.builder.aOut") as mock_aOut:
     femto_adapter.on_db_load()
 
     input_record = femto_adapter.input_record
