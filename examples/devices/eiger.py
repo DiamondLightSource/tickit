@@ -5,7 +5,7 @@ from aiohttp import web
 
 from tickit.adapters.httpadapter import HTTPAdapter
 from tickit.adapters.interpreters.endpoints.http_endpoint import HTTPEndpoint
-from tickit.adapters.servers.http import HTTPServer
+from tickit.adapters.servers.http_server import HTTPServer
 from tickit.core.adapter import ConfigurableAdapter
 from tickit.core.device import ConfigurableDevice, DeviceUpdate
 from tickit.core.typedefs import SimTime

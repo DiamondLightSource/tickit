@@ -3,7 +3,7 @@ from inspect import getmembers
 from typing import Awaitable, Callable, Iterable
 
 from tickit.adapters.interpreters.endpoints.http_endpoint import HTTPEndpoint
-from tickit.adapters.servers.http import HTTPServer
+from tickit.adapters.servers.http_server import HTTPServer
 from tickit.core.device import Device
 
 
