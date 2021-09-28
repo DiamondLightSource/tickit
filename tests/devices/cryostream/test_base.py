@@ -278,10 +278,10 @@ async def test_set_status_format():
 
 
 @pytest.mark.asyncio
-def test_get_status():
+async def test_get_status():
     cryostream_base = CryostreamBase()
-    status = cryostream_base.get_status(0)
+    status = await cryostream_base.get_status(0)
     assert isinstance(status, Status)
 
-    extended_status = cryostream_base.get_status(1)
+    extended_status = await cryostream_base.get_status(1)
     assert isinstance(extended_status, ExtendedStatus)
