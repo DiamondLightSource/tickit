@@ -127,14 +127,10 @@ class CryostreamBase:
         Args:
             ramp_rate (int): The rate at which the temperature should change.
         """
-<<<<<<< HEAD
         if self.run_mode not in (
             RunModes.SHUTDOWNOK.value,
             RunModes.SHUTDOWNFAIL.value,
         ):
-=======
-        if self.run_mode not in (5, 6):
->>>>>>> 8a1bff1fc4d3028e01c30c11d4029be0ad0ed281
             self.phase_id = PhaseIds.END.value
             await self.ramp(ramp_rate, self.default_temp_shutdown)
             if self.gas_temp == self.default_temp_shutdown:
@@ -145,14 +141,10 @@ class CryostreamBase:
 
     async def purge(self) -> None:
         """Bring the gas temperature to 300 K at max rate, then halt and stop."""
-<<<<<<< HEAD
         if self.run_mode not in (
             RunModes.SHUTDOWNOK.value,
             RunModes.SHUTDOWNFAIL.value,
         ):
-=======
-        if self.run_mode not in (5, 6):
->>>>>>> 8a1bff1fc4d3028e01c30c11d4029be0ad0ed281
             self.phase_id = PhaseIds.PURGE.value
             self.gas_flow = 0
             await self.ramp(self.default_ramp_rate, self.default_temp_shutdown)
@@ -164,11 +156,7 @@ class CryostreamBase:
 
     async def pause(self) -> None:
         """Interrupt and maintain the current gas temperature until resumed."""
-<<<<<<< HEAD
         # TODO interrupt other commands from running
-=======
-        # Todo interrupt other commands from running
->>>>>>> 8a1bff1fc4d3028e01c30c11d4029be0ad0ed281
         ...
 
     async def resume(self) -> None:
@@ -178,14 +166,10 @@ class CryostreamBase:
 
     async def stop(self) -> None:
         """Gas flow is halted and the system is stopped at the current temperature."""
-<<<<<<< HEAD
         if self.run_mode not in (
             RunModes.SHUTDOWNOK.value,
             RunModes.SHUTDOWNFAIL.value,
         ):
-=======
-        if self.run_mode not in (5, 6):
->>>>>>> 8a1bff1fc4d3028e01c30c11d4029be0ad0ed281
             self.gas_flow = 0
             self._target_temp = self.gas_temp
             self.run_mode = RunModes.SHUTDOWNOK.value
@@ -307,24 +291,16 @@ class CryostreamBase:
             self.extended_status.turbo_mode = c_ubyte(self.turbo_mode).value
 
     async def get_status(self, status_format: int) -> Union[Status, ExtendedStatus]:
-<<<<<<< HEAD
         """Get a Status or ExtendedStatus packet.
-=======
-        """Get a status packet corresponding to the specified format.
->>>>>>> 8a1bff1fc4d3028e01c30c11d4029be0ad0ed281
 
         Args:
             status_format (int): The status packet format, where 0 denotes a standard
                 status packet and 1 denotes an extended status packet.
 
         Returns:
-<<<<<<< HEAD
-            Union[Status, ExtendedStatus]: The status packet.
-=======
             Union[
                 tickit.devices.cryostream.status.Status,
                 tickit.devices.cryostream.status.ExtendedStatus]: The status packet.
->>>>>>> 8a1bff1fc4d3028e01c30c11d4029be0ad0ed281
         """
         if status_format == 0:
             if hasattr(self, "status"):
