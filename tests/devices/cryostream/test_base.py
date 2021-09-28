@@ -4,7 +4,7 @@ from contextlib import contextmanager
 import pytest
 
 from tickit.devices.cryostream.base import CryostreamBase
-from tickit.devices.cryostream.states import PhaseIds, RunModes
+from tickit.devices.cryostream.states import AlarmCodes, PhaseIds, RunModes
 from tickit.devices.cryostream.status import ExtendedStatus, Status
 
 MAX_ITERATIONS = 50
@@ -33,25 +33,47 @@ def does_not_raise():
                 "target_temperature": 9000,
                 "ramp_rate": 360,
                 "expected_phase_id": PhaseIds.RAMP.value,
+                "expected_alarm_code": AlarmCodes.NO_ERRORS.value,
                 "expected_gas_flow": 10,
-                "raises": does_not_raise(),
             },
             id="normal params",
+        ),
+        pytest.param(
+            {
+                "starting_temperature": 10000,
+                "target_temperature": 90001,
+                "ramp_rate": 360,
+                "expected_phase_id": PhaseIds.RAMP.value,
+                "expected_alarm_code": AlarmCodes.TEMP_CONTROL_ERROR.value,
+                "expected_gas_flow": 10,
+            },
+            id="target temperature too high",
+        ),
+        pytest.param(
+            {
+                "starting_temperature": 10000,
+                "target_temperature": 9000,
+                "ramp_rate": 361,
+                "expected_phase_id": PhaseIds.RAMP.value,
+                "expected_alarm_code": AlarmCodes.TEMP_CONTROL_ERROR.value,
+                "expected_gas_flow": 10,
+            },
+            id="ramp rate too high",
         ),
     ],
 )
 @pytest.mark.asyncio
 async def test_ramp(test_params):
     cryostream_base = CryostreamBase()
-    starting_temperature = test_params["starting_temperature"]
-    target_temperature = starting_temperature - 50
+    cryostream_base.gas_temp = test_params["starting_temperature"]
 
-    with test_params["raises"]:
-        await cryostream_base.ramp(
-            ramp_rate=cryostream_base.max_rate, target_temp=target_temperature
-        )
+    await cryostream_base.ramp(
+        ramp_rate=test_params["ramp_rate"],
+        target_temp=test_params["target_temperature"],
+    )
 
     assert cryostream_base.run_mode == RunModes.RUN.value
+    assert cryostream_base.alarm_code == test_params["expected_alarm_code"]
     assert cryostream_base.phase_id == test_params["expected_phase_id"]
     assert cryostream_base.gas_flow == test_params["expected_gas_flow"]
 
