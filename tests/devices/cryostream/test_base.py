@@ -1,13 +1,18 @@
 import asyncio
-from contextlib import contextmanager
+from contextlib import nullcontext as does_not_raise
+from random import getrandbits
+from typing import Any, Dict
 
 import pytest
+from mock import Mock
 
 from tickit.devices.cryostream.base import CryostreamBase
 from tickit.devices.cryostream.states import AlarmCodes, PhaseIds, RunModes
 from tickit.devices.cryostream.status import ExtendedStatus, Status
 
-MAX_ITERATIONS = 50
+
+def rand_bool() -> bool:
+    return bool(getrandbits(1))
 
 
 def test_restart():
@@ -17,11 +22,6 @@ def test_restart():
         RunModes.STARTUPOK.value,
         RunModes.STARTUPFAIL.value,
     )
-
-
-@contextmanager
-def does_not_raise():
-    yield
 
 
 @pytest.mark.parametrize(
@@ -78,108 +78,160 @@ async def test_ramp(test_params):
     assert cryostream_base.gas_flow == test_params["expected_gas_flow"]
 
 
-def test_ramp_then_restart():
+@pytest.mark.parametrize(
+    "test_params",
+    [
+        pytest.param(
+            {
+                "duration": 1440,
+                "expected_phase_id": PhaseIds.PLAT.value,
+                "expected_run_mode": RunModes.RUN.value,
+                "raises": does_not_raise(),
+            },
+            id="normal params",
+        ),
+        pytest.param(
+            {
+                "duration": 0,
+                "expected_phase_id": None,
+                "expected_run_mode": None,
+                "raises": pytest.raises(ValueError),
+            },
+            id="zero duration",
+        ),
+        pytest.param(
+            {
+                "duration": 1441,
+                "expected_phase_id": None,
+                "expected_run_mode": None,
+                "raises": pytest.raises(ValueError),
+            },
+            id="too long",
+        ),
+    ],
+)
+@pytest.mark.asyncio
+async def test_plat(test_params):
     cryostream_base = CryostreamBase()
-    ready_temperature = 10000
-    cryostream_base.gas_temp = ready_temperature
-    target_temperature = ready_temperature + 5 * 10
-    asyncio.run(cryostream_base.ramp(ramp_rate=360, target_temp=target_temperature))
-    for time_step in (i * (1e9) for i in range(MAX_ITERATIONS)):
-        temperature = cryostream_base.update_temperature(time=time_step)
-        if temperature == target_temperature:
-            break
+    initial_run_mode = cryostream_base.run_mode
+    initial_phase_id = cryostream_base.phase_id
+    with test_params["raises"]:
+        await cryostream_base.plat(test_params["duration"])
 
-    asyncio.run(cryostream_base.restart())
-    for time_step in (i * (1e9) for i in range(MAX_ITERATIONS)):
-        temperature = cryostream_base.update_temperature(time=time_step)
-        if temperature == ready_temperature:
-            break
+    if test_params["expected_phase_id"] is None:
+        assert cryostream_base.phase_id == initial_phase_id
+    else:
+        assert cryostream_base.phase_id == test_params["expected_phase_id"]
 
-    assert cryostream_base.gas_temp == ready_temperature
-    # assert cryostream_base.run_mode == RunModes.STARTUPOK.value
-    # NOTE: We actually get: RunModes.STARTUPFAIL
-    # despite getting the correct temperature.
+    if test_params["expected_run_mode"] is None:
+        assert cryostream_base.run_mode == initial_run_mode
+    else:
+        assert cryostream_base.run_mode == test_params["expected_run_mode"]
 
 
-def test_plat():
-    cryostream_base = CryostreamBase()
-    asyncio.run(cryostream_base.plat(1440))
-    assert cryostream_base.phase_id == PhaseIds.PLAT.value
-    assert cryostream_base.run_mode == RunModes.RUN.value
-    assert cryostream_base._target_temp == cryostream_base.gas_temp
-
-
-def test_plat_fails_too_long():
-    cryostream_base = CryostreamBase()
-    with pytest.raises(ValueError, match=".*maximum plat duration.*"):
-        asyncio.run(cryostream_base.plat(1500))
-
-
-def test_plat_fails_too_short():
-    cryostream_base = CryostreamBase()
-    with pytest.raises(ValueError, match=".*minimum plat duration.*"):
-        asyncio.run(cryostream_base.plat(0))
-
-
-def test_hold():
+@pytest.mark.asyncio
+async def test_hold():
     cryostream_base = CryostreamBase()
     cryostream_base.gas_temp = 28000
-    asyncio.run(cryostream_base.hold())
+    await cryostream_base.hold()
     final_temperature = cryostream_base.update_temperature(100e9)
     assert final_temperature == 28000
     assert cryostream_base.run_mode == RunModes.RUN.value
     assert cryostream_base.phase_id == PhaseIds.HOLD.value
 
 
-def test_cool():
+@pytest.mark.asyncio
+async def test_cool():
     cryostream_base = CryostreamBase()
+    cryostream_base.ramp = Mock(cryostream_base.ramp)
     starting_temperature = cryostream_base.gas_temp
     target_temperature = starting_temperature - 10 * 5
-    asyncio.run(cryostream_base.cool(target_temperature))
-    final_temperature = cryostream_base.update_temperature(5e9)
-    assert final_temperature == target_temperature
+    await cryostream_base.cool(target_temperature)
+    assert cryostream_base.run_mode == RunModes.RUN.value
+    assert cryostream_base.phase_id == PhaseIds.COOL.value
+    cryostream_base.ramp.assert_called_once_with(
+        cryostream_base.default_ramp_rate, target_temperature
+    )
 
 
-def test_end():
+@pytest.mark.parametrize(
+    "test_params",
+    [
+        pytest.param(
+            {
+                "initial_gas_temp": CryostreamBase.default_temp_shutdown,
+                "expected_run_mode": RunModes.SHUTDOWNOK.value,
+                "expected_gas_flow": {0},
+            },
+            id="shutdown okay",
+        ),
+        pytest.param(
+            {
+                "initial_gas_temp": CryostreamBase.default_temp_shutdown - 100,
+                "expected_run_mode": RunModes.SHUTDOWNFAIL.value,
+                "expected_gas_flow": {5, 10},
+            },
+            id="shutdown fails",
+        ),
+    ],
+)
+@pytest.mark.asyncio
+async def test_end(test_params: Dict[str, Any]):
+    def set_gas_flow(value: int, target_temp: int) -> None:
+        if rand_bool():
+            cryostream_base.gas_flow = 10
+        else:
+            cryostream_base.gas_flow = 5
+
     cryostream_base = CryostreamBase()
-    cryostream_base.gas_temp = 10000
-    asyncio.run(cryostream_base.end(ramp_rate=cryostream_base.max_rate))
-
-    for time_step in (i * (1e9) for i in range(int(1e5))):
-        temperature = cryostream_base.update_temperature(time=time_step)
-        if temperature == cryostream_base.default_temp_shutdown:
-            break
-
-    assert temperature == cryostream_base.default_temp_shutdown
-    # assert cryostream_base.run_mode == RunModes.SHUTDOWNOK.value
-    # NOTE: The correct temperature is acheived but the run_mode attribute is
-    # set to RunModes.ShutDownFail regardless.
+    cryostream_base.gas_temp = test_params["initial_gas_temp"]
+    cryostream_base.ramp = Mock(cryostream_base.ramp, side_effect=set_gas_flow)
+    await cryostream_base.end(ramp_rate=cryostream_base.max_rate)
+    assert cryostream_base.phase_id == PhaseIds.END.value
+    assert cryostream_base.run_mode == test_params["expected_run_mode"]
+    assert cryostream_base.gas_flow in test_params["expected_gas_flow"]
 
 
-def test_purge():
+@pytest.mark.parametrize(
+    "test_params",
+    [
+        pytest.param(
+            {
+                "initial_gas_temp": CryostreamBase.default_temp_shutdown,
+                "expected_run_mode": RunModes.SHUTDOWNOK.value,
+            },
+            id="shutdown okay",
+        ),
+        pytest.param(
+            {
+                "initial_gas_temp": CryostreamBase.default_temp_shutdown - 100,
+                "expected_run_mode": RunModes.SHUTDOWNFAIL.value,
+            },
+            id="shutdown fails",
+        ),
+    ],
+)
+@pytest.mark.asyncio
+async def test_purge(test_params: Dict[str, Any]):
     cryostream_base = CryostreamBase()
-    cryostream_base.gas_temp = 10000
-    asyncio.run(cryostream_base.purge())
-
-    for time_step in (i * (1e9) for i in range(int(1e5))):
-        temperature = cryostream_base.update_temperature(time=time_step)
-        if temperature == cryostream_base.default_temp_shutdown:
-            break
-
-    assert temperature == cryostream_base.default_temp_shutdown
-    # assert cryostream_base.run_mode == RunModes.SHUTDOWNOK.value
-    # NOTE: The correct temperature is acheived but the run_mode attribute is
-    # set to RunModes.ShutDownFail regardless.
+    cryostream_base.gas_temp = test_params["initial_gas_temp"]
+    cryostream_base.ramp = Mock(cryostream_base.ramp)
+    await cryostream_base.purge()
+    assert cryostream_base.phase_id == PhaseIds.PURGE.value
+    assert cryostream_base.run_mode == test_params["expected_run_mode"]
 
 
-def test_pause():
-    # TODO implement pause first.
-    pass
+# # # # # Not Implemented # # # # #
+# @pytest.mark.asyncio
+# async def test_pause():
+#     cryostream_base = CryostreamBase()
+#     await cryostream_base.pause()
 
 
-def test_resume():
-    # TODO implement resume first.
-    pass
+# @pytest.mark.asycio
+# async def test_resume():
+#     cryostream_base = CryostreamBase()
+#     await cryostream_base.resume()
 
 
 def test_stop():
