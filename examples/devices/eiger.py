@@ -1,13 +1,14 @@
-from random import random
+# import asyncio
 from typing import Awaitable, Callable, Optional
 
-from tickit.adapters.composed import ComposedAdapter
-from tickit.adapters.interpreters.command.command_interpreter import CommandInterpreter
-from tickit.adapters.interpreters.command.regex_command import RegexCommand
-from tickit.adapters.servers.http import HttpServer
-from tickit.core.adapter import ConfigurableAdapter, ConfigurableServer
+from aiohttp import web
+
+from tickit.adapters.httpadapter import HTTPAdapter
+from tickit.adapters.interpreters.endpoints.http_endpoint import HTTPEndpoint
+from tickit.adapters.servers.http import HTTPServer
+from tickit.core.adapter import ConfigurableAdapter
 from tickit.core.device import ConfigurableDevice, DeviceUpdate
-from tickit.core.typedefs import Input, Output, SimTime
+from tickit.core.typedefs import SimTime
 from tickit.utils.byte_format import ByteFormat
 from tickit.utils.compat.typing_compat import TypedDict
 
@@ -39,7 +40,7 @@ class Eiger(ConfigurableDevice):
         pass
 
 
-class EigerAdapter(ComposedAdapter, ConfigurableAdapter):
+class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
 
     _device: Eiger
 
@@ -54,6 +55,16 @@ class EigerAdapter(ComposedAdapter, ConfigurableAdapter):
         super().__init__(
             device,
             raise_interrupt,
-            HttpServer(host, port, ByteFormat(b"%b\r\n")),
-            CommandInterpreter(),
+            HTTPServer(host, port, ByteFormat(b"%b\r\n")),
         )
+
+    @HTTPEndpoint("/command/foo/", method="PUT", name="command")
+    async def handle_put(self, request):  # self, data: int) -> str:
+
+        return web.Response(text=str("put data"))
+
+    @HTTPEndpoint("/info/bar/{data}", method="GET", name="info")
+    async def handle_get(self, request):  # self, json: Dict[str, Any]) -> None:
+        return web.Response(text="Your data: {}".format(request.match_info["data"]))
+
+    # app.add_routes(routes)

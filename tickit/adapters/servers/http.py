@@ -1,7 +1,9 @@
 # import json
 import asyncio
 import logging
-from typing import AsyncIterable, Awaitable, Callable
+
+# from asyncio.streams import StreamReader, StreamWriter
+from typing import AsyncIterable, Awaitable, Callable, List
 
 from aiohttp import web
 
@@ -9,16 +11,10 @@ from aiohttp import web
 from tickit.core.adapter import ConfigurableServer
 from tickit.utils.byte_format import ByteFormat
 
-# from asyncio.streams import StreamReader, StreamWriter
-# from typing import List
-
-
 LOGGER = logging.getLogger(__name__)
 
-routes = web.RouteTableDef()
 
-
-class HttpServer(ConfigurableServer):
+class HTTPServer(ConfigurableServer):
     """A configurable http server with message handling for use in adapters."""
 
     def __init__(
@@ -38,11 +34,11 @@ class HttpServer(ConfigurableServer):
         self.host = host
         self.port = port
         self.format = format.format
+        self.app = web.Application()
+        self.routes = web.RouteTableDef()
 
     async def run_forever(
         self,
-        on_connect: Callable[[], AsyncIterable[bytes]],
-        handler: Callable[[bytes], Awaitable[AsyncIterable[bytes]]],
     ) -> None:
         """Runs the HTTP server indefinitely on the configured host and port.
 
@@ -57,26 +53,23 @@ class HttpServer(ConfigurableServer):
                 replies.
         """
 
-        app = web.Application()
+        # @self.routes.get("/")
+        # async def handle(request):
+        #     return web.Response(text="Hello world!")
 
-        @routes.get("/")
-        async def handle(request):
-            return web.Response(text="Hello world!")
+        # self.app.add_routes(self.routes)
 
-        @routes.put("/command/foo/", name="command")
-        async def handle_put(request):  # self, data: int) -> str:
-
-            return web.Response(text=str("put data"))
-
-        @routes.get("/info/bar/{data}", name="info")
-        async def handle_get(request):  # self, json: Dict[str, Any]) -> None:
-            return web.Response(text="Your data: {}".format(request.match_info["data"]))
-
-        app.add_routes(routes)
-
-        runner = web.AppRunner(app)
+        runner = web.AppRunner(self.app)
         await runner.setup()
         site = web.TCPSite(runner, host=self.host, port=self.port)
         await site.start()
 
         await asyncio.Event().wait()
+
+    async def shutdown(server, handler, app):
+        server.close()
+        await server.wait_closed()
+        app.client.close()  # db connection closed
+        await app.shutdown()
+        await handler.finish_connections(10.0)
+        await app.cleanup()
