@@ -2,9 +2,6 @@
 import asyncio
 import logging
 
-# from asyncio.streams import StreamReader, StreamWriter
-from typing import List
-
 from aiohttp import web
 
 # from tickit.adapters.interpreters.endpoints.rest_endpoint import RestEndpoint
