@@ -23,7 +23,6 @@ class HTTPEndpoint(Generic[AnyStr]):
 
     url: str
     method: str
-    name: str
     include_json: bool = False
     interrupt: bool = False
 
