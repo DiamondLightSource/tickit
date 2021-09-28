@@ -76,7 +76,7 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
             HTTPServer(host, port, ByteFormat(b"%b\r\n")),
         )
 
-    @HTTPEndpoint("/command/foo/", method="PUT", name="command")
+    @HTTPEndpoint("/command/foo/", method="PUT")
     async def foo(self, request) -> web.Response:
         """A HTTP endpoint for sending a command to the Eiger.
 
@@ -88,7 +88,7 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
         """
         return web.Response(text=str("put data"))
 
-    @HTTPEndpoint("/info/bar/{data}", method="GET", name="info")
+    @HTTPEndpoint("/info/bar/{data}", method="GET")
     async def bar(self, request) -> web.Response:
         """A HTTP endpoint for requesting data from the Eiger.
 
