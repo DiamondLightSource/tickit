@@ -1,5 +1,5 @@
 import pytest
-from mock import Mock, create_autospec, mock_open, patch
+from mock import Mock, create_autospec
 
 from tickit.core.device import DeviceUpdate
 from tickit.core.typedefs import SimTime
