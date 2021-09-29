@@ -1,6 +1,8 @@
 from dataclasses import dataclass
-from typing import AnyStr, Callable, Generic
+from typing import AnyStr, Awaitable, Callable, Generic
 
+from aiohttp import web
+from aiohttp.web_response import StreamResponse
 from aiohttp.web_routedef import RouteDef
 
 
@@ -26,7 +28,9 @@ class HTTPEndpoint(Generic[AnyStr]):
     include_json: bool = False
     interrupt: bool = False
 
-    def __call__(self, func: Callable[[web.Request], web.Response]) -> Callable[[web.Request], web.Response]:
+    def __call__(
+        self, func: Callable[[web.Request], web.Response]
+    ) -> Callable[[web.Request], web.Response]:
         """A decorator which registers the adapter method as an endpoint.
 
         Args:
@@ -38,7 +42,9 @@ class HTTPEndpoint(Generic[AnyStr]):
         setattr(func, "__endpoint__", self)
         return func
 
-    def define(self, func: Callable) -> RouteDef:
+    def define(
+        self, func: Callable[[web.Request], Awaitable[StreamResponse]]
+    ) -> RouteDef:
         """Performs the construction of the endpoint RouteDef for the HTTP Server.
 
         A method which performs the construction of the route definition of the method,
