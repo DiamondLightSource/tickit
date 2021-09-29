@@ -58,3 +58,9 @@ class HTTPEndpoint(Generic[AnyStr]):
             RouteDef: The route definition for the endpoint.
         """
         return RouteDef(self.method, self.url, func, {})
+
+    @classmethod
+    def get(
+        cls, url: str, include_json: bool = False, interrupt: bool = False
+    ) -> "HTTPEndpoint":
+        return cls(url, "GET", include_json, interrupt)
