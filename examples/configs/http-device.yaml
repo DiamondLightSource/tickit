@@ -7,12 +7,11 @@
     name: source
 - tickit.core.components.device_simulation.DeviceSimulation:
     adapters:
-      - examples.devices.eiger.EigerAdapter: {}
+      - examples.devices.http_device.ExampleHTTPAdapter: {}
     device:
-      examples.devices.eiger.Eiger:
-        trigger: False
-        num_images: 3600
-        block_size: 1000
+      examples.devices.http_device.ExampleHTTPDevice:
+        foo: False
+        bar: 10
     inputs:
-      trigger: source:value
-    name: eiger
+      foo: source:value
+    name: http-device
