@@ -26,7 +26,7 @@ class HTTPEndpoint(Generic[AnyStr]):
     include_json: bool = False
     interrupt: bool = False
 
-    def __call__(self, func: Callable) -> Callable:
+    def __call__(self, func: Callable[[web.Request], web.Response]) -> Callable[[web.Request], web.Response]:
         """A decorator which registers the adapter method as an endpoint.
 
         Args:
