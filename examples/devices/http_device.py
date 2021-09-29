@@ -70,7 +70,7 @@ class ExampleHTTPAdapter(HTTPAdapter, ConfigurableAdapter):
         )
 
     @HTTPEndpoint("/command/foo/", method="PUT")
-    async def foo(self, request) -> web.Response:
+    async def foo(self, request: web.Request) -> web.Response:
         """A HTTP endpoint for sending a command to the example HTTP device.
 
         Args:
