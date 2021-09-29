@@ -89,7 +89,7 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
         return web.Response(text=str("put data"))
 
     @HTTPEndpoint("/info/bar/{data}", method="GET")
-    async def bar(self, request) -> web.Response:
+    async def bar(self, request: web.Request) -> web.Response:
         """A HTTP endpoint for requesting data from the Eiger.
 
         Args:
