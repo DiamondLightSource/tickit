@@ -38,6 +38,17 @@ class ExampleHTTPDevice(ConfigurableDevice):
         self.bar = bar
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
+        """Generic update function to update the values of the ExampleHTTPDevice.
+
+        Args:
+            time (SimTime): The simulation time in nanoseconds.
+            inputs (Inputs): A TypedDict of the inputs to the ExampleHTTPDevice.
+
+        Returns:
+            DeviceUpdate[Outputs]:
+                The produced update event which contains the value of the device
+                variables.
+        """
         pass
 
 
@@ -69,7 +80,7 @@ class ExampleHTTPAdapter(HTTPAdapter, ConfigurableAdapter):
             HTTPServer(host, port, ByteFormat(b"%b\r\n")),
         )
 
-    @HTTPEndpoint("/command/foo/", method="PUT")
+    @HTTPEndpoint.put("/command/foo/")
     async def foo(self, request: web.Request) -> web.Response:
         """A HTTP endpoint for sending a command to the example HTTP device.
 
@@ -81,7 +92,7 @@ class ExampleHTTPAdapter(HTTPAdapter, ConfigurableAdapter):
         """
         return web.Response(text=str("put data"))
 
-    @HTTPEndpoint("/info/bar/{data}", method="GET")
+    @HTTPEndpoint.get("/info/bar/{data}")
     async def bar(self, request: web.Request) -> web.Response:
         """A HTTP endpoint for requesting data from the example HTTP device.
 

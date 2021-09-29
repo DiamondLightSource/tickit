@@ -63,4 +63,18 @@ class HTTPEndpoint(Generic[AnyStr]):
     def get(
         cls, url: str, include_json: bool = False, interrupt: bool = False
     ) -> "HTTPEndpoint":
+        """Method for the HTTPEndpoint that sets the request method to "GET".
+
+        Returns:
+            cls: The class of HTTPEndpoint with the "GET" request method.
+        """
         return cls(url, "GET", include_json, interrupt)
+
+    @classmethod
+    def put(cls, url: str, interrupt: bool = False) -> "HTTPEndpoint":
+        """Method for the HTTPEndpoint that sets the request method to "PUT".
+
+        Returns:
+            cls: The class of HTTPEndpoint with the "PUT" request method.
+        """
+        return cls(url, "PUT", interrupt)
