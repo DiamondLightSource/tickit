@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tickit.core.management.event_router &mdash; tickit 0.1.1.pre documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/theme_overrides.css" type="text/css" />
+    <link rel="shortcut icon" href="../../../../_static/tickit-logo.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: rgb(7, 43, 93)" >
+            <a href="../../../../index.html" class="icon icon-home"> tickit
+            <img src="../../../../_static/tickit-logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.1.1.pre
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+  
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/installation.html">Installation Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/running-a-simulation.html">Running a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/creating-a-simulation.html">Creating a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/creating-a-device.html">Creating a Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/creating-an-adapter.html">Creating an Adapter</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">How-to Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../how-to/accomplish-a-task.html">How to accomplish a task</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Explanations</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../explanations/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../explanations/how-component-updates-are-ordered.html">How component updates are ordered</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../reference/api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../reference/contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/dls-controls/tickit/blob/master/CHANGELOG.rst">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="genindex.html#http://">Index</a></li>
+</ul>
+
+  <!-- Add versions for selected branches + tags -->
+  <p class="caption">
+    <span class="caption-text">Versions</span>
+  </p>
+  <ul id="versions"/>
+  <script>
+    // Add any branches to appear in the side pane here, tags will be added below
+    // Will only appear if docs are built and pushed in gh-pages
+    var versions = ['main', 'master'];
+    var dirs = new Set();
+    function addVersion(name) {
+      if (dirs.has(name)) {
+        var li = document.createElement("li");
+        var a = document.createElement("a");
+        a.href = 'https://dls-controls.github.io/tickit/' + name;
+        a.innerText = name;
+        li.appendChild(a)
+        document.getElementById('versions').appendChild(li);
+      }
+    }
+    Promise.all([
+      // Find gh-pages directories and populate `dirs`
+      fetch("https://api.github.com/repos/dls-controls/tickit/contents?ref=gh-pages")
+      .then(response => response.json())
+      .then(data => data.forEach(function(e) {
+        if (e.type == "dir") dirs.add(e.name);
+      })),
+      // Add tags to `versions`
+      fetch('https://api.github.com/repos/dls-controls/tickit/tags')
+        .then(response => response.json())
+        .then(data => data.forEach(function(e) {
+          versions.push(e.name);
+        }))
+      ]).then(_ => versions.forEach(addVersion))
+  </script>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: rgb(7, 43, 93)" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">tickit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      <li>tickit.core.management.event_router</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tickit.core.management.event_router</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span><span class="p">,</span> <span class="n">deque</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">DefaultDict</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">overload</span>
+
+<span class="kn">from</span> <span class="nn">tickit.core.components.component</span> <span class="kn">import</span> <span class="n">ComponentConfig</span>
+<span class="kn">from</span> <span class="nn">tickit.core.typedefs</span> <span class="kn">import</span> <span class="n">ComponentID</span><span class="p">,</span> <span class="n">ComponentPort</span><span class="p">,</span> <span class="n">PortID</span>
+<span class="kn">from</span> <span class="nn">tickit.utils.compat.functools_compat</span> <span class="kn">import</span> <span class="n">cached_property</span>
+
+<span class="c1">#: A mapping of component output ports to component input ports with defaults</span>
+<span class="n">Default_Wiring_Struct</span> <span class="o">=</span> <span class="n">DefaultDict</span><span class="p">[</span>
+    <span class="n">ComponentID</span><span class="p">,</span> <span class="n">DefaultDict</span><span class="p">[</span><span class="n">PortID</span><span class="p">,</span> <span class="n">Set</span><span class="p">[</span><span class="n">ComponentPort</span><span class="p">]]</span>
+<span class="p">]</span>
+<span class="c1">#: A mapping of component output ports to component input ports</span>
+<span class="n">Wiring_Struct</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">PortID</span><span class="p">,</span> <span class="n">Set</span><span class="p">[</span><span class="n">ComponentPort</span><span class="p">]]]</span>
+<span class="c1">#: A mapping of component input ports to component output ports with defaults</span>
+<span class="n">Default_InverseWiring_Struct</span> <span class="o">=</span> <span class="n">DefaultDict</span><span class="p">[</span>
+    <span class="n">ComponentID</span><span class="p">,</span> <span class="n">DefaultDict</span><span class="p">[</span><span class="n">PortID</span><span class="p">,</span> <span class="n">ComponentPort</span><span class="p">]</span>
+<span class="p">]</span>
+<span class="c1">#: A mapping of component input ports to component output ports</span>
+<span class="n">Inverse_Wiring_Struct</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">PortID</span><span class="p">,</span> <span class="n">ComponentPort</span><span class="p">]]</span>
+
+
+<div class="viewcode-block" id="Wiring"><a class="viewcode-back" href="../../../../reference/api.html#tickit.core.management.event_router.Wiring">[docs]</a><span class="k">class</span> <span class="nc">Wiring</span><span class="p">(</span><span class="n">Default_Wiring_Struct</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A mapping of component output ports to component input ports with defaults.</span>
+
+<span class="sd">    A mapping of component output ports to component input ports, used to represent the</span>
+<span class="sd">    connections between components in a system. Defaults are generated in case of</span>
+<span class="sd">    missing mapping keys; for an unknown component, an empty output port mapping is</span>
+<span class="sd">    created, whilst for an unknown output port an empty input port set is created.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wiring</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Wiring_Struct</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A constructor which adds defaults to a wiring struct if provided.</span>
+
+<span class="sd">        A constructor which adds defaults to a wiring struct if provided, otherwise an</span>
+<span class="sd">        empty default dict is created.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            wiring (Optional[Wiring_Struct]): An optional wiring struct. Defaults to</span>
+<span class="sd">                None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_wiring</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">{</span><span class="n">dev</span><span class="p">:</span> <span class="n">DefaultDict</span><span class="p">(</span><span class="nb">set</span><span class="p">,</span> <span class="n">io</span><span class="p">)</span> <span class="k">for</span> <span class="n">dev</span><span class="p">,</span> <span class="n">io</span> <span class="ow">in</span> <span class="n">wiring</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+            <span class="k">if</span> <span class="n">wiring</span>
+            <span class="k">else</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">DefaultDict</span><span class="p">(</span><span class="nb">set</span><span class="p">,</span> <span class="nb">dict</span><span class="p">()),</span> <span class="n">_wiring</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Wiring.from_inverse_wiring"><a class="viewcode-back" href="../../../../reference/api.html#tickit.core.management.event_router.Wiring.from_inverse_wiring">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_inverse_wiring</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">inverse_wiring</span><span class="p">:</span> <span class="s2">&quot;InverseWiring&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Wiring&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Un-inverts an inverse wiring object to produce a Wiring instance.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            inverse_wiring (InverseWiring): A mapping of component input ports to</span>
+<span class="sd">                component output ports.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Wiring: A mapping of component output ports to component input ports.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">wiring</span><span class="p">:</span> <span class="n">Wiring</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">in_dev</span><span class="p">,</span> <span class="n">in_ios</span> <span class="ow">in</span> <span class="n">inverse_wiring</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">in_io</span><span class="p">,</span> <span class="p">(</span><span class="n">out_dev</span><span class="p">,</span> <span class="n">out_io</span><span class="p">)</span> <span class="ow">in</span> <span class="n">in_ios</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">wiring</span><span class="p">[</span><span class="n">out_dev</span><span class="p">][</span><span class="n">out_io</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ComponentPort</span><span class="p">(</span><span class="n">in_dev</span><span class="p">,</span> <span class="n">in_io</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">wiring</span></div></div>
+
+
+<div class="viewcode-block" id="InverseWiring"><a class="viewcode-back" href="../../../../reference/api.html#tickit.core.management.event_router.InverseWiring">[docs]</a><span class="k">class</span> <span class="nc">InverseWiring</span><span class="p">(</span><span class="n">Default_InverseWiring_Struct</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A mapping of component input ports to component output ports.</span>
+
+<span class="sd">    A mapping of component input ports to component output ports, used to represent the</span>
+<span class="sd">    connections between components in a system. When either an unknown input component</span>
+<span class="sd">    or an unknown input component port is requested a KeyError is raised.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wiring</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Inverse_Wiring_Struct</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A constructor which adds defaults to an inverse wiring struct if provided.</span>
+
+<span class="sd">        A constructor which adds defaults to an inverse wiring struct if provided,</span>
+<span class="sd">        otherwise an empty default dict is created.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            wiring (Optional[Inverse_Wiring_Struct]): An optional inverse wiring struct.</span>
+<span class="sd">                Defaults to None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_wiring</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">{</span><span class="n">dev</span><span class="p">:</span> <span class="n">DefaultDict</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">io</span><span class="p">)</span> <span class="k">for</span> <span class="n">dev</span><span class="p">,</span> <span class="n">io</span> <span class="ow">in</span> <span class="n">wiring</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">io</span><span class="p">}</span>
+            <span class="k">if</span> <span class="n">wiring</span>
+            <span class="k">else</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">DefaultDict</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="nb">dict</span><span class="p">()),</span> <span class="n">_wiring</span><span class="p">)</span>
+
+<div class="viewcode-block" id="InverseWiring.from_wiring"><a class="viewcode-back" href="../../../../reference/api.html#tickit.core.management.event_router.InverseWiring.from_wiring">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_wiring</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">wiring</span><span class="p">:</span> <span class="n">Wiring</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;InverseWiring&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Inverts a Wiring object to create an InverseWiring instance.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            wiring (Wiring): A mapping of component output ports to component input</span>
+<span class="sd">                ports.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            InverseWiring: A mapping of component input ports to component output ports.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">inverse_wiring</span><span class="p">:</span> <span class="n">InverseWiring</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">out_dev</span><span class="p">,</span> <span class="n">out_ids</span> <span class="ow">in</span> <span class="n">wiring</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">out_io</span><span class="p">,</span> <span class="n">ports</span> <span class="ow">in</span> <span class="n">out_ids</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">in_dev</span><span class="p">,</span> <span class="n">in_io</span> <span class="ow">in</span> <span class="n">ports</span><span class="p">:</span>
+                    <span class="n">inverse_wiring</span><span class="p">[</span><span class="n">in_dev</span><span class="p">][</span><span class="n">in_io</span><span class="p">]</span> <span class="o">=</span> <span class="n">ComponentPort</span><span class="p">(</span><span class="n">out_dev</span><span class="p">,</span> <span class="n">out_io</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">inverse_wiring</span></div>
+
+<div class="viewcode-block" id="InverseWiring.from_component_configs"><a class="viewcode-back" href="../../../../reference/api.html#tickit.core.management.event_router.InverseWiring.from_component_configs">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_component_configs</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">configs</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">ComponentConfig</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;InverseWiring&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Creates an InverseWiring instance from an iterable of ComponentConfigs.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            configs (Iterable[ComponentConfig]): An iterable of component config data</span>
+<span class="sd">                containers.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            InverseWiring: A mapping of component input ports to component output ports.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">({</span><span class="n">config</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">inputs</span> <span class="k">for</span> <span class="n">config</span> <span class="ow">in</span> <span class="n">configs</span><span class="p">})</span></div></div>
+
+
+<div class="viewcode-block" id="EventRouter"><a class="viewcode-back" href="../../../../reference/api.html#tickit.core.management.event_router.EventRouter">[docs]</a><span class="k">class</span> <span class="nc">EventRouter</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;A utility class responsible for routing changes between components.&quot;&quot;&quot;</span>
+
+    <span class="n">_wiring</span><span class="p">:</span> <span class="n">Wiring</span>
+
+    <span class="nd">@overload</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wiring</span><span class="p">:</span> <span class="n">Wiring</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Placeholder.&quot;&quot;&quot;</span>  <span class="c1"># See: https://github.com/PyCQA/pydocstyle/issues/525</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@overload</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wiring</span><span class="p">:</span> <span class="n">InverseWiring</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Placeholder.&quot;&quot;&quot;</span>  <span class="c1"># See: https://github.com/PyCQA/pydocstyle/issues/525</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wiring</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Wiring</span><span class="p">,</span> <span class="n">InverseWiring</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;An EventRouter constructor which stores possibly inverse wiring for use in utilities.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            wiring (Union[Wiring, InverseWiring]): A wiring or inverse wiring object</span>
+<span class="sd">                representing the connections between components in the system.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">wiring</span><span class="p">,</span> <span class="n">Wiring</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_wiring</span> <span class="o">=</span> <span class="n">wiring</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">wiring</span><span class="p">,</span> <span class="n">InverseWiring</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_wiring</span> <span class="o">=</span> <span class="n">Wiring</span><span class="o">.</span><span class="n">from_inverse_wiring</span><span class="p">(</span><span class="n">wiring</span><span class="p">)</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">wiring</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Wiring</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;The cached wiring used by the event router.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Wiring: The wiring used by the event router.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wiring</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">components</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;A cached set of all components in the wiring.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Set[ComponentID]: A set of all components in the wiring.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">set</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_components</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_components</span><span class="p">)</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">output_components</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;A cached set of components which provide outputs.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Set[ComponentID]: A set of components which provide outputs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wiring</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">input_components</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;A cached set of components which recieve inputs.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Set[ComponentID]: A set of components which recieve inputs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">set</span><span class="p">(</span>
+            <span class="n">dev</span>
+            <span class="k">for</span> <span class="n">out</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wiring</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">port</span> <span class="ow">in</span> <span class="n">out</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">dev</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">port</span>
+        <span class="p">)</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">component_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">,</span> <span class="n">Set</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;A cached mapping of first order component dependants.</span>
+
+<span class="sd">        A cached property which returns a mapping of components to the set of</span>
+<span class="sd">        components which are wired to any of its outputs.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Dict[ComponentID, Set[ComponentID]]:</span>
+<span class="sd">                A mapping of components to the set of components which are wired to any</span>
+<span class="sd">                of its outputs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="n">dev</span><span class="p">:</span> <span class="nb">set</span><span class="p">(</span><span class="n">dev</span> <span class="k">for</span> <span class="n">port</span> <span class="ow">in</span> <span class="n">out</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">for</span> <span class="n">dev</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">port</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">dev</span><span class="p">,</span> <span class="n">out</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wiring</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">}</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">inverse_component_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">,</span> <span class="n">Set</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;A cached mapping of first order component dependancies.</span>
+
+<span class="sd">        A cached property which returns a mapping of components to the set of</span>
+<span class="sd">        components which are wired to any of its inputs.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Dict[ComponentID, Set[ComponentID]]:</span>
+<span class="sd">                A mapping of components to the set of components which are wired to any</span>
+<span class="sd">                of its inputs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">inverse_tree</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">,</span> <span class="n">Set</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">dev</span><span class="p">:</span> <span class="nb">set</span><span class="p">()</span> <span class="k">for</span> <span class="n">dev</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="n">dev</span><span class="p">,</span> <span class="n">deps</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">component_tree</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">dep</span> <span class="ow">in</span> <span class="n">deps</span><span class="p">:</span>
+                <span class="n">inverse_tree</span><span class="p">[</span><span class="n">dep</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">dev</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">inverse_tree</span>
+
+<div class="viewcode-block" id="EventRouter.dependants"><a class="viewcode-back" href="../../../../reference/api.html#tickit.core.management.event_router.EventRouter.dependants">[docs]</a>    <span class="k">def</span> <span class="nf">dependants</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="n">ComponentID</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Finds set of all components which are recursively dependant on the root component.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            root (ComponentID): The root component.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Set[ComponentID]:</span>
+<span class="sd">                A set of all components which are recursively dependant on the root</span>
+<span class="sd">                component.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dependants</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">to_crawl</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([</span><span class="n">root</span><span class="p">])</span>
+        <span class="k">while</span> <span class="n">to_crawl</span><span class="p">:</span>
+            <span class="n">dev</span> <span class="o">=</span> <span class="n">to_crawl</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">dev</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dependants</span><span class="p">:</span>
+                <span class="n">dependants</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">dev</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">dev</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">component_tree</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">to_crawl</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">component_tree</span><span class="p">[</span><span class="n">dev</span><span class="p">]</span> <span class="o">-</span> <span class="n">dependants</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dependants</span></div>
+
+<div class="viewcode-block" id="EventRouter.route"><a class="viewcode-back" href="../../../../reference/api.html#tickit.core.management.event_router.EventRouter.route">[docs]</a>    <span class="k">def</span> <span class="nf">route</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">ComponentID</span><span class="p">,</span> <span class="n">changes</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">PortID</span><span class="p">,</span> <span class="nb">object</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DefaultDict</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">PortID</span><span class="p">,</span> <span class="nb">object</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;Generates a mapping of input changes resulting from output changes.</span>
+
+<span class="sd">        A method which generates a mapping of input changes which result from the</span>
+<span class="sd">        propagation of output changes according to the wiring.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            source (ComponentID): The source component of the output changes.</span>
+<span class="sd">            changes (Mapping[PortID, Hashable]): A mapping of changes to the outputs of</span>
+<span class="sd">                the source component.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            DefaultDict[ComponentID, Dict[PortID, Hashable]]:</span>
+<span class="sd">                A mapping of the input changes which result from the propagation of</span>
+<span class="sd">                output changes according to the wiring.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">routed</span><span class="p">:</span> <span class="n">DefaultDict</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">PortID</span><span class="p">,</span> <span class="nb">object</span><span class="p">]]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">out_id</span><span class="p">,</span> <span class="n">out_val</span> <span class="ow">in</span> <span class="n">changes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">in_dev</span><span class="p">,</span> <span class="n">in_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wiring</span><span class="p">[</span><span class="n">source</span><span class="p">][</span><span class="n">out_id</span><span class="p">]:</span>
+                <span class="n">routed</span><span class="p">[</span><span class="n">in_dev</span><span class="p">][</span><span class="n">in_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">out_val</span>
+        <span class="k">return</span> <span class="n">routed</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Diamond Light Source.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

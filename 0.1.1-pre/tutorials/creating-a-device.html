@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Creating a Device &mdash; tickit 0.1.1.pre documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/tickit-logo.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Creating an Adapter" href="creating-an-adapter.html" />
+    <link rel="prev" title="Creating a Simulation" href="creating-a-simulation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: rgb(7, 43, 93)" >
+            <a href="../index.html" class="icon icon-home"> tickit
+            <img src="../_static/tickit-logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.1.1.pre
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+  
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="running-a-simulation.html">Running a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="creating-a-simulation.html">Creating a Simulation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Creating a Device</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#device-module-file">Device Module File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#device-class">Device Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#device-constructor-and-configuration">Device Constructor and Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#device-logic">Device Logic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-the-device">Using the Device</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="creating-an-adapter.html">Creating an Adapter</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">How-to Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../how-to/accomplish-a-task.html">How to accomplish a task</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Explanations</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../explanations/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanations/how-component-updates-are-ordered.html">How component updates are ordered</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/dls-controls/tickit/blob/master/CHANGELOG.rst">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="genindex.html#http://">Index</a></li>
+</ul>
+
+  <!-- Add versions for selected branches + tags -->
+  <p class="caption">
+    <span class="caption-text">Versions</span>
+  </p>
+  <ul id="versions"/>
+  <script>
+    // Add any branches to appear in the side pane here, tags will be added below
+    // Will only appear if docs are built and pushed in gh-pages
+    var versions = ['main', 'master'];
+    var dirs = new Set();
+    function addVersion(name) {
+      if (dirs.has(name)) {
+        var li = document.createElement("li");
+        var a = document.createElement("a");
+        a.href = 'https://dls-controls.github.io/tickit/' + name;
+        a.innerText = name;
+        li.appendChild(a)
+        document.getElementById('versions').appendChild(li);
+      }
+    }
+    Promise.all([
+      // Find gh-pages directories and populate `dirs`
+      fetch("https://api.github.com/repos/dls-controls/tickit/contents?ref=gh-pages")
+      .then(response => response.json())
+      .then(data => data.forEach(function(e) {
+        if (e.type == "dir") dirs.add(e.name);
+      })),
+      // Add tags to `versions`
+      fetch('https://api.github.com/repos/dls-controls/tickit/tags')
+        .then(response => response.json())
+        .then(data => data.forEach(function(e) {
+          versions.push(e.name);
+        }))
+      ]).then(_ => versions.forEach(addVersion))
+  </script>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: rgb(7, 43, 93)" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">tickit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Creating a Device</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/creating-a-device.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="creating-a-device">
+<h1>Creating a Device<a class="headerlink" href="#creating-a-device" title="Permalink to this headline"></a></h1>
+<p>This tutorial shows how to create a simple <a class="reference internal" href="../reference/api.html#tickit.core.device.Device" title="tickit.core.device.Device"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Device</span></code></a> for use in the tickit framework.
+This device will act as a simple shutter which can vary the transmission of <code class="docutils literal notranslate"><span class="pre">flux</span></code> by
+changing <code class="docutils literal notranslate"><span class="pre">position</span></code>.</p>
+<section id="device-module-file">
+<h2>Device Module File<a class="headerlink" href="#device-module-file" title="Permalink to this headline"></a></h2>
+<p>We shall begin by creating a new python module named <code class="docutils literal notranslate"><span class="pre">my_shutter.py</span></code>, and open it
+with our preferred editor. This file will be used to store the our Shutter class which
+will determine the operation of our device.</p>
+</section>
+<section id="device-class">
+<h2>Device Class<a class="headerlink" href="#device-class" title="Permalink to this headline"></a></h2>
+<p>We shall begin by defining the Shutter class which inerits <a class="reference internal" href="../reference/api.html#tickit.core.device.ConfigurableDevice" title="tickit.core.device.ConfigurableDevice"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ConfigurableDevice</span></code></a> - by
+doing so a confiuration dataclass will automatically be created for the device,
+allowing for easy YAML configuration.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tickit.core.device</span> <span class="kn">import</span> <span class="n">ConfigurableDevice</span>
+
+
+<span class="k">class</span> <span class="nc">Shutter</span><span class="p">(</span><span class="n">ConfigurableDevice</span><span class="p">):</span>
+</pre></div>
+</div>
+</section>
+<section id="device-constructor-and-configuration">
+<h2>Device Constructor and Configuration<a class="headerlink" href="#device-constructor-and-configuration" title="Permalink to this headline"></a></h2>
+<p>Next, we shall create the <code class="docutils literal notranslate"><span class="pre">__init__</span></code> method, allowing for the device to be
+instantiated. We will pass two arguments to this method; a required argument,
+<code class="docutils literal notranslate"><span class="pre">default_position</span></code>, which will specify the <code class="docutils literal notranslate"><span class="pre">target_position</span></code> of the shutter in the
+absence of any other instruction; and an optional argument, <code class="docutils literal notranslate"><span class="pre">initial_position</span></code>,
+which when specified will set the initial <code class="docutils literal notranslate"><span class="pre">position</span></code> of the shutter, if unspecified
+the initial <code class="docutils literal notranslate"><span class="pre">position</span></code> will be random.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">random</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">from</span> <span class="nn">tickit.core.device</span> <span class="kn">import</span> <span class="n">ConfigurableDevice</span>
+
+
+<span class="k">class</span> <span class="nc">Shutter</span><span class="p">(</span><span class="n">ConfigurableDevice</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">default_position</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">initial_position</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target_position</span> <span class="o">=</span> <span class="n">default_position</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">initial_position</span> <span class="k">if</span> <span class="n">initial_position</span> <span class="k">else</span> <span class="n">random</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Arguments to the <code class="docutils literal notranslate"><span class="pre">__init__</span></code> method may be specified in the simulation config file
+if the device inherits <a class="reference internal" href="../reference/api.html#tickit.core.device.ConfigurableDevice" title="tickit.core.device.ConfigurableDevice"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ConfigurableDevice</span></code></a>.</p>
+</div>
+</section>
+<section id="device-logic">
+<h2>Device Logic<a class="headerlink" href="#device-logic" title="Permalink to this headline"></a></h2>
+<p>The core logic of the device will be implemented in the <code class="docutils literal notranslate"><span class="pre">update</span></code> method which
+recieves the arguments <code class="docutils literal notranslate"><span class="pre">time</span></code> - the current simulation time in nanoseconds - and
+<code class="docutils literal notranslate"><span class="pre">inputs</span></code> - a mapping of input ports to their value - and returns an <a class="reference internal" href="../reference/api.html#tickit.core.device.DeviceUpdate" title="tickit.core.device.DeviceUpdate"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DeviceUpdate</span></code></a>
+which consists of <code class="docutils literal notranslate"><span class="pre">outputs</span></code> - a mapping of output ports and their value - and
+<code class="docutils literal notranslate"><span class="pre">call_at</span></code> - the time at which the device should next be updated.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">random</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">TypedDict</span>
+
+<span class="kn">from</span> <span class="nn">tickit.core.device</span> <span class="kn">import</span> <span class="n">ConfigurableDevice</span><span class="p">,</span> <span class="n">DeviceUpdate</span>
+<span class="kn">from</span> <span class="nn">tickit.core.typedefs</span> <span class="kn">import</span> <span class="n">SimTime</span>
+
+
+<span class="k">class</span> <span class="nc">Shutter</span><span class="p">(</span><span class="n">ConfigurableDevice</span><span class="p">):</span>
+    <span class="n">Inputs</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Inputs&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;flux&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">})</span>
+    <span class="n">Outputs</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Outputs&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;flux&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">})</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">default_position</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">initial_position</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target_position</span> <span class="o">=</span> <span class="n">default_position</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">initial_position</span> <span class="k">if</span> <span class="n">initial_position</span> <span class="k">else</span> <span class="n">random</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rate</span> <span class="o">=</span> <span class="mf">2e-10</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_time</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SimTime</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="n">position</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">period</span><span class="p">:</span> <span class="n">SimTime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">position</span> <span class="o">&lt;</span> <span class="n">target</span><span class="p">:</span>
+            <span class="n">position</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">position</span> <span class="o">+</span> <span class="n">rate</span> <span class="o">*</span> <span class="n">period</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">position</span> <span class="o">&gt;</span> <span class="n">target</span><span class="p">:</span>
+            <span class="n">position</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">position</span> <span class="o">-</span> <span class="n">rate</span> <span class="o">*</span> <span class="n">period</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">position</span>
+
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">SimTime</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">Inputs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeviceUpdate</span><span class="p">[</span><span class="n">Outputs</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_time</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">Shutter</span><span class="o">.</span><span class="n">move</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">target_position</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">rate</span><span class="p">,</span>
+                <span class="n">SimTime</span><span class="p">(</span><span class="n">time</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_time</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_time</span> <span class="o">=</span> <span class="n">time</span>
+        <span class="n">call_at</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_position</span> <span class="k">else</span> <span class="n">SimTime</span><span class="p">(</span><span class="n">time</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1e8</span><span class="p">))</span>
+        <span class="n">output_flux</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;flux&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span>
+        <span class="k">return</span> <span class="n">DeviceUpdate</span><span class="p">(</span><span class="n">Shutter</span><span class="o">.</span><span class="n">Outputs</span><span class="p">(</span><span class="n">flux</span><span class="o">=</span><span class="n">output_flux</span><span class="p">),</span> <span class="n">call_at</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="using-the-device">
+<h2>Using the Device<a class="headerlink" href="#using-the-device" title="Permalink to this headline"></a></h2>
+<p>In order to use the device we must first create a simulation configuration file, we
+shall create one named <code class="docutils literal notranslate"><span class="pre">my_shutter_simulation.yaml</span></code>, and open it with our preferred
+editor. This file will be used to set up a simulation consisting of a <a class="reference internal" href="../reference/api.html#tickit.devices.source.Source" title="tickit.devices.source.Source"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Source</span></code></a> named
+source which will produce a constant flux, the shutter which will act on the flux as
+per our implementation, and a <a class="reference internal" href="../reference/api.html#tickit.devices.sink.Sink" title="tickit.devices.sink.Sink"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Sink</span></code></a> named sink which will recieve the resulting flux.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">tickit.core.components.device_simulation.DeviceSimulation</span><span class="p">:</span>
+    <span class="nt">adapters</span><span class="p">:</span> <span class="p p-Indicator">[]</span>
+    <span class="nt">device</span><span class="p">:</span>
+      <span class="nt">tickit.devices.source.Source</span><span class="p">:</span>
+        <span class="nt">value</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">42.0</span>
+    <span class="nt">inputs</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">source</span>
+<span class="p p-Indicator">-</span> <span class="nt">tickit.core.components.device_simulation.DeviceSimulation</span><span class="p">:</span>
+    <span class="nt">adapters</span><span class="p">:</span> <span class="p p-Indicator">[]</span>
+    <span class="nt">device</span><span class="p">:</span>
+      <span class="nt">my_shutter.Shutter</span><span class="p">:</span>
+        <span class="nt">default_position</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.2</span>
+    <span class="nt">inputs</span><span class="p">:</span>
+      <span class="nt">flux</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">source:value</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">shutter</span>
+<span class="p p-Indicator">-</span> <span class="nt">tickit.core.components.device_simulation.DeviceSimulation</span><span class="p">:</span>
+    <span class="nt">adapters</span><span class="p">:</span> <span class="p p-Indicator">[]</span>
+    <span class="nt">device</span><span class="p">:</span>
+      <span class="nt">tickit.devices.sink.Sink</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
+    <span class="nt">inputs</span><span class="p">:</span>
+      <span class="nt">flux</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">shutter:flux</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sink</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>See the <a class="reference internal" href="creating-a-simulation.html#creating-a-simulation"><span class="std std-ref">Creating a Simulation</span></a> tutorial for a walk-through of creating simulation
+configurations.</p>
+</div>
+<p>Finally, we likely wish to run the simulation, this may be performed by running the
+following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python -m tickit all my_shutter_simulation.yaml
+</pre></div>
+</div>
+<p>Once run, we expect to see an output akin to:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Doing tick @ <span class="m">0</span>
+<span class="nb">source</span> got Input<span class="o">(</span><span class="nv">target</span><span class="o">=</span><span class="s1">&#39;source&#39;</span>, <span class="nv">time</span><span class="o">=</span><span class="m">0</span>, <span class="nv">changes</span><span class="o">=</span>immutables.Map<span class="o">({}))</span>
+Sourced <span class="m">42</span>.0
+Scheduler got Output<span class="o">(</span><span class="nv">source</span><span class="o">=</span><span class="s1">&#39;source&#39;</span>, <span class="nv">time</span><span class="o">=</span><span class="m">0</span>, <span class="nv">changes</span><span class="o">=</span>immutables.Map<span class="o">({</span><span class="s1">&#39;value&#39;</span>: <span class="m">42</span>.0<span class="o">})</span>, <span class="nv">call_in</span><span class="o">=</span>None<span class="o">)</span>
+shutter got Input<span class="o">(</span><span class="nv">target</span><span class="o">=</span><span class="s1">&#39;shutter&#39;</span>, <span class="nv">time</span><span class="o">=</span><span class="m">0</span>, <span class="nv">changes</span><span class="o">=</span>immutables.Map<span class="o">({</span><span class="s1">&#39;flux&#39;</span>: <span class="m">42</span>.0<span class="o">}))</span>
+Scheduler got Output<span class="o">(</span><span class="nv">source</span><span class="o">=</span><span class="s1">&#39;shutter&#39;</span>, <span class="nv">time</span><span class="o">=</span><span class="m">0</span>, <span class="nv">changes</span><span class="o">=</span>immutables.Map<span class="o">({</span><span class="s1">&#39;flux&#39;</span>: <span class="m">10</span>.08<span class="o">})</span>, <span class="nv">call_in</span><span class="o">=</span><span class="m">100000000</span><span class="o">)</span>
+Scheduling Wakeup<span class="o">(</span><span class="nv">component</span><span class="o">=</span><span class="s1">&#39;shutter&#39;</span>, <span class="nv">when</span><span class="o">=</span><span class="m">100000000</span><span class="o">)</span>
+sink got Input<span class="o">(</span><span class="nv">target</span><span class="o">=</span><span class="s1">&#39;sink&#39;</span>, <span class="nv">time</span><span class="o">=</span><span class="m">0</span>, <span class="nv">changes</span><span class="o">=</span>immutables.Map<span class="o">({</span><span class="s1">&#39;flux&#39;</span>: <span class="m">10</span>.08<span class="o">}))</span>
+Sunk <span class="o">{</span><span class="s1">&#39;flux&#39;</span>: <span class="m">10</span>.08<span class="o">}</span>
+Scheduler got Output<span class="o">(</span><span class="nv">source</span><span class="o">=</span><span class="s1">&#39;sink&#39;</span>, <span class="nv">time</span><span class="o">=</span><span class="m">0</span>, <span class="nv">changes</span><span class="o">=</span>immutables.Map<span class="o">({})</span>, <span class="nv">call_in</span><span class="o">=</span>None<span class="o">)</span>
+Doing tick @ <span class="m">100000000</span>
+shutter got Input<span class="o">(</span><span class="nv">target</span><span class="o">=</span><span class="s1">&#39;shutter&#39;</span>, <span class="nv">time</span><span class="o">=</span><span class="m">100000000</span>, <span class="nv">changes</span><span class="o">=</span>immutables.Map<span class="o">({}))</span>
+Scheduler got Output<span class="o">(</span><span class="nv">source</span><span class="o">=</span><span class="s1">&#39;shutter&#39;</span>, <span class="nv">time</span><span class="o">=</span><span class="m">100000000</span>, <span class="nv">changes</span><span class="o">=</span>immutables.Map<span class="o">({})</span>, <span class="nv">call_in</span><span class="o">=</span><span class="m">100000000</span><span class="o">)</span>
+Scheduling Wakeup<span class="o">(</span><span class="nv">component</span><span class="o">=</span><span class="s1">&#39;shutter&#39;</span>, <span class="nv">when</span><span class="o">=</span><span class="m">200000000</span><span class="o">)</span>
+sink got Input<span class="o">(</span><span class="nv">target</span><span class="o">=</span><span class="s1">&#39;sink&#39;</span>, <span class="nv">time</span><span class="o">=</span><span class="m">100000000</span>, <span class="nv">changes</span><span class="o">=</span>immutables.Map<span class="o">({}))</span>
+Sunk <span class="o">{</span><span class="s1">&#39;flux&#39;</span>: <span class="m">10</span>.08<span class="o">}</span>
+Scheduler got Output<span class="o">(</span><span class="nv">source</span><span class="o">=</span><span class="s1">&#39;sink&#39;</span>, <span class="nv">time</span><span class="o">=</span><span class="m">100000000</span>, <span class="nv">changes</span><span class="o">=</span>immutables.Map<span class="o">({})</span>, <span class="nv">call_in</span><span class="o">=</span>None<span class="o">)</span>
+Doing tick @ <span class="m">200000000</span>
+shutter got Input<span class="o">(</span><span class="nv">target</span><span class="o">=</span><span class="s1">&#39;shutter&#39;</span>, <span class="nv">time</span><span class="o">=</span><span class="m">200000000</span>, <span class="nv">changes</span><span class="o">=</span>immutables.Map<span class="o">({}))</span>
+Scheduler got Output<span class="o">(</span><span class="nv">source</span><span class="o">=</span><span class="s1">&#39;shutter&#39;</span>, <span class="nv">time</span><span class="o">=</span><span class="m">200000000</span>, <span class="nv">changes</span><span class="o">=</span>immutables.Map<span class="o">({</span><span class="s1">&#39;flux&#39;</span>: <span class="m">9</span>.24<span class="o">})</span>, <span class="nv">call_in</span><span class="o">=</span><span class="m">100000000</span><span class="o">)</span>
+Scheduling Wakeup<span class="o">(</span><span class="nv">component</span><span class="o">=</span><span class="s1">&#39;shutter&#39;</span>, <span class="nv">when</span><span class="o">=</span><span class="m">300000000</span><span class="o">)</span>
+sink got Input<span class="o">(</span><span class="nv">target</span><span class="o">=</span><span class="s1">&#39;sink&#39;</span>, <span class="nv">time</span><span class="o">=</span><span class="m">200000000</span>, <span class="nv">changes</span><span class="o">=</span>immutables.Map<span class="o">({</span><span class="s1">&#39;flux&#39;</span>: <span class="m">9</span>.24<span class="o">}))</span>
+Sunk <span class="o">{</span><span class="s1">&#39;flux&#39;</span>: <span class="m">9</span>.24<span class="o">}</span>
+Scheduler got Output<span class="o">(</span><span class="nv">source</span><span class="o">=</span><span class="s1">&#39;sink&#39;</span>, <span class="nv">time</span><span class="o">=</span><span class="m">200000000</span>, <span class="nv">changes</span><span class="o">=</span>immutables.Map<span class="o">({})</span>, <span class="nv">call_in</span><span class="o">=</span>None<span class="o">)</span>
+Doing tick @ <span class="m">300000000</span>
+shutter got Input<span class="o">(</span><span class="nv">target</span><span class="o">=</span><span class="s1">&#39;shutter&#39;</span>, <span class="nv">time</span><span class="o">=</span><span class="m">300000000</span>, <span class="nv">changes</span><span class="o">=</span>immutables.Map<span class="o">({}))</span>
+Scheduler got Output<span class="o">(</span><span class="nv">source</span><span class="o">=</span><span class="s1">&#39;shutter&#39;</span>, <span class="nv">time</span><span class="o">=</span><span class="m">300000000</span>, <span class="nv">changes</span><span class="o">=</span>immutables.Map<span class="o">({</span><span class="s1">&#39;flux&#39;</span>: <span class="m">8</span>.4<span class="o">})</span>, <span class="nv">call_in</span><span class="o">=</span>None<span class="o">)</span>
+sink got Input<span class="o">(</span><span class="nv">target</span><span class="o">=</span><span class="s1">&#39;sink&#39;</span>, <span class="nv">time</span><span class="o">=</span><span class="m">300000000</span>, <span class="nv">changes</span><span class="o">=</span>immutables.Map<span class="o">({</span><span class="s1">&#39;flux&#39;</span>: <span class="m">8</span>.4<span class="o">}))</span>
+Sunk <span class="o">{</span><span class="s1">&#39;flux&#39;</span>: <span class="m">8</span>.4<span class="o">}</span>
+Scheduler got Output<span class="o">(</span><span class="nv">source</span><span class="o">=</span><span class="s1">&#39;sink&#39;</span>, <span class="nv">time</span><span class="o">=</span><span class="m">300000000</span>, <span class="nv">changes</span><span class="o">=</span>immutables.Map<span class="o">({})</span>, <span class="nv">call_in</span><span class="o">=</span>None<span class="o">)</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>See the <a class="reference internal" href="running-a-simulation.html#running-a-simulation"><span class="std std-ref">Running a Simulation</span></a> tutorial for a walk-through of running a simulation
+in a single or across multiple processes.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="creating-a-simulation.html" class="btn btn-neutral float-left" title="Creating a Simulation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="creating-an-adapter.html" class="btn btn-neutral float-right" title="Creating an Adapter" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Diamond Light Source.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
