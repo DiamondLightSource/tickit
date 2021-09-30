@@ -40,7 +40,6 @@ class HTTPServer(ConfigurableServer):
         An asynchronous method used to run the server indefinitely on the configured
         host and port.
         """
-
         runner = web.AppRunner(self.app)
         await runner.setup()
         site = web.TCPSite(runner, host=self.host, port=self.port)
