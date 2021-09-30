@@ -1,10 +1,8 @@
-# import json
 import asyncio
 import logging
 
 from aiohttp import web
 
-# from tickit.adapters.interpreters.endpoints.rest_endpoint import RestEndpoint
 from tickit.core.adapter import ConfigurableServer
 from tickit.utils.byte_format import ByteFormat
 
@@ -42,11 +40,6 @@ class HTTPServer(ConfigurableServer):
         An asynchronous method used to run the server indefinitely on the configured
         host and port.
         """
-        # @self.routes.get("/")
-        # async def handle(request):
-        #     return web.Response(text="Hello world!")
-
-        # self.app.add_routes(self.routes)
 
         runner = web.AppRunner(self.app)
         await runner.setup()
