@@ -67,37 +67,9 @@ def http_adapter(
     )
 
 
-# @pytest.mark.asyncio
-# async def test_http_adapter_on_connect_does_not_iterate(http_adapter: Mock):
-#     with pytest.raises(StopAsyncIteration):
-#         await http_adapter.on_connect().__anext__()
-
-
 @pytest.mark.asyncio
 async def test_http_adapter_run_forever_runs_server(http_adapter: Mock):
     http_adapter._server.app = web.Application()
     http_adapter._server.routes = web.RouteTableDef()
     await http_adapter.run_forever()
     http_adapter._server.run_forever.assert_called_once_with()
-
-
-# @pytest.mark.asyncio
-# async def test_http_adapter_handle_does_not_interrupt_for_non_interrupting(
-#     http_adapter: Mock,
-# ):
-#     http_adapter._interpreter.handle.return_value = ("ReplyMessage", False)
-#     await http_adapter.handle_message("TestMessage")
-#     http_adapter._raise_interrupt.assert_not_called()
-
-# @pytest.mark.asyncio
-# async def test_http_adapter_raise_interrupts_for_interrupting(
-#     http_adapter: Mock,
-# ):
-#     http_adapter._interpreter.handle.return_value = ("ReplyMessage", True)
-#     await composed_adapter.handle_message("TestMessage")
-#     http_adapter._raise_interrupt.assert_called_once_with()
-
-# @pytest.mark.asyncio
-# async def test_http_adapter_handle_returns_reply(http_adapter: Mock):
-#     http_adapter._interpreter.handle.return_value = ("ReplyMessage", False)
-#     assert "ReplyMessage" == await http_adapter.handle_message("TestMessage")
