@@ -78,7 +78,7 @@ class CryostreamBase:
         if (
             self.phase_id == PhaseIds.COOL.value
             or (self.turbo_mode == 1 and self._target_temp < 31000)
-            or self._target_temp < 90000
+            or self._target_temp < 9000
         ):
             self.gas_flow = 10
         else:
