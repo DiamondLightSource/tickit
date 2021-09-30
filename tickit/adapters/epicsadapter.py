@@ -11,7 +11,7 @@ from softioc import asyncio_dispatcher, builder, softioc
 from tickit.core.adapter import ConfigurableAdapter
 
 
-@dataclass(eq=False)
+@dataclass(frozen=True)
 class InputRecord:
     """A data container representing an EPICS input record."""
 
