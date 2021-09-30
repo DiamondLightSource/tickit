@@ -34,9 +34,20 @@ async def test_restart():
                 "ramp_rate": 360,
                 "expected_phase_id": PhaseIds.RAMP.value,
                 "expected_alarm_code": AlarmCodes.NO_ERRORS.value,
-                "expected_gas_flow": 10,
+                "expected_gas_flow": 5,
             },
             id="normal params",
+        ),
+        pytest.param(
+            {
+                "starting_temperature": 8999,
+                "target_temperature": 8000,
+                "ramp_rate": 360,
+                "expected_phase_id": PhaseIds.RAMP.value,
+                "expected_alarm_code": AlarmCodes.NO_ERRORS.value,
+                "expected_gas_flow": 10,
+            },
+            id="gas gas gas",
         ),
         pytest.param(
             {
@@ -56,7 +67,7 @@ async def test_restart():
                 "ramp_rate": 361,
                 "expected_phase_id": PhaseIds.RAMP.value,
                 "expected_alarm_code": AlarmCodes.TEMP_CONTROL_ERROR.value,
-                "expected_gas_flow": 10,
+                "expected_gas_flow": 5,
             },
             id="ramp rate too high",
         ),
