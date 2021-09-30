@@ -3,7 +3,7 @@ from dataclasses import is_dataclass
 
 import pytest
 from mock import MagicMock, Mock, create_autospec
-from mock.mock import call, mock_open, patch
+from mock.mock import mock_open, patch
 
 from tickit.core.adapter import ConfigurableAdapter, Interpreter
 from tickit.core.device import Device
