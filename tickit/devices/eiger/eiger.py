@@ -8,6 +8,7 @@ from tickit.adapters.servers.http_server import HTTPServer
 from tickit.core.adapter import ConfigurableAdapter
 from tickit.core.device import ConfigurableDevice, DeviceUpdate
 from tickit.core.typedefs import SimTime
+from tickit.devices.eiger.eiger_config import EigerConfig
 from tickit.utils.byte_format import ByteFormat
 from tickit.utils.compat.typing_compat import TypedDict
 
@@ -22,9 +23,11 @@ class Eiger(ConfigurableDevice):
 
     Outputs: TypedDict = TypedDict("Outputs", {"bar": float})
 
+    config: EigerConfig
+
     def __init__(
         self,
-        foo: bool = False,
+        count_time: float = 0.5,
         bar: Optional[int] = 10,
     ) -> None:
         """An example HTTP device constructor which configures the ... .
