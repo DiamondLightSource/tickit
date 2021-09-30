@@ -73,6 +73,7 @@ def test_link_input_on_interrupt(
         return False
 
     getter = Mock(getter)
+    epics_adapter.interrupt_records = {}
     epics_adapter.link_input_on_interrupt(input_record, getter)
     assert epics_adapter.interrupt_records[input_record] == getter
 
@@ -84,6 +85,7 @@ def test_epics_adapter_after_update_method(
         return False
 
     getter = Mock(getter)
+    epics_adapter.interrupt_records = {}
     epics_adapter.interrupt_records[input_record] = getter
 
     epics_adapter.after_update()
