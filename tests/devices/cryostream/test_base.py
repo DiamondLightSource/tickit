@@ -221,19 +221,6 @@ async def test_purge(test_params: Dict[str, Any]):
     assert cryostream_base.run_mode == test_params["expected_run_mode"]
 
 
-# # # # # Not Implemented # # # # #
-# @pytest.mark.asyncio
-# async def test_pause():
-#     cryostream_base = CryostreamBase()
-#     await cryostream_base.pause()
-
-
-# @pytest.mark.asycio
-# async def test_resume():
-#     cryostream_base = CryostreamBase()
-#     await cryostream_base.resume()
-
-
 @pytest.mark.asyncio
 async def test_stop():
     cryostream_base = CryostreamBase()
