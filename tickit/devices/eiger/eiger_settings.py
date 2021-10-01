@@ -5,7 +5,7 @@ from typing import Dict, List
 # TODO: Figure out how to properly declare the 2d arrays for flatfield and pixel_mask,
 # as they return 'None' when requesting.
 @dataclass
-class EigerConfig:
+class EigerSettings:
     """A data container for Eiger device configuration."""
 
     auto_summation: bool = True

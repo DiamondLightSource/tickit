@@ -8,7 +8,7 @@ from tickit.adapters.servers.http_server import HTTPServer
 from tickit.core.adapter import ConfigurableAdapter
 from tickit.core.device import ConfigurableDevice, DeviceUpdate
 from tickit.core.typedefs import SimTime
-from tickit.devices.eiger.eiger_config import EigerConfig
+from tickit.devices.eiger.eiger_settings import EigerSettings
 from tickit.utils.byte_format import ByteFormat
 from tickit.utils.compat.typing_compat import TypedDict
 
@@ -23,7 +23,7 @@ class Eiger(ConfigurableDevice):
 
     Outputs: TypedDict = TypedDict("Outputs", {"bar": float})
 
-    config: EigerConfig
+    settings: EigerSettings
 
     def __init__(
         self,
@@ -38,7 +38,7 @@ class Eiger(ConfigurableDevice):
         """
         self.foo = foo
         self.bar = bar
-        self.config = EigerConfig()
+        self.settings = EigerSettings()
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
         """Generic update function to update the values of the ExampleHTTPDevice.
@@ -98,7 +98,7 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
         param = request.match_info["parameter_name"]
 
         try:
-            attr = getattr(self._device.config, param)
+            attr = getattr(self._device.settings, param)
         except AttributeError:
             attr = None
         finally:
@@ -121,11 +121,11 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
         response = await request.json()
 
         try:
-            attr = getattr(self._device.config, param)
+            attr = getattr(self._device.settings, param)
 
             attr["value"] = response["value"]
 
-            setattr(self._device.config, param, attr)
+            setattr(self._device.settings, param, attr)
         except AttributeError:
             pass
         finally:
