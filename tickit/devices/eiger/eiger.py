@@ -72,9 +72,9 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
         Args:
             device (Eiger): The Eiger device
             raise_interrupt (Callable): A callback to request that the device is
-            updated immediately.
+                updated immediately.
             host (Optional[str]): The host address of the HTTPServer. Defaults to
-            "localhost".
+                "localhost".
             port (Optional[str]): The bound port of the HTTPServer. Defaults to 8080.
         """
         super().__init__(
