@@ -38,7 +38,7 @@ class Eiger(ConfigurableDevice):
         """
         self.foo = foo
         self.bar = bar
-        self.config = EigerConfig
+        self.config = EigerConfig()
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
         """Generic update function to update the values of the ExampleHTTPDevice.
@@ -89,8 +89,7 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
         """A HTTP Endpoint for requesting configuration variables from the Eiger.
 
         Args:
-            request (web.Request): The request object that takes the given parameter
-            and passes it to the HTTP Server as part of the endpoint URL.
+            request (web.Request): The request object that takes the given parameter.
 
         Returns:
             web.Response: The response object returned given the result of the HTTP
@@ -104,3 +103,32 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
             attr = None
         finally:
             return web.Response(text=str(attr))
+
+    @HTTPEndpoint.put("/detector/api/1.8/config/{parameter_name}", include_json=True)
+    async def put_config(self, request: web.Request) -> web.Response:
+        """A HTTP Endpoint for setting configuration variables for the Eiger.
+
+        Args:
+            request (web.Request): The request object that takes the given parameter
+            and value.
+
+        Returns:
+            web.Response: The response object returned given the result of the HTTP
+            request.
+        """
+        param = request.match_info["parameter_name"]
+
+        response = await request.json()
+
+        try:
+            attr = getattr(self._device.config, param)
+
+            attr["value"] = response["value"]
+
+            setattr(self._device.config, param, attr)
+        except AttributeError:
+            pass
+        finally:
+            return web.Response(
+                text="Set: " + str(param) + " to " + str(response["value"])
+            )

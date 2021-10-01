@@ -1,7 +1,9 @@
 from dataclasses import dataclass, field
-from typing import List
+from typing import Dict, List
 
 
+# TODO: Figure out how to properly declare the 2d arrays for flatfield and pixel_mask,
+# as they return 'None' when requesting.
 @dataclass
 class EigerConfig:
     """A data container for Eiger device configuration."""
@@ -14,7 +16,16 @@ class EigerConfig:
     chi_increment: float = 0.1
     chi_start: float = 0.1
     compression: str = "lz4"
-    count_time: float = 0.01
+    count_time: Dict[str, object] = field(
+        default_factory=lambda: {
+            "min": 0.000002999900061695371,
+            "max": 1800,
+            "value": 0.5,
+            "value_type": "float",
+            "access_mode": "rw",
+            "unit": "s",
+        }
+    )
     countrate_correction_applied: bool = True
     countrate_correction_count_cutoff: int = 1
     data_collection_date: str = "30/9/2021"
