@@ -82,9 +82,6 @@ class CryostreamBase:
         ):
             self.gas_flow = 10
         else:
-            # NOTE: It does not seem like this code can be reached.
-            # It is not possible to set the target temperature above 90000ck with
-            # this function.
             self.gas_flow = 5
 
     async def plat(self, duration: int) -> None:
