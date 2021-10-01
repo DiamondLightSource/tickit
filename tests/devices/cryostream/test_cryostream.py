@@ -62,7 +62,7 @@ async def test_cryostream_update_end(cryostream: Cryostream):
     cryostream.gas_temp = starting_temperature
     await cryostream.end(cryostream.default_ramp_rate)
     assert cryostream.phase_id == PhaseIds.RAMP.value
-    assert cryostream.gas_flow == 10
+    assert cryostream.gas_flow == 5
 
     time = SimTime(0)
     device_update: DeviceUpdate
@@ -77,10 +77,9 @@ async def test_cryostream_update_end(cryostream: Cryostream):
             time = time_update
 
     max_diff = 10
-    margin_of_error = np.array([+max_diff, -max_diff])
-    assert any(
-        device_update.outputs["temperature"] + margin_of_error
-        == cryostream.default_temp_shutdown
+    target = cryostream.default_temp_shutdown
+    assert (
+        target - max_diff <= device_update.outputs["temperature"] <= target + max_diff
     )
 
 
