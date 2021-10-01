@@ -1,22 +1,12 @@
-import sys
 from dataclasses import is_dataclass
 
 import pytest
-from mock import MagicMock, Mock, create_autospec
-from mock.mock import mock_open, patch
+import softioc
+from mock import MagicMock, Mock, create_autospec, mock_open, patch
 
+from tickit.adapters.epicsadapter import EpicsAdapter, InputRecord
 from tickit.core.adapter import ConfigurableAdapter, Interpreter
 from tickit.core.device import Device
-
-# % % % % % % % % % % WARNING % % % % % % % % % %
-# sys.modules["softioc"] = Mock() must be located
-# above the import of tickit.adapters.epicsadapter
-sys.modules["softioc"] = Mock()
-from tickit.adapters.epicsadapter import (  # noqa; isort:skip
-    EpicsAdapter,
-    InputRecord,
-    softioc,
-)
 
 
 @pytest.fixture
@@ -99,7 +89,6 @@ def test_epics_adapter_on_db_load_method(epics_adapter: EpicsAdapter):
 
 
 def test_epics_adapter_build_ioc_method(epics_adapter: EpicsAdapter):
-
     epics_adapter.on_db_load = Mock()
 
     data = b"""record(ao, "$(device):GAIN") {
@@ -127,4 +116,4 @@ def test_epics_adapter_build_ioc_method(epics_adapter: EpicsAdapter):
     written_data = open(out_filename, "rb").read()
 
     assert str(written_data).strip() == str(expected).strip()
-    softioc.iocInit.assert_called()
+    softioc.softioc.iocInit.assert_called()
