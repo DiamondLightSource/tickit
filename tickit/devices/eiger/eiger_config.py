@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List
 
 
@@ -6,48 +6,52 @@ from typing import List
 class EigerConfig:
     """A data container for Eiger device configuration."""
 
-    auto_summation: bool
-    beam_center_x: float
-    beam_center_y: float
-    bit_depth_image: int
-    bit_depth_readout: int
-    chi_increment: float
-    chi_start: float
-    compression: str
-    count_time: float
-    countrate_correction_applied: bool
-    countrate_correction_count_cutoff: int
-    data_collection_date: str
-    description: str
-    detector_distance: float
-    detector_number: str
-    detector_readout_time: float
-    element: str
-    flatfield: List[List[float]]
-    flatfield_correction_applied: bool
-    frame_time: float
-    kappa_increment: float
-    kappa_start: float
-    nimages: int
-    ntrigger: int
-    number_of_excuded_pixels: int
-    omega_increment: float
-    omega_start: float
-    phi_increment: float
-    phi_start: float
-    photon_energy: float
-    pixel_mask: List[List[int]]
-    pixel_mask_applied: bool
-    roi_mode: str
-    sensor_material: str
-    sensor_thickness: float
-    software_version: str
-    threshold_energy: float
-    trigger_mode: str
-    two_theta_increment: float
-    two_theta_start: float
-    wavelength: float
-    x_pixel_size: float
-    x_pixels_in_detector: int
-    y_pixel_size: float
-    y_pixels_in_detector: int
+    auto_summation: bool = True
+    beam_center_x: float = 0.5
+    beam_center_y: float = 0.5
+    bit_depth_image: int = 32
+    bit_depth_readout: int = 32
+    chi_increment: float = 0.1
+    chi_start: float = 0.1
+    compression: str = "lz4"
+    count_time: float = 0.01
+    countrate_correction_applied: bool = True
+    countrate_correction_count_cutoff: int = 1
+    data_collection_date: str = "30/9/2021"
+    description: str = "Eiger X 16M"
+    detector_distance: float = 1.0
+    detector_number: str = "1234"
+    detector_readout_time: float = 0.02
+    element: str = "?"
+    flatfield: List[List[float]] = field(
+        default_factory=lambda: [[1.0] for i in range(1000)]
+    )
+    flatfield_correction_applied: bool = True
+    frame_time: float = 100
+    kappa_increment: float = 0.1
+    kappa_start: float = 0.1
+    nimages: int = 100
+    ntrigger: int = 1
+    number_of_excuded_pixels: int = 5
+    omega_increment: float = 0.1
+    omega_start: float = 0.1
+    phi_increment: float = 0.1
+    phi_start: float = 0.1
+    photon_energy: float = 1.5
+    pixel_mask: List[List[int]] = field(
+        default_factory=lambda: [[1] for i in range(1000)]
+    )
+    pixel_mask_applied: bool = True
+    roi_mode: str = "4M"
+    sensor_material: str = "Al"
+    sensor_thickness: float = 0.125
+    software_version: str = "1.8"
+    threshold_energy: float = 1.2
+    trigger_mode: str = "External"
+    two_theta_increment: float = 0.2
+    two_theta_start: float = 0.2
+    wavelength: float = 0.25
+    x_pixel_size: float = 0.01
+    x_pixels_in_detector: int = 1000
+    y_pixel_size: float = 0.01
+    y_pixels_in_detector: int = 1000

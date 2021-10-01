@@ -27,7 +27,7 @@ class Eiger(ConfigurableDevice):
 
     def __init__(
         self,
-        count_time: float = 0.5,
+        foo: float = 0.5,
         bar: Optional[int] = 10,
     ) -> None:
         """An example HTTP device constructor which configures the ... .
@@ -38,6 +38,7 @@ class Eiger(ConfigurableDevice):
         """
         self.foo = foo
         self.bar = bar
+        self.config = EigerConfig
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
         """Generic update function to update the values of the ExampleHTTPDevice.
@@ -82,26 +83,24 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
             HTTPServer(host, port, ByteFormat(b"%b\r\n")),
         )
 
-    @HTTPEndpoint.put("/command/foo/")
-    async def foo(self, request: web.Request) -> web.Response:
-        """A HTTP endpoint for sending a command to the Eiger device.
+    # TODO: Make API version setable in the config params?
+    @HTTPEndpoint.get("/detector/api/1.8/config/{parameter_name}")
+    async def get_config(self, request: web.Request) -> web.Response:
+        """A HTTP Endpoint for requesting configuration variables from the Eiger.
 
         Args:
-            request (web.Request): [description]
+            request (web.Request): The request object that takes the given parameter
+            and passes it to the HTTP Server as part of the endpoint URL.
 
         Returns:
-            web.Response: [description]
+            web.Response: The response object returned given the result of the HTTP
+            request.
         """
-        return web.Response(text=str("put data"))
+        param = request.match_info["parameter_name"]
 
-    @HTTPEndpoint.get("/info/bar/{data}")
-    async def bar(self, request: web.Request) -> web.Response:
-        """A HTTP endpoint for requesting data from the Eiger device.
-
-        Args:
-            request (web.Request): [description]
-
-        Returns:
-            web.Response: [description]
-        """
-        return web.Response(text="Your data: {}".format(request.match_info["data"]))
+        try:
+            attr = getattr(self._device.config, param)
+        except AttributeError:
+            attr = None
+        finally:
+            return web.Response(text=str(attr))
