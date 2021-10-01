@@ -68,7 +68,7 @@ def raise_interrupt() -> Mock:
 
 
 @pytest.fixture
-def femto_adapter(mock_femto: Mock, raise_interrupt) -> FemtoAdapter:
+def femto_adapter(mock_femto: Mock, raise_interrupt: Mock) -> FemtoAdapter:
     return FemtoAdapter(mock_femto, raise_interrupt)
 
 
