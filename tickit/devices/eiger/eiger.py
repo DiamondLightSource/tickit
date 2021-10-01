@@ -93,7 +93,7 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
 
         Returns:
             web.Response: The response object returned given the result of the HTTP
-            request.
+                request.
         """
         param = request.match_info["parameter_name"]
 
@@ -114,7 +114,7 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
 
         Returns:
             web.Response: The response object returned given the result of the HTTP
-            request.
+                request.
         """
         param = request.match_info["parameter_name"]
 
