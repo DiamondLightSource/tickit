@@ -136,7 +136,7 @@ def test_cryostream_adapter_constructor():
 async def test_cryostream_adapter_on_connect_gets_device_status(
     cryostream_adapter: CryostreamAdapter,
 ):
-    await cryostream_adapter.on_connect().__anext__()
+    await (await cryostream_adapter.on_connect()).__anext__()
     device: Mock = cryostream_adapter._device
     device.get_status.assert_called_with(1)
 
