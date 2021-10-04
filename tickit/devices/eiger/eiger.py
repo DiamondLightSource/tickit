@@ -12,6 +12,10 @@ from tickit.devices.eiger.eiger_settings import EigerSettings
 from tickit.utils.byte_format import ByteFormat
 from tickit.utils.compat.typing_compat import TypedDict
 
+from .eiger_status import EigerStatus
+
+DETECTOR_API = "detector/api/1.8"
+
 
 class Eiger(ConfigurableDevice):
     """A device class for the Eiger detector.
@@ -24,6 +28,8 @@ class Eiger(ConfigurableDevice):
     Outputs: TypedDict = TypedDict("Outputs", {"bar": float})
 
     settings: EigerSettings
+
+    status: EigerStatus
 
     def __init__(
         self,
@@ -39,6 +45,7 @@ class Eiger(ConfigurableDevice):
         self.foo = foo
         self.bar = bar
         self.settings = EigerSettings()
+        self.status = EigerStatus()
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
         """Generic update function to update the values of the ExampleHTTPDevice.
@@ -84,7 +91,7 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
         )
 
     # TODO: Make API version setable in the config params?
-    @HTTPEndpoint.get("/detector/api/1.8/config/{parameter_name}")
+    @HTTPEndpoint.get(f"/{DETECTOR_API}" + "/config/{parameter_name}")
     async def get_config(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for requesting configuration variables from the Eiger.
 
@@ -104,7 +111,9 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
 
         return web.Response(text=str(attr))
 
-    @HTTPEndpoint.put("/detector/api/1.8/config/{parameter_name}", include_json=True)
+    @HTTPEndpoint.put(
+        f"/{DETECTOR_API}" + "/config/{parameter_name}", include_json=True
+    )
     async def put_config(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for setting configuration variables for the Eiger.
 
@@ -130,3 +139,23 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
             attr = None
 
         return web.Response(text="Set: " + str(param) + " to " + str(response["value"]))
+
+    @HTTPEndpoint.get(f"/{DETECTOR_API}" + "/status/{status_param}")
+    async def get_status(self, request: web.Request) -> web.Response:
+        """A HTTP Endpoint for requesting the status of the Eiger.
+
+        Args:
+            request (web.Request): The request object that takes the request method.
+
+        Returns:
+            web.Response: The response object returned given the result of the HTTP
+                request.
+        """
+        param = request.match_info["status_param"]
+
+        if hasattr(self._device.status, param):
+            attr = getattr(self._device.status, param)
+        else:
+            attr = None
+
+        return web.Response(text=str(attr))
