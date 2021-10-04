@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Dict, List
+from typing import List
 
 from .eiger_schema import (
     FLOAT_GRID,
@@ -15,6 +15,7 @@ from .eiger_schema import (
 
 FRAME_WIDTH: int = 4148
 FRAME_HEIGHT: int = 4362
+
 
 # TODO: Figure out how to properly declare the 2d arrays for flatfield and pixel_mask,
 # as they return 'None' when requesting.
