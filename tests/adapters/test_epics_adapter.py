@@ -106,15 +106,20 @@ def test_epics_adapter_build_ioc_method(epics_adapter: EpicsAdapter):
   field(EGU, "A")
 }"""
 
-    mock_builder = patch("softioc.builder", autospec=True)
-    mock_softioc = patch("softioc.softioc", autospec=True)
-    mock_asyncio = patch("softioc.asyncio_dispatcher", autospec=True)
-    mock_f = patch("builtins.open", mock_open(read_data=data))
-    mock_unlink = patch("os.unlink", autospec=True)
+    mock_builder_patcher = patch("softioc.builder", autospec=True)
+    mock_softioc_patcher = patch("softioc.softioc", autospec=True)
+    mock_asyncio_patcher = patch("softioc.asyncio_dispatcher", autospec=True)
+    mock_f_patcher = patch("builtins.open", mock_open(read_data=data), autospec=True)
+    mock_unlink_patcher = patch("os.unlink", autospec=True)
 
-    with mock_softioc, mock_builder, mock_softioc, mock_asyncio, mock_f, mock_unlink as unlink:
-        epics_adapter.build_ioc()
-        unlink_args = unlink.call_args.args
+    with mock_softioc_patcher:
+        with mock_builder_patcher:
+            with mock_softioc_patcher:
+                with mock_asyncio_patcher:
+                    with mock_f_patcher:
+                        with mock_unlink_patcher as mock_unlink:
+                            epics_adapter.build_ioc()
+                            unlink_args = mock_unlink.call_args.args
 
     out_filename = unlink_args[0]
 
