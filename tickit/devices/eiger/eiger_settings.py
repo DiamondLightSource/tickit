@@ -17,8 +17,6 @@ FRAME_WIDTH: int = 4148
 FRAME_HEIGHT: int = 4362
 
 
-# TODO: Figure out how to properly declare the 2d arrays for flatfield and pixel_mask,
-# as they return 'None' when requesting.
 @dataclass
 class EigerSettings:
     """A data container for Eiger device configuration."""
