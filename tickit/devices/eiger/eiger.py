@@ -97,12 +97,12 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
         """
         param = request.match_info["parameter_name"]
 
-        try:
+        if hasattr(self._device.settings, param):
             attr = getattr(self._device.settings, param)
-        except AttributeError:
+        else:
             attr = None
-        finally:
-            return web.Response(text=str(attr))
+
+        return web.Response(text=str(attr))
 
     @HTTPEndpoint.put("/detector/api/1.8/config/{parameter_name}", include_json=True)
     async def put_config(self, request: web.Request) -> web.Response:
@@ -120,15 +120,13 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
 
         response = await request.json()
 
-        try:
+        if hasattr(self._device.settings, param):
             attr = getattr(self._device.settings, param)
 
             attr["value"] = response["value"]
 
             setattr(self._device.settings, param, attr)
-        except AttributeError:
-            pass
-        finally:
-            return web.Response(
-                text="Set: " + str(param) + " to " + str(response["value"])
-            )
+        else:
+            attr = None
+
+        return web.Response(text="Set: " + str(param) + " to " + str(response["value"]))
