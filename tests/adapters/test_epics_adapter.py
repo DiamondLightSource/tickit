@@ -106,11 +106,16 @@ def test_epics_adapter_build_ioc_method(epics_adapter: EpicsAdapter):
   field(EGU, "A")
 }"""
 
-    with patch("builtins.open", mock_open(read_data=data)) as mock_f:  # noqa
-        with patch("os.unlink") as mock_unlink:
-            epics_adapter.build_ioc()
+    mock_builder = patch("softioc.builder", autospec=True)
+    mock_softioc = patch("softioc.softioc", autospec=True)
+    mock_asyncio = patch("softioc.asyncio_dispatcher", autospec=True)
+    mock_f = patch("builtins.open", mock_open(read_data=data))
+    mock_unlink = patch("os.unlink", autospec=True)
 
-    unlink_args = mock_unlink.call_args.args
+    with mock_softioc, mock_builder, mock_softioc, mock_asyncio, mock_f, mock_unlink as unlink:
+        epics_adapter.build_ioc()
+        unlink_args = unlink.call_args.args
+
     out_filename = unlink_args[0]
 
     written_data = open(out_filename, "rb").read()
