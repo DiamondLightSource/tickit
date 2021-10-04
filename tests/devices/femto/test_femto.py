@@ -90,7 +90,6 @@ async def test_femto_adapter_callback(femto_adapter: FemtoAdapter):
     femto_adapter.raise_interrupt.assert_called()
 
 
-@pytest.mark.xfail
 def test_femto_adapter_on_db_load_method(femto_adapter: FemtoAdapter):
 
     femto_adapter.on_db_load()
