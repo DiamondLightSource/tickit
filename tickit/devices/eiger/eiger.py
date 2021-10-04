@@ -123,7 +123,7 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
         if hasattr(self._device.settings, param):
             attr = getattr(self._device.settings, param)
 
-            attr["value"] = response["value"]
+            attr = response["value"]
 
             setattr(self._device.settings, param, attr)
         else:
