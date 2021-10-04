@@ -88,7 +88,15 @@ def test_epics_adapter_on_db_load_method(epics_adapter: EpicsAdapter):
         epics_adapter.on_db_load()
 
 
+@pytest.mark.skip()
 def test_epics_adapter_build_ioc_method(epics_adapter: EpicsAdapter):
+    """This test is just too buggy to run in it's current form.
+
+    Pytest will sometimes silently crash when running it.
+    Other times it will fail because of an error in the mock library
+    but only when all the whole test suite is being run.
+    TODO: Revisit this after EpicsAdapter has been refactored.
+    """
     epics_adapter.on_db_load = Mock()
 
     data = b"""record(ao, "$(device):GAIN") {
