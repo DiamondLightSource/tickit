@@ -1,7 +1,7 @@
 from dataclasses import is_dataclass
+from typing import Dict
 
 import pytest
-import softioc
 from mock import MagicMock, Mock, create_autospec, mock_open, patch
 
 from tickit.adapters.epicsadapter import EpicsAdapter, InputRecord
@@ -88,50 +88,62 @@ def test_epics_adapter_on_db_load_method(epics_adapter: EpicsAdapter):
         epics_adapter.on_db_load()
 
 
-@pytest.mark.skip()
-def test_epics_adapter_build_ioc_method(epics_adapter: EpicsAdapter):
-    """This test is just too buggy to run in it's current form.
+def record_db_file_contents() -> Dict[str, bytes]:
+    return {
+        "data": b"""record(ao, "$(device):GAIN") {
+        field(DTYP, "Hy8001")
+        field(OMSL, "supervisory")
+        field(OUT, "#C1 S0 @")
+        field(DESC, "Gain value")
+        field(EGU, "A")
+        }""",
+        "expected": b"""record(ao, "$(device):GAIN") {
+        field(OMSL, "supervisory")
+        field(OUT, "#C1 S0 @")
+        field(DESC, "Gain value")
+        field(EGU, "A")
+        }""",
+    }
 
-    Pytest will sometimes silently crash when running it.
-    Other times it will fail because of an error in the mock library
-    but only when all the whole test suite is being run.
-    TODO: Revisit this after EpicsAdapter has been refactored.
-    """
-    epics_adapter.on_db_load = Mock()
 
-    data = b"""record(ao, "$(device):GAIN") {
-  field(DTYP, "Hy8001")
-  field(OMSL, "supervisory")
-  field(OUT, "#C1 S0 @")
-  field(DESC, "Gain value")
-  field(EGU, "A")
-}"""
+def filter1_db_file_contents() -> Dict[str, bytes]:
+    return {
+        "data": b"""record(bo, "$(device):FILTER") {
+        field(DTYP, "$(DTYP)")
+        field(SCAN, "Passive")
+        field(ZNAM, "Out")
+        field(ONAM, "In")
+        field(VAL, "0")
+        field(OMSL, "closed_loop")
+        }""",
+        "expected": b"""record(bo, "$(device):FILTER") {
+        field(SCAN, "Passive")
+        field(ZNAM, "Out")
+        field(ONAM, "In")
+        field(VAL, "0")
+        field(OMSL, "closed_loop")
+        }""",
+    }
 
-    expected = b"""record(ao, "$(device):GAIN") {
-  field(OMSL, "supervisory")
-  field(OUT, "#C1 S0 @")
-  field(DESC, "Gain value")
-  field(EGU, "A")
-}"""
 
-    mock_builder_patcher = patch("softioc.builder")
-    mock_softioc_patcher = patch("softioc.softioc")
-    mock_asyncio_patcher = patch("softioc.asyncio_dispatcher")
-    mock_f_patcher = patch("builtins.open", mock_open(read_data=data))
-    mock_unlink_patcher = patch("os.unlink")
+@pytest.mark.parametrize(
+    "test_params",
+    [
+        pytest.param(record_db_file_contents(), id="record.db file contents"),
+        pytest.param(filter1_db_file_contents(), id="filter.db file contents"),
+    ],
+)
+def test_epics_adapter_load_records_without_DTYP_fields_method(
+    epics_adapter: EpicsAdapter,
+    test_params: Dict[str, bytes],
+):
 
-    with mock_softioc_patcher:
-        with mock_builder_patcher:
-            with mock_softioc_patcher:
-                with mock_asyncio_patcher:
-                    with mock_f_patcher:
-                        with mock_unlink_patcher as mock_unlink:
-                            epics_adapter.build_ioc()
-                            unlink_args = mock_unlink.call_args.args
+    data = test_params["data"]
+    with patch("builtins.open", mock_open(read_data=data)):
+        with patch("os.unlink") as mock_unlink:
+            epics_adapter.load_records_without_DTYP_fields()
+            unlink_args = mock_unlink.call_args.args
 
     out_filename = unlink_args[0]
-
     written_data = open(out_filename, "rb").read()
-
-    assert str(written_data).strip() == str(expected).strip()
-    softioc.softioc.iocInit.assert_called()
+    assert str(written_data).strip() == str(test_params["expected"]).strip()
