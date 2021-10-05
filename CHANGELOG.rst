@@ -12,6 +12,8 @@ Unreleased_
 
 Added:
 
+- HTTP REST Adapter & example device
+
 Changed:
 
 Deprecated:

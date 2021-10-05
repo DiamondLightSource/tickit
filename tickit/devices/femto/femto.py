@@ -22,9 +22,9 @@ class Femto(ConfigurableDevice):
         """Initialise the Femto device class.
 
         Args:
-            initial_gain (float, optional): The initial amplified difference between \
+            initial_gain (Optional[float]): The initial amplified difference between \
                 the input and output signals. Defaults to 2.5.
-            initial_current (float, optional): The input signal current. \
+            initial_current (Optional[float]): The input signal current. \
                 Defaults to 0.0.
         """
         self.gain: float = initial_gain
@@ -81,11 +81,7 @@ class Femto(ConfigurableDevice):
 
 
 class CurrentDevice(ConfigurableDevice):
-    """The current configured device.
-
-    Args:
-        ConfigurableDevice (class): A device with a configuration data container.
-    """
+    """The current configured device."""
 
     Output = TypedDict("Output", {"output": float})
 
@@ -93,7 +89,7 @@ class CurrentDevice(ConfigurableDevice):
         """Initialise the current device.
 
         Args:
-            callback_period (int, optional): The duration in which the device should \
+            callback_period (Optional[int]): The duration in which the device should \
                 next be updated. Defaults to int(1e9).
         """
         self.callback_period = SimTime(callback_period)
@@ -118,11 +114,7 @@ class CurrentDevice(ConfigurableDevice):
 
 
 class FemtoAdapter(EpicsAdapter):
-    """The adapter for the Femto device.
-
-    Args:
-        EpicsAdapter (class): An adapter implementation which acts as an EPICS IOC.
-    """
+    """The adapter for the Femto device."""
 
     current_record: InputRecord
     input_record: InputRecord
@@ -141,9 +133,9 @@ class FemtoAdapter(EpicsAdapter):
             device (Device): The Femto device class.
             raise_interrupt (Callable[[], Awaitable[None]]): A method used to request \
                 an immediate update of the device.
-            db_file (str, optional): The name of the database file. \
+            db_file (Optional[str]): The name of the database file. \
                 Defaults to "record.db".
-            ioc_name (str, optional): The name of the IOC. Defaults to "FEMTO".
+            ioc_name (Optional[str]): The name of the IOC. Defaults to "FEMTO".
         """
         super().__init__(db_file, ioc_name)
         self._device = device
