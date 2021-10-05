@@ -12,7 +12,7 @@ from tickit.devices.eiger.eiger_settings import EigerSettings
 from tickit.utils.byte_format import ByteFormat
 from tickit.utils.compat.typing_compat import TypedDict
 
-from .eiger_status import EigerStatus
+from .eiger_status import EigerStatus, State
 
 DETECTOR_API = "detector/api/1.8"
 
@@ -47,6 +47,45 @@ class Eiger(ConfigurableDevice):
         self.settings = EigerSettings()
         self.status = EigerStatus()
 
+    async def initialize(self) -> None:
+        """Function to initialise the Eiger."""
+        self._set_state(State.IDLE)
+
+    async def arm(self) -> None:
+        """Function to arm the Eiger."""
+        self._set_state(State.READY)
+
+    async def disarm(self) -> None:
+        """Function to disarm the Eiger."""
+        self._set_state(State.IDLE)
+
+    async def trigger(self) -> str:
+        """Function to trigger the Eiger."""
+        trigger_mode = getattr(self.settings, "trigger_mode")
+        state = getattr(self.status, "state")
+
+        if state == State.READY and trigger_mode == "ints":
+            return "Triggering Eiger..."
+        else:
+            return (
+                f"Ignoring trigger, state={self.status.state},"
+                f"trigger_mode={trigger_mode}"
+            )
+
+    async def cancel(self) -> None:
+        """Function to stop the data acquisition.
+
+        Function to stop the data acquisition, but only after the next
+        image is finished.
+        """
+        # Do data aquisition aborting stuff
+        self._set_state(State.READY)
+
+    async def abort(self) -> None:
+        """Function to abort the current task on the Eiger."""
+        # Do aborting stuff
+        self._set_state(State.IDLE)
+
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
         """Generic update function to update the values of the ExampleHTTPDevice.
 
@@ -60,6 +99,10 @@ class Eiger(ConfigurableDevice):
                 variables.
         """
         pass
+
+    def _set_state(self, state: State):
+        # LOGGER.info(f"Transitioned State: [{self.state} -> {state}]")
+        setattr(self.status, "state", state)
 
 
 class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
@@ -159,3 +202,98 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
             attr = None
 
         return web.Response(text=str(attr))
+
+    @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/initialize")
+    async def initialize_eiger(self, request: web.Request) -> web.Response:
+        """A HTTP Endpoint for the 'initialize' command of the Eiger.
+
+        Args:
+            request (web.Request): The request object that takes the request method.
+
+        Returns:
+            web.Response: The response object returned given the result of the HTTP
+                request.
+        """
+        await self._device.initialize()
+
+        return web.Response(text=str("Initializing Eiger..."))
+
+    @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/arm")
+    async def arm_eiger(self, request: web.Request) -> web.Response:
+        """A HTTP Endpoint for the 'arm' command of the Eiger.
+
+        Args:
+            request (web.Request): The request object that takes the request method.
+
+        Returns:
+            web.Response: The response object returned given the result of the HTTP
+                request.
+        """
+        # Do arming stuff
+        await self._device.arm()
+
+        return web.Response(text=str("Arming Eiger..."))
+
+    @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/disarm")
+    async def disarm_eiger(self, request: web.Request) -> web.Response:
+        """A HTTP Endpoint for the 'disarm' command of the Eiger.
+
+        Args:
+            request (web.Request): The request object that takes the request method.
+
+        Returns:
+            web.Response: The response object returned given the result of the HTTP
+                request.
+        """
+        # Do disarming stuff
+        await self._device.disarm()
+
+        return web.Response(text=str("Disarming Eiger..."))
+
+    @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/trigger")
+    async def trigger_eiger(self, request: web.Request) -> web.Response:
+        """A HTTP Endpoint for the 'trigger' command of the Eiger.
+
+        Args:
+            request (web.Request): The request object that takes the request method.
+
+        Returns:
+            web.Response: The response object returned given the result of the HTTP
+                request.
+        """
+        # Do triggering stuff
+        trigger_message = await self._device.trigger()
+
+        return web.Response(text=str(trigger_message))
+
+    @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/cancel")
+    async def cancel_eiger(self, request: web.Request) -> web.Response:
+        """A HTTP Endpoint for the 'cancel' command of the Eiger.
+
+        Args:
+            request (web.Request): The request object that takes the request method.
+
+        Returns:
+            web.Response: The response object returned given the result of the HTTP
+                request.
+        """
+        # Do disarming stuff
+        await self._device.cancel()
+
+        return web.Response(text=str("Cancelling Eiger..."))
+
+    @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/abort")
+    async def abort_eiger(self, request: web.Request) -> web.Response:
+        """A HTTP Endpoint for the 'abort' command of the Eiger.
+
+        Args:
+            request (web.Request): The request object that takes the request method.
+
+        Returns:
+            web.Response: The response object returned given the result of the HTTP
+                request.
+        """
+        # Do disarming stuff
+        await self._device.abort()
+
+        return web.Response(text=str("Aborting Eiger..."))
