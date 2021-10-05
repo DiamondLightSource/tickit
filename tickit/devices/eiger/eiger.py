@@ -65,7 +65,10 @@ class Eiger(ConfigurableDevice):
         state = getattr(self.status, "state")
 
         if state == State.READY and trigger_mode == "ints":
-            return "Triggering Eiger..."
+            # If the detector is in an external trigger mode, this is disabled as
+            # this software command interface only works for internal triggers.
+            self._set_state(State.ACQUIRE)
+            return "Aquiring Data from Eiger..."
         else:
             return (
                 f"Ignoring trigger, state={self.status.state},"
@@ -278,6 +281,7 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
         """
         # Do triggering stuff
         trigger_message = await self._device.trigger()
+        self._device._set_state(State.IDLE)
 
         return web.Response(text=str(trigger_message))
 
