@@ -114,11 +114,11 @@ def test_epics_adapter_build_ioc_method(epics_adapter: EpicsAdapter):
   field(EGU, "A")
 }"""
 
-    mock_builder_patcher = patch("softioc.builder", autospec=True)
-    mock_softioc_patcher = patch("softioc.softioc", autospec=True)
-    mock_asyncio_patcher = patch("softioc.asyncio_dispatcher", autospec=True)
-    mock_f_patcher = patch("builtins.open", mock_open(read_data=data), autospec=True)
-    mock_unlink_patcher = patch("os.unlink", autospec=True)
+    mock_builder_patcher = patch("softioc.builder")
+    mock_softioc_patcher = patch("softioc.softioc")
+    mock_asyncio_patcher = patch("softioc.asyncio_dispatcher")
+    mock_f_patcher = patch("builtins.open", mock_open(read_data=data))
+    mock_unlink_patcher = patch("os.unlink")
 
     with mock_softioc_patcher:
         with mock_builder_patcher:
