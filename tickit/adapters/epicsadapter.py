@@ -69,16 +69,7 @@ class EpicsAdapter(ConfigurableAdapter):
         """Builds an EPICS python soft IOC for the adapter."""
         builder.SetDeviceName(self.ioc_name)
 
-        # From PythonSoftIOC: Load the base records without DTYP fields
-        with open(self.db_file, "rb") as inp:
-            with NamedTemporaryFile(suffix=".db", delete=False) as out:
-                for line in inp.readlines():
-                    if not re.match(rb"\s*field\s*\(\s*DTYP", line):
-                        out.write(line)
-
-        softioc.dbLoadDatabase(out.name, substitutions=f"device={self.ioc_name}")
-        os.unlink(out.name)
-
+        self.load_records_without_DTYP_fields()
         self.on_db_load()
 
         softioc.devIocStats(self.ioc_name)
@@ -87,3 +78,14 @@ class EpicsAdapter(ConfigurableAdapter):
         event_loop = asyncio.get_event_loop()
         dispatcher = asyncio_dispatcher.AsyncioDispatcher(event_loop)
         softioc.iocInit(dispatcher)
+
+    def load_records_without_DTYP_fields(self):
+        """Loads the records without DTYP fields."""
+        with open(self.db_file, "rb") as inp:
+            with NamedTemporaryFile(suffix=".db", delete=False) as out:
+                for line in inp.readlines():
+                    if not re.match(rb"\s*field\s*\(\s*DTYP", line):
+                        out.write(line)
+
+        softioc.dbLoadDatabase(out.name, substitutions=f"device={self.ioc_name}")
+        os.unlink(out.name)
