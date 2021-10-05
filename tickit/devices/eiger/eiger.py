@@ -100,6 +100,14 @@ class Eiger(ConfigurableDevice):
         """
         pass
 
+    def get_state(self) -> State:
+        """Returns the current state of the Eiger.
+
+        Returns:
+            State: The state of the Eiger.
+        """
+        return getattr(self.status, "state")
+
     def _set_state(self, state: State):
         # LOGGER.info(f"Transitioned State: [{self.state} -> {state}]")
         setattr(self.status, "state", state)
@@ -172,16 +180,23 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
 
         response = await request.json()
 
-        if hasattr(self._device.settings, param):
+        if self._device.get_state() != State.IDLE:
+            return web.Response(text="Eiger not initialized or is currently running.")
+        elif (
+            hasattr(self._device.settings, param)
+            and self._device.get_state() == State.IDLE
+        ):
             attr = getattr(self._device.settings, param)
 
             attr = response["value"]
 
             setattr(self._device.settings, param, attr)
-        else:
-            attr = None
 
-        return web.Response(text="Set: " + str(param) + " to " + str(response["value"]))
+            return web.Response(
+                text="Set: " + str(param) + " to " + str(response["value"])
+            )
+        else:
+            return web.Response(text="Eiger has no config variable:  " + str(param))
 
     @HTTPEndpoint.get(f"/{DETECTOR_API}" + "/status/{status_param}")
     async def get_status(self, request: web.Request) -> web.Response:
