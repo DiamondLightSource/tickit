@@ -1,5 +1,5 @@
 from importlib import import_module
-from typing import Any, Dict, List, Optional, Type, Union
+from typing import Any, Dict, List, Optional, Type
 
 import yaml
 from apischema import deserialize

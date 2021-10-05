@@ -18,8 +18,12 @@ from tickit.utils.configuration.configurable import as_tagged_union
 T = TypeVar("T")
 
 
+# https://github.com/python/mypy/issues/708#issuecomment-647124281
 class RaiseInterrupt(Protocol):
+    """A raise_interrupt function that should be passed to `Adapter`."""
+
     async def __call__(self) -> None:
+        """The actual call signature."""
         pass
 
 
