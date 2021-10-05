@@ -3,12 +3,13 @@ import logging
 from asyncio.streams import StreamReader, StreamWriter
 from typing import AsyncIterable, Awaitable, Callable, List
 
+from tickit.core.adapter import Server
 from tickit.utils.byte_format import ByteFormat
 
 LOGGER = logging.getLogger(__name__)
 
 
-class TcpServer:
+class TcpServer(Server):
     """A configurable tcp server with delegated message handling for use in adapters."""
 
     def __init__(

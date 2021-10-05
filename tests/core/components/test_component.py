@@ -5,20 +5,13 @@ import pytest
 from immutables import Map
 from mock import AsyncMock, MagicMock, create_autospec
 
-from tickit.core.components.component import (
-    BaseComponent,
-    Component,
-    ComponentConfig,
-    ConfigurableComponent,
-    create_components,
-)
+from tickit.core.components.component import BaseComponent, Component, ComponentConfig
 from tickit.core.state_interfaces.internal import (
     InternalStateConsumer,
     InternalStateProducer,
 )
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import Changes, ComponentID, Input, Interrupt, Output, SimTime
-from tickit.utils.configuration.configurable import Config
 from tickit.utils.topic_naming import input_topic, output_topic
 
 

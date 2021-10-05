@@ -1,16 +1,14 @@
 import asyncio
 import logging
-from typing import cast
 
 import click
 from click.core import Context
 
-from tickit.core.components.component import create_components
-from tickit.core.lifetime_runnable import LifetimeRunnable, run_all_forever
+from tickit.core.lifetime_runnable import run_all_forever
 from tickit.core.management.event_router import InverseWiring
 from tickit.core.management.schedulers.master import MasterScheduler
 from tickit.core.state_interfaces.state_interface import get_interface, interfaces
-from tickit.utils.configuration.loading import read_configs
+from tickit.utils.configuration.loading import read_components
 
 
 @click.group(invoke_without_command=True)
@@ -47,10 +45,10 @@ def component(config_path: str, component: str, backend: str) -> None:
         component (str): The name of the component to be run.
         backend (str): The message broker to be used.
     """
-    configs = read_configs(config_path)
-    config = next(config for config in configs if config.name == component)
-    components = create_components([config], *get_interface(backend))
-    asyncio.run(run_all_forever(components))
+    components = read_components(config_path)
+    filtered = [c for c in components if c.name == component]
+    assert len(filtered) == 0, f"Expected only one component {component}"
+    asyncio.run(run_all_forever([filtered[0].run_forever(*get_interface(backend))]))
 
 
 @main.command(help="run the simulation scheduler")
@@ -63,10 +61,10 @@ def scheduler(config_path: str, backend: str) -> None:
         config_path (str): The path to the configuration file.
         backend (str): The message broker to be used.
     """
-    configs = read_configs(config_path)
-    inverse_wiring = InverseWiring.from_component_configs(configs)
+    components = read_components(config_path)
+    inverse_wiring = InverseWiring.from_components(components)
     scheduler = MasterScheduler(inverse_wiring, *get_interface(backend))
-    asyncio.run(run_all_forever([cast(LifetimeRunnable, scheduler)]))
+    asyncio.run(run_all_forever([scheduler.run_forever()]))
 
 
 @main.command(help="run a collection of devices with a scheduler")
@@ -81,8 +79,12 @@ def all(config_path: str, backend: str) -> None:
         config_path (str): The path to the configuration file.
         backend (str): The message broker to be used.
     """
-    configs = read_configs(config_path)
-    inverse_wiring = InverseWiring.from_component_configs(configs)
+    components = read_components(config_path)
+    inverse_wiring = InverseWiring.from_components(components)
     scheduler = MasterScheduler(inverse_wiring, *get_interface(backend))
-    components = create_components(configs, *get_interface(backend))
-    asyncio.run(run_all_forever([cast(LifetimeRunnable, scheduler), *components]))
+    asyncio.run(
+        run_all_forever(
+            [c.run_forever(*get_interface(backend)) for c in components]
+            + [scheduler.run_forever()]
+        )
+    )

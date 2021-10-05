@@ -4,12 +4,6 @@ from typing import List
 import apischema
 from pytest import fixture
 
-from tickit.utils.configuration.configurable import (
-    Config,
-    configurable,
-    configurable_base,
-)
-
 
 @fixture
 def TestBaseConfig():

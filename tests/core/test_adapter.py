@@ -2,14 +2,6 @@ from dataclasses import is_dataclass
 
 import pytest
 
-from tickit.core.adapter import (
-    AdapterConfig,
-    ConfigurableAdapter,
-    ConfigurableServer,
-    ServerConfig,
-)
-from tickit.utils.configuration.configurable import Config
-
 
 def test_adapter_config_is_dataclass():
     assert is_dataclass(AdapterConfig)

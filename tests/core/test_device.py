@@ -3,7 +3,7 @@ from typing import Optional
 
 import pytest
 
-from tickit.core.device import DeviceConfig, DeviceUpdate, OutMap
+from tickit.core.device import DeviceUpdate, OutMap
 from tickit.core.typedefs import SimTime
 
 

@@ -1,7 +1,7 @@
 import logging
 from abc import abstractmethod
 from dataclasses import dataclass
-from typing import Dict, Iterable, List, Optional, Type, Union
+from typing import Dict, Optional, Type, Union
 
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import (
@@ -14,15 +14,15 @@ from tickit.core.typedefs import (
     PortID,
     SimTime,
 )
-from tickit.utils.compat.typing_compat import Protocol, runtime_checkable
 from tickit.utils.configuration.configurable import as_tagged_union
 from tickit.utils.topic_naming import input_topic, output_topic
 
 LOGGER = logging.getLogger(__name__)
 
 
-@runtime_checkable
-class Component(Protocol):
+@dataclass
+@as_tagged_union
+class Component:
     """An interface for types which implement stand-alone simulation components.
 
     An interface for types which implement stand-alone simulation components.
@@ -31,10 +31,16 @@ class Component(Protocol):
     SystemSimulation which hosts a SlaveScheduler and internal Components).
     """
 
-    async def run_forever(self) -> None:
-        """An asynchronous method allowing indefinite running of core logic."""
-        pass
+    name: ComponentID
+    inputs: Dict[PortID, ComponentPort]
 
+    @abstractmethod
+    async def run_forever(
+        self, state_consumer: Type[StateConsumer], state_producer: Type[StateProducer]
+    ) -> None:
+        """An asynchronous method allowing indefinite running of core logic."""
+
+    @abstractmethod
     async def on_tick(self, time: SimTime, changes: Changes):
         """An asynchronous method called whenever the component is to be updated.
 
@@ -43,11 +49,10 @@ class Component(Protocol):
             changes (Changes): A mapping of changed component inputs and their new
                 values.
         """
-        pass
 
 
-@as_tagged_union
 @dataclass
+@as_tagged_union
 class ComponentConfig:
     """A data container for component configuration.
 
@@ -58,34 +63,17 @@ class ComponentConfig:
     name: ComponentID
     inputs: Dict[PortID, ComponentPort]
 
-    def __call__(
-        self, state_consumer: Type[StateConsumer], state_producer: Type[StateProducer]
-    ) -> "BaseComponent":
+    @abstractmethod
+    def __call__(self) -> Component:
         """Create the component from the given config."""
         raise NotImplementedError(self)
 
 
-class BaseComponent:
+class BaseComponent(Component):
     """A base class for compnents, implementing state interface related methods."""
 
-    def __init__(
-        self,
-        name: ComponentID,
-        state_consumer: Type[StateConsumer],
-        state_producer: Type[StateProducer],
-    ) -> None:
-        """A BaseComponent constructor which stores state interface types.
-
-        Args:
-            name (ComponentID): The unique identifier of the component.
-            state_consumer (Type[StateConsumer]): The state consumer class to be used
-                by the component.
-            state_producer (Type[StateProducer]): The state producer class to be used
-                by the component.
-        """
-        self.name = name
-        self._state_consumer_cls = state_consumer
-        self._state_producer_cls = state_producer
+    state_consumer: StateConsumer[Input]
+    state_producer: StateProducer[Union[Interrupt, Output]]
 
     async def handle_input(self, input: Input):
         """Calls on_tick when an input is recieved.
@@ -126,20 +114,18 @@ class BaseComponent:
         """
         await self.state_producer.produce(output_topic(self.name), Interrupt(self.name))
 
-    async def set_up_state_interfaces(self):
+    async def run_forever(
+        self, state_consumer: Type[StateConsumer], state_producer: Type[StateProducer]
+    ) -> None:
         """Creates and configures a state consumer and state producer.
 
         An asynchronous method which creates a state consumer which is subscribed to
         the input topic of the component and calls back to handle_input, and a state
         producer to produce Interrupt or Output messages.
         """
-        self.state_consumer: StateConsumer[Input] = self._state_consumer_cls(
-            self.handle_input
-        )
+        self.state_consumer = state_consumer(self.handle_input)
         await self.state_consumer.subscribe([input_topic(self.name)])
-        self.state_producer: StateProducer[
-            Union[Interrupt, Output]
-        ] = self._state_producer_cls()
+        self.state_producer = state_producer()
 
     @abstractmethod
     async def on_tick(self, time: SimTime, changes: Changes):
@@ -151,32 +137,3 @@ class BaseComponent:
                 values.
         """
         raise NotImplementedError
-
-
-def create_components(
-    configs: Iterable[ComponentConfig],
-    state_consumer: Type[StateConsumer],
-    state_producer: Type[StateProducer],
-) -> List[Component]:
-    """Creates a list of components from component config objects.
-
-    Args:
-        configs (Iterable[ComponentConfig]): An iterable of component configuration
-            data containers.
-        state_consumer (Type[StateConsumer]): The state consumer class to be used by
-            the components.
-        state_producer (Type[StateProducer]): The state producer class to be used by
-            the components.
-
-    Returns:
-        List[Component]: A list of instantiated components.
-    """
-    components: List[Component] = list()
-    for config in configs:
-        components.append(
-            config(
-                state_consumer=state_consumer,
-                state_producer=state_producer,
-            )
-        )
-    return components

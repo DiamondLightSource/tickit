@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Generic, Hashable, Mapping, Optional, TypeVar
 
 from tickit.core.typedefs import SimTime
-from tickit.utils.compat.typing_compat import Protocol, runtime_checkable
+from tickit.utils.configuration.configurable import as_tagged_union
 
 #: A bound typevar for mappings of device inputs
 InMap = TypeVar("InMap", bound=Mapping[str, Hashable])
@@ -23,8 +23,8 @@ class DeviceUpdate(Generic[OutMap]):
     call_at: Optional[SimTime]
 
 
-@runtime_checkable
-class Device(Protocol):
+@as_tagged_union
+class Device:
     """An interface for types which implement simulated devices."""
 
     def update(self, time: SimTime, inputs: InMap) -> DeviceUpdate[OutMap]:
@@ -40,4 +40,3 @@ class Device(Protocol):
             time: The current simulation time (in nanoseconds).
             inputs: A mapping of device inputs and their values.
         """
-        pass

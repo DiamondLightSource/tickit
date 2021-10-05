@@ -1,5 +1,5 @@
 from importlib import import_module
-from typing import Any, Dict, List, Optional, Type
+from typing import Any, Dict, List, Optional, Type, Union
 
 import yaml
 from apischema import deserialize
@@ -7,10 +7,10 @@ from apischema.conversions import AnyConversion, Conversion
 from apischema.conversions.conversions import Conversion
 from apischema.conversions.converters import default_serialization
 
-from tickit.core.components.component import ComponentConfig
+from tickit.core.components.component import Component, ComponentConfig
 
 
-def config_importing_conversion(typ: Type) -> Optional[AnyConversion]:
+def importing_conversion(typ: Type) -> Optional[AnyConversion]:
     """Create a conversion that imports the module of a ComponentConfig.
 
     When a ComponentConfig is requested from a dict, take its fully qualified
@@ -18,7 +18,7 @@ def config_importing_conversion(typ: Type) -> Optional[AnyConversion]:
     """
     if typ is ComponentConfig:
 
-        def conversion(d: Dict[str, Any]) -> ComponentConfig:
+        def conversion(d: Dict[str, Any]):
             # We can't use the deserialization union above as the classes
             # haven't been imported so won't appear in __subclasses__, so use a
             # single element dict instead
@@ -28,12 +28,12 @@ def config_importing_conversion(typ: Type) -> Optional[AnyConversion]:
             cls = getattr(import_module(pkg), clsname)
             return deserialize(cls, args)
 
-        return Conversion(conversion, source=dict, target=ComponentConfig)
+        return Conversion(conversion, source=dict, target=typ)
 
     return default_serialization(typ)
 
 
-def read_configs(config_path) -> List[ComponentConfig]:
+def read_components(config_path) -> List[Component]:
     """A utility function which reads and deserializes configs.
 
     A utility function which reads config files, performs yaml deserialization,
@@ -44,12 +44,13 @@ def read_configs(config_path) -> List[ComponentConfig]:
         config_path ([type]): The path to the config file.
 
     Returns:
-        List[ComponentConfig]: A list of component configuration objects.
+        List[Component]: A list of component configuration objects.
     """
     yaml_struct = yaml.load(open(config_path, "r"), Loader=yaml.Loader)
     configs = deserialize(
         List[ComponentConfig],
         yaml_struct,
-        default_conversion=config_importing_conversion,
+        default_conversion=importing_conversion,
     )
-    return configs
+    components = [c() for c in configs]
+    return components

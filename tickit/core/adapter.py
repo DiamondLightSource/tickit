@@ -1,67 +1,61 @@
-import sys
 from typing import (
-    TYPE_CHECKING,
+    Any,
     AsyncIterable,
     Awaitable,
     Callable,
+    Generic,
     Optional,
     Tuple,
     TypeVar,
 )
 
-# TODO: Investigate why import from tickit.utils.compat.typing_compat causes mypy error:
-# >>> 54: error: Argument 1 to "handle" of "Interpreter" has incompatible type
-#     "ComposedAdapter"; expected "Adapter"
-# See mypy issue for details: https://github.com/python/mypy/issues/10851
-if sys.version_info >= (3, 8):
-    from typing import Protocol, runtime_checkable
-elif sys.version_info >= (3, 5):
-    from typing_extensions import Protocol, runtime_checkable
+from typing_extensions import Protocol
 
-if TYPE_CHECKING:
-    from tickit.core.device import Device
+from tickit.core.device import Device
+from tickit.utils.configuration.configurable import as_tagged_union
 
 #: Message type
 T = TypeVar("T")
 
 
-# https://github.com/python/mypy/issues/708#issuecomment-647124281
 class RaiseInterrupt(Protocol):
-    """A raise_interrupt function that should be passed to `Adapter`."""
-
     async def __call__(self) -> None:
-        """The actual call signature."""
         pass
 
 
-@runtime_checkable
-class Adapter(Protocol):
+@as_tagged_union
+class Adapter:
     """An interface for types which implement device adapters."""
 
-    device: "Device"
+    device: Device
     raise_interrupt: RaiseInterrupt
 
-    async def run_forever(self) -> None:
+    def __getattr__(self, name: str) -> Any:
+        """Improve error message for getting attributes before `run_forever`."""
+        if name in ("device", "raise_interrup"):
+            raise RuntimeError(
+                "Can't get self.device or self.raise_interrupt before run_forever()"
+            )
+        return super().__getattribute__(name)
+
+    async def run_forever(
+        self, device: Device, raise_interrupt: RaiseInterrupt
+    ) -> None:
         """An asynchronous method allowing indefinite running of core adapter logic.
 
         An asynchronous method allowing for indefinite running of core adapter logic
         (typically the hosting of a protocol server and the interpretation of commands
         which are supplied via it).
         """
-        pass
-
-
-@runtime_checkable
-class ListeningAdapter(Adapter, Protocol):
-    """An interface for adapters which require to be notified after a device updates."""
+        self.device = device
+        self.raise_interrupt = raise_interrupt
 
     def after_update(self):
         """A method which is called immediately after the device updates."""
-        pass
 
 
-@runtime_checkable
-class Interpreter(Protocol[T]):
+@as_tagged_union
+class Interpreter(Generic[T]):
     """An interface for types which handle messages recieved by an adapter."""
 
     async def handle(
@@ -81,16 +75,11 @@ class Interpreter(Protocol[T]):
             Tuple[AsyncIterable[T], bool]: A tuple containing both an asynchronous
                 iterable of reply messages and an interrupt flag.
         """
-        pass
 
 
-@runtime_checkable
-class Server(Protocol[T]):
+@as_tagged_union
+class Server(Generic[T]):
     """An interface for types which implement an external messaging protocol."""
-
-    def __init__(self, **kwargs) -> None:
-        """A Server constructor which may recieve key word arguments."""
-        pass
 
     async def run_forever(
         self,
@@ -106,4 +95,3 @@ class Server(Protocol[T]):
                 asynchronous method used to handle recieved messages, returning an
                 asynchronous iterable of replies.
         """
-        pass

@@ -1,18 +1,20 @@
+from dataclasses import dataclass
 from random import random
-from typing import Awaitable, Callable, Optional
+from typing import Optional
 
 from tickit.adapters.composed import ComposedAdapter
 from tickit.adapters.interpreters.command.command_interpreter import CommandInterpreter
 from tickit.adapters.interpreters.command.regex_command import RegexCommand
 from tickit.adapters.servers.tcp import TcpServer
-from tickit.core.adapter import ConfigurableAdapter
-from tickit.core.device import ConfigurableDevice, DeviceUpdate
+from tickit.core.components.component import Component, ComponentConfig
+from tickit.core.components.device_simulation import DeviceSimulation
+from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.byte_format import ByteFormat
 from tickit.utils.compat.typing_compat import TypedDict
 
 
-class Shutter(ConfigurableDevice):
+class ShutterDevice(Device):
     """A toy device which downscales flux according to a set position.
 
     A toy device which produces an output flux which is downscaled from the input flux
@@ -84,7 +86,7 @@ class Shutter(ConfigurableDevice):
                 move.
         """
         if self.last_time:
-            self.position = Shutter.move(
+            self.position = self.move(
                 self.position,
                 self.target_position,
                 self.rate,
@@ -95,18 +97,16 @@ class Shutter(ConfigurableDevice):
             None if self.position == self.target_position else SimTime(time + int(1e8))
         )
         output_flux = inputs["flux"] * self.position
-        return DeviceUpdate(Shutter.Outputs(flux=output_flux), call_at)
+        return DeviceUpdate(self.Outputs(flux=output_flux), call_at)
 
 
-class ShutterAdapter(ComposedAdapter, ConfigurableAdapter):
+class ShutterAdapter(ComposedAdapter):
     """A toy composed adapter which gets shutter position and target and sets target."""
 
-    _device: Shutter
+    device: ShutterDevice
 
     def __init__(
         self,
-        device: Shutter,
-        raise_interrupt: Callable[[], Awaitable[None]],
         host: str = "localhost",
         port: int = 25565,
     ) -> None:
@@ -121,8 +121,6 @@ class ShutterAdapter(ComposedAdapter, ConfigurableAdapter):
             port (Optional[int]): The bound port of the TcpServer. Defaults to 25565.
         """
         super().__init__(
-            device,
-            raise_interrupt,
             TcpServer(host, port, ByteFormat(b"%b\r\n")),
             CommandInterpreter(),
         )
@@ -134,7 +132,7 @@ class ShutterAdapter(ComposedAdapter, ConfigurableAdapter):
         Returns:
             bytes: The utf-8 encoded value of position.
         """
-        return str(self._device.position).encode("utf-8")
+        return str(self.device.position).encode("utf-8")
 
     @RegexCommand(r"T\?", False, "utf-8")
     async def get_target(self) -> bytes:
@@ -143,7 +141,7 @@ class ShutterAdapter(ComposedAdapter, ConfigurableAdapter):
         Returns:
             bytes: The utf-8 encoded value of target.
         """
-        return str(self._device.target_position).encode("utf-8")
+        return str(self.device.target_position).encode("utf-8")
 
     @RegexCommand(r"T=(\d+\.?\d*)", True, "utf-8")
     async def set_target(self, target: str) -> None:
@@ -152,5 +150,24 @@ class ShutterAdapter(ComposedAdapter, ConfigurableAdapter):
         Args:
             target (str): The target position of the shutter.
         """
-        self._device.target_position = float(target)
-        self._device.last_time = None
+        self.device.target_position = float(target)
+        self.device.last_time = None
+
+
+@dataclass
+class Shutter(ComponentConfig):
+    default_position: float
+    initial_position: Optional[float] = None
+    host: str = "localhost"
+    port: int = 25565
+
+    def __call__(self) -> Component:
+        return DeviceSimulation(
+            name=self.name,
+            inputs=self.inputs,
+            device=ShutterDevice(
+                default_position=self.default_position,
+                initial_position=self.initial_position,
+            ),
+            adapters=[ShutterAdapter(host=self.host, port=self.port)],
+        )

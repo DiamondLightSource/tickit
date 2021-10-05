@@ -1,7 +1,7 @@
 from collections import defaultdict, deque
 from typing import DefaultDict, Dict, Iterable, Mapping, Optional, Set, Union, overload
 
-from tickit.core.components.component import ComponentConfig
+from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.typedefs import ComponentID, ComponentPort, PortID
 from tickit.utils.compat.functools_compat import cached_property
 
@@ -107,9 +107,7 @@ class InverseWiring(Default_InverseWiring_Struct):
         return inverse_wiring
 
     @classmethod
-    def from_component_configs(
-        cls, configs: Iterable[ComponentConfig]
-    ) -> "InverseWiring":
+    def from_components(cls, components: Iterable[Component]) -> "InverseWiring":
         """Creates an InverseWiring instance from an iterable of ComponentConfigs.
 
         Args:
@@ -119,7 +117,7 @@ class InverseWiring(Default_InverseWiring_Struct):
         Returns:
             InverseWiring: A mapping of component input ports to component output ports.
         """
-        return cls({config.name: config.inputs for config in configs})
+        return cls({c.name: c.inputs for c in components})
 
 
 class EventRouter:

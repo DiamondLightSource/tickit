@@ -106,7 +106,7 @@ def test_inverse_wiring_from_wiring_equal(inverse_wiring_struct, wiring_struct):
 def test_inverse_wiring_from_component_configs_equal(
     inverse_wiring_struct, component_configs_list
 ):
-    assert InverseWiring(inverse_wiring_struct) == InverseWiring.from_component_configs(
+    assert InverseWiring(inverse_wiring_struct) == InverseWiring.from_components(
         component_configs_list
     )
 

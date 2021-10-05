@@ -1,7 +1,7 @@
-from dataclasses import dataclass, field
-from typing import AsyncIterable, Awaitable, Callable, Optional, TypeVar
+from dataclasses import dataclass
+from typing import AsyncIterable, Optional, TypeVar
 
-from tickit.core.adapter import Interpreter, Server
+from tickit.core.adapter import Adapter, Interpreter, RaiseInterrupt, Server
 from tickit.core.device import Device
 
 #: Message type
@@ -9,7 +9,7 @@ T = TypeVar("T")
 
 
 @dataclass
-class ComposedAdapter:
+class ComposedAdapter(Adapter):
     """An adapter implementation which delegates to a server and interpreter.
 
     An adapter implementation which delegates the hosting of an external messaging
@@ -18,8 +18,6 @@ class ComposedAdapter:
 
     server: Server
     interpreter: Interpreter
-    device: Device = field(init=False)
-    raise_interrupt: Callable[[], Awaitable[None]] = field(init=False)
 
     async def on_connect(self) -> AsyncIterable[Optional[T]]:
         """An overridable asynchronous iterable which yields messages on client connection.
@@ -44,6 +42,9 @@ class ComposedAdapter:
             await self.raise_interrupt()
         return reply
 
-    async def run_forever(self) -> None:
+    async def run_forever(
+        self, device: Device, raise_interrupt: RaiseInterrupt
+    ) -> None:
         """Runs the server continously."""
+        await super().run_forever(device, raise_interrupt)
         await self.server.run_forever(self.on_connect, self.handle_message)
