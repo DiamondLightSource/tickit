@@ -79,7 +79,7 @@ async def test_pneumatic_adapter_run_forever(pneumatic_adapter: PneumaticAdapter
 async def test_pneumatic_adapter_callback(pneumatic_adapter: PneumaticAdapter):
     await pneumatic_adapter.callback(None)
     pneumatic_adapter._device.set_state.assert_called_once()
-    pneumatic_adapter.raise_interrupt.assert_called_once()
+    pneumatic_adapter.raise_interrupt.assert_awaited_once_with()
 
 
 def test_pneumatic_adapter_on_db_load(pneumatic_adapter: PneumaticAdapter):

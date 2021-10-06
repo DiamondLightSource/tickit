@@ -87,7 +87,7 @@ async def test_run_forever(femto_adapter: FemtoAdapter):
 async def test_femto_adapter_callback(femto_adapter: FemtoAdapter):
     await femto_adapter.callback(2.0)
     femto_adapter._device.set_gain.assert_called_with(2.0)
-    femto_adapter.raise_interrupt.assert_called()
+    femto_adapter.raise_interrupt.assert_awaited_once_with()
 
 
 def test_femto_adapter_on_db_load_method(femto_adapter: FemtoAdapter):
