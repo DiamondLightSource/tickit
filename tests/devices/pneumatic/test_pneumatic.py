@@ -1,3 +1,5 @@
+from typing import Awaitable, Callable
+
 import pytest
 from mock import Mock, create_autospec
 
@@ -68,11 +70,32 @@ def test_pneumatic_adapter_constructor(pneumatic_adapter: PneumaticAdapter):
     pass
 
 
+class FalsePneumaticAdapter(PneumaticAdapter):
+    def __init__(
+        self,
+        device: Pneumatic,
+        raise_interrupt: Callable[[], Awaitable[None]],
+        db_file: str,
+    ):
+        self.times_build_ioc_called = 0
+        super().__init__(device, raise_interrupt, db_file)
+
+    def build_ioc(self) -> None:
+        self.times_build_ioc_called += 1
+
+    def get_times_build_ioc_called(self) -> int:
+        return self.times_build_ioc_called
+
+
+@pytest.fixture
+def false_pneumatic_adapter(mock_pneumatic, raise_interrupt) -> FalsePneumaticAdapter:
+    return FalsePneumaticAdapter(mock_pneumatic, raise_interrupt, "data.db")
+
+
 @pytest.mark.asyncio
-async def test_pneumatic_adapter_run_forever(pneumatic_adapter: PneumaticAdapter):
-    pneumatic_adapter.build_ioc = Mock(pneumatic_adapter.build_ioc)
-    await pneumatic_adapter.run_forever()
-    pneumatic_adapter.build_ioc.assert_called_once()
+async def test_pneumatic_adapter_run_forever(false_pneumatic_adapter: PneumaticAdapter):
+    await false_pneumatic_adapter.run_forever()
+    assert false_pneumatic_adapter.get_times_build_ioc_called() == 1
 
 
 @pytest.mark.asyncio
