@@ -11,6 +11,7 @@ from tickit.core.device import DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.devices.cryostream.cryostream import Cryostream, CryostreamAdapter
 from tickit.devices.cryostream.states import PhaseIds
+from tickit.devices.cryostream.status import Status
 
 # # # # # Cryostream Tests # # # # #
 
@@ -109,8 +110,15 @@ async def test_cryostream_update_plat(cryostream: Cryostream):
 
 
 @pytest.fixture
-def mock_cryostream() -> Mock:
-    return create_autospec(Cryostream, instance=True)
+def mock_status() -> Mock:
+    return create_autospec(Status, instance=True)
+
+
+@pytest.fixture
+def mock_cryostream(mock_status) -> Mock:
+    mock_cryostream = create_autospec(Cryostream, instance=True)
+    mock_cryostream.get_status.return_value = mock_status
+    return mock_cryostream
 
 
 @pytest.fixture
