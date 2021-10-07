@@ -1,0 +1,244 @@
+import logging
+import struct
+from typing import Optional
+
+import numpy as np
+import pytest
+from mock import Mock
+from mock.mock import create_autospec
+
+from tickit.core.device import DeviceUpdate
+from tickit.core.typedefs import SimTime
+from tickit.devices.cryostream.cryostream import Cryostream, CryostreamAdapter
+from tickit.devices.cryostream.states import PhaseIds
+from tickit.devices.cryostream.status import Status
+
+# # # # # Cryostream Tests # # # # #
+
+
+@pytest.fixture
+def cryostream() -> Cryostream:
+    return Cryostream()
+
+
+def test_cryostream_constructor():
+    Cryostream()
+
+
+def test_cryostream_update_hold(cryostream):
+    starting_temperature = cryostream.gas_temp
+    device_update: DeviceUpdate = cryostream.update(time=SimTime(1e9), inputs={})
+    device_update.outputs["temperature"] == starting_temperature
+
+
+@pytest.mark.asyncio
+async def test_cryostream_update_cool(cryostream: Cryostream):
+    starting_temperature = cryostream.gas_temp
+    target_temperature = starting_temperature - 50
+    await cryostream.cool(target_temperature)
+
+    time = SimTime(0)
+    device_update: DeviceUpdate
+    while cryostream.phase_id != PhaseIds.HOLD.value:
+        logging.info(f"Running time step: {time}")
+        device_update = cryostream.update(time, inputs={})
+        time_update: Optional[SimTime] = device_update.call_at
+
+        if time_update is None:
+            time = SimTime(int(time) + int(1e9))
+            continue
+        else:
+            time = time_update
+
+    max_diff = 10
+    margin_of_error = np.array([+max_diff, -max_diff])
+    assert any(
+        (device_update.outputs["temperature"] + margin_of_error) == target_temperature
+    )
+
+
+@pytest.mark.asyncio
+async def test_cryostream_update_end(cryostream: Cryostream):
+    starting_temperature = cryostream.default_temp_shutdown - 100
+    cryostream.gas_temp = starting_temperature
+    await cryostream.end(cryostream.default_ramp_rate)
+    assert cryostream.phase_id == PhaseIds.RAMP.value
+    assert cryostream.gas_flow == 5
+
+    time = SimTime(0)
+    device_update: DeviceUpdate
+    while cryostream.phase_id != PhaseIds.HOLD.value:
+        logging.info(f"Running time step: {time}")
+        device_update = cryostream.update(time, inputs={})
+        time_update: Optional[SimTime] = device_update.call_at
+
+        if time_update is None:
+            continue
+        else:
+            time = time_update
+
+    max_diff = 10
+    target = cryostream.default_temp_shutdown
+    assert (
+        target - max_diff <= device_update.outputs["temperature"] <= target + max_diff
+    )
+
+
+@pytest.mark.asyncio
+async def test_cryostream_update_plat(cryostream: Cryostream):
+    starting_temperature = cryostream.gas_temp
+    await cryostream.plat(5)
+    assert cryostream.phase_id == PhaseIds.PLAT.value
+
+    time = SimTime(0)
+    time_update: Optional[SimTime] = time
+    device_update: DeviceUpdate
+    while time_update is not None:
+        logging.info(f"Running time step: {time}")
+        device_update = cryostream.update(time, inputs={})
+        time_update = device_update.call_at
+
+        if time_update is None:
+            continue
+        else:
+            time = time_update
+
+    assert device_update.outputs["temperature"] == starting_temperature
+
+
+# # # # # CryostreamAdapter Tests # # # # #
+
+
+@pytest.fixture
+def mock_status() -> Mock:
+    return create_autospec(Status, instance=True)
+
+
+@pytest.fixture
+def mock_cryostream(mock_status) -> Mock:
+    mock_cryostream = create_autospec(Cryostream, instance=True)
+    mock_cryostream.get_status.return_value = mock_status
+    return mock_cryostream
+
+
+@pytest.fixture
+def raise_interrupt():
+    async def raise_interrupt():
+        return False
+
+    return Mock(raise_interrupt)
+
+
+@pytest.fixture
+def cryostream_adapter(mock_cryostream):
+    return CryostreamAdapter(
+        mock_cryostream, raise_interrupt, host="localhost", port=25565
+    )
+
+
+def test_cryostream_adapter_constructor():
+    CryostreamAdapter(mock_cryostream, raise_interrupt, host="localhost", port=25565)
+
+
+@pytest.mark.asyncio
+async def test_cryostream_adapter_on_connect_gets_device_status(
+    cryostream_adapter: CryostreamAdapter,
+):
+    await cryostream_adapter.on_connect().__anext__()
+    device = cryostream_adapter._device
+    device.get_status.assert_awaited_once_with(1)
+
+
+@pytest.mark.asyncio
+async def test_cryostream_adapter_restart(cryostream_adapter):
+    await cryostream_adapter.restart()
+    device = cryostream_adapter._device
+    device.restart.assert_awaited_once_with()
+
+
+@pytest.mark.asyncio
+async def test_cryostream_adapter_hold(cryostream_adapter: CryostreamAdapter):
+    await cryostream_adapter.hold()
+    device = cryostream_adapter._device
+    device.hold.assert_awaited_once_with()
+
+
+@pytest.mark.asyncio
+async def test_cryostream_adapter_purge(cryostream_adapter: CryostreamAdapter):
+    await cryostream_adapter.purge()
+    device = cryostream_adapter._device
+    device.purge.assert_awaited_once_with()
+
+
+@pytest.mark.asyncio
+async def test_cryostream_adapter_pause(cryostream_adapter: CryostreamAdapter):
+    await cryostream_adapter.pause()
+    device = cryostream_adapter._device
+    device.pause.assert_awaited_once_with()
+
+
+@pytest.mark.asyncio
+async def test_cryostream_adapter_resume(cryostream_adapter: CryostreamAdapter):
+    await cryostream_adapter.resume()
+    device = cryostream_adapter._device
+    device.resume.assert_awaited_once_with()
+
+
+@pytest.mark.asyncio
+async def test_cryostream_adapter_stop(cryostream_adapter: CryostreamAdapter):
+    await cryostream_adapter.stop()
+    device = cryostream_adapter._device
+    device.stop.assert_awaited_once_with()
+
+
+@pytest.mark.asyncio
+async def test_cryostream_adapter_turbo(cryostream_adapter: CryostreamAdapter):
+    await cryostream_adapter.turbo((1).to_bytes(1, byteorder="big"))
+    device = cryostream_adapter._device
+    device.turbo.assert_awaited_once_with(1)
+
+
+@pytest.mark.asyncio
+async def test_cryostream_adapter_set_status_format(
+    cryostream_adapter: CryostreamAdapter,
+):
+    await cryostream_adapter.set_status_format((1).to_bytes(1, byteorder="big"))
+    device = cryostream_adapter._device
+    device.set_status_format.assert_awaited_once_with(1)
+
+
+@pytest.mark.asyncio
+async def test_cryostream_adapter_plat(
+    cryostream_adapter: CryostreamAdapter,
+):
+    await cryostream_adapter.plat((1).to_bytes(2, byteorder="big"))
+    device = cryostream_adapter._device
+    device.plat.assert_awaited_once_with(1)
+
+
+@pytest.mark.asyncio
+async def test_cryostream_adapter_end(
+    cryostream_adapter: CryostreamAdapter,
+):
+    await cryostream_adapter.end((360).to_bytes(2, byteorder="big"))
+    device = cryostream_adapter._device
+    device.end.assert_awaited_once_with(360)
+
+
+@pytest.mark.asyncio
+async def test_cryostream_adapter_cool(
+    cryostream_adapter: CryostreamAdapter,
+):
+    await cryostream_adapter.cool((300).to_bytes(2, byteorder="big"))
+    device = cryostream_adapter._device
+    device.cool.assert_awaited_once_with(300)
+
+
+@pytest.mark.asyncio
+async def test_cryostream_adapter_ramp(
+    cryostream_adapter: CryostreamAdapter,
+):
+    values = struct.pack(">HH", 360, 1000)
+    await cryostream_adapter.ramp(values)
+    device = cryostream_adapter._device
+    device.ramp.assert_awaited_once_with(360, 1000)

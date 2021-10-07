@@ -55,8 +55,10 @@ class CryostreamBase:
             self.alarm_code = AlarmCodes.TEMP_CONTROL_ERROR
         else:
             self.ramp_rate = ramp_rate
+
         if target_temp < self.min_temp or target_temp > self.max_temp:
             self.alarm_code = AlarmCodes.TEMP_CONTROL_ERROR
+            # note that the target temperature is not changed.
         else:
             self._target_temp = target_temp
 
@@ -76,7 +78,7 @@ class CryostreamBase:
         if (
             self.phase_id == PhaseIds.COOL.value
             or (self.turbo_mode == 1 and self._target_temp < 31000)
-            or self._target_temp < 90000
+            or self._target_temp < 9000
         ):
             self.gas_flow = 10
         else:
@@ -88,10 +90,11 @@ class CryostreamBase:
         Args:
             duration (int): The duration for which the temperature should be held.
         """
-        if duration < self.min_plat_duration or duration > self.max_plat_duration:
-            raise Exception("Duration set to less than minimum plat duration time")
+        if duration < self.min_plat_duration:
+
+            raise ValueError("Duration set to less than minimum plat duration.")
         if duration > self.max_plat_duration:
-            raise Exception("Duration set to more than maximum plat duration time")
+            raise ValueError("Duration set to more than maximum plat duration.")
 
         self.plat_duration = duration
         self._target_temp = self.gas_temp
@@ -121,7 +124,10 @@ class CryostreamBase:
         Args:
             ramp_rate (int): The rate at which the temperature should change.
         """
-        if self.run_mode not in (5, 6):
+        if self.run_mode not in (
+            RunModes.SHUTDOWNOK.value,
+            RunModes.SHUTDOWNFAIL.value,
+        ):
             self.phase_id = PhaseIds.END.value
             await self.ramp(ramp_rate, self.default_temp_shutdown)
             if self.gas_temp == self.default_temp_shutdown:
@@ -132,7 +138,10 @@ class CryostreamBase:
 
     async def purge(self) -> None:
         """Bring the gas temperature to 300 K at max rate, then halt and stop."""
-        if self.run_mode not in (5, 6):
+        if self.run_mode not in (
+            RunModes.SHUTDOWNOK.value,
+            RunModes.SHUTDOWNFAIL.value,
+        ):
             self.phase_id = PhaseIds.PURGE.value
             self.gas_flow = 0
             await self.ramp(self.default_ramp_rate, self.default_temp_shutdown)
@@ -144,17 +153,20 @@ class CryostreamBase:
 
     async def pause(self) -> None:
         """Interrupt and maintain the current gas temperature until resumed."""
-        # Todo interrupt other commands from running
+        # TODO interrupt other commands from running
         ...
 
     async def resume(self) -> None:
         """Resume the previous command."""
         if self.phase_id == PhaseIds.HOLD.value:
-            LOGGER.warn("Cannot return to previous command")  # Todo keep commands
+            LOGGER.warn("Cannot return to previous command")  # TODO keep commands
 
     async def stop(self) -> None:
         """Gas flow is halted and the system is stopped at the current temperature."""
-        if self.run_mode not in (5, 6):
+        if self.run_mode not in (
+            RunModes.SHUTDOWNOK.value,
+            RunModes.SHUTDOWNFAIL.value,
+        ):
             self.gas_flow = 0
             self._target_temp = self.gas_temp
             self.run_mode = RunModes.SHUTDOWNOK.value
@@ -190,7 +202,7 @@ class CryostreamBase:
         """
         delta_time = (time - self.time_at_last_update) / 1e9
         difference = self._target_temp - self.gas_temp
-        if (self.gas_temp - self._target_temp) < 10:
+        if abs(self.gas_temp - self._target_temp) < 10:
             self.phase_id = PhaseIds.HOLD.value
         delta_temp = self.gas_flow * delta_time
         if difference < 0:
@@ -276,7 +288,7 @@ class CryostreamBase:
             self.extended_status.turbo_mode = c_ubyte(self.turbo_mode).value
 
     async def get_status(self, status_format: int) -> Union[Status, ExtendedStatus]:
-        """Get a status packet corresponding to the specified format.
+        """Get a Status or ExtendedStatus packet.
 
         Args:
             status_format (int): The status packet format, where 0 denotes a standard
@@ -288,9 +300,20 @@ class CryostreamBase:
                 tickit.devices.cryostream.status.ExtendedStatus]: The status packet.
         """
         if status_format == 0:
+            if hasattr(self, "status"):
+                pass
+            else:
+                await self.set_status_format(0)
+
             return self.status
+
         if status_format == 1:
+            if hasattr(self, "extended_status"):
+                pass
+            else:
+                await self.set_status_format(1)
 
             return self.extended_status
+
         else:
-            raise Exception("Key error")
+            raise ValueError("Invalid status format parameter.")
