@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>tickit.devices.femto.femto &mdash; tickit 0.1.1.pre+3.gc16829a documentation</title>
+  <title>tickit.devices.femto.femto &mdash; tickit 0.1.1.pre+4.gb35d5d3 documentation</title>
   
 
   
@@ -270,13 +270,16 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gain</span></div>
 
-<div class="viewcode-block" id="Femto.set_current"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.femto.femto.Femto.set_current">[docs]</a>    <span class="k">def</span> <span class="nf">set_current</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Set the current of the output signal.</span>
+<div class="viewcode-block" id="Femto.set_current"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.femto.femto.Femto.set_current">[docs]</a>    <span class="k">def</span> <span class="nf">set_current</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_current</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Set the output current based on the input current and the gain.</span>
+
+<span class="sd">        The output current is calculated as:</span>
+<span class="sd">            output_current = input_current * gain</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            current (float): The current to set the output signal to.</span>
+<span class="sd">            input_current (float): The current of the input signal.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_current</span> <span class="o">=</span> <span class="n">current</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">gain</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_output_current</span> <span class="o">=</span> <span class="n">input_current</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">gain</span></div>
 
 <div class="viewcode-block" id="Femto.get_current"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.femto.femto.Femto.get_current">[docs]</a>    <span class="k">def</span> <span class="nf">get_current</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Returns the output current of the signal.</span>
@@ -284,9 +287,8 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            float: The output current of the signal.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_current</span></div>
 
-    <span class="c1"># Changed State for dict</span>
 <div class="viewcode-block" id="Femto.update"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.femto.femto.Femto.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">SimTime</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeviceUpdate</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Updates the state of the Femto device.</span>
 
@@ -301,7 +303,7 @@
         <span class="k">if</span> <span class="n">current_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_current</span><span class="p">(</span><span class="n">current_value</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">DeviceUpdate</span><span class="p">(</span><span class="n">Femto</span><span class="o">.</span><span class="n">Output</span><span class="p">(</span><span class="n">current</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gain</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">DeviceUpdate</span><span class="p">(</span><span class="n">Femto</span><span class="o">.</span><span class="n">Output</span><span class="p">(</span><span class="n">current</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_current</span><span class="p">()),</span> <span class="kc">None</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="CurrentDevice"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.femto.femto.CurrentDevice">[docs]</a><span class="k">class</span> <span class="nc">CurrentDevice</span><span class="p">(</span><span class="n">ConfigurableDevice</span><span class="p">):</span>

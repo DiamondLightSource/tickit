@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>tickit.adapters.epicsadapter &mdash; tickit 0.1.1.pre+3.gc16829a documentation</title>
+  <title>tickit.adapters.epicsadapter &mdash; tickit 0.1.1.pre+4.gb35d5d3 documentation</title>
   
 
   
@@ -235,7 +235,7 @@
 <span class="kn">from</span> <span class="nn">tickit.core.adapter</span> <span class="kn">import</span> <span class="n">ConfigurableAdapter</span>
 
 
-<div class="viewcode-block" id="InputRecord"><a class="viewcode-back" href="../../../reference/api.html#tickit.adapters.epicsadapter.InputRecord">[docs]</a><span class="nd">@dataclass</span>
+<div class="viewcode-block" id="InputRecord"><a class="viewcode-back" href="../../../reference/api.html#tickit.adapters.epicsadapter.InputRecord">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">InputRecord</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;A data container representing an EPICS input record.&quot;&quot;&quot;</span>
 
@@ -293,16 +293,7 @@
         <span class="sd">&quot;&quot;&quot;Builds an EPICS python soft IOC for the adapter.&quot;&quot;&quot;</span>
         <span class="n">builder</span><span class="o">.</span><span class="n">SetDeviceName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ioc_name</span><span class="p">)</span>
 
-        <span class="c1"># From PythonSoftIOC: Load the base records without DTYP fields</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_file</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">inp</span><span class="p">:</span>
-            <span class="k">with</span> <span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;.db&quot;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">inp</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
-                    <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">rb</span><span class="s2">&quot;\s*field\s*\(\s*DTYP&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-                        <span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-
-        <span class="n">softioc</span><span class="o">.</span><span class="n">dbLoadDatabase</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">substitutions</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;device=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ioc_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_records_without_DTYP_fields</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">on_db_load</span><span class="p">()</span>
 
         <span class="n">softioc</span><span class="o">.</span><span class="n">devIocStats</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ioc_name</span><span class="p">)</span>
@@ -310,7 +301,18 @@
         <span class="n">builder</span><span class="o">.</span><span class="n">LoadDatabase</span><span class="p">()</span>
         <span class="n">event_loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
         <span class="n">dispatcher</span> <span class="o">=</span> <span class="n">asyncio_dispatcher</span><span class="o">.</span><span class="n">AsyncioDispatcher</span><span class="p">(</span><span class="n">event_loop</span><span class="p">)</span>
-        <span class="n">softioc</span><span class="o">.</span><span class="n">iocInit</span><span class="p">(</span><span class="n">dispatcher</span><span class="p">)</span></div></div>
+        <span class="n">softioc</span><span class="o">.</span><span class="n">iocInit</span><span class="p">(</span><span class="n">dispatcher</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="EpicsAdapter.load_records_without_DTYP_fields"><a class="viewcode-back" href="../../../reference/api.html#tickit.adapters.epicsadapter.EpicsAdapter.load_records_without_DTYP_fields">[docs]</a>    <span class="k">def</span> <span class="nf">load_records_without_DTYP_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Loads the records without DTYP fields.&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_file</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">inp</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;.db&quot;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">inp</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">rb</span><span class="s2">&quot;\s*field\s*\(\s*DTYP&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+                        <span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+        <span class="n">softioc</span><span class="o">.</span><span class="n">dbLoadDatabase</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">substitutions</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;device=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ioc_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
