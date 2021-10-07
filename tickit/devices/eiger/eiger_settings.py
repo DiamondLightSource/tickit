@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import List
+from typing import Dict, List
 
 from .eiger_schema import (
     FLOAT_GRID,
@@ -15,6 +15,37 @@ from .eiger_schema import (
 
 FRAME_WIDTH: int = 4148
 FRAME_HEIGHT: int = 4362
+
+KA_ENERGIES: Dict[str, float] = {
+    "Li": 54.3,
+    "Be": 108.5,
+    "B": 183.3,
+    "C": 277.0,
+    "N": 392.4,
+    "O": 524.9,
+    "F": 676.8,
+    "Ne": 848.6,
+    "Na": 1040.98,
+    "Mg": 1253.6,
+    "Al": 1486.7,
+    "Si": 1739.98,
+    "P": 2013.7,
+    "S": 2307.84,
+    "Cl": 2622.39,
+    "Ar": 2957.7,
+    "K": 3313.8,
+    "Ca": 3691.68,
+    "Sc": 4090.6,
+    "Ti": 4510.84,
+    "V": 4952.2,
+    "Cr": 5414.72,
+    "Mn": 5898.75,
+    "Fe": 6403.84,
+    "Co": 6930.32,
+    "Ni": 7478.15,
+    "Cu": 8047.78,
+    "Zn": 8638.86,
+}
 
 
 @dataclass
@@ -90,3 +121,6 @@ class EigerSettings:
     x_pixels_in_detector: int = field(default=FRAME_WIDTH, metadata=rw_int())
     y_pixel_size: float = field(default=0.01, metadata=ro_float())
     y_pixels_in_detector: int = field(default=FRAME_HEIGHT, metadata=rw_int())
+
+    # def set_element(self, element: str) -> bool:
+    #     return hasattr(KA_ENERGIES, element)
