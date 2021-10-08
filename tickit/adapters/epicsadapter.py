@@ -12,7 +12,7 @@ from tickit.core.adapter import Adapter, RaiseInterrupt
 from tickit.core.device import Device
 
 
-@dataclass
+@dataclass(frozen=True)
 class InputRecord:
     """A data container representing an EPICS input record."""
 
@@ -65,11 +65,8 @@ class EpicsAdapter(Adapter):
         """Customises records that have been loaded in to suit the simulation."""
         raise NotImplementedError
 
-    def build_ioc(self) -> None:
-        """Builds an EPICS python soft IOC for the adapter."""
-        builder.SetDeviceName(self.ioc_name)
-
-        # From PythonSoftIOC: Load the base records without DTYP fields
+    def load_records_without_DTYP_fields(self):
+        """Loads the records without DTYP fields."""
         with open(self.db_file, "rb") as inp:
             with NamedTemporaryFile(suffix=".db", delete=False) as out:
                 for line in inp.readlines():
@@ -79,6 +76,11 @@ class EpicsAdapter(Adapter):
         softioc.dbLoadDatabase(out.name, substitutions=f"device={self.ioc_name}")
         os.unlink(out.name)
 
+    def build_ioc(self) -> None:
+        """Builds an EPICS python soft IOC for the adapter."""
+        builder.SetDeviceName(self.ioc_name)
+
+        self.load_records_without_DTYP_fields()
         self.on_db_load()
 
         softioc.devIocStats(self.ioc_name)

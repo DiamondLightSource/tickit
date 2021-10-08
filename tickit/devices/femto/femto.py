@@ -45,13 +45,16 @@ class FemtoDevice(Device):
         """
         return self.gain
 
-    def set_current(self, current: float) -> None:
-        """Set the current of the output signal.
+    def set_current(self, input_current: float) -> None:
+        """Set the output current based on the input current and the gain.
+
+        The output current is calculated as:
+            output_current = input_current * gain
 
         Args:
-            current (float): The current to set the output signal to.
+            input_current (float): The current of the input signal.
         """
-        self._current = current * self.gain
+        self._output_current = input_current * self.gain
 
     def get_current(self) -> float:
         """Returns the output current of the signal.
@@ -59,10 +62,9 @@ class FemtoDevice(Device):
         Returns:
             float: The output current of the signal.
         """
-        return self._current
+        return self._output_current
 
-    # Changed State for dict
-    def update(self, time: SimTime, inputs) -> DeviceUpdate[Outputs]:
+    def update(self, time: SimTime, inputs: dict) -> DeviceUpdate:
         """Updates the state of the Femto device.
 
         Args:
@@ -76,7 +78,7 @@ class FemtoDevice(Device):
         if current_value is not None:
             self.set_current(current_value)
 
-        return DeviceUpdate(self.Outputs(current=self.gain), None)
+        return DeviceUpdate(self.Output(current=self.get_current()), None)
 
 
 class CurrentDevice(Device):
