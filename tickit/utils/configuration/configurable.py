@@ -1,4 +1,4 @@
-from typing import Any, Dict, Iterator, TypeVar
+from typing import Any, DefaultDict, Dict, Iterator, TypeVar
 
 from apischema import deserializer
 from apischema.conversions import Conversion
@@ -23,6 +23,10 @@ def rec_subclasses(cls: type) -> Iterator[type]:
     for sub_cls in cls.__subclasses__():
         yield sub_cls
         yield from rec_subclasses(sub_cls)
+
+
+#: Whether the current class is registered as a tagged union
+is_tagged_union = DefaultDict(lambda: False)
 
 
 def as_tagged_union(cls: Cls) -> Cls:
@@ -57,4 +61,5 @@ def as_tagged_union(cls: Cls) -> Cls:
         )
 
     deserializer(lazy=deserialization, target=cls)
+    is_tagged_union[cls] = True
     return cls

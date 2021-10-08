@@ -1,8 +1,8 @@
 import asyncio
 from dataclasses import dataclass
-from typing import Dict, List, Type
+from typing import Dict, List, Type, Union
 
-from tickit.core.components.component import BaseComponent, Component
+from tickit.core.components.component import BaseComponent, Component, ComponentConfig
 from tickit.core.lifetime_runnable import run_all
 from tickit.core.management.event_router import InverseWiring
 from tickit.core.management.schedulers.slave import SlaveScheduler
@@ -21,7 +21,7 @@ class SystemSimulation(BaseComponent):
 
     #: A list of immutable component configuration data containers, used to
     #: construct internal components.
-    components: List[Component]
+    components: List[Union[Component, ComponentConfig]]
     #: A mapping of outputs which the system simulation exposes and the
     #: corresponding output of an internal component.
     expose: Dict[PortID, ComponentPort]
@@ -35,7 +35,8 @@ class SystemSimulation(BaseComponent):
         the scheduler, and sets up externally facing state interfaces. The method
         blocks until and of the components or the scheduler complete.
         """
-        inverse_wiring = InverseWiring.from_components(self.components)
+        components = [c if isinstance(c, Component) else c() for c in self.components]
+        inverse_wiring = InverseWiring.from_components(components)
         self.scheduler = SlaveScheduler(
             inverse_wiring,
             state_consumer,
@@ -44,7 +45,7 @@ class SystemSimulation(BaseComponent):
             self.raise_interrupt,
         )
         tasks = run_all(
-            c.run_forever(state_consumer, state_producer) for c in self.components
+            c.run_forever(state_consumer, state_producer) for c in components
         ) + run_all([self.scheduler.run_forever()])
         await super().run_forever(state_consumer, state_producer)
         await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)

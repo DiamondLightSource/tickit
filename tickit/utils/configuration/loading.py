@@ -1,13 +1,15 @@
 from importlib import import_module
-from typing import Any, Dict, List, Optional, Type
+from typing import Any, Dict, List, Optional, Type, Union
 
 import yaml
 from apischema import deserialize
 from apischema.conversions import AnyConversion, Conversion
 from apischema.conversions.conversions import Conversion
-from apischema.conversions.converters import default_serialization
+from apischema.conversions.converters import default_deserialization
 
 from tickit.core.components.component import Component, ComponentConfig
+
+from .configurable import is_tagged_union
 
 
 def importing_conversion(typ: Type) -> Optional[AnyConversion]:
@@ -16,7 +18,7 @@ def importing_conversion(typ: Type) -> Optional[AnyConversion]:
     When a ComponentConfig is requested from a dict, take its fully qualified
     name from the tagged union dict and import it before deserializing it
     """
-    if typ is ComponentConfig:
+    if is_tagged_union[typ]:
 
         def conversion(d: Dict[str, Any]):
             # We can't use the deserialization union above as the classes
@@ -26,11 +28,11 @@ def importing_conversion(typ: Type) -> Optional[AnyConversion]:
             fullname, args = list(d.items())[0]
             pkg, clsname = fullname.rsplit(".", maxsplit=1)
             cls = getattr(import_module(pkg), clsname)
-            return deserialize(cls, args)
+            return deserialize(cls, args, default_conversion=importing_conversion)
 
         return Conversion(conversion, source=dict, target=typ)
 
-    return default_serialization(typ)
+    return default_deserialization(typ)
 
 
 def read_components(config_path) -> List[Component]:
@@ -48,9 +50,9 @@ def read_components(config_path) -> List[Component]:
     """
     yaml_struct = yaml.load(open(config_path, "r"), Loader=yaml.Loader)
     configs = deserialize(
-        List[ComponentConfig],
+        List[Union[Component, ComponentConfig]],
         yaml_struct,
         default_conversion=importing_conversion,
     )
-    components = [c() for c in configs]
+    components = [c if isinstance(c, Component) else c() for c in configs]
     return components
