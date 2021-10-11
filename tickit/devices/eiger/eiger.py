@@ -18,10 +18,7 @@ DETECTOR_API = "detector/api/1.8"
 
 
 class Eiger(ConfigurableDevice):
-    """A device class for the Eiger detector.
-
-    ...
-    """
+    """A device class for the Eiger detector."""
 
     Inputs: TypedDict = TypedDict("Inputs", {"foo": bool})
 
