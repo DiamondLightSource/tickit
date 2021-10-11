@@ -63,7 +63,7 @@ def raise_interrupt():
 
 
 @pytest.fixture
-def mock_eiger_adapter(mock_eiger):
+def eiger_adapter(mock_eiger):
     return EigerAdapter(mock_eiger, raise_interrupt, host="localhost", port=8081)
 
 
@@ -110,52 +110,59 @@ def mock_good_put_request():
 def mock_bad_put_request():
     mock_request = MagicMock(web.Request)
     mock_request.match_info = {"parameter_name": "wrong_param"}
-    mock_request.value = 0.5
+    mock_request.json.return_value = {"value": 0.5}
 
     return mock_request
 
 
-# @pytest.mark.asyncio
-# async def test_eiger_endpoint_response(mock_eiger_adapter):
+@pytest.fixture
+def mock_good_get_status_request():
+    mock_request = MagicMock(web.Request)
+    mock_request.match_info = {"status_param": "state"}
 
-#     async with aiohttp.ClientSession() as session:
-#         resp = await session.get(f"{DETECTOR_API}" + "/config/count_time")
+    return mock_request
 
-#         assert isinstance(resp, web.Response)
+
+@pytest.fixture
+def mock_bad_get_status_request():
+    mock_request = MagicMock(web.Request)
+    mock_request.match_info = {"status_param": "wrong_param"}
+
+    return mock_request
 
 
 @pytest.mark.asyncio
-async def test_eiger_get_config(mock_eiger_adapter, mock_good_get_request):
+async def test_eiger_get_config(eiger_adapter, mock_good_get_request):
 
-    resp = await mock_eiger_adapter.get_config(mock_good_get_request)
+    resp = await eiger_adapter.get_config(mock_good_get_request)
 
     assert isinstance(resp, web.Response)
 
 
 @pytest.mark.asyncio
-async def test_eiger_good_get_config(mock_eiger_adapter, mock_good_get_request):
+async def test_eiger_good_get_config(eiger_adapter, mock_good_get_request):
 
-    resp = await mock_eiger_adapter.get_config(mock_good_get_request)
+    resp = await eiger_adapter.get_config(mock_good_get_request)
 
     assert resp.text != "None"
 
 
 @pytest.mark.asyncio
-async def test_eiger_bad_get_config(mock_eiger_adapter, mock_bad_get_request):
+async def test_eiger_bad_get_config(eiger_adapter, mock_bad_get_request):
 
-    resp = await mock_eiger_adapter.get_config(mock_bad_get_request)
+    resp = await eiger_adapter.get_config(mock_bad_get_request)
 
     assert resp.text == "None"
 
 
 @pytest.mark.asyncio
 async def test_eiger_good_put_config_wrong_device_state(
-    mock_eiger_adapter, mock_good_put_request
+    eiger_adapter, mock_good_put_request
 ):
 
-    # Eiger starts off in State.NA, so no state needs to be set
+    eiger_adapter._device.get_state.return_value = State.NA
 
-    resp = await mock_eiger_adapter.put_config(mock_good_put_request)
+    resp = await eiger_adapter.put_config(mock_good_put_request)
 
     assert isinstance(resp, web.Response)
     assert resp.text == "Eiger not initialized or is currently running."
@@ -163,12 +170,12 @@ async def test_eiger_good_put_config_wrong_device_state(
 
 @pytest.mark.asyncio
 async def test_eiger_good_put_config_right_device_state(
-    mock_eiger_adapter, mock_good_put_request
+    eiger_adapter, mock_good_put_request
 ):
 
-    mock_eiger_adapter._device.get_state.return_value = State.IDLE
+    eiger_adapter._device.get_state.return_value = State.IDLE
 
-    resp = await mock_eiger_adapter.put_config(mock_good_put_request)
+    resp = await eiger_adapter.put_config(mock_good_put_request)
 
     assert isinstance(resp, web.Response)
     assert resp.text == "Set: count_time to 0.5"
@@ -176,12 +183,12 @@ async def test_eiger_good_put_config_right_device_state(
 
 @pytest.mark.asyncio
 async def test_eiger_bad_put_config_right_device_state(
-    mock_eiger_adapter, mock_bad_put_request
+    eiger_adapter, mock_bad_put_request
 ):
 
-    mock_eiger_adapter._device.get_state.return_value = State.IDLE
+    eiger_adapter._device.get_state.return_value = State.IDLE
 
-    resp = await mock_eiger_adapter.put_config(mock_bad_put_request)
+    resp = await eiger_adapter.put_config(mock_bad_put_request)
 
     assert isinstance(resp, web.Response)
     assert resp.text == "Eiger has no config variable: wrong_param"
@@ -189,10 +196,101 @@ async def test_eiger_bad_put_config_right_device_state(
 
 @pytest.mark.asyncio
 async def test_eiger_bad_put_config_wrong_device_state(
-    mock_eiger_adapter, mock_bad_put_request
+    eiger_adapter, mock_bad_put_request
 ):
 
-    resp = await mock_eiger_adapter.put_config(mock_bad_put_request)
+    eiger_adapter._device.get_state.return_value = State.NA
+
+    resp = await eiger_adapter.put_config(mock_bad_put_request)
 
     assert isinstance(resp, web.Response)
     assert resp.text == "Eiger not initialized or is currently running."
+
+
+@pytest.mark.asyncio
+async def test_eiger_good_get_status(eiger_adapter, mock_good_get_status_request):
+
+    eiger_adapter._device.status.state = State.NA
+
+    resp = await eiger_adapter.get_status(mock_good_get_status_request)
+
+    assert isinstance(resp, web.Response)
+    assert resp.text == "State.NA"
+
+
+@pytest.mark.asyncio
+async def test_eiger_bad_get_status(eiger_adapter, mock_bad_get_status_request):
+
+    eiger_adapter._device.status.state = State.NA
+
+    resp = await eiger_adapter.get_status(mock_bad_get_status_request)
+
+    assert isinstance(resp, web.Response)
+    assert resp.text == "None"
+
+
+@pytest.mark.asyncio
+async def test_eiger_initialize(eiger_adapter, mock_good_put_request):
+
+    # eiger_adapter._device.initialize.return_value = State.IDLE
+
+    resp = await eiger_adapter.initialize_eiger(mock_good_put_request)
+
+    assert isinstance(resp, web.Response)
+    assert resp.text == "Initializing Eiger..."
+
+
+@pytest.mark.asyncio
+async def test_eiger_arm(eiger_adapter, mock_good_put_request):
+
+    # eiger_adapter._device.initialize.return_value = State.READY
+
+    resp = await eiger_adapter.arm_eiger(mock_good_put_request)
+
+    assert isinstance(resp, web.Response)
+    assert resp.text == "Arming Eiger..."
+
+
+@pytest.mark.asyncio
+async def test_eiger_disarm(eiger_adapter, mock_good_put_request):
+
+    # eiger_adapter._device.initialize.return_value = State.IDLE
+
+    resp = await eiger_adapter.disarm_eiger(mock_good_put_request)
+
+    assert isinstance(resp, web.Response)
+    assert resp.text == "Disarming Eiger..."
+
+
+@pytest.mark.asyncio
+async def test_eiger_trigger(eiger_adapter, mock_good_put_request):
+
+    # eiger_adapter._device.initialize.return_value = State.ACQUIRE
+
+    resp = await eiger_adapter.trigger_eiger(mock_good_put_request)
+
+    assert isinstance(resp, web.Response)
+    # TODO: Add specific strings to this test
+    assert isinstance(resp.text, str)
+
+
+@pytest.mark.asyncio
+async def test_eiger_cancel(eiger_adapter, mock_good_put_request):
+
+    # eiger_adapter._device.initialize.return_value = State.READY
+
+    resp = await eiger_adapter.cancel_eiger(mock_good_put_request)
+
+    assert isinstance(resp, web.Response)
+    assert resp.text == "Cancelling Eiger..."
+
+
+@pytest.mark.asyncio
+async def test_eiger_abort(eiger_adapter, mock_good_put_request):
+
+    # eiger_adapter._device.initialize.return_value = State.IDLE
+
+    resp = await eiger_adapter.abort_eiger(mock_good_put_request)
+
+    assert isinstance(resp, web.Response)
+    assert resp.text == "Aborting Eiger..."
