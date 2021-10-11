@@ -62,16 +62,6 @@ class EigerSettings:
     compression: str = field(
         default="bslz4", metadata=rw_str(allowed_values=["bslz4", "lz4"])
     )
-    # count_time: Dict[str, object] = field(
-    #     default_factory=lambda: {
-    #         "min": 0.000002999900061695371,
-    #         "max": 1800,
-    #         "value": 0.5,
-    #         "value_type": "float",
-    #         "access_mode": "rw",
-    #         "unit": "s",
-    #     }
-    # )
     count_time: float = field(default=0.1, metadata=rw_float())
     countrate_correction_applied: bool = field(default=True, metadata=rw_bool())
     countrate_correction_count_cutoff: int = field(default=1000, metadata=rw_int())
