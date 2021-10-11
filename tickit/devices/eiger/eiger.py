@@ -48,7 +48,7 @@ class Eiger(ConfigurableDevice):
 
     async def trigger(self) -> str:
         """Function to trigger the Eiger."""
-        trigger_mode = getattr(self.settings, "trigger_mode")
+        trigger_mode = self.settings.trigger_mode
         state = self.status.state
 
         if state == State.READY and trigger_mode == "ints":
@@ -76,7 +76,7 @@ class Eiger(ConfigurableDevice):
         # Do aborting stuff
         self._set_state(State.IDLE)
 
-    def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
+    def update(self, time: SimTime) -> DeviceUpdate:
         """Generic update function to update the values of the ExampleHTTPDevice.
 
         Args:
@@ -96,11 +96,11 @@ class Eiger(ConfigurableDevice):
         Returns:
             State: The state of the Eiger.
         """
-        return getattr(self.status, "state")
+        return self.status.state
 
     def _set_state(self, state: State):
         # LOGGER.info(f"Transitioned State: [{self.state} -> {state}]")
-        setattr(self.status, "state", state)
+        self.status.state = state
 
 
 class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
@@ -176,15 +176,12 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
             hasattr(self._device.settings, param)
             and self._device.get_state() == State.IDLE
         ):
-            attr = getattr(self._device.settings, param)
 
             attr = response["value"]
 
             setattr(self._device.settings, param, attr)
 
-            return web.Response(
-                text="Set: " + str(param) + " to " + str(response["value"])
-            )
+            return web.Response(text="Set: " + str(param) + " to " + str(attr))
         else:
             return web.Response(text="Eiger has no config variable: " + str(param))
 
