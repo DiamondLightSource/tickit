@@ -48,11 +48,48 @@ async def test_eiger_disarm(eiger):
     assert eiger.get_state() == State.IDLE
 
 
-# @pytest.mark.asyncio
-# async def test_eiger_trigger(eiger):
-#     await eiger.trigger()
+@pytest.mark.asyncio
+async def test_eiger_trigger_ints_and_ready(eiger):
 
-#     assert
+    eiger._set_state(State.READY)
+    eiger.settings.trigger_mode = "ints"
+
+    message = await eiger.trigger()
+
+    assert eiger.get_state() == State.ACQUIRE
+    assert message == "Aquiring Data from Eiger..."
+
+
+@pytest.mark.asyncio
+async def test_eiger_trigger_not_ints_and_ready(eiger):
+
+    eiger._set_state(State.READY)
+    # Should be 'exts' by default but set just in case
+    eiger.settings.trigger_mode = "exts"
+
+    message = await eiger.trigger()
+
+    assert eiger.get_state() == State.READY
+    assert (
+        message == f"Ignoring trigger, state={eiger.status.state},"
+        f"trigger_mode={eiger.settings.trigger_mode}"
+    )
+
+
+@pytest.mark.asyncio
+async def test_eiger_trigger_not_ints_and_not_ready(eiger):
+
+    eiger._set_state(State.IDLE)
+    # Should be 'exts' by default but set just in case
+    eiger.settings.trigger_mode = "exts"
+
+    message = await eiger.trigger()
+
+    assert eiger.get_state() != State.READY
+    assert (
+        message == f"Ignoring trigger, state={eiger.status.state},"
+        f"trigger_mode={eiger.settings.trigger_mode}"
+    )
 
 
 @pytest.mark.asyncio
