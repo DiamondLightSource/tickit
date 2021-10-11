@@ -27,7 +27,57 @@ def test_eiger_constructor():
     Eiger()
 
 
-# def test_eiger_initialize():
+@pytest.mark.asyncio
+async def test_eiger_initialize(eiger):
+    await eiger.initialize()
+
+    assert eiger.get_state() == State.IDLE
+
+
+@pytest.mark.asyncio
+async def test_eiger_arm(eiger):
+    await eiger.arm()
+
+    assert eiger.get_state() == State.READY
+
+
+@pytest.mark.asyncio
+async def test_eiger_disarm(eiger):
+    await eiger.disarm()
+
+    assert eiger.get_state() == State.IDLE
+
+
+# @pytest.mark.asyncio
+# async def test_eiger_trigger(eiger):
+#     await eiger.trigger()
+
+#     assert
+
+
+@pytest.mark.asyncio
+async def test_eiger_cancel(eiger):
+    await eiger.cancel()
+
+    assert eiger.get_state() == State.READY
+
+
+@pytest.mark.asyncio
+async def test_eiger_abort(eiger):
+    await eiger.abort()
+
+    assert eiger.get_state() == State.IDLE
+
+
+def test_eiger_get_state(eiger):
+    assert eiger.get_state() == State.NA
+
+
+def test_eiger_set_state(eiger):
+
+    eiger._set_state(State.IDLE)
+
+    assert eiger.get_state() == State.IDLE
 
 
 # TODO: Tests for update() once implemented
@@ -230,9 +280,10 @@ async def test_eiger_bad_get_status(eiger_adapter, mock_bad_get_status_request):
 
 
 @pytest.mark.asyncio
-async def test_eiger_initialize(eiger_adapter, mock_good_put_request):
+async def test_eiger_initialize_command(eiger_adapter, mock_good_put_request):
 
-    # eiger_adapter._device.initialize.return_value = State.IDLE
+    eiger_adapter._device._set_state
+    eiger_adapter._device.initialize.return_value = State.IDLE
 
     resp = await eiger_adapter.initialize_eiger(mock_good_put_request)
 
@@ -241,7 +292,7 @@ async def test_eiger_initialize(eiger_adapter, mock_good_put_request):
 
 
 @pytest.mark.asyncio
-async def test_eiger_arm(eiger_adapter, mock_good_put_request):
+async def test_eiger_arm_command(eiger_adapter, mock_good_put_request):
 
     # eiger_adapter._device.initialize.return_value = State.READY
 
@@ -252,7 +303,7 @@ async def test_eiger_arm(eiger_adapter, mock_good_put_request):
 
 
 @pytest.mark.asyncio
-async def test_eiger_disarm(eiger_adapter, mock_good_put_request):
+async def test_eiger_disarm_command(eiger_adapter, mock_good_put_request):
 
     # eiger_adapter._device.initialize.return_value = State.IDLE
 
@@ -263,7 +314,7 @@ async def test_eiger_disarm(eiger_adapter, mock_good_put_request):
 
 
 @pytest.mark.asyncio
-async def test_eiger_trigger(eiger_adapter, mock_good_put_request):
+async def test_eiger_trigger_command(eiger_adapter, mock_good_put_request):
 
     # eiger_adapter._device.initialize.return_value = State.ACQUIRE
 
@@ -275,7 +326,7 @@ async def test_eiger_trigger(eiger_adapter, mock_good_put_request):
 
 
 @pytest.mark.asyncio
-async def test_eiger_cancel(eiger_adapter, mock_good_put_request):
+async def test_eiger_cancel_command(eiger_adapter, mock_good_put_request):
 
     # eiger_adapter._device.initialize.return_value = State.READY
 
@@ -286,7 +337,7 @@ async def test_eiger_cancel(eiger_adapter, mock_good_put_request):
 
 
 @pytest.mark.asyncio
-async def test_eiger_abort(eiger_adapter, mock_good_put_request):
+async def test_eiger_abort_command(eiger_adapter, mock_good_put_request):
 
     # eiger_adapter._device.initialize.return_value = State.IDLE
 
