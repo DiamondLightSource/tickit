@@ -199,7 +199,7 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
                 text="Set: " + str(param) + " to " + str(response["value"])
             )
         else:
-            return web.Response(text="Eiger has no config variable:  " + str(param))
+            return web.Response(text="Eiger has no config variable: " + str(param))
 
     @HTTPEndpoint.get(f"/{DETECTOR_API}" + "/status/{status_param}")
     async def get_status(self, request: web.Request) -> web.Response:
