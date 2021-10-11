@@ -20,28 +20,28 @@ def test_eiger_constructor():
 
 
 @pytest.mark.asyncio
-async def test_eiger_initialize(eiger):
+async def test_eiger_initialize(eiger: Eiger):
     await eiger.initialize()
 
     assert State.IDLE == eiger.get_state()
 
 
 @pytest.mark.asyncio
-async def test_eiger_arm(eiger):
+async def test_eiger_arm(eiger: Eiger):
     await eiger.arm()
 
     assert State.READY == eiger.get_state()
 
 
 @pytest.mark.asyncio
-async def test_eiger_disarm(eiger):
+async def test_eiger_disarm(eiger: Eiger):
     await eiger.disarm()
 
     assert State.IDLE == eiger.get_state()
 
 
 @pytest.mark.asyncio
-async def test_eiger_trigger_ints_and_ready(eiger):
+async def test_eiger_trigger_ints_and_ready(eiger: Eiger):
 
     eiger._set_state(State.READY)
     eiger.settings.trigger_mode = "ints"
@@ -53,7 +53,7 @@ async def test_eiger_trigger_ints_and_ready(eiger):
 
 
 @pytest.mark.asyncio
-async def test_eiger_trigger_not_ints_and_ready(eiger):
+async def test_eiger_trigger_not_ints_and_ready(eiger: Eiger):
 
     eiger._set_state(State.READY)
     # Should be 'exts' by default but set just in case
@@ -69,7 +69,7 @@ async def test_eiger_trigger_not_ints_and_ready(eiger):
 
 
 @pytest.mark.asyncio
-async def test_eiger_trigger_not_ints_and_not_ready(eiger):
+async def test_eiger_trigger_not_ints_and_not_ready(eiger: Eiger):
 
     eiger._set_state(State.IDLE)
     # Should be 'exts' by default but set just in case
@@ -85,24 +85,24 @@ async def test_eiger_trigger_not_ints_and_not_ready(eiger):
 
 
 @pytest.mark.asyncio
-async def test_eiger_cancel(eiger):
+async def test_eiger_cancel(eiger: Eiger):
     await eiger.cancel()
 
     assert State.READY == eiger.get_state()
 
 
 @pytest.mark.asyncio
-async def test_eiger_abort(eiger):
+async def test_eiger_abort(eiger: Eiger):
     await eiger.abort()
 
     assert State.IDLE == eiger.get_state()
 
 
-def test_eiger_get_state(eiger):
+def test_eiger_get_state(eiger: Eiger):
     assert State.NA == eiger.get_state()
 
 
-def test_eiger_set_state(eiger):
+def test_eiger_set_state(eiger: Eiger):
 
     eiger._set_state(State.IDLE)
 
@@ -126,7 +126,7 @@ def mock_settings() -> MagicMock:
 
 
 @pytest.fixture
-def mock_eiger(mock_status, mock_settings) -> MagicMock:
+def mock_eiger(mock_status: MagicMock, mock_settings: MagicMock) -> MagicMock:
     mock_eiger = create_autospec(Eiger, instance=True)
     mock_eiger.status = mock_status
     mock_eiger.settings = mock_settings
@@ -142,7 +142,7 @@ def raise_interrupt():
 
 
 @pytest.fixture
-def eiger_adapter(mock_eiger):
+def eiger_adapter(mock_eiger: MagicMock) -> EigerAdapter:
     return EigerAdapter(mock_eiger, raise_interrupt, host="localhost", port=8081)
 
 
@@ -204,7 +204,9 @@ def mock_bad_get_status_request():
 
 
 @pytest.mark.asyncio
-async def test_eiger_get_config(eiger_adapter, mock_good_get_request):
+async def test_eiger_get_config(
+    eiger_adapter: EigerAdapter, mock_good_get_request: MagicMock
+):
 
     resp = await eiger_adapter.get_config(mock_good_get_request)
 
@@ -212,7 +214,9 @@ async def test_eiger_get_config(eiger_adapter, mock_good_get_request):
 
 
 @pytest.mark.asyncio
-async def test_eiger_good_get_config(eiger_adapter, mock_good_get_request):
+async def test_eiger_good_get_config(
+    eiger_adapter: EigerAdapter, mock_good_get_request: MagicMock
+):
 
     resp = await eiger_adapter.get_config(mock_good_get_request)
 
@@ -220,7 +224,9 @@ async def test_eiger_good_get_config(eiger_adapter, mock_good_get_request):
 
 
 @pytest.mark.asyncio
-async def test_eiger_bad_get_config(eiger_adapter, mock_bad_get_request):
+async def test_eiger_bad_get_config(
+    eiger_adapter: EigerAdapter, mock_bad_get_request: MagicMock
+):
 
     resp = await eiger_adapter.get_config(mock_bad_get_request)
 
@@ -229,7 +235,7 @@ async def test_eiger_bad_get_config(eiger_adapter, mock_bad_get_request):
 
 @pytest.mark.asyncio
 async def test_eiger_good_put_config_wrong_device_state(
-    eiger_adapter, mock_good_put_request
+    eiger_adapter: EigerAdapter, mock_good_put_request: MagicMock
 ):
 
     eiger_adapter._device.get_state.return_value = State.NA
@@ -242,7 +248,7 @@ async def test_eiger_good_put_config_wrong_device_state(
 
 @pytest.mark.asyncio
 async def test_eiger_good_put_config_right_device_state(
-    eiger_adapter, mock_good_put_request
+    eiger_adapter: EigerAdapter, mock_good_put_request: MagicMock
 ):
 
     eiger_adapter._device.get_state.return_value = State.IDLE
@@ -255,7 +261,7 @@ async def test_eiger_good_put_config_right_device_state(
 
 @pytest.mark.asyncio
 async def test_eiger_bad_put_config_right_device_state(
-    eiger_adapter, mock_bad_put_request
+    eiger_adapter: EigerAdapter, mock_bad_put_request: MagicMock
 ):
 
     eiger_adapter._device.get_state.return_value = State.IDLE
@@ -268,7 +274,7 @@ async def test_eiger_bad_put_config_right_device_state(
 
 @pytest.mark.asyncio
 async def test_eiger_bad_put_config_wrong_device_state(
-    eiger_adapter, mock_bad_put_request
+    eiger_adapter: EigerAdapter, mock_bad_put_request: MagicMock
 ):
 
     eiger_adapter._device.get_state.return_value = State.NA
@@ -280,7 +286,9 @@ async def test_eiger_bad_put_config_wrong_device_state(
 
 
 @pytest.mark.asyncio
-async def test_eiger_good_get_status(eiger_adapter, mock_good_get_status_request):
+async def test_eiger_good_get_status(
+    eiger_adapter: EigerAdapter, mock_good_get_status_request: MagicMock
+):
 
     eiger_adapter._device.status.state = State.NA
 
@@ -291,7 +299,9 @@ async def test_eiger_good_get_status(eiger_adapter, mock_good_get_status_request
 
 
 @pytest.mark.asyncio
-async def test_eiger_bad_get_status(eiger_adapter, mock_bad_get_status_request):
+async def test_eiger_bad_get_status(
+    eiger_adapter: EigerAdapter, mock_bad_get_status_request: MagicMock
+):
 
     eiger_adapter._device.status.state = State.NA
 
@@ -302,7 +312,9 @@ async def test_eiger_bad_get_status(eiger_adapter, mock_bad_get_status_request):
 
 
 @pytest.mark.asyncio
-async def test_eiger_initialize_command(eiger_adapter, mock_good_put_request):
+async def test_eiger_initialize_command(
+    eiger_adapter: EigerAdapter, mock_good_put_request: MagicMock
+):
 
     eiger_adapter._device._set_state
     eiger_adapter._device.initialize.return_value = State.IDLE
@@ -314,7 +326,9 @@ async def test_eiger_initialize_command(eiger_adapter, mock_good_put_request):
 
 
 @pytest.mark.asyncio
-async def test_eiger_arm_command(eiger_adapter, mock_good_put_request):
+async def test_eiger_arm_command(
+    eiger_adapter: EigerAdapter, mock_good_put_request: MagicMock
+):
 
     # eiger_adapter._device.initialize.return_value = State.READY
 
@@ -325,7 +339,9 @@ async def test_eiger_arm_command(eiger_adapter, mock_good_put_request):
 
 
 @pytest.mark.asyncio
-async def test_eiger_disarm_command(eiger_adapter, mock_good_put_request):
+async def test_eiger_disarm_command(
+    eiger_adapter: EigerAdapter, mock_good_put_request: MagicMock
+):
 
     # eiger_adapter._device.initialize.return_value = State.IDLE
 
@@ -336,7 +352,9 @@ async def test_eiger_disarm_command(eiger_adapter, mock_good_put_request):
 
 
 @pytest.mark.asyncio
-async def test_eiger_trigger_command(eiger_adapter, mock_good_put_request):
+async def test_eiger_trigger_command(
+    eiger_adapter: EigerAdapter, mock_good_put_request: MagicMock
+):
 
     # eiger_adapter._device.initialize.return_value = State.ACQUIRE
 
@@ -348,7 +366,9 @@ async def test_eiger_trigger_command(eiger_adapter, mock_good_put_request):
 
 
 @pytest.mark.asyncio
-async def test_eiger_cancel_command(eiger_adapter, mock_good_put_request):
+async def test_eiger_cancel_command(
+    eiger_adapter: EigerAdapter, mock_good_put_request: MagicMock
+):
 
     # eiger_adapter._device.initialize.return_value = State.READY
 
@@ -359,7 +379,9 @@ async def test_eiger_cancel_command(eiger_adapter, mock_good_put_request):
 
 
 @pytest.mark.asyncio
-async def test_eiger_abort_command(eiger_adapter, mock_good_put_request):
+async def test_eiger_abort_command(
+    eiger_adapter: EigerAdapter, mock_good_put_request: MagicMock
+):
 
     # eiger_adapter._device.initialize.return_value = State.IDLE
 
