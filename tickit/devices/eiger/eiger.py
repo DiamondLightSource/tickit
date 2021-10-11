@@ -1,4 +1,4 @@
-from typing import Awaitable, Callable, Optional
+from typing import Awaitable, Callable
 
 from aiohttp import web
 
@@ -10,7 +10,6 @@ from tickit.core.device import ConfigurableDevice, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.devices.eiger.eiger_settings import EigerSettings
 from tickit.utils.byte_format import ByteFormat
-from tickit.utils.compat.typing_compat import TypedDict
 
 from .eiger_status import EigerStatus, State
 
@@ -20,27 +19,18 @@ DETECTOR_API = "detector/api/1.8"
 class Eiger(ConfigurableDevice):
     """A device class for the Eiger detector."""
 
-    Inputs: TypedDict = TypedDict("Inputs", {"foo": bool})
-
-    Outputs: TypedDict = TypedDict("Outputs", {"bar": float})
-
     settings: EigerSettings
 
     status: EigerStatus
 
     def __init__(
         self,
-        foo: float = 0.5,
-        bar: Optional[int] = 10,
     ) -> None:
-        """An example HTTP device constructor which configures the ... .
+        """An Eiger device constructor.
 
-        Args:
-            foo (bool): A flag to indicate something. Defauls to False.
-            bar (int, optional): A number to represent something. Defaults to 3600.
+        An Eiger device constructor which configures the default settings and various
+        states of the device.
         """
-        self.foo = foo
-        self.bar = bar
         self.settings = EigerSettings()
         self.status = EigerStatus()
 
@@ -59,7 +49,7 @@ class Eiger(ConfigurableDevice):
     async def trigger(self) -> str:
         """Function to trigger the Eiger."""
         trigger_mode = getattr(self.settings, "trigger_mode")
-        state = getattr(self.status, "state")
+        state = self.status.state
 
         if state == State.READY and trigger_mode == "ints":
             # If the detector is in an external trigger mode, this is disabled as

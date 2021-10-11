@@ -150,9 +150,6 @@ def test_eiger_adapter_contructor():
     EigerAdapter(mock_eiger, raise_interrupt, host="localhost", port=8081)
 
 
-DETECTOR_API = "http://localhost:8081/detector/api/1.8"
-
-
 @pytest.fixture
 def mock_good_get_request():
     mock_request = MagicMock(web.Request)
@@ -330,8 +327,6 @@ async def test_eiger_arm_command(
     eiger_adapter: EigerAdapter, mock_good_put_request: MagicMock
 ):
 
-    # eiger_adapter._device.initialize.return_value = State.READY
-
     resp = await eiger_adapter.arm_eiger(mock_good_put_request)
 
     assert isinstance(resp, web.Response)
@@ -343,8 +338,6 @@ async def test_eiger_disarm_command(
     eiger_adapter: EigerAdapter, mock_good_put_request: MagicMock
 ):
 
-    # eiger_adapter._device.initialize.return_value = State.IDLE
-
     resp = await eiger_adapter.disarm_eiger(mock_good_put_request)
 
     assert isinstance(resp, web.Response)
@@ -355,8 +348,6 @@ async def test_eiger_disarm_command(
 async def test_eiger_trigger_command(
     eiger_adapter: EigerAdapter, mock_good_put_request: MagicMock
 ):
-
-    # eiger_adapter._device.initialize.return_value = State.ACQUIRE
 
     resp = await eiger_adapter.trigger_eiger(mock_good_put_request)
 
@@ -370,8 +361,6 @@ async def test_eiger_cancel_command(
     eiger_adapter: EigerAdapter, mock_good_put_request: MagicMock
 ):
 
-    # eiger_adapter._device.initialize.return_value = State.READY
-
     resp = await eiger_adapter.cancel_eiger(mock_good_put_request)
 
     assert isinstance(resp, web.Response)
@@ -382,8 +371,6 @@ async def test_eiger_cancel_command(
 async def test_eiger_abort_command(
     eiger_adapter: EigerAdapter, mock_good_put_request: MagicMock
 ):
-
-    # eiger_adapter._device.initialize.return_value = State.IDLE
 
     resp = await eiger_adapter.abort_eiger(mock_good_put_request)
 
