@@ -1,9 +1,9 @@
 from dataclasses import dataclass, field
-from typing import Dict, List
+from enum import Enum
+from typing import List
 
 from .eiger_schema import (
-    FLOAT_GRID,
-    UINT_GRID,
+    AccessModes,
     field_config,
     ro_float,
     ro_str,
@@ -16,36 +16,39 @@ from .eiger_schema import (
 FRAME_WIDTH: int = 4148
 FRAME_HEIGHT: int = 4362
 
-KA_ENERGIES: Dict[str, float] = {
-    "Li": 54.3,
-    "Be": 108.5,
-    "B": 183.3,
-    "C": 277.0,
-    "N": 392.4,
-    "O": 524.9,
-    "F": 676.8,
-    "Ne": 848.6,
-    "Na": 1040.98,
-    "Mg": 1253.6,
-    "Al": 1486.7,
-    "Si": 1739.98,
-    "P": 2013.7,
-    "S": 2307.84,
-    "Cl": 2622.39,
-    "Ar": 2957.7,
-    "K": 3313.8,
-    "Ca": 3691.68,
-    "Sc": 4090.6,
-    "Ti": 4510.84,
-    "V": 4952.2,
-    "Cr": 5414.72,
-    "Mn": 5898.75,
-    "Fe": 6403.84,
-    "Co": 6930.32,
-    "Ni": 7478.15,
-    "Cu": 8047.78,
-    "Zn": 8638.86,
-}
+
+class KA_Energies(Enum):
+    """Possible element K-alpha energies for samples."""
+
+    Li: float = 54.3
+    Be: float = 108.5
+    B: float = 183.3
+    C: float = 277.0
+    N: float = 392.4
+    O: float = 524.9
+    F: float = 676.8
+    Ne: float = 848.6
+    Na: float = 1040.98
+    Mg: float = 1253.6
+    Al: float = 1486.7
+    Si: float = 1739.98
+    P: float = 2013.7
+    S: float = 2307.84
+    Cl: float = 2622.39
+    Ar: float = 2957.7
+    K: float = 3313.8
+    Ca: float = 3691.68
+    Sc: float = 4090.6
+    Ti: float = 4510.84
+    V: float = 4952.2
+    Cr: float = 5414.72
+    Mn: float = 5898.75
+    Fe: float = 6403.84
+    Co: float = 6930.32
+    Ni: float = 7478.15
+    Cu: float = 8047.78
+    Zn: float = 8638.86
+    # TODO: Add more elements?
 
 
 @dataclass
@@ -76,7 +79,8 @@ class EigerSettings:
     detector_readout_time: float = field(default=0.01, metadata=rw_float())
     element: str = field(default="Oganesson", metadata=rw_str())
     flatfield: List[List[float]] = field(
-        default_factory=lambda: [[]], metadata=field_config(value_type=FLOAT_GRID)
+        default_factory=lambda: [[]],
+        metadata=field_config(value_type=AccessModes.FLOAT_GRID),
     )
     flatfield_correction_applied: bool = field(default=True, metadata=rw_bool())
     frame_time: float = field(default=0.12, metadata=rw_float())
@@ -91,7 +95,8 @@ class EigerSettings:
     phi_start: float = field(default=0.0, metadata=rw_float())
     photon_energy: float = field(default=8041.0, metadata=rw_float())
     pixel_mask: List[List[int]] = field(
-        default_factory=lambda: [[]], metadata=field_config(value_type=UINT_GRID)
+        default_factory=lambda: [[]],
+        metadata=field_config(value_type=AccessModes.UINT_GRID),
     )
     pixel_mask_applied: bool = field(default=False, metadata=rw_bool())
     roi_mode: str = field(
