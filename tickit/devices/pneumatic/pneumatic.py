@@ -14,9 +14,7 @@ class Pneumatic(ConfigurableDevice):
     Output = TypedDict("Output", {"output": float})
 
     def __init__(
-        self,
-        initial_speed: float = 2.5,
-        initial_state: bool = False,
+        self, initial_speed: float = 2.5, initial_state: bool = False,
     ) -> None:
         """Initialise a Pneumatic object."""
         self.speed: float = initial_speed
@@ -63,10 +61,7 @@ class Pneumatic(ConfigurableDevice):
             callback_period = SimTime(int(1e9 / self.speed))
             self.state = self.target_state
             self.moving = False
-            return DeviceUpdate(
-                Pneumatic.Output(output=self.state),
-                callback_period,
-            )
+            return DeviceUpdate(Pneumatic.Output(output=self.state), callback_period,)
         else:
             return DeviceUpdate(Pneumatic.Output(output=self.state), None)
 

@@ -208,36 +208,28 @@ async def test_cryostream_adapter_set_status_format(
 
 
 @pytest.mark.asyncio
-async def test_cryostream_adapter_plat(
-    cryostream_adapter: CryostreamAdapter,
-):
+async def test_cryostream_adapter_plat(cryostream_adapter: CryostreamAdapter,):
     await cryostream_adapter.plat((1).to_bytes(2, byteorder="big"))
     device = cryostream_adapter._device
     device.plat.assert_awaited_once_with(1)
 
 
 @pytest.mark.asyncio
-async def test_cryostream_adapter_end(
-    cryostream_adapter: CryostreamAdapter,
-):
+async def test_cryostream_adapter_end(cryostream_adapter: CryostreamAdapter,):
     await cryostream_adapter.end((360).to_bytes(2, byteorder="big"))
     device = cryostream_adapter._device
     device.end.assert_awaited_once_with(360)
 
 
 @pytest.mark.asyncio
-async def test_cryostream_adapter_cool(
-    cryostream_adapter: CryostreamAdapter,
-):
+async def test_cryostream_adapter_cool(cryostream_adapter: CryostreamAdapter,):
     await cryostream_adapter.cool((300).to_bytes(2, byteorder="big"))
     device = cryostream_adapter._device
     device.cool.assert_awaited_once_with(300)
 
 
 @pytest.mark.asyncio
-async def test_cryostream_adapter_ramp(
-    cryostream_adapter: CryostreamAdapter,
-):
+async def test_cryostream_adapter_ramp(cryostream_adapter: CryostreamAdapter,):
     values = struct.pack(">HH", 360, 1000)
     await cryostream_adapter.ramp(values)
     device = cryostream_adapter._device

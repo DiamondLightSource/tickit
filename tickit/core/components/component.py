@@ -88,8 +88,7 @@ class ConfigurableComponent:
         arguments.
         """
         cls = configurable(
-            ComponentConfig,
-            ignore=["state_consumer", "state_producer"],
+            ComponentConfig, ignore=["state_consumer", "state_producer"],
         )(cls)
 
 
@@ -125,10 +124,7 @@ class BaseComponent(ConfigurableComponent):
         await self.on_tick(input.time, input.changes)
 
     async def output(
-        self,
-        time: SimTime,
-        changes: Changes,
-        call_at: Optional[SimTime],
+        self, time: SimTime, changes: Changes, call_at: Optional[SimTime],
     ) -> None:
         """Constructs and sends an Output message to the component output topic.
 

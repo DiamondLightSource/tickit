@@ -79,6 +79,5 @@ def test_config_configures(TestDerived):
 
 def test_configurable_kwargs(TestDerived):
     assert {"derived_field": 42} == TestDerived.TestDerivedConfig(
-        base_prop="Hello",
-        derived_field=42,
+        base_prop="Hello", derived_field=42,
     ).kwargs

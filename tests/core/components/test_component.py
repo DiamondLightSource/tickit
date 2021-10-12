@@ -111,8 +111,7 @@ async def test_base_component_raise_interrupt_sends_output(
     test_component.state_producer.produce = AsyncMock()  # type: ignore
     await test_component.raise_interrupt()
     test_component.state_producer.produce.assert_awaited_once_with(
-        output_topic(ComponentID("TestBase")),
-        Interrupt(ComponentID("TestBase")),
+        output_topic(ComponentID("TestBase")), Interrupt(ComponentID("TestBase")),
     )
 
 
@@ -161,8 +160,7 @@ async def test_base_component_on_tick_raises_not_implemented(
 
 
 def test_create_simulations_creates_configured(
-    MockConsumer: Type[StateConsumer],
-    MockProducer: Type[StateProducer],
+    MockConsumer: Type[StateConsumer], MockProducer: Type[StateProducer],
 ):
     MockComponent = MagicMock(Component, instance=False)
     MockComponentConfig = MagicMock(ComponentConfig, instance=False)
@@ -172,15 +170,12 @@ def test_create_simulations_creates_configured(
 
     create_components([config], MockConsumer, MockProducer)
     config.configures().assert_called_once_with(
-        name=config.name,
-        state_consumer=MockConsumer,
-        state_producer=MockProducer,
+        name=config.name, state_consumer=MockConsumer, state_producer=MockProducer,
     )
 
 
 def test_create_simulations_creates_configured_with_kwargs(
-    MockConsumer: Type[StateConsumer],
-    MockProducer: Type[StateProducer],
+    MockConsumer: Type[StateConsumer], MockProducer: Type[StateProducer],
 ):
     MockComponent = MagicMock(Component, instance=False)
     MockComponentConfig = MagicMock(ComponentConfig, instance=False)
@@ -198,8 +193,7 @@ def test_create_simulations_creates_configured_with_kwargs(
 
 
 def test_create_simulations_returns_created_simulations(
-    MockConsumer: Type[StateConsumer],
-    MockProducer: Type[StateProducer],
+    MockConsumer: Type[StateConsumer], MockProducer: Type[StateProducer],
 ):
     MockComponent = MagicMock(Component, instance=False)
     MockComponentConfig = MagicMock(ComponentConfig, instance=False)

@@ -22,11 +22,7 @@ class ExampleHTTPDevice(ConfigurableDevice):
 
     Outputs: TypedDict = TypedDict("Outputs", {"bar": float})
 
-    def __init__(
-        self,
-        foo: bool = False,
-        bar: Optional[int] = 10,
-    ) -> None:
+    def __init__(self, foo: bool = False, bar: Optional[int] = 10,) -> None:
         """An example HTTP device constructor which configures the ... .
 
         Args:
@@ -74,9 +70,7 @@ class ExampleHTTPAdapter(HTTPAdapter, ConfigurableAdapter):
             port (Optional[str]): The bound port of the HTTPServer. Defaults to 8080.
         """
         super().__init__(
-            device,
-            raise_interrupt,
-            HTTPServer(host, port, ByteFormat(b"%b\r\n")),
+            device, raise_interrupt, HTTPServer(host, port, ByteFormat(b"%b\r\n")),
         )
 
     @HTTPEndpoint.put("/command/foo/")
