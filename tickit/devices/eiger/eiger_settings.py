@@ -77,7 +77,7 @@ class EigerSettings:
     detector_distance: float = field(default=2.0, metadata=rw_float())
     detector_number: str = field(default="EIGERSIM001", metadata=ro_str())
     detector_readout_time: float = field(default=0.01, metadata=rw_float())
-    element: str = field(default="Oganesson", metadata=rw_str())
+    element: str = field(default="Og", metadata=rw_str())
     flatfield: List[List[float]] = field(
         default_factory=lambda: [[]],
         metadata=field_config(value_type=AccessModes.FLOAT_GRID),
