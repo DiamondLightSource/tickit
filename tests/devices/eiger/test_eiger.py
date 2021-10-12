@@ -286,7 +286,7 @@ async def test_eiger_get_status(
             {"command_method": "disarm_eiger", "expected": "Disarming Eiger..."},
             id="arm",
         ),
-        # TODO: Write proper trigger() test
+        # TODO: Write proper trigger_eiger() test
         # pytest.param(
         #     {"command_method": "trigger_eiger", "expected": str},
         #     id="trigger",
