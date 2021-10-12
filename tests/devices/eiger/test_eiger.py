@@ -271,37 +271,49 @@ async def test_eiger_get_status(
     assert get_status_test["expected"] == resp.text
 
 
+@pytest.mark.parametrize(
+    "command_test",
+    [
+        pytest.param(
+            {"command_method": "initialize_eiger", "expected": "Initializing Eiger..."},
+            id="initialize",
+        ),
+        pytest.param(
+            {"command_method": "arm_eiger", "expected": "Arming Eiger..."},
+            id="arm",
+        ),
+        pytest.param(
+            {"command_method": "disarm_eiger", "expected": "Disarming Eiger..."},
+            id="arm",
+        ),
+        # TODO: Write proper trigger() test
+        # pytest.param(
+        #     {"command_method": "trigger_eiger", "expected": str},
+        #     id="trigger",
+        # ),
+        pytest.param(
+            {"command_method": "cancel_eiger", "expected": "Cancelling Eiger..."},
+            id="cancel",
+        ),
+        pytest.param(
+            {"command_method": "abort_eiger", "expected": "Aborting Eiger..."},
+            id="abort",
+        ),
+    ],
+)
 @pytest.mark.asyncio
-async def test_eiger_initialize_command(
-    eiger_adapter: EigerAdapter, mock_request: MagicMock
+async def test_eiger_command(
+    eiger_adapter: EigerAdapter, mock_request: MagicMock, command_test
 ):
 
-    eiger_adapter._device.initialize.return_value = State.IDLE
+    # eiger_adapter._device.initialize.return_value = State.IDLE
 
-    resp = await eiger_adapter.initialize_eiger(mock_request)
+    command_func = getattr(eiger_adapter, command_test["command_method"])
 
-    assert isinstance(resp, web.Response)
-    assert "Initializing Eiger..." == resp.text
-
-
-@pytest.mark.asyncio
-async def test_eiger_arm_command(eiger_adapter: EigerAdapter, mock_request: MagicMock):
-
-    resp = await eiger_adapter.arm_eiger(mock_request)
+    resp = await command_func(mock_request)
 
     assert isinstance(resp, web.Response)
-    assert "Arming Eiger..." == resp.text
-
-
-@pytest.mark.asyncio
-async def test_eiger_disarm_command(
-    eiger_adapter: EigerAdapter, mock_request: MagicMock
-):
-
-    resp = await eiger_adapter.disarm_eiger(mock_request)
-
-    assert isinstance(resp, web.Response)
-    assert "Disarming Eiger..." == resp.text
+    assert command_test["expected"] == resp.text
 
 
 @pytest.mark.asyncio
@@ -314,25 +326,3 @@ async def test_eiger_trigger_command(
     assert isinstance(resp, web.Response)
     # TODO: Add specific strings to this test
     assert isinstance(resp.text, str)
-
-
-@pytest.mark.asyncio
-async def test_eiger_cancel_command(
-    eiger_adapter: EigerAdapter, mock_request: MagicMock
-):
-
-    resp = await eiger_adapter.cancel_eiger(mock_request)
-
-    assert isinstance(resp, web.Response)
-    assert "Cancelling Eiger..." == resp.text
-
-
-@pytest.mark.asyncio
-async def test_eiger_abort_command(
-    eiger_adapter: EigerAdapter, mock_request: MagicMock
-):
-
-    resp = await eiger_adapter.abort_eiger(mock_request)
-
-    assert isinstance(resp, web.Response)
-    assert "Aborting Eiger..." == resp.text
