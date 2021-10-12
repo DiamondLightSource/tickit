@@ -1,17 +1,7 @@
 - tickit.core.components.device_simulation.DeviceSimulation:
-    adapters: []
-    device:
-      tickit.devices.source.Source:
-        value: 0.5
-    inputs: {}
-    name: source
-- tickit.core.components.device_simulation.DeviceSimulation:
     adapters:
       - tickit.devices.eiger.eiger.EigerAdapter: {}
     device:
-      tickit.devices.eiger.eiger.Eiger:
-        foo: 0.5
-        bar: 10
-    inputs:
-      foo: source:value
+      tickit.devices.eiger.eiger.Eiger: {}
+    inputs: {}
     name: eiger
