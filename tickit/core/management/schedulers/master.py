@@ -65,7 +65,8 @@ class MasterScheduler(BaseScheduler):
         """
         await self.setup()
         await self.ticker(
-            self._initial_time, self.ticker.components,
+            self._initial_time,
+            self.ticker.components,
         )
         self.last_time = time_ns()
         while True:

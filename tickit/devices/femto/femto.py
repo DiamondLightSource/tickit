@@ -15,7 +15,9 @@ class Femto(ConfigurableDevice):
     Output = TypedDict("Output", {"current": float})
 
     def __init__(
-        self, initial_gain: float = 2.5, initial_current: float = 0.0,
+        self,
+        initial_gain: float = 2.5,
+        initial_current: float = 0.0,
     ) -> None:
         """Initialise the Femto device class.
 

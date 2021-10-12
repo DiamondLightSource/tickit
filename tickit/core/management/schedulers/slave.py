@@ -52,7 +52,8 @@ class SlaveScheduler(BaseScheduler):
 
     @staticmethod
     def add_exposing_wiring(
-        wiring: Union[Wiring, InverseWiring], expose: Dict[PortID, ComponentPort],
+        wiring: Union[Wiring, InverseWiring],
+        expose: Dict[PortID, ComponentPort],
     ) -> InverseWiring:
         """Adds wiring to expose slave scheduler outputs.
 

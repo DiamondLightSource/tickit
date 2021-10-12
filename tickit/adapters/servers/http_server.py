@@ -32,7 +32,9 @@ class HTTPServer(ConfigurableServer):
         self.app = web.Application()
         self.routes = web.RouteTableDef()
 
-    async def run_forever(self,) -> None:
+    async def run_forever(
+        self,
+    ) -> None:
         """Runs the HTTP server indefinitely on the configured host and port.
 
         An asynchronous method used to run the server indefinitely on the configured

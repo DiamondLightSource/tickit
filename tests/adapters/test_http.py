@@ -56,10 +56,14 @@ def raise_interrupt():
 
 @pytest.fixture
 def http_adapter(
-    mock_device: Mock, raise_interrupt: Mock, mock_server: Mock,
+    mock_device: Mock,
+    raise_interrupt: Mock,
+    mock_server: Mock,
 ):
     return type("TestHTTPAdapter", (HTTPAdapter,), {})(
-        mock_device, raise_interrupt, mock_server,
+        mock_device,
+        raise_interrupt,
+        mock_server,
     )
 
 

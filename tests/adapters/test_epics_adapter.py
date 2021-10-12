@@ -134,7 +134,8 @@ def filter1_db_file_contents() -> Dict[str, bytes]:
     ],
 )
 def test_epics_adapter_load_records_without_DTYP_fields_method(
-    epics_adapter: EpicsAdapter, test_params: Dict[str, bytes],
+    epics_adapter: EpicsAdapter,
+    test_params: Dict[str, bytes],
 ):
 
     data = test_params["data"]

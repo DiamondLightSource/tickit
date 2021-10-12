@@ -96,7 +96,9 @@ def configurable_base(cls: Cls) -> Cls:
         for sub in rec_subclasses(cls):
             annotations[configurable_alias(sub)] = Tagged[sub]  # type: ignore
         deserialization_union = type(
-            cls.__name__, (TaggedUnion,), deserialization_namespace,
+            cls.__name__,
+            (TaggedUnion,),
+            deserialization_namespace,
         )
         return Conversion(
             lambda obj: get_tagged(obj)[1], source=deserialization_union, target=cls
