@@ -77,7 +77,9 @@ class EigerSettings:
     detector_distance: float = field(default=2.0, metadata=rw_float())
     detector_number: str = field(default="EIGERSIM001", metadata=ro_str())
     detector_readout_time: float = field(default=0.01, metadata=rw_float())
-    element: str = field(default="Og", metadata=rw_str())
+    _element: str = field(
+        default="Co", metadata=rw_str(allowed_values=[e.name for e in KA_Energies])
+    )
     flatfield: List[List[float]] = field(
         default_factory=lambda: [[]],
         metadata=field_config(value_type=AccessModes.FLOAT_GRID),
@@ -93,7 +95,7 @@ class EigerSettings:
     omega_start: float = field(default=0.0, metadata=rw_float())
     phi_increment: float = field(default=0.0, metadata=rw_float())
     phi_start: float = field(default=0.0, metadata=rw_float())
-    photon_energy: float = field(default=8041.0, metadata=rw_float())
+    photon_energy: float = field(default=6930.32, metadata=rw_float())
     pixel_mask: List[List[int]] = field(
         default_factory=lambda: [[]],
         metadata=field_config(value_type=AccessModes.UINT_GRID),
@@ -117,5 +119,11 @@ class EigerSettings:
     y_pixel_size: float = field(default=0.01, metadata=ro_float())
     y_pixels_in_detector: int = field(default=FRAME_HEIGHT, metadata=rw_int())
 
-    # def set_element(self, element: str) -> bool:
-    #     return hasattr(KA_ENERGIES, element)
+    @property
+    def element(self) -> str:
+        return self._element
+
+    @element.setter
+    def element(self, elmt: str) -> None:
+        self._element = elmt
+        self.photon_energy = KA_Energies[elmt].value
