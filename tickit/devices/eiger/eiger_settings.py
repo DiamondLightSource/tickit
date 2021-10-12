@@ -1,6 +1,6 @@
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 from enum import Enum
-from typing import List
+from typing import List, Union
 
 from .eiger_schema import (
     AccessModes,
@@ -119,8 +119,14 @@ class EigerSettings:
     y_pixel_size: float = field(default=0.01, metadata=ro_float())
     y_pixels_in_detector: int = field(default=FRAME_HEIGHT, metadata=rw_int())
 
+    def __getitem__(self, key: str) -> Union[str, float, int]:
+        """[Summary]."""
+        PROPERTY_KEYS = asdict(self)
+        return PROPERTY_KEYS[key]
+
     @property
     def element(self) -> str:
+        """Property method for element var."""
         return self._element
 
     @element.setter

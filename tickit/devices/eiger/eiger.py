@@ -146,9 +146,9 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
         param = request.match_info["parameter_name"]
 
         if hasattr(self._device.settings, param):
-            attr = getattr(self._device.settings, param)
+            attr = self._device.settings[param]
         else:
-            attr = None
+            attr = "None"
 
         return web.Response(text=str(attr))
 
@@ -199,9 +199,9 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
         param = request.match_info["status_param"]
 
         if hasattr(self._device.status, param):
-            attr = getattr(self._device.status, param)
+            attr = self._device.status[param]
         else:
-            attr = None
+            attr = "None"
 
         return web.Response(text=str(attr))
 

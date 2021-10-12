@@ -1,7 +1,7 @@
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import List
+from typing import List, Union
 
 
 class State(Enum):
@@ -26,3 +26,8 @@ class EigerStatus:
     temp: float = field(default=24.5)
     humidity: float = field(default=0.2)
     time: datetime = field(default=datetime.now())
+
+    def __getitem__(self, key: str) -> Union[State, List, float, datetime]:
+        """[Summary]."""
+        PROPERTY_KEYS = asdict(self)
+        return PROPERTY_KEYS[key]
