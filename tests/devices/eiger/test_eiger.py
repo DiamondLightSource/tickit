@@ -117,7 +117,9 @@ def test_eiger_set_state(eiger: Eiger):
 
 @pytest.fixture
 def mock_status() -> MagicMock:
-    return create_autospec(EigerStatus, instance=True)
+    status = create_autospec(EigerStatus, instance=True)
+    status.state = State.NA
+    return status
 
 
 @pytest.fixture
@@ -178,6 +180,10 @@ async def test_eiger_get_config(
 ):
 
     mock_request.match_info = {"parameter_name": mock_get_params["param_name"]}
+
+    eiger_adapter._device.settings.__getitem__.return_value = mock_get_params[
+        "expected"
+    ]
 
     resp = await eiger_adapter.get_config(mock_request)
 
@@ -261,9 +267,9 @@ async def test_eiger_get_status(
     eiger_adapter: EigerAdapter, mock_request: MagicMock, get_status_test
 ):
 
-    eiger_adapter._device.status.state = State.NA
-
     mock_request.match_info = {"status_param": get_status_test["param"]}
+
+    eiger_adapter._device.status.__getitem__.return_value = get_status_test["expected"]
 
     resp = await eiger_adapter.get_status(mock_request)
 
