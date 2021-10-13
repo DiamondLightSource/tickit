@@ -1,6 +1,6 @@
-from dataclasses import asdict, dataclass, field
+from dataclasses import dataclass, field, fields
 from enum import Enum
-from typing import List, Union
+from typing import Any, List
 
 from .eiger_schema import (
     AccessModes,
@@ -17,7 +17,7 @@ FRAME_WIDTH: int = 4148
 FRAME_HEIGHT: int = 4362
 
 
-class KA_Energies(Enum):
+class KA_Energy(Enum):
     """Possible element K-alpha energies for samples."""
 
     Li: float = 54.3
@@ -78,7 +78,7 @@ class EigerSettings:
     detector_number: str = field(default="EIGERSIM001", metadata=ro_str())
     detector_readout_time: float = field(default=0.01, metadata=rw_float())
     _element: str = field(
-        default="Co", metadata=rw_str(allowed_values=[e.name for e in KA_Energies])
+        default="Co", metadata=rw_str(allowed_values=[e.name for e in KA_Energy])
     )
     flatfield: List[List[float]] = field(
         default_factory=lambda: [[]],
@@ -119,10 +119,12 @@ class EigerSettings:
     y_pixel_size: float = field(default=0.01, metadata=ro_float())
     y_pixels_in_detector: int = field(default=FRAME_HEIGHT, metadata=rw_int())
 
-    def __getitem__(self, key: str) -> Union[str, float, int]:
+    def __getitem__(self, key: str) -> Any:
         """[Summary]."""
-        PROPERTY_KEYS = asdict(self)
-        return PROPERTY_KEYS[key]
+        f = {}
+        for field_ in fields(self):
+            f[field_.name] = vars(self)[field_.name]
+        return f[key]
 
     @property
     def element(self) -> str:
@@ -132,4 +134,4 @@ class EigerSettings:
     @element.setter
     def element(self, elmt: str) -> None:
         self._element = elmt
-        self.photon_energy = KA_Energies[elmt].value
+        self.photon_energy = KA_Energy[elmt].value

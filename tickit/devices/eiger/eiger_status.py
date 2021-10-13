@@ -1,7 +1,7 @@
-from dataclasses import asdict, dataclass, field
+from dataclasses import dataclass, field, fields
 from datetime import datetime
 from enum import Enum
-from typing import List, Union
+from typing import Any, List
 
 
 class State(Enum):
@@ -27,7 +27,10 @@ class EigerStatus:
     humidity: float = field(default=0.2)
     time: datetime = field(default=datetime.now())
 
-    def __getitem__(self, key: str) -> Union[State, List, float, datetime]:
+    # TODO: Why does this not work when returning a generic TypeVar????
+    def __getitem__(self, key: str) -> Any:
         """[Summary]."""
-        PROPERTY_KEYS = asdict(self)
-        return PROPERTY_KEYS[key]
+        f = {}
+        for field_ in fields(self):
+            f[field_.name] = vars(self)[field_.name]
+        return f[key]
