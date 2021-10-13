@@ -3,6 +3,7 @@ from typing import Any, Iterable
 import pytest
 from immutables import Map
 from mock import AsyncMock, Mock, patch
+from mock.mock import create_autospec
 
 from tickit.core.components.system_simulation import SystemSimulation
 from tickit.core.state_interfaces.internal import (
@@ -28,12 +29,24 @@ def mock_scheduler() -> Iterable[Mock]:
 
 
 @pytest.fixture
-def system_simulation(mock_scheduler) -> SystemSimulation:
+def mock_state_consumer() -> Mock:
+    return create_autospec(InternalStateConsumer, instance=False)
+
+
+@pytest.fixture
+def mock_state_producer() -> Mock:
+    return create_autospec(InternalStateProducer, instance=False)
+
+
+@pytest.fixture
+def system_simulation(
+    patch_scheduler, mock_state_producer, mock_state_consumer
+) -> SystemSimulation:
     return SystemSimulation(
         name=ComponentID("test_system_simulation"),
         components=[],
-        state_consumer=InternalStateConsumer,
-        state_producer=InternalStateProducer,
+        state_consumer=mock_state_consumer,
+        state_producer=mock_state_producer,
         expose={PortID("42"): ComponentPort(ComponentID("43"), PortID("44"))},
     )
 

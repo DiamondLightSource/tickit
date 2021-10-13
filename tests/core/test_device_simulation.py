@@ -9,6 +9,7 @@ from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.state_interfaces.internal import (
     InternalStateConsumer,
     InternalStateProducer,
+    InternalStateServer,
 )
 from tickit.core.typedefs import Changes, ComponentID, PortID, SimTime
 from tickit.devices.source import Source
@@ -26,6 +27,24 @@ def mock_adapter() -> Mock:
 
 
 @pytest.fixture
+def mock_server() -> Mock:
+    return create_autospec(InternalStateServer, instance=True)
+
+
+@pytest.fixture
+def mock_state_producer(mock_server: Mock) -> Mock:
+    mock: Mock = create_autospec(InternalStateProducer, instance=False)
+    mock.return_value = create_autospec(InternalStateProducer, instance=True)
+    mock.return_value.server = mock_server
+    return mock
+
+
+@pytest.fixture
+def mock_state_consumer() -> Mock:
+    return create_autospec(InternalStateConsumer, instance=False)
+
+
+@pytest.fixture
 def patch_asyncio() -> Iterable[Mock]:
     with patch(
         "tickit.core.components.device_simulation.asyncio", autospec=True
@@ -34,21 +53,16 @@ def patch_asyncio() -> Iterable[Mock]:
 
 
 @pytest.fixture
-def patch_internal_server() -> Iterable[Mock]:
-    with patch(
-        "tickit.core.state_interfaces.internal.InternalStateServer", autospec=True
-    ) as mock:
-        yield mock
-
-
-@pytest.fixture
 def device_simulation(
-    source: Source, mock_adapter: AdapterConfig, patch_internal_server
+    source: Source,
+    mock_adapter: AdapterConfig,
+    mock_state_producer: Mock,
+    mock_state_consumer: Mock,
 ) -> DeviceSimulation:
     return DeviceSimulation(
         name=ComponentID("test_device_simulation"),
-        state_consumer=InternalStateConsumer,
-        state_producer=InternalStateProducer,
+        state_consumer=mock_state_consumer,
+        state_producer=mock_state_producer,
         device=source.SourceConfig(42),
         adapters=[mock_adapter],
     )
