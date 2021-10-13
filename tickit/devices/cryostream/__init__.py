@@ -8,13 +8,14 @@ from .cryostream import CryostreamAdapter, CryostreamDevice
 
 @dataclass
 class Cryostream(ComponentConfig):
+    """Cryostream simulation with TCP server."""
+
     host: str = "localhost"
     port: int = 25565
 
-    def __call__(self) -> Component:
+    def __call__(self) -> Component:  # noqa: D102
         return DeviceSimulation(
             name=self.name,
-            inputs=self.inputs,
             device=CryostreamDevice(),
             adapters=[CryostreamAdapter(host=self.host, port=self.port)],
         )

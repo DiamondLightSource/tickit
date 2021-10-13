@@ -1,7 +1,7 @@
 - tickit.devices.pneumatic.Pneumatic:
     name: filter1
     inputs: {}
-    initial_speed: 2.5
+    initial_speed: 0.5
     initial_state: False
     ioc_name: PNEUMATIC
     db_file: tickit/devices/pneumatic/db_files/filter1.db

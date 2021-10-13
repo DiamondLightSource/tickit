@@ -1,5 +1,5 @@
 from importlib import import_module
-from typing import Any, Dict, List, Optional, Type, Union
+from typing import Any, Dict, List, Optional, Type
 
 import yaml
 from apischema import deserialize
@@ -7,9 +7,8 @@ from apischema.conversions import AnyConversion, Conversion
 from apischema.conversions.conversions import Conversion
 from apischema.conversions.converters import default_deserialization
 
-from tickit.core.components.component import Component, ComponentConfig
-
-from .configurable import is_tagged_union
+from tickit.core.components.component import ComponentConfig
+from tickit.utils.configuration.configurable import is_tagged_union
 
 
 def importing_conversion(typ: Type) -> Optional[AnyConversion]:
@@ -35,7 +34,7 @@ def importing_conversion(typ: Type) -> Optional[AnyConversion]:
     return default_deserialization(typ)
 
 
-def read_components(config_path) -> List[Component]:
+def read_configs(config_path) -> List[ComponentConfig]:
     """A utility function which reads and deserializes configs.
 
     A utility function which reads config files, performs yaml deserialization,
@@ -50,9 +49,8 @@ def read_components(config_path) -> List[Component]:
     """
     yaml_struct = yaml.load(open(config_path, "r"), Loader=yaml.Loader)
     configs = deserialize(
-        List[Union[Component, ComponentConfig]],
+        List[ComponentConfig],
         yaml_struct,
         default_conversion=importing_conversion,
     )
-    components = [c if isinstance(c, Component) else c() for c in configs]
-    return components
+    return configs

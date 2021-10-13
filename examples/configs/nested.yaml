@@ -11,9 +11,9 @@
           name: internal_sink
           inputs:
             sink_1: external:input_1
-      # - examples.devices.remote_controlled.RemoteControlled:
-          # name: internal_tcp_controlled
-          # inputs: {}
+      - examples.devices.remote_controlled.RemoteControlled:
+          name: internal_tcp_controlled
+          inputs: {}
     expose:
       output_1: internal_tcp_controlled:observed
 - tickit.devices.sink.Sink:

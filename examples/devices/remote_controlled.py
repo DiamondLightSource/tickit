@@ -225,12 +225,13 @@ class RemoteControlledAdapter(ComposedAdapter):
 
 @dataclass
 class RemoteControlled(ComponentConfig):
-    format: ByteFormat = ByteFormat("%b\r\n")
+    """Thing you can poke over TCP."""
 
-    def __call__(self) -> Component:
+    format: ByteFormat = ByteFormat(b"%b\r\n")
+
+    def __call__(self) -> Component:  # noqa: D102
         return DeviceSimulation(
             name=self.name,
-            inputs=self.inputs,
             device=RemoteControlledDevice(),
             adapters=[RemoteControlledAdapter(TcpServer())],
         )

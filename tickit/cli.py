@@ -8,7 +8,7 @@ from tickit.core.lifetime_runnable import run_all_forever
 from tickit.core.management.event_router import InverseWiring
 from tickit.core.management.schedulers.master import MasterScheduler
 from tickit.core.state_interfaces.state_interface import get_interface, interfaces
-from tickit.utils.configuration.loading import read_components
+from tickit.utils.configuration.loading import read_configs
 
 
 @click.group(invoke_without_command=True)
@@ -45,10 +45,10 @@ def component(config_path: str, component: str, backend: str) -> None:
         component (str): The name of the component to be run.
         backend (str): The message broker to be used.
     """
-    components = read_components(config_path)
-    filtered = [c for c in components if c.name == component]
-    assert len(filtered) == 0, f"Expected only one component {component}"
-    asyncio.run(run_all_forever([filtered[0].run_forever(*get_interface(backend))]))
+    configs = read_configs(config_path)
+    filtered = [c for c in configs if c.name == component]
+    assert len(filtered) == 1, f"Expected only one component {component}"
+    asyncio.run(run_all_forever([filtered[0]().run_forever(*get_interface(backend))]))
 
 
 @main.command(help="run the simulation scheduler")
@@ -61,8 +61,8 @@ def scheduler(config_path: str, backend: str) -> None:
         config_path (str): The path to the configuration file.
         backend (str): The message broker to be used.
     """
-    components = read_components(config_path)
-    inverse_wiring = InverseWiring.from_components(components)
+    configs = read_configs(config_path)
+    inverse_wiring = InverseWiring.from_component_configs(configs)
     scheduler = MasterScheduler(inverse_wiring, *get_interface(backend))
     asyncio.run(run_all_forever([scheduler.run_forever()]))
 
@@ -79,12 +79,12 @@ def all(config_path: str, backend: str) -> None:
         config_path (str): The path to the configuration file.
         backend (str): The message broker to be used.
     """
-    components = read_components(config_path)
-    inverse_wiring = InverseWiring.from_components(components)
+    configs = read_configs(config_path)
+    inverse_wiring = InverseWiring.from_component_configs(configs)
     scheduler = MasterScheduler(inverse_wiring, *get_interface(backend))
     asyncio.run(
         run_all_forever(
-            [c.run_forever(*get_interface(backend)) for c in components]
+            [c().run_forever(*get_interface(backend)) for c in configs]
             + [scheduler.run_forever()]
         )
     )

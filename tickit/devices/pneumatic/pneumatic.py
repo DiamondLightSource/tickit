@@ -1,8 +1,6 @@
-from typing import Callable, Dict
-
 from softioc import builder
 
-from tickit.adapters.epicsadapter import EpicsAdapter, InputRecord, OutputRecord
+from tickit.adapters.epicsadapter import EpicsAdapter
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.compat.typing_compat import TypedDict

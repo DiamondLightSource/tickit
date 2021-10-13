@@ -8,15 +8,16 @@ from .pneumatic import PneumaticAdapter, PneumaticDevice
 
 @dataclass
 class Pneumatic(ComponentConfig):
+    """Pneumatic simulation with EPICS IOC adapter."""
+
     initial_speed: float = 2.5
     initial_state: bool = False
     db_file: str = "tickit/devices/pneumatic/db_files/filter1.db"
     ioc_name: str = "PNEUMATIC"
 
-    def __call__(self) -> Component:
+    def __call__(self) -> Component:  # noqa: D102
         return DeviceSimulation(
             name=self.name,
-            inputs=self.inputs,
             device=PneumaticDevice(
                 initial_speed=self.initial_speed, initial_state=self.initial_state
             ),

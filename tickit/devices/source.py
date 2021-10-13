@@ -45,11 +45,12 @@ class SourceDevice(Device):
 
 @dataclass
 class Source(ComponentConfig):
+    """Source of a fixed value."""
+
     value: Any
 
-    def __call__(self) -> Component:
+    def __call__(self) -> Component:  # noqa: D102
         return DeviceSimulation(
             name=self.name,
-            inputs=self.inputs,
             device=SourceDevice(self.value),
         )

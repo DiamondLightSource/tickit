@@ -12,6 +12,7 @@ class FemtoDevice(Device):
     """Electronic signal amplifier."""
 
     Outputs: TypedDict = TypedDict("Outputs", {"current": float})
+    Inputs: TypedDict = TypedDict("Inputs", {"input": float})
 
     def __init__(
         self,
@@ -64,7 +65,7 @@ class FemtoDevice(Device):
         """
         return self._output_current
 
-    def update(self, time: SimTime, inputs: dict) -> DeviceUpdate:
+    def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
         """Updates the state of the Femto device.
 
         Args:
@@ -74,11 +75,11 @@ class FemtoDevice(Device):
         Returns:
             DeviceUpdate: A container for the Device's outputs and a callback time.
         """
-        current_value = inputs.get("input", None)
+        current_value = inputs["input"]
         if current_value is not None:
             self.set_current(current_value)
 
-        return DeviceUpdate(self.Output(current=self.get_current()), None)
+        return DeviceUpdate(self.Outputs(current=self.get_current()), None)
 
 
 class CurrentDevice(Device):
@@ -105,7 +106,7 @@ class CurrentDevice(Device):
         Returns:
             DeviceUpdate: A container for the Device's outputs and a callback time.
         """
-        output = uniform(0.1, 200.1)
+        output = uniform(100, 200)
         print(
             "Output! (delta: {}, inputs: {}, output: {})".format(time, inputs, output)
         )

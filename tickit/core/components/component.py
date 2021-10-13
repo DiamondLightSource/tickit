@@ -32,7 +32,6 @@ class Component:
     """
 
     name: ComponentID
-    inputs: Dict[PortID, ComponentPort]
 
     @abstractmethod
     async def run_forever(

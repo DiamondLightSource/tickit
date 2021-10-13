@@ -83,13 +83,14 @@ class ExampleHTTPAdapter(HTTPAdapter):
 
 @dataclass
 class ExampleHTTP(ComponentConfig):
+    """Example HTTP device."""
+
     foo: bool = False
     bar: Optional[int] = 10
 
-    def __call__(self) -> Component:
+    def __call__(self) -> Component:  # noqa: D102
         return DeviceSimulation(
             name=self.name,
-            inputs=self.inputs,
             device=ExampleHTTPDevice(foo=self.foo, bar=self.bar),
             adapters=[ExampleHTTPAdapter()],
         )

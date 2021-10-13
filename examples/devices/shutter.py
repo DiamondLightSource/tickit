@@ -156,15 +156,16 @@ class ShutterAdapter(ComposedAdapter):
 
 @dataclass
 class Shutter(ComponentConfig):
+    """Shutter you can open or close over TCP."""
+
     default_position: float
     initial_position: Optional[float] = None
     host: str = "localhost"
     port: int = 25565
 
-    def __call__(self) -> Component:
+    def __call__(self) -> Component:  # noqa: D102
         return DeviceSimulation(
             name=self.name,
-            inputs=self.inputs,
             device=ShutterDevice(
                 default_position=self.default_position,
                 initial_position=self.initial_position,

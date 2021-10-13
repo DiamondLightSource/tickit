@@ -95,11 +95,12 @@ class RandomTrampolineDevice(Device):
 
 @dataclass
 class RandomTrampoline(ComponentConfig):
+    """Random thing that goes boing."""
+
     callback_period: int = int(1e9)
 
-    def __call__(self) -> Component:
+    def __call__(self) -> Component:  # noqa: D102
         return DeviceSimulation(
             name=self.name,
-            inputs=self.inputs,
             device=RandomTrampolineDevice(callback_period=self.callback_period),
         )

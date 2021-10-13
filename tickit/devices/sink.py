@@ -35,9 +35,10 @@ class SinkDevice(Device):
 
 
 class Sink(ComponentConfig):
-    def __call__(self) -> Component:
+    """Arbitrary value sink that logs the value."""
+
+    def __call__(self) -> Component:  # noqa: D102
         return DeviceSimulation(
             name=self.name,
-            inputs=self.inputs,
             device=SinkDevice(),
         )
