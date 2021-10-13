@@ -11,6 +11,7 @@ from tickit.core.device import DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.devices.cryostream.cryostream import Cryostream, CryostreamAdapter
 from tickit.devices.cryostream.states import PhaseIds
+from tickit.devices.cryostream.status import Status
 
 # # # # # Cryostream Tests # # # # #
 
@@ -109,8 +110,15 @@ async def test_cryostream_update_plat(cryostream: Cryostream):
 
 
 @pytest.fixture
-def mock_cryostream() -> Mock:
-    return create_autospec(Cryostream, instance=True)
+def mock_status() -> Mock:
+    return create_autospec(Status, instance=True)
+
+
+@pytest.fixture
+def mock_cryostream(mock_status) -> Mock:
+    mock_cryostream = create_autospec(Cryostream, instance=True)
+    mock_cryostream.get_status.return_value = mock_status
+    return mock_cryostream
 
 
 @pytest.fixture
@@ -137,57 +145,57 @@ async def test_cryostream_adapter_on_connect_gets_device_status(
     cryostream_adapter: CryostreamAdapter,
 ):
     await cryostream_adapter.on_connect().__anext__()
-    device: Mock = cryostream_adapter._device
-    device.get_status.assert_called_with(1)
+    device = cryostream_adapter._device
+    device.get_status.assert_awaited_once_with(1)
 
 
 @pytest.mark.asyncio
 async def test_cryostream_adapter_restart(cryostream_adapter):
     await cryostream_adapter.restart()
-    device: Mock = cryostream_adapter._device
-    device.restart.assert_called()
+    device = cryostream_adapter._device
+    device.restart.assert_awaited_once_with()
 
 
 @pytest.mark.asyncio
 async def test_cryostream_adapter_hold(cryostream_adapter: CryostreamAdapter):
     await cryostream_adapter.hold()
-    device: Mock = cryostream_adapter._device
-    device.hold.assert_called()
+    device = cryostream_adapter._device
+    device.hold.assert_awaited_once_with()
 
 
 @pytest.mark.asyncio
 async def test_cryostream_adapter_purge(cryostream_adapter: CryostreamAdapter):
     await cryostream_adapter.purge()
-    device: Mock = cryostream_adapter._device
-    device.purge.assert_called()
+    device = cryostream_adapter._device
+    device.purge.assert_awaited_once_with()
 
 
 @pytest.mark.asyncio
 async def test_cryostream_adapter_pause(cryostream_adapter: CryostreamAdapter):
     await cryostream_adapter.pause()
-    device: Mock = cryostream_adapter._device
-    device.pause.assert_called()
+    device = cryostream_adapter._device
+    device.pause.assert_awaited_once_with()
 
 
 @pytest.mark.asyncio
 async def test_cryostream_adapter_resume(cryostream_adapter: CryostreamAdapter):
     await cryostream_adapter.resume()
-    device: Mock = cryostream_adapter._device
-    device.resume.assert_called()
+    device = cryostream_adapter._device
+    device.resume.assert_awaited_once_with()
 
 
 @pytest.mark.asyncio
 async def test_cryostream_adapter_stop(cryostream_adapter: CryostreamAdapter):
     await cryostream_adapter.stop()
-    device: Mock = cryostream_adapter._device
-    device.stop.assert_called()
+    device = cryostream_adapter._device
+    device.stop.assert_awaited_once_with()
 
 
 @pytest.mark.asyncio
 async def test_cryostream_adapter_turbo(cryostream_adapter: CryostreamAdapter):
     await cryostream_adapter.turbo((1).to_bytes(1, byteorder="big"))
-    device: Mock = cryostream_adapter._device
-    device.turbo.assert_called_with(1)
+    device = cryostream_adapter._device
+    device.turbo.assert_awaited_once_with(1)
 
 
 @pytest.mark.asyncio
@@ -195,8 +203,8 @@ async def test_cryostream_adapter_set_status_format(
     cryostream_adapter: CryostreamAdapter,
 ):
     await cryostream_adapter.set_status_format((1).to_bytes(1, byteorder="big"))
-    device: Mock = cryostream_adapter._device
-    device.set_status_format.assert_called_with(1)
+    device = cryostream_adapter._device
+    device.set_status_format.assert_awaited_once_with(1)
 
 
 @pytest.mark.asyncio
@@ -204,8 +212,8 @@ async def test_cryostream_adapter_plat(
     cryostream_adapter: CryostreamAdapter,
 ):
     await cryostream_adapter.plat((1).to_bytes(2, byteorder="big"))
-    device: Mock = cryostream_adapter._device
-    device.plat.assert_called_with(1)
+    device = cryostream_adapter._device
+    device.plat.assert_awaited_once_with(1)
 
 
 @pytest.mark.asyncio
@@ -213,8 +221,8 @@ async def test_cryostream_adapter_end(
     cryostream_adapter: CryostreamAdapter,
 ):
     await cryostream_adapter.end((360).to_bytes(2, byteorder="big"))
-    device: Mock = cryostream_adapter._device
-    device.end.assert_called_with(360)
+    device = cryostream_adapter._device
+    device.end.assert_awaited_once_with(360)
 
 
 @pytest.mark.asyncio
@@ -222,8 +230,8 @@ async def test_cryostream_adapter_cool(
     cryostream_adapter: CryostreamAdapter,
 ):
     await cryostream_adapter.cool((300).to_bytes(2, byteorder="big"))
-    device: Mock = cryostream_adapter._device
-    device.cool.assert_called_with(300)
+    device = cryostream_adapter._device
+    device.cool.assert_awaited_once_with(300)
 
 
 @pytest.mark.asyncio
@@ -232,5 +240,5 @@ async def test_cryostream_adapter_ramp(
 ):
     values = struct.pack(">HH", 360, 1000)
     await cryostream_adapter.ramp(values)
-    device: Mock = cryostream_adapter._device
-    device.ramp.assert_called_with(360, 1000)
+    device = cryostream_adapter._device
+    device.ramp.assert_awaited_once_with(360, 1000)

@@ -12,6 +12,15 @@ Unreleased_
 
 Added:
 
+- HTTP REST Adapter & example device
+- Unit tests covering:
+
+  - EPICS Adapter
+  - Cryostream Device & Adapter
+  - Femto Device & Adapter
+  - Pneumatic Device & Adapter
+  - Command Line Interface (CLI)
+
 Changed:
 
 Deprecated:
@@ -19,6 +28,8 @@ Deprecated:
 Removed:
 
 Fixed:
+
+- Cryostream flow rate threshold (from 900K > 90K)
 
 Security:
 

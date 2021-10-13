@@ -160,7 +160,7 @@ async def test_cool():
     await cryostream_base.cool(target_temperature)
     assert cryostream_base.run_mode == RunModes.RUN.value
     assert cryostream_base.phase_id == PhaseIds.COOL.value
-    cryostream_base.ramp.assert_called_once_with(
+    cryostream_base.ramp.assert_awaited_once_with(
         cryostream_base.default_ramp_rate, target_temperature
     )
 
