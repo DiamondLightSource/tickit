@@ -14,7 +14,7 @@ from tickit.core.typedefs import Changes, ComponentID, ComponentPort, PortID, Si
 
 
 @pytest.fixture
-def mock_scheduler() -> Iterable[Mock]:
+def patch_scheduler() -> Iterable[Mock]:
     spec = "tickit.core.components.system_simulation.SlaveScheduler"
     with patch(spec, autospec=True) as mock:
 
@@ -64,16 +64,24 @@ def patch_asyncio() -> Iterable[Mock]:
 
 
 @pytest.mark.asyncio
-async def test_system_simulation_run_forever(
-    system_simulation: SystemSimulation, patch_asyncio
+async def test_system_simulation_set_up_state_inteface_method(
+    system_simulation: SystemSimulation,
 ):
+
     assert not hasattr(system_simulation, "state_producer")
     assert not hasattr(system_simulation, "state_consumer")
 
-    await system_simulation.run_forever()
+    await system_simulation.set_up_state_interfaces()
 
     assert hasattr(system_simulation, "state_producer")
     assert hasattr(system_simulation, "state_consumer")
+
+
+@pytest.mark.asyncio
+async def test_system_simulation_run_forever(
+    system_simulation: SystemSimulation, patch_asyncio
+):
+    await system_simulation.run_forever()
 
     mock_asyncio: Mock = patch_asyncio
     mock_asyncio.wait.assert_awaited_once()

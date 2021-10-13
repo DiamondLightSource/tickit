@@ -73,27 +73,10 @@ def test_device_simulation_constructor(device_simulation: DeviceSimulation):
 
 
 @pytest.mark.asyncio
-async def test_device_simulation_run_forever_method(
+async def test_system_simulation_set_up_state_inteface_method(
     device_simulation: DeviceSimulation,
-    patch_asyncio: Mock,
 ):
-    assert not hasattr(device_simulation, "state_producer")
-    assert not hasattr(device_simulation, "state_consumer")
 
-    await device_simulation.run_forever()
-
-    assert hasattr(device_simulation, "state_producer")
-    assert hasattr(device_simulation, "state_consumer")
-
-    assert isinstance(device_simulation.state_consumer, InternalStateConsumer)
-    assert isinstance(device_simulation.state_producer, InternalStateProducer)
-
-    mock_asyncio: Mock = patch_asyncio
-    assert mock_asyncio.wait.call_count == 1
-
-
-@pytest.mark.asyncio
-async def test_device_simulation_on_tick_method(device_simulation: DeviceSimulation):
     assert not hasattr(device_simulation, "state_producer")
     assert not hasattr(device_simulation, "state_consumer")
 
@@ -102,17 +85,45 @@ async def test_device_simulation_on_tick_method(device_simulation: DeviceSimulat
     assert hasattr(device_simulation, "state_producer")
     assert hasattr(device_simulation, "state_consumer")
 
-    changes: Map[PortID, Hashable] = Map({PortID("42"): 42})
+    assert isinstance(device_simulation.state_consumer, InternalStateConsumer)
+    assert isinstance(device_simulation.state_producer, InternalStateProducer)
 
+
+@pytest.mark.asyncio
+async def test_device_simulation_run_forever_method(
+    device_simulation: DeviceSimulation,
+    patch_asyncio: Mock,
+):
+    await device_simulation.run_forever()
+
+    mock_asyncio: Mock = patch_asyncio
+    assert mock_asyncio.wait.call_count == 1
+
+
+@pytest.mark.asyncio
+async def test_device_simulation_on_tick_method(device_simulation: DeviceSimulation):
+
+    changes: Map[PortID, Hashable] = Map({PortID("42"): 42})
     assert device_simulation.device_inputs == {}
 
+    await device_simulation.set_up_state_interfaces()
     await device_simulation.on_tick(SimTime(0), Changes(changes))
 
     assert device_simulation.device_inputs == {**cast(Mapping[str, Hashable], changes)}
 
+    assert device_simulation.last_outputs == {"value": 42}
+    device_simulation.state_producer.produce.assert_awaited_once()  # type: ignore
+
+
+@pytest.mark.asyncio
+async def test_device_simulation_on_tick_method_triggers_adapter_on_tick_method(
+    device_simulation: DeviceSimulation,
+):
+    changes: Map[PortID, Hashable] = Map({PortID("42"): 42})
+
+    await device_simulation.set_up_state_interfaces()
+    await device_simulation.on_tick(SimTime(0), Changes(changes))
+
     for adapter in device_simulation.adapters:
         if isinstance(adapter, ListeningAdapter):
             adapter.after_update.assert_called_once()  # type: ignore
-
-    assert device_simulation.last_outputs == {"value": 42}
-    device_simulation.state_producer.server.push.assert_called_once()  # type: ignore
