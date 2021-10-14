@@ -37,25 +37,9 @@ def handler() -> Callable[[bytes], AsyncIterable[bytes]]:
 
 
 @pytest.fixture
-def mock_start_server():
+def patch_start_server():
     with patch("asyncio.start_server") as mock:
         yield mock
-
-
-@pytest.mark.asyncio
-async def test_TcpServer_run_forever_method(
-    tcp_server: TcpServer,
-    on_connect: Callable[[], AsyncIterable[bytes]],
-    handler: Callable[[bytes], AsyncIterable[bytes]],
-    mock_start_server: Mock,
-):
-
-    mock_start_server.return_value = AsyncMock()
-
-    await tcp_server.run_forever(on_connect, handler)
-
-    mock_start_server.assert_awaited_once_with(ANY, tcp_server.host, tcp_server.port)
-    mock_start_server.return_value.serve_forever.assert_awaited_once()
 
 
 @pytest.fixture
@@ -68,10 +52,27 @@ def mock_stream_reader() -> Mock:
 @pytest.fixture
 def mock_stream_writer() -> Mock:
     mock: MagicMock = create_autospec(StreamWriter, instance=True)
-    mock.is_closing = Mock(side_effect=[False, True, True])
+    mock.is_closing = Mock(side_effect=[False, False, True])
     mock.write = Mock()
     mock.drain = AsyncMock()
     return mock
+
+
+@pytest.mark.asyncio
+async def test_TcpServer_run_forever_method(
+    tcp_server: TcpServer,
+    on_connect: Callable[[], AsyncIterable[bytes]],
+    handler: Callable[[bytes], AsyncIterable[bytes]],
+    patch_start_server: Mock,
+):
+
+    mock_start_server = patch_start_server
+    mock_start_server.return_value = AsyncMock()
+
+    await tcp_server.run_forever(on_connect, handler)
+
+    mock_start_server.assert_awaited_once_with(ANY, tcp_server.host, tcp_server.port)
+    mock_start_server.return_value.serve_forever.assert_awaited_once()
 
 
 @pytest.mark.asyncio
