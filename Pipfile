@@ -4,31 +4,9 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-# Pinning black stops us having to allow pre-releases globally
-black = "==21.7b0"
-# Pins to make lockfile usable on multiple Python versions and platforms
-mypy = "*"
-typed-ast = "*"
-atomicwrites = "*"
-importlib-metadata = "*"
-# Test and docs dependencies
-pytest-cov = "*"
-pytest-mypy = "*"
-pytest-flake8 = "*"
-pytest-black = "*"
-flake8-isort = "*"
-isort = ">5.0"
-sphinx-rtd-theme-github-versions = "*"
-mock = "*"
-types-mock = "*"
-types-PyYAML = "*"
-pytest-asyncio = "*"
-pytest-pydocstyle = "*"
+tickit = {editable = true, extras = ["dev"], path = "."}
 
 [packages]
-# Required by immutables
-typing-extensions = "*"
-# All other package requirements from setup.cfg
 tickit = {editable = true, path = "."}
 
 [scripts]
