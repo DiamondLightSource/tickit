@@ -1,5 +1,3 @@
-from random import uniform
-
 from softioc import builder
 
 from tickit.adapters.epicsadapter import EpicsAdapter
@@ -11,8 +9,10 @@ from tickit.utils.compat.typing_compat import TypedDict
 class FemtoDevice(Device):
     """Electronic signal amplifier."""
 
-    Outputs: TypedDict = TypedDict("Outputs", {"current": float})
+    #: An empty typed mapping of device inputs
     Inputs: TypedDict = TypedDict("Inputs", {"input": float})
+    #: A typed mapping containing the current output value
+    Outputs: TypedDict = TypedDict("Outputs", {"current": float})
 
     def __init__(
         self,
@@ -80,39 +80,6 @@ class FemtoDevice(Device):
             self.set_current(current_value)
 
         return DeviceUpdate(self.Outputs(current=self.get_current()), None)
-
-
-class CurrentDevice(Device):
-    """The current configured device."""
-
-    Outputs: TypedDict = TypedDict("Outputs", {"output": float})
-
-    def __init__(self, callback_period: int) -> None:
-        """Initialise the current device.
-
-        Args:
-            callback_period (Optional[int]): The duration in which the device should \
-                next be updated. Defaults to int(1e9).
-        """
-        self.callback_period = SimTime(callback_period)
-
-    def update(self, time: SimTime, inputs) -> DeviceUpdate[Outputs]:
-        """Updates the state of the current device.
-
-        Args:
-            time (SimTime): The time of the simulation in nanoseconds.
-            inputs (State): The state of the input values of the device.
-
-        Returns:
-            DeviceUpdate: A container for the Device's outputs and a callback time.
-        """
-        output = uniform(100, 200)
-        print(
-            "Output! (delta: {}, inputs: {}, output: {})".format(time, inputs, output)
-        )
-        return DeviceUpdate(
-            self.Outputs(output=output), SimTime(time + self.callback_period)
-        )
 
 
 class FemtoAdapter(EpicsAdapter):

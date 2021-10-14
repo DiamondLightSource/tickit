@@ -9,6 +9,7 @@ from tickit.utils.compat.typing_compat import TypedDict
 class PneumaticDevice(Device):
     """Pneumatic Device with movement controls."""
 
+    #: A typed mapping containing the current output value
     Outputs: TypedDict = TypedDict("Outputs", {"output": float})
 
     def __init__(

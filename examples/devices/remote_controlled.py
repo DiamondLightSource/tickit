@@ -76,7 +76,7 @@ class RemoteControlledAdapter(ComposedAdapter):
             device (Device): The device which this adapter is attached to.
             raise_interrupt (Callable): A callback to request that the device is
                 updated immediately.
-            server (ServerConfig): The immutable data container used to configure a
+            server (Server): The immutable data container used to configure a
                 server.
         """
         super().__init__(

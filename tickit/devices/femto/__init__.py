@@ -3,7 +3,8 @@ from dataclasses import dataclass
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 
-from .femto import CurrentDevice, FemtoAdapter, FemtoDevice
+from .current import CurrentDevice
+from .femto import FemtoAdapter, FemtoDevice
 
 
 @dataclass
