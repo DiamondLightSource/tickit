@@ -50,6 +50,19 @@ class TcpServer(ConfigurableServer):
                 asynchronous message handler which returns an asynchronous iterable of
                 replies.
         """
+
+        handle = self.generate_handle_function(on_connect, handler)
+
+        server = await asyncio.start_server(handle, self.host, self.port)
+
+        async with server:
+            await server.serve_forever()
+
+    def generate_handle_function(
+        self,
+        on_connect: Callable[[], AsyncIterable[bytes]],
+        handler: Callable[[bytes], Awaitable[AsyncIterable[bytes]]],
+    ):
         tasks: List[asyncio.Task] = list()
 
         async def handle(reader: StreamReader, writer: StreamWriter) -> None:
@@ -76,7 +89,4 @@ class TcpServer(ConfigurableServer):
 
             await asyncio.wait(tasks)
 
-        server = await asyncio.start_server(handle, self.host, self.port)
-
-        async with server:
-            await server.serve_forever()
+        return handle
