@@ -50,7 +50,6 @@ class TcpServer(ConfigurableServer):
                 asynchronous message handler which returns an asynchronous iterable of
                 replies.
         """
-
         handle = self.generate_handle_function(on_connect, handler)
 
         server = await asyncio.start_server(handle, self.host, self.port)
@@ -62,7 +61,19 @@ class TcpServer(ConfigurableServer):
         self,
         on_connect: Callable[[], AsyncIterable[bytes]],
         handler: Callable[[bytes], Awaitable[AsyncIterable[bytes]]],
-    ):
+    ) -> Callable[[StreamReader, StreamWriter], Awaitable[None]]:
+        """Generates the handle function to be passed to the server.
+
+        The handle function is generated from the specified functions. It's purpose is
+        to define how the server will respond to incoming messages.
+
+        Args:
+            on_connect (Callable[[], AsyncIterable[bytes]]): An asynchronous iterable
+                of messages to be sent upon client connection.
+            handler (Callable[[bytes], Awaitable[AsyncIterable[bytes]]]): An
+                asynchronous message handler which returns an asynchronous iterable of
+                replies.
+        """
         tasks: List[asyncio.Task] = list()
 
         async def handle(reader: StreamReader, writer: StreamWriter) -> None:
