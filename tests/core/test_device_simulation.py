@@ -85,8 +85,9 @@ async def test_system_simulation_set_up_state_inteface_method(
     assert hasattr(device_simulation, "state_producer")
     assert hasattr(device_simulation, "state_consumer")
 
-    assert isinstance(device_simulation.state_consumer, InternalStateConsumer)
-    assert isinstance(device_simulation.state_producer, InternalStateProducer)
+    device_simulation._state_producer_cls.assert_called_once()  # type: ignore
+    device_simulation._state_consumer_cls.assert_called_once()  # type: ignore
+    device_simulation.state_consumer.subscribe.assert_awaited_once()  # type: ignore
 
 
 @pytest.mark.asyncio
