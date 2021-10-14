@@ -1,6 +1,9 @@
+from dataclasses import dataclass, field
 from enum import Enum
 from functools import partial
-from typing import Any, Mapping
+from typing import Any, Generic, List, Mapping, Optional, TypeVar
+
+T = TypeVar("T")
 
 
 def field_config(**kwargs) -> Mapping[str, Any]:
@@ -21,7 +24,7 @@ def field_config(**kwargs) -> Mapping[str, Any]:
 #
 # API Access Mode Identifiers
 #
-class AccessModes(Enum):
+class AccessMode(Enum):
     """Possible access modes for field metadata."""
 
     READ_ONLY: str = "r"
@@ -43,39 +46,59 @@ class AccessModes(Enum):
 # Shortcuts to creating dataclass field metadata
 #
 rw_float: partial = partial(
-    field_config, value_type=AccessModes.FLOAT, access_mode=AccessModes.READ_WRITE
+    field_config, value_type=AccessMode.FLOAT, access_mode=AccessMode.READ_WRITE
 )
 ro_float: partial = partial(
-    field_config, value_type=AccessModes.FLOAT, access_mode=AccessModes.READ_ONLY
+    field_config, value_type=AccessMode.FLOAT, access_mode=AccessMode.READ_ONLY
 )
 rw_int: partial = partial(
-    field_config, value_type=AccessModes.INT, access_mode=AccessModes.READ_WRITE
+    field_config, value_type=AccessMode.INT, access_mode=AccessMode.READ_WRITE
 )
 ro_int: partial = partial(
-    field_config, value_type=AccessModes.INT, access_mode=AccessModes.READ_ONLY
+    field_config, value_type=AccessMode.INT, access_mode=AccessMode.READ_ONLY
 )
 rw_uint: partial = partial(
-    field_config, value_type=AccessModes.UINT, access_mode=AccessModes.READ_WRITE
+    field_config, value_type=AccessMode.UINT, access_mode=AccessMode.READ_WRITE
 )
 rw_str: partial = partial(
-    field_config, value_type=AccessModes.STRING, access_mode=AccessModes.READ_WRITE
+    field_config, value_type=AccessMode.STRING, access_mode=AccessMode.READ_WRITE
 )
 ro_str: partial = partial(
-    field_config, value_type=AccessModes.STRING, access_mode=AccessModes.READ_ONLY
+    field_config, value_type=AccessMode.STRING, access_mode=AccessMode.READ_ONLY
 )
 rw_bool: partial = partial(
-    field_config, value_type=AccessModes.BOOL, access_mode=AccessModes.READ_WRITE
+    field_config, value_type=AccessMode.BOOL, access_mode=AccessMode.READ_WRITE
 )
 rw_float_grid: partial = partial(
     field_config,
-    value_type=AccessModes.FLOAT_GRID,
-    access_mode=AccessModes.READ_WRITE,
+    value_type=AccessMode.FLOAT_GRID,
+    access_mode=AccessMode.READ_WRITE,
 )
 rw_uint_grid: partial = partial(
     field_config,
-    value_type=AccessModes.UINT_GRID,
-    access_mode=AccessModes.READ_WRITE,
+    value_type=AccessMode.UINT_GRID,
+    access_mode=AccessMode.READ_WRITE,
 )
 ro_date: partial = partial(
-    field_config, value_type=AccessModes.DATE, access_mode=AccessModes.READ_ONLY
+    field_config, value_type=AccessMode.DATE, access_mode=AccessMode.READ_ONLY
 )
+
+
+@dataclass
+class Value(Generic[T]):
+    """Schema for a value to be returned by the API. Most fields are optional."""
+
+    value: T
+    value_type: str
+    access_mode: Optional[str] = None
+    unit: Optional[str] = None
+    min: Optional[T] = None
+    max: Optional[T] = None
+    allowed_values: Optional[List[str]] = None
+
+
+@dataclass
+class SequenceComplete:
+    """Schema for confirmation returned by operations that do not return values."""
+
+    sequence_id: int = field(default=1, metadata=ro_int())

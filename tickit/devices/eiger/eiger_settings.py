@@ -1,9 +1,9 @@
 from dataclasses import dataclass, field, fields
 from enum import Enum
-from typing import Any, List
+from typing import Any, Dict, List
 
 from .eiger_schema import (
-    AccessModes,
+    AccessMode,
     field_config,
     ro_float,
     ro_str,
@@ -77,12 +77,12 @@ class EigerSettings:
     detector_distance: float = field(default=2.0, metadata=rw_float())
     detector_number: str = field(default="EIGERSIM001", metadata=ro_str())
     detector_readout_time: float = field(default=0.01, metadata=rw_float())
-    _element: str = field(
+    element: str = field(
         default="Co", metadata=rw_str(allowed_values=[e.name for e in KA_Energy])
     )
     flatfield: List[List[float]] = field(
         default_factory=lambda: [[]],
-        metadata=field_config(value_type=AccessModes.FLOAT_GRID),
+        metadata=field_config(value_type=AccessMode.FLOAT_GRID),
     )
     flatfield_correction_applied: bool = field(default=True, metadata=rw_bool())
     frame_time: float = field(default=0.12, metadata=rw_float())
@@ -98,7 +98,7 @@ class EigerSettings:
     photon_energy: float = field(default=6930.32, metadata=rw_float())
     pixel_mask: List[List[int]] = field(
         default_factory=lambda: [[]],
-        metadata=field_config(value_type=AccessModes.UINT_GRID),
+        metadata=field_config(value_type=AccessMode.UINT_GRID),
     )
     pixel_mask_applied: bool = field(default=False, metadata=rw_bool())
     roi_mode: str = field(
@@ -126,12 +126,20 @@ class EigerSettings:
             f[field_.name] = vars(self)[field_.name]
         return f[key]
 
-    @property
-    def element(self) -> str:
-        """Property method for element var."""
-        return self._element
+    def get_metadata(self, attribute_name: str) -> Dict:
+        """Returns the metadata for a field."""
+        return self.__dataclass_fields__[attribute_name].metadata
 
-    @element.setter
-    def element(self, elmt: str) -> None:
-        self._element = elmt
+    @property
+    def _element(self) -> str:
+        """Property method for element var.
+
+        Property method for element var which implicitly maps the property to the
+        corresponding field.
+        """
+        return self._element[::-1]
+
+    @_element.setter
+    def _element(self, elmt: str) -> None:
+        self._element = elmt[::-1]
         self.photon_energy = KA_Energy[elmt].value
