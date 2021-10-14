@@ -30,7 +30,9 @@ def patch_scheduler() -> Iterable[Mock]:
 
 @pytest.fixture
 def mock_state_consumer() -> Mock:
-    return create_autospec(InternalStateConsumer, instance=False)
+    mock = create_autospec(InternalStateConsumer, instance=False)
+    mock.return_value = create_autospec(InternalStateConsumer, instance=True)
+    return mock
 
 
 @pytest.fixture
@@ -75,6 +77,10 @@ async def test_system_simulation_set_up_state_inteface_method(
 
     assert hasattr(system_simulation, "state_producer")
     assert hasattr(system_simulation, "state_consumer")
+
+    system_simulation._state_producer_cls.assert_called_once()  # type: ignore
+    system_simulation._state_consumer_cls.assert_called_once()  # type: ignore
+    system_simulation.state_consumer.subscribe.assert_awaited_once()  # type: ignore
 
 
 @pytest.mark.asyncio
