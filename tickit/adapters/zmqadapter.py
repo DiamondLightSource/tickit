@@ -13,9 +13,6 @@ from tickit.utils.byte_format import ByteFormat
 class ZMQStream:
     """A ZeroMQ data stream."""
 
-    _dealer: zmq.DEALER
-    _router: zmq.ROUTER
-
     async def update(self) -> AsyncIterable[int]:
         """A method which continiously yields an int.
 
@@ -35,6 +32,9 @@ class ZeroMQAdapter:
     _stream: ZMQStream
     _raise_interrupt: Callable[[], Awaitable[None]]
     _server: TcpServer
+
+    _dealer: zmq.DEALER
+    _router: zmq.ROUTER
 
     def __init__(
         self,
