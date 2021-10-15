@@ -1,0 +1,9 @@
+- tickit.core.components.device_simulation.DeviceSimulation:
+    adapters:
+    - tickit.adapters.zmqadapter.ZeroMQAdapter:
+          host: localhost
+          port: 5555
+    device:
+      tickit.adapters.zmqadapter.ZeroMQStream: {}
+    inputs: {}
+    name: zeromq
