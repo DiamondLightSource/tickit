@@ -82,7 +82,7 @@ class ZeroMQAdapter(ConfigurableAdapter):
             AsyncIterable[bytes]: An asyncronous iterable of stream packets.
         """
         while True:
-            await asyncio.sleep(2.0)
+            await asyncio.sleep(1.0)
             async for i in self._device.update():
                 yield i
 
