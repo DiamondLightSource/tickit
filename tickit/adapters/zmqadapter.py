@@ -42,7 +42,7 @@ class ZeroMQAdapter(ConfigurableAdapter):
         self,
         device: ZMQStream,
         raise_interrupt: Callable[[], Awaitable[None]],
-        host: str = "localhost",
+        host: str = "127.0.0.1",
         port: int = 5555,
     ) -> None:
         """A ZeroMQAdapter constructor which instantiates a TcpServer with host and port.
@@ -58,9 +58,11 @@ class ZeroMQAdapter(ConfigurableAdapter):
         self._device = device
         self._host = host
         self._port = port
+        self.tasks: List[asyncio.Task] = list()
 
     async def start_stream(self) -> None:
         """[summary]."""
+        LOGGER.debug("Starting stream...")
         self._router = await aiozmq.create_zmq_stream(
             zmq.ROUTER, bind=f"tcp://{self._host}:{self._port}"
         )
@@ -90,28 +92,22 @@ class ZeroMQAdapter(ConfigurableAdapter):
         Yields:
             [type]: [description]
         """
-        tasks: List[asyncio.Task] = list()
+        await self.start_stream()
 
-        self.start_stream()
+        async def reply(replies: AsyncIterable[int]) -> None:
+            async for reply in replies:
+                if reply is None:
+                    LOGGER.debug("No reply...")
+                    continue
+                LOGGER.debug("Data from ZMQ stream: {!r}".format(reply))
 
-        async def handle(dealer: zmq.DEALER, router: zmq.ROUTER) -> None:
-            async def reply(replies: AsyncIterable[int]) -> None:
-                async for reply in replies:
-                    if reply is None:
-                        continue
-                    LOGGER.debug("Replying with {!r}".format(reply))
+                msg = (b"Data", str(reply).encode("utf-8"))
+                self._dealer.write(msg)
+                data = await self._router.read()
+                self._router.write(data)
+                answer = await self._dealer.read()
+                LOGGER.info("Received {!r}".format(answer))
 
-                    for i in range(10):
-                        msg = (b"data", b"ask", str(i).encode("utf-8"))
-                        self._dealer.write(msg)
-                        data = await self._router.read()
-                        self._router.write(data)
-                        answer = await self._dealer.read()
-                        LOGGER.info("Received {!r}".format(answer))
+        self.tasks.append(asyncio.create_task(reply(self.on_connect())))
 
-            tasks.append(asyncio.create_task(reply(self.on_connect())))
-
-        server = await asyncio.start_server(handle, self._host, self._port)
-
-        async with server:
-            await server.serve_forever()
+        await asyncio.wait(self.tasks)

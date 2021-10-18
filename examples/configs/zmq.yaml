@@ -2,6 +2,6 @@
     adapters:
     - tickit.adapters.zmqadapter.ZeroMQAdapter: {}
     device:
-      tickit.adapters.zmqadapter.ZeroMQStream: {}
+      tickit.adapters.zmqadapter.ZMQStream: {}
     inputs: {}
     name: zeromq
