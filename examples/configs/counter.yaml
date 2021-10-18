@@ -1,0 +1,7 @@
+- tickit.core.components.device_simulation.DeviceSimulation:
+    adapters: []
+    device:
+      examples.devices.counter.Counter: 
+        value: 1
+    inputs: {}
+    name: counter
