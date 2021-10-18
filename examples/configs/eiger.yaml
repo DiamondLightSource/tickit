@@ -1,6 +1,8 @@
 - tickit.core.components.device_simulation.DeviceSimulation:
     adapters:
-      - tickit.devices.eiger.eiger.EigerAdapter: {}
+      - tickit.devices.eiger.eiger.EigerAdapter:
+          host: 0.0.0.0
+          port: 8081
     device:
       tickit.devices.eiger.eiger.Eiger: {}
     inputs: {}
