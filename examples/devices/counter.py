@@ -15,13 +15,14 @@ class Counter(ConfigurableDevice):
     #: A typed mapping containing the 'value' output value
     Outputs: TypedDict = TypedDict("Outputs", {"value": int})
 
-    def __init__(self, value: int) -> None:
+    def __init__(self, value: int = 0, callback_period: int = int(1e9)) -> None:
         """A constructor of the counter, which increments the input value.
 
         Args:
             value (Any): An incremented output value.
         """
         self.value = value
+        self.callback_period = SimTime(callback_period)
         LOGGER.debug(f"Initialize with value => {self.value}")
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
@@ -38,4 +39,6 @@ class Counter(ConfigurableDevice):
         """
         self.value += 1
         LOGGER.debug("Incremented {}".format(self.value))
-        return DeviceUpdate(Counter.Outputs(value=self.value), SimTime(time + int(1e9)))
+        return DeviceUpdate(
+            Counter.Outputs(value=self.value), SimTime(time + self.callback_period)
+        )
