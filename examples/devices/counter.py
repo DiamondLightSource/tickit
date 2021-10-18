@@ -19,7 +19,9 @@ class Counter(ConfigurableDevice):
         """A constructor of the counter, which increments the input value.
 
         Args:
-            value (Any): An incremented output value.
+            value (Any): A value to increment.
+            callback_period (int): The simulation time callback period of the device
+                (in nanoseconds). Defaults to int(1e9).
         """
         self.value = value
         self.callback_period = SimTime(callback_period)
@@ -35,7 +37,7 @@ class Counter(ConfigurableDevice):
         Returns:
             DeviceUpdate[Outputs]:
                 The produced update event which contains the incremented value, and
-                never requests a callback.
+                requests a callback of 1s.
         """
         self.value += 1
         LOGGER.debug("Incremented {}".format(self.value))
