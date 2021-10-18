@@ -13,7 +13,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 @dataclass
-class ZMQStream(ConfigurableDevice):
+class ZeroMQStream(ConfigurableDevice):
     """A ZeroMQ data stream."""
 
     async def update(self) -> AsyncIterable[int]:
@@ -32,7 +32,7 @@ class ZMQStream(ConfigurableDevice):
 class ZeroMQAdapter(ConfigurableAdapter):
     """An adapter for a ZeroMQ data stream."""
 
-    _device: ZMQStream
+    _device: ZeroMQStream
     _raise_interrupt: Callable[[], Awaitable[None]]
 
     _dealer: zmq.DEALER
@@ -40,7 +40,7 @@ class ZeroMQAdapter(ConfigurableAdapter):
 
     def __init__(
         self,
-        device: ZMQStream,
+        device: ZeroMQStream,
         raise_interrupt: Callable[[], Awaitable[None]],
         host: str = "127.0.0.1",
         port: int = 5555,
