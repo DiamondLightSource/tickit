@@ -61,6 +61,8 @@ nitpick_ignore = [
     ("py:class", "SimTime"),
     ("py:class", "immutables._map.Map"),
     ("py:class", "_asyncio.Task"),
+    ("py:class", "asyncio.streams.StreamReader"),
+    ("py:class", "asyncio.streams.StreamWriter"),
 ]
 
 # Both the class’ and the __init__ method’s docstring are concatenated and
