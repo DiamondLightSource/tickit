@@ -6,6 +6,7 @@ from typing import AsyncIterable, Awaitable, Callable, List
 import aiozmq
 import zmq
 
+from tickit.core.adapter import ConfigurableAdapter
 from tickit.core.device import ConfigurableDevice
 
 LOGGER = logging.getLogger(__name__)
@@ -28,7 +29,7 @@ class ZMQStream(ConfigurableDevice):
             await asyncio.sleep(1.0)
 
 
-class ZeroMQAdapter:
+class ZeroMQAdapter(ConfigurableAdapter):
     """An adapter for a ZeroMQ data stream."""
 
     _device: ZMQStream
@@ -44,7 +45,7 @@ class ZeroMQAdapter:
         host: str = "localhost",
         port: int = 5555,
     ) -> None:
-        """A CryostreamAdapter constructor which instantiates a TcpServer with host and port.
+        """A ZeroMQAdapter constructor which instantiates a TcpServer with host and port.
 
         Args:
             device (ZMQStream): The ZMQ stream/device which this adapter is attached to
