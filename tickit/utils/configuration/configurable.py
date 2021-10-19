@@ -52,7 +52,7 @@ def as_tagged_union(cls: Cls) -> Cls:
             fullname = sub.__module__ + "." + sub.__name__
             annotations[fullname] = Tagged[sub]  # type: ignore
         deserialization_union = type(
-            cls.__name__,
+            cls.__name__ + "TaggedUnion",
             (TaggedUnion,),
             deserialization_namespace,
         )
