@@ -46,9 +46,9 @@ def component(config_path: str, component: str, backend: str) -> None:
         backend (str): The message broker to be used.
     """
     configs = read_configs(config_path)
-    filtered = [c for c in configs if c.name == component]
-    assert len(filtered) == 1, f"Expected only one component {component}"
-    asyncio.run(run_all_forever([filtered[0]().run_forever(*get_interface(backend))]))
+    config = [config for config in configs if config.name == component]
+    assert len(config) == 1, f"Expected only one component {component}"
+    asyncio.run(run_all_forever([config[0]().run_forever(*get_interface(backend))]))
 
 
 @main.command(help="run the simulation scheduler")
