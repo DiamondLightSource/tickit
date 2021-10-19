@@ -84,7 +84,7 @@ def all(config_path: str, backend: str) -> None:
     scheduler = MasterScheduler(inverse_wiring, *get_interface(backend))
     asyncio.run(
         run_all_forever(
-            [c().run_forever(*get_interface(backend)) for c in configs]
+            [config().run_forever(*get_interface(backend)) for config in configs]
             + [scheduler.run_forever()]
         )
     )
