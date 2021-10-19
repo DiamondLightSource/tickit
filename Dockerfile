@@ -1,5 +1,5 @@
 ##### Shared Environment stage #########################################################
-FROM python:3.9 as base
+FROM python:3.9 AS base
 
 ENV PIP_DEPENDENCIES wheel pipenv
 ENV TICKIT_DIR /tickit
@@ -13,7 +13,7 @@ COPY . ${TICKIT_DIR}
 WORKDIR ${TICKIT_DIR}
 
 ##### Runtime Stage ####################################################################
-from base as runtime
+from base AS runtime
 
 RUN pipenv install --python python3.9 --system --deploy; \
     python3.9 -m pip install .
@@ -21,7 +21,7 @@ RUN pipenv install --python python3.9 --system --deploy; \
 CMD ["python3.9", "-m", "tickit"]
 
 ##### Developer Stage ##################################################################
-from runtime as Developer
+from base AS developer
 
 RUN pipenv install --python python3.9 --system --deploy --dev; \
     python3.9 -m pip install .
