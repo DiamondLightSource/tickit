@@ -119,7 +119,7 @@ class InverseWiring(Default_InverseWiring_Struct):
         Returns:
             InverseWiring: A mapping of component input ports to component output ports.
         """
-       return cls({config.name: config.inputs for config in configs})
+        return cls({config.name: config.inputs for config in configs})
 
 
 class EventRouter:
