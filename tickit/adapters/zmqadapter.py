@@ -1,38 +1,20 @@
 import asyncio
 import logging
-from dataclasses import dataclass
-from typing import AsyncIterable, Awaitable, Callable, List
+from typing import Any, Awaitable, Callable
 
 import aiozmq
 import zmq
 
+from examples.devices.counter import Counter
 from tickit.core.adapter import ConfigurableAdapter
-from tickit.core.device import ConfigurableDevice
 
 LOGGER = logging.getLogger(__name__)
-
-
-@dataclass
-class ZeroMQStream(ConfigurableDevice):
-    """A ZeroMQ data stream."""
-
-    async def update(self) -> AsyncIterable[int]:
-        """A method which continiously yields an int.
-
-        Returns:
-            AsyncIterable[int]: An asyncronous iterable of ints.
-        """
-        i = 0
-        while True:
-            yield i
-            i += 1
-            await asyncio.sleep(1.0)
 
 
 class ZeroMQAdapter(ConfigurableAdapter):
     """An adapter for a ZeroMQ data stream."""
 
-    _device: ZeroMQStream
+    _device: Counter
     _raise_interrupt: Callable[[], Awaitable[None]]
 
     _dealer: zmq.DEALER
@@ -40,7 +22,7 @@ class ZeroMQAdapter(ConfigurableAdapter):
 
     def __init__(
         self,
-        device: ZeroMQStream,
+        device: Counter,
         raise_interrupt: Callable[[], Awaitable[None]],
         host: str = "127.0.0.1",
         port: int = 5555,
@@ -56,9 +38,15 @@ class ZeroMQAdapter(ConfigurableAdapter):
             port (Optional[int]): The bound port of the TcpServer. Defaults to 5555.
         """
         self._device = device
+        # self._raise_interrupt = raise_interrupt
         self._host = host
         self._port = port
-        self.tasks: List[asyncio.Task] = list()
+
+    def after_update(self) -> None:
+        """Updates IOC values immediately following a device update."""
+        current_value = self._device.get_value()
+        LOGGER.info(f"Value updated to : {current_value}")
+        asyncio.create_task(self.send_message(current_value))
 
     async def start_stream(self) -> None:
         """[summary]."""
@@ -75,16 +63,20 @@ class ZeroMQAdapter(ConfigurableAdapter):
         self._dealer.close()
         self._router.close()
 
-    async def on_connect(self) -> AsyncIterable[int]:
-        """A method which continiously yields stream packets.
+    async def send_message(self, reply: Any) -> None:
+        if reply is None:
+            LOGGER.debug("No reply...")
+            pass
+        else:
+            LOGGER.debug("Data from ZMQ stream: {!r}".format(reply))
 
-        Returns:
-            AsyncIterable[bytes]: An asyncronous iterable of stream packets.
-        """
-        while True:
+            msg = (b"Data", str(reply).encode("utf-8"))
+            self._dealer.write(msg)
+            data = await self._router.read()
+            self._router.write(data)
+            answer = await self._dealer.read()
+            LOGGER.info("Received {!r}".format(answer))
             await asyncio.sleep(1.0)
-            async for i in self._device.update():
-                yield i
 
     async def run_forever(self) -> None:
         """[summary].
@@ -93,21 +85,3 @@ class ZeroMQAdapter(ConfigurableAdapter):
             [type]: [description]
         """
         await self.start_stream()
-
-        async def reply(replies: AsyncIterable[int]) -> None:
-            async for reply in replies:
-                if reply is None:
-                    LOGGER.debug("No reply...")
-                    continue
-                LOGGER.debug("Data from ZMQ stream: {!r}".format(reply))
-
-                msg = (b"Data", str(reply).encode("utf-8"))
-                self._dealer.write(msg)
-                data = await self._router.read()
-                self._router.write(data)
-                answer = await self._dealer.read()
-                LOGGER.info("Received {!r}".format(answer))
-
-        self.tasks.append(asyncio.create_task(reply(self.on_connect())))
-
-        await asyncio.wait(self.tasks)
