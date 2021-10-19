@@ -33,7 +33,8 @@ class DeviceSimulation(BaseComponent):
     ) -> None:
         """Sets up state interfaces, runs adapters and blocks until any complete."""
         tasks = run_all(
-            a.run_forever(self.device, self.raise_interrupt) for a in self.adapters
+            adapter.run_forever(self.device, self.raise_interrupt)
+            for adapter in self.adapters
         )
         await super().run_forever(state_consumer, state_producer)
         if tasks:
