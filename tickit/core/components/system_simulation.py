@@ -44,7 +44,8 @@ class SystemSimulationComponent(BaseComponent):
             self.raise_interrupt,
         )
         tasks = run_all(
-            c().run_forever(state_consumer, state_producer) for c in self.components
+            component().run_forever(state_consumer, state_producer)
+            for component in self.components
         ) + run_all([self.scheduler.run_forever()])
         await super().run_forever(state_consumer, state_producer)
         await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
