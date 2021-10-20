@@ -1,0 +1,333 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>How component updates are ordered &mdash; tickit 0.1.1.pre2 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/tickit-logo.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API" href="../reference/api.html" />
+    <link rel="prev" title="Glossary" href="glossary.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: rgb(7, 43, 93)" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> tickit
+          
+
+          
+            
+            <img src="../_static/tickit-logo.svg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.1.pre2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+  
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/installation.html">Installation Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/running-a-simulation.html">Running a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/creating-a-simulation.html">Creating a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/creating-a-device.html">Creating a Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/creating-an-adapter.html">Creating an Adapter</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">How-to Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../how-to/accomplish-a-task.html">How to accomplish a task</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Explanations</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">How component updates are ordered</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#in-depth-walk-through">In depth walk-through</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#determine-which-components-require-an-update">Determine which components require an update</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#schedule-possible-updates">Schedule possible updates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#handle-responses">Handle responses</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#schedule-possible-updates-if-incomplete">Schedule possible updates if incomplete</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/dls-controls/tickit/blob/master/CHANGELOG.rst">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="genindex.html#http://">Index</a></li>
+</ul>
+
+            
+          
+  <!-- Add versions for selected branches + tags -->
+  <p class="caption">
+    <span class="caption-text">Versions</span>
+  </p>
+  <ul id="versions"/>
+  <script>
+    // Add any branches to appear in the side pane here, tags will be added below
+    // Will only appear if docs are built and pushed in gh-pages
+    var versions = ['main', 'master'];
+    var dirs = new Set();
+    function addVersion(name) {
+      if (dirs.has(name)) {
+        var li = document.createElement("li");
+        var a = document.createElement("a");
+        a.href = 'https://dls-controls.github.io/tickit/' + name;
+        a.innerText = name;
+        li.appendChild(a)
+        document.getElementById('versions').appendChild(li);
+      }
+    }
+    Promise.all([
+      // Find gh-pages directories and populate `dirs`
+      fetch("https://api.github.com/repos/dls-controls/tickit/contents?ref=gh-pages")
+      .then(response => response.json())
+      .then(data => data.forEach(function(e) {
+        if (e.type == "dir") dirs.add(e.name);
+      })),
+      // Add tags to `versions`
+      fetch('https://api.github.com/repos/dls-controls/tickit/tags')
+        .then(response => response.json())
+        .then(data => data.forEach(function(e) {
+          versions.push(e.name);
+        }))
+      ]).then(_ => versions.forEach(addVersion))
+  </script>
+
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">tickit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>How component updates are ordered</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/explanations/how-component-updates-are-ordered.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="how-component-updates-are-ordered">
+<h1>How component updates are ordered<a class="headerlink" href="#how-component-updates-are-ordered" title="Permalink to this headline">¶</a></h1>
+<p>Update sequencing is performed with the aim of minimising computational cost
+whilst ensuring that all wired component interactions are captured faithfully.
+As such a simulation <strong>tick</strong> is composed of the following steps:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#determine-which-components-require-an-update">Determine which components require an update</a></p></li>
+<li><p><a class="reference internal" href="#schedule-possible-updates">Schedule possible updates</a></p></li>
+<li><p><a class="reference internal" href="#handle-responses">Handle responses</a></p></li>
+<li><p><a class="reference internal" href="#schedule-possible-updates-if-incomplete">Schedule possible updates if incomplete</a></p></li>
+</ol>
+<div class="section" id="in-depth-walk-through">
+<h2>In depth walk-through<a class="headerlink" href="#in-depth-walk-through" title="Permalink to this headline">¶</a></h2>
+<p>Consider the system shown below, in which outputs of <em>Component A</em> are wired
+to the input of <em>Component B</em> and the first input of <em>Component C</em>, whilst
+the output of <em>Component B</em> is wired to the second input of <em>Component C</em>
+and the input of <em>Component D</em>.</p>
+<div class="figure align-center">
+<img alt="../_images/example-systems.drawio.svg" src="../_images/example-systems.drawio.svg" /></div>
+<div class="section" id="determine-which-components-require-an-update">
+<h3>Determine which components require an update<a class="headerlink" href="#determine-which-components-require-an-update" title="Permalink to this headline">¶</a></h3>
+<p>When performing a tick we begin by discovering which components require
+updates, this is performed by walking the wiring to discover all dependants of
+the <strong>root</strong> component, with the result stored in a collection named
+<code class="docutils literal notranslate"><span class="pre">to_update</span></code>. In the instance where either <em>Component C</em> or <em>Component D</em> are
+the <strong>root</strong>, only they themselves require an update. If <em>Component B</em> is the
+<strong>root</strong>, it will require an update alongside <em>Component C</em> and <em>Component D</em>.
+Whilst if <em>Component A</em> is the <strong>root</strong> all components require an update.</p>
+</div>
+<div class="section" id="schedule-possible-updates">
+<h3>Schedule possible updates<a class="headerlink" href="#schedule-possible-updates" title="Permalink to this headline">¶</a></h3>
+<p>Next, we schedule updates for all components whos dependencies have been
+resolved; Dependency resolution is established by checking whether any of their
+dependencies remain in <code class="docutils literal notranslate"><span class="pre">to_update</span></code>. In the example where <em>Component A</em> serves
+as the <strong>root</strong>, only <em>Component A</em> may have an update scheduled as all other
+components have one or more of their dependencies awaiting update.
+If <em>Component A</em> were not to require an update, either because <em>Component B</em>
+was the root or because <em>Component A</em> had already been resolved, <em>Component B</em>
+would have an update scheduled. Similarly, if <em>Component B</em> had been resolved
+the updates of both <em>Component C</em> and <em>Component D</em> would be scheduled.</p>
+</div>
+<div class="section" id="handle-responses">
+<h3>Handle responses<a class="headerlink" href="#handle-responses" title="Permalink to this headline">¶</a></h3>
+<p>When a component update is completed and the corresponding response is
+recieved, the component can be removed from <code class="docutils literal notranslate"><span class="pre">to_update</span></code> and <a class="reference internal" href="#schedule-possible-updates-if-incomplete">schedule
+possible updates if incomplete</a>.</p>
+</div>
+<div class="section" id="schedule-possible-updates-if-incomplete">
+<h3>Schedule possible updates if incomplete<a class="headerlink" href="#schedule-possible-updates-if-incomplete" title="Permalink to this headline">¶</a></h3>
+<p>If <code class="docutils literal notranslate"><span class="pre">to_update</span></code> is now empty we can assert that the state of the simulation
+has been brought up to date and complete the tick, otherwise we <a class="reference internal" href="#schedule-possible-updates">schedule
+possible updates</a> and <a class="reference internal" href="#handle-responses">handle responses</a> as performed previously.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../reference/api.html" class="btn btn-neutral float-right" title="API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="glossary.html" class="btn btn-neutral float-left" title="Glossary" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Diamond Light Source.
+
+    </p>
+  </div> 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,371 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>tickit &mdash; tickit 0.1.1.pre2 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="_static/tickit-logo.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation Tutorial" href="tutorials/installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: rgb(7, 43, 93)" >
+          
+
+          
+            <a href="#" class="icon icon-home"> tickit
+          
+
+          
+            
+            <img src="_static/tickit-logo.svg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.1.pre2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+  
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/installation.html">Installation Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/running-a-simulation.html">Running a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/creating-a-simulation.html">Creating a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/creating-a-device.html">Creating a Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/creating-an-adapter.html">Creating an Adapter</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">How-to Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="how-to/accomplish-a-task.html">How to accomplish a task</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Explanations</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="explanations/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="explanations/how-component-updates-are-ordered.html">How component updates are ordered</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="reference/api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/dls-controls/tickit/blob/master/CHANGELOG.rst">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="genindex.html#http://">Index</a></li>
+</ul>
+
+            
+          
+  <!-- Add versions for selected branches + tags -->
+  <p class="caption">
+    <span class="caption-text">Versions</span>
+  </p>
+  <ul id="versions"/>
+  <script>
+    // Add any branches to appear in the side pane here, tags will be added below
+    // Will only appear if docs are built and pushed in gh-pages
+    var versions = ['main', 'master'];
+    var dirs = new Set();
+    function addVersion(name) {
+      if (dirs.has(name)) {
+        var li = document.createElement("li");
+        var a = document.createElement("a");
+        a.href = 'https://dls-controls.github.io/tickit/' + name;
+        a.innerText = name;
+        li.appendChild(a)
+        document.getElementById('versions').appendChild(li);
+      }
+    }
+    Promise.all([
+      // Find gh-pages directories and populate `dirs`
+      fetch("https://api.github.com/repos/dls-controls/tickit/contents?ref=gh-pages")
+      .then(response => response.json())
+      .then(data => data.forEach(function(e) {
+        if (e.type == "dir") dirs.add(e.name);
+      })),
+      // Add tags to `versions`
+      fetch('https://api.github.com/repos/dls-controls/tickit/tags')
+        .then(response => response.json())
+        .then(data => data.forEach(function(e) {
+          versions.push(e.name);
+        }))
+      ]).then(_ => versions.forEach(addVersion))
+  </script>
+
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">tickit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>tickit</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tickit">
+<h1>tickit<a class="headerlink" href="#tickit" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://github.com/dls-controls/tickit/actions?query=workflow%3A%22Code+CI%22"><img alt="Code CI" src="https://github.com/dls-controls/tickit/workflows/Code%20CI/badge.svg?branch=master" /></a> <a class="reference external" href="https://github.com/dls-controls/tickit/actions?query=workflow%3A%22Docs+CI%22"><img alt="Docs CI" src="https://github.com/dls-controls/tickit/workflows/Docs%20CI/badge.svg?branch=master" /></a> <a class="reference external" href="https://codecov.io/gh/dls-controls/tickit"><img alt="Test Coverage" src="https://codecov.io/gh/dls-controls/tickit/branch/master/graph/badge.svg" /></a> <a class="reference external" href="https://pypi.org/project/tickit"><img alt="Latest PyPI version" src="https://img.shields.io/pypi/v/tickit.svg" /></a> <a class="reference external" href="https://opensource.org/licenses/Apache-2.0"><img alt="Apache License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" /></a></p>
+<p>An event-based multi-device simulation framework providing configuration and
+orchestration of complex multi-device simulations.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 82%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>PyPI</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">tickit</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Source code</p></td>
+<td><p><a class="reference external" href="https://github.com/dls-controls/tickit">https://github.com/dls-controls/tickit</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Documentation</p></td>
+<td><p><a class="reference external" href="https://dls-controls.github.io/tickit">https://dls-controls.github.io/tickit</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Changelog</p></td>
+<td><p><a class="reference external" href="https://github.com/dls-controls/tickit/blob/master/CHANGELOG.rst">https://github.com/dls-controls/tickit/blob/master/CHANGELOG.rst</a></p></td>
+</tr>
+</tbody>
+</table>
+<p>An example device which emits a random value between <em>0</em> and <em>255</em> whenever
+called and asks to be called again once the simulation has progressed by the
+<code class="docutils literal notranslate"><span class="pre">callback_period</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">RandomTrampoline</span><span class="p">(</span><span class="n">ConfigurableDevice</span><span class="p">):</span>
+
+<span class="n">Inputs</span><span class="p">:</span> <span class="n">TypedDict</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Inputs&quot;</span><span class="p">,</span> <span class="p">{})</span>
+<span class="n">Outputs</span><span class="p">:</span> <span class="n">TypedDict</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Outputs&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">})</span>
+
+<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback_period</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1e9</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">callback_period</span> <span class="o">=</span> <span class="n">SimTime</span><span class="p">(</span><span class="n">callback_period</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">SimTime</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">Inputs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeviceUpdate</span><span class="p">[</span><span class="n">Outputs</span><span class="p">]:</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+    <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+        <span class="s2">&quot;Boing! (delta: </span><span class="si">{}</span><span class="s2">, inputs: </span><span class="si">{}</span><span class="s2">, output: </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">DeviceUpdate</span><span class="p">(</span>
+        <span class="n">RandomTrampoline</span><span class="o">.</span><span class="n">Outputs</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">),</span>
+        <span class="n">SimTime</span><span class="p">(</span><span class="n">time</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback_period</span><span class="p">),</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>An example simulation defines a <strong>RemoteControlled</strong> device named <strong>tcp_contr</strong>
+and a <strong>Sink</strong> device named <strong>contr_sink</strong>. The <strong>observed</strong> output of
+<strong>tcp_contr</strong> is wired to the <strong>input</strong> input of <strong>contr_sink</strong>. Additionally,
+extenal control of <strong>tcp_contr</strong> is afforded by a <strong>RemoteControlledAdapter</strong>
+which is exposed extenally through a <strong>TCPServer</strong>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">tickit.core.components.device_simulation.DeviceSimulation</span><span class="p">:</span>
+    <span class="nt">adapters</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">examples.devices.remote_controlled.RemoteControlledAdapter</span><span class="p">:</span>
+        <span class="nt">server</span><span class="p">:</span>
+        <span class="nt">tickit.adapters.servers.tcp.TcpServer</span><span class="p">:</span>
+            <span class="nt">format</span><span class="p">:</span> <span class="s">&quot;%b\r\n&quot;</span>
+    <span class="nt">device</span><span class="p">:</span>
+      <span class="nt">examples.devices.remote_controlled.RemoteControlled</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
+    <span class="nt">inputs</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tcp_contr</span>
+<span class="p p-Indicator">-</span> <span class="nt">tickit.core.components.device_simulation.DeviceSimulation</span><span class="p">:</span>
+    <span class="nt">adapters</span><span class="p">:</span> <span class="p p-Indicator">[]</span>
+    <span class="nt">device</span><span class="p">:</span>
+      <span class="nt">tickit.devices.sink.Sink</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
+    <span class="nt">inputs</span><span class="p">:</span>
+      <span class="nt">input</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tcp_contr:observed</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">contr_sink</span>
+</pre></div>
+</div>
+<div class="section" id="how-the-documentation-is-structured">
+<h2>How the documentation is structured<a class="headerlink" href="#how-the-documentation-is-structured" title="Permalink to this headline">¶</a></h2>
+<p>Documentation is split into four categories, accessible from links in the side-bar.</p>
+<div class="columns section" id="tutorials">
+<h3>Tutorials<a class="headerlink" href="#tutorials" title="Permalink to this headline">¶</a></h3>
+<p>Tutorials for installation, library and commandline usage. New users start here.</p>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="columns section" id="how-to-guides">
+<h3>How-to Guides<a class="headerlink" href="#how-to-guides" title="Permalink to this headline">¶</a></h3>
+<p>Practical step-by-step guides for the more experienced user.</p>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="columns section" id="explanations">
+<h3>Explanations<a class="headerlink" href="#explanations" title="Permalink to this headline">¶</a></h3>
+<p>Explanation of how the library works and why it works that way.</p>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="columns section" id="reference">
+<h3>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h3>
+<p>Technical reference material, for classes, methods, APIs, commands, and contributing to the project.</p>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="endcolumns section" id="about-the-documentation">
+<h3>About the documentation<a class="headerlink" href="#about-the-documentation" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://documentation.divio.com">Why is the documentation structured this way?</a></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="tutorials/installation.html" class="btn btn-neutral float-right" title="Installation Tutorial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Diamond Light Source.
+
+    </p>
+  </div> 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
