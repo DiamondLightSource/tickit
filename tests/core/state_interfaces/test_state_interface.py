@@ -12,12 +12,18 @@ from tickit.core.state_interfaces.state_interface import (
 
 @pytest.fixture(autouse=True)
 def reset_consumers():
+    old_consumers = state_interface.consumers
     state_interface.consumers = dict()
+    yield
+    state_interface.consumers = old_consumers
 
 
 @pytest.fixture(autouse=True)
 def reset_producers():
+    old_producers = state_interface.producers
     state_interface.producers = dict()
+    yield
+    state_interface.producers = old_producers
 
 
 @pytest.fixture

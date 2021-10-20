@@ -21,7 +21,7 @@ Adapter Class
 -------------
 
 We shall begin by defining the ShutterAdapter class which inherits
-`ConfigurableAdapter` - by doing so a configuration dataclass will automatically be
+`Adapter` - by doing so a configuration dataclass will automatically be
 created for the adapter, allowing easy YAML configuration.
 
 .. code-block:: python
@@ -69,7 +69,7 @@ appending a line break and a ``CommandInterpreter``.
 
 .. note::
     Arguments to the ``__init__`` method may be specified in the simulation config file
-    if the device inherits `ConfigurableAdapter` (excluding ``device`` and
+    if the device inherits `Adapter` (excluding ``device`` and
     ``raise_interrupt`` which are injected at run-time).
 
 Adapter Commands

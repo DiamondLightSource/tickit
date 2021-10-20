@@ -1,19 +1,24 @@
 import asyncio
 import logging
 import struct
-from typing import AsyncIterable, Awaitable, Callable
+from dataclasses import dataclass
+from typing import AsyncIterable
 
 from tickit.adapters.composed import ComposedAdapter
 from tickit.adapters.interpreters.command import CommandInterpreter, RegexCommand
-from tickit.core.adapter import ConfigurableAdapter, ServerConfig
-from tickit.core.device import ConfigurableDevice, DeviceUpdate
+from tickit.adapters.servers.tcp import TcpServer
+from tickit.core.adapter import Server
+from tickit.core.components.component import Component, ComponentConfig
+from tickit.core.components.device_simulation import DeviceSimulation
+from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
+from tickit.utils.byte_format import ByteFormat
 from tickit.utils.compat.typing_compat import TypedDict
 
 LOGGER = logging.getLogger(__name__)
 
 
-class RemoteControlled(ConfigurableDevice):
+class RemoteControlledDevice(Device):
     """A trivial toy device which is controlled by an adapter."""
 
     #: An empty typed mapping of device inputs
@@ -53,19 +58,17 @@ class RemoteControlled(ConfigurableDevice):
                 The produced update event which contains the observed value, the device
                 never requests a callback.
         """
-        return DeviceUpdate(RemoteControlled.Outputs(observed=self.observed), None)
+        return DeviceUpdate(self.Outputs(observed=self.observed), None)
 
 
-class RemoteControlledAdapter(ComposedAdapter, ConfigurableAdapter):
+class RemoteControlledAdapter(ComposedAdapter):
     """A trivial composed adapter which gets and sets device properties."""
 
-    _device: RemoteControlled
+    device: RemoteControlledDevice
 
     def __init__(
         self,
-        device: RemoteControlled,
-        raise_interrupt: Callable[[], Awaitable[None]],
-        server: ServerConfig,
+        server: Server,
     ) -> None:
         """A constructor of the Shutter adapter, which builds the configured server.
 
@@ -73,13 +76,11 @@ class RemoteControlledAdapter(ComposedAdapter, ConfigurableAdapter):
             device (Device): The device which this adapter is attached to.
             raise_interrupt (Callable): A callback to request that the device is
                 updated immediately.
-            server (ServerConfig): The immutable data container used to configure a
+            server (Server): The immutable data container used to configure a
                 server.
         """
         super().__init__(
-            device,
-            raise_interrupt,
-            server.configures()(**server.kwargs),
+            server,
             CommandInterpreter(),
         )
 
@@ -92,7 +93,7 @@ class RemoteControlledAdapter(ComposedAdapter, ConfigurableAdapter):
         """
         while True:
             await asyncio.sleep(5.0)
-            yield "U is {}".format(self._device.unobserved).encode("utf-8")
+            yield "U is {}".format(self.device.unobserved).encode("utf-8")
 
     @RegexCommand(b"\x01")
     async def get_observed_bytes(self) -> bytes:
@@ -101,7 +102,7 @@ class RemoteControlledAdapter(ComposedAdapter, ConfigurableAdapter):
         Returns:
             bytes: The big endian float encoded value of observed.
         """
-        return struct.pack(">f", self._device.observed)
+        return struct.pack(">f", self.device.observed)
 
     @RegexCommand(r"O", format="utf-8")
     async def get_observed_str(self) -> bytes:
@@ -110,7 +111,7 @@ class RemoteControlledAdapter(ComposedAdapter, ConfigurableAdapter):
         Returns:
             bytes: The utf-8 encoded value of observed.
         """
-        return str(self._device.observed).encode("utf-8")
+        return str(self.device.observed).encode("utf-8")
 
     @RegexCommand(b"\x01(.{4})", interrupt=True)
     async def set_observed_bytes(self, value: bytes) -> bytes:
@@ -122,8 +123,8 @@ class RemoteControlledAdapter(ComposedAdapter, ConfigurableAdapter):
         Returns:
             bytes: The big endian float encoded value of observed.
         """
-        self._device.observed = struct.unpack(">f", value)[0]
-        return struct.pack(">f", self._device.observed)
+        self.device.observed = struct.unpack(">f", value)[0]
+        return struct.pack(">f", self.device.observed)
 
     @RegexCommand(r"O=(\d+\.?\d*)", interrupt=True, format="utf-8")
     async def set_observed_str(self, value: float) -> bytes:
@@ -135,8 +136,8 @@ class RemoteControlledAdapter(ComposedAdapter, ConfigurableAdapter):
         Returns:
             bytes: The utf-8 encoded value of observed.
         """
-        self._device.observed = value
-        return "Observed set to {}".format(self._device.observed).encode("utf-8")
+        self.device.observed = value
+        return "Observed set to {}".format(self.device.observed).encode("utf-8")
 
     @RegexCommand(b"\x02")
     async def get_unobserved_bytes(self) -> bytes:
@@ -145,7 +146,7 @@ class RemoteControlledAdapter(ComposedAdapter, ConfigurableAdapter):
         Returns:
             bytes: The big endian float encoded value of unobserved.
         """
-        return struct.pack(">f", self._device.unobserved)
+        return struct.pack(">f", self.device.unobserved)
 
     @RegexCommand(r"U", format="utf-8")
     async def get_unobserved_str(self) -> bytes:
@@ -154,7 +155,7 @@ class RemoteControlledAdapter(ComposedAdapter, ConfigurableAdapter):
         Returns:
             bytes: The utf-8 encoded value of unobserved.
         """
-        return str(self._device.unobserved).encode("utf-8")
+        return str(self.device.unobserved).encode("utf-8")
 
     @RegexCommand(b"\x02(.{4})")
     async def set_unobserved_bytes(self, value: bytes) -> bytes:
@@ -166,8 +167,8 @@ class RemoteControlledAdapter(ComposedAdapter, ConfigurableAdapter):
         Returns:
             bytes: The big endian float encoded value of unobserved.
         """
-        self._device.unobserved = struct.unpack(">f", value)[0]
-        return struct.pack(">f", self._device.unobserved)
+        self.device.unobserved = struct.unpack(">f", value)[0]
+        return struct.pack(">f", self.device.unobserved)
 
     @RegexCommand(r"U=(\d+\.?\d*)", format="utf-8")
     async def set_unobserved_str(self, value: float) -> bytes:
@@ -179,8 +180,8 @@ class RemoteControlledAdapter(ComposedAdapter, ConfigurableAdapter):
         Returns:
             bytes: The utf-8 encoded value of unobserved.
         """
-        self._device.unobserved = value
-        return "Unobserved set to {}".format(self._device.unobserved).encode("utf-8")
+        self.device.unobserved = value
+        return "Unobserved set to {}".format(self.device.unobserved).encode("utf-8")
 
     @RegexCommand(chr(0x1F95A), format="utf-8")
     async def misc(self) -> bytes:
@@ -198,7 +199,7 @@ class RemoteControlledAdapter(ComposedAdapter, ConfigurableAdapter):
         Args:
             value (float): The new value of hidden.
         """
-        LOGGER.info("Hidden set to {}".format(self._device.hidden))
+        LOGGER.info("Hidden set to {}".format(self.device.hidden))
 
     @RegexCommand(r"H", format="utf-8")
     async def get_hidden(self) -> None:
@@ -219,4 +220,18 @@ class RemoteControlledAdapter(ComposedAdapter, ConfigurableAdapter):
         """
         for i in range(1, int(n)):
             await asyncio.sleep(1.0)
-            yield "Observed is {}".format(self._device.observed).encode("utf-8")
+            yield "Observed is {}".format(self.device.observed).encode("utf-8")
+
+
+@dataclass
+class RemoteControlled(ComponentConfig):
+    """Thing you can poke over TCP."""
+
+    format: ByteFormat = ByteFormat(b"%b\r\n")
+
+    def __call__(self) -> Component:  # noqa: D102
+        return DeviceSimulation(
+            name=self.name,
+            device=RemoteControlledDevice(),
+            adapters=[RemoteControlledAdapter(TcpServer())],
+        )

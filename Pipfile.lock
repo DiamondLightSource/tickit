@@ -373,6 +373,13 @@
         }
     },
     "develop": {
+        "aioca": {
+            "hashes": [
+                "sha256:2f01c5fd327916d6c13c7a6106189fd8411ee52f6e34b276368cb831252734f0",
+                "sha256:f5c6f1d1774f5cd96bd7827eda7f9f6a71f735699b424745c3fd8293146211ae"
+            ],
+            "version": "==1.2"
+        },
         "aiohttp": {
             "hashes": [
                 "sha256:02f46fc0e3c5ac58b80d4d56eb0a7c7d97fcef69ace9326289fb9f1955e65cfe",

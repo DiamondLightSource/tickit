@@ -1,17 +1,10 @@
-- tickit.core.components.device_simulation.DeviceSimulation:
-    adapters: []
-    device:
-      tickit.devices.source.Source:
-        value: False
-    inputs: {}
+- tickit.devices.source.Source:
     name: source
-- tickit.core.components.device_simulation.DeviceSimulation:
-    adapters:
-      - examples.devices.http_device.ExampleHTTPAdapter: {}
-    device:
-      examples.devices.http_device.ExampleHTTPDevice:
-        foo: False
-        bar: 10
+    inputs: {}
+    value: False
+- examples.devices.http_device.ExampleHTTP:
+    name: http-device
     inputs:
       foo: source:value
-    name: http-device
+    foo: False
+    bar: 10

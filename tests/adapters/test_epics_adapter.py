@@ -1,11 +1,10 @@
-from dataclasses import is_dataclass
 from typing import Dict
 
 import pytest
 from mock import MagicMock, Mock, create_autospec, mock_open, patch
 
 from tickit.adapters.epicsadapter import EpicsAdapter, InputRecord
-from tickit.core.adapter import ConfigurableAdapter, Interpreter
+from tickit.core.adapter import Adapter, Interpreter
 from tickit.core.device import Device
 
 
@@ -35,16 +34,8 @@ def input_record() -> InputRecord:
     return InputRecord("input", Mock(setter), Mock(getter))
 
 
-def test_epics_adapter_is_configurable_adapter():
-    assert issubclass(EpicsAdapter, ConfigurableAdapter)
-
-
-def test_epics_adapter_configures_dataclass():
-    assert is_dataclass(EpicsAdapter.EpicsAdapterConfig)
-
-
-def test_epics_adapter_config_configures_epics_adapter():
-    assert EpicsAdapter.EpicsAdapterConfig.configures() is EpicsAdapter
+def test_epics_adapter_is_adapter():
+    assert issubclass(EpicsAdapter, Adapter)
 
 
 def test_epics_adapter_constuctor(epics_adapter: EpicsAdapter):
