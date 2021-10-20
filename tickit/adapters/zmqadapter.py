@@ -19,6 +19,7 @@ class ZeroMQAdapter(ConfigurableAdapter):
 
     _dealer: zmq.DEALER
     _router: zmq.ROUTER
+    _message_queue: asyncio.Queue
 
     def __init__(
         self,
@@ -63,20 +64,13 @@ class ZeroMQAdapter(ConfigurableAdapter):
         self._dealer.close()
         self._router.close()
 
-    async def send_message(self, reply: Any) -> None:
-        if reply is None or not hasattr(self, "_dealer"):
-            LOGGER.debug("No reply... or dealer not ready")
-            pass
-        else:
-            LOGGER.debug("Data from ZMQ stream: {!r}".format(reply))
+    async def send_message(self, message: Any) -> None:
+        """[summary].
 
-            msg = (b"Data", str(reply).encode("utf-8"))
-            self._dealer.write(msg)
-            data = await self._router.read()
-            self._router.write(data)
-            answer = await self._dealer.read()
-            LOGGER.info("Received {!r}".format(answer))
-            await asyncio.sleep(1.0)
+        Args:
+            message (Any): [description]
+        """
+        await self._message_queue.put(message)
 
     async def run_forever(self) -> None:
         """[summary].
@@ -84,4 +78,21 @@ class ZeroMQAdapter(ConfigurableAdapter):
         Yields:
             [type]: [description]
         """
+        self._message_queue = asyncio.Queue()
         await self.start_stream()
+        await self._process_message_queue()
+
+    async def _process_message_queue(self) -> None:
+        while True:
+            message = await self._message_queue.get()
+            if message is not None:
+                LOGGER.debug("Data from ZMQ stream: {!r}".format(message))
+
+                msg = (b"Data", str(message).encode("utf-8"))
+                self._dealer.write(msg)
+                data = await self._router.read()
+                self._router.write(data)
+                answer = await self._dealer.read()
+                LOGGER.info("Received {!r}".format(answer))
+            else:
+                LOGGER.debug("No message")
