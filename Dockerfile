@@ -13,17 +13,19 @@ COPY . ${TICKIT_DIR}
 WORKDIR ${TICKIT_DIR}
 
 ##### Runtime Stage ####################################################################
-from base AS runtime
+FROM base AS runtime
 
+WORKDIR ${TICKIT_DIR}
 RUN pipenv install --python python3.9 --system --deploy; \
-    python3.9 -m pip install .
+    python3.9 -m pip install tickit
 
 CMD ["python3.9", "-m", "tickit"]
 
 ##### Developer Stage ##################################################################
-from base AS developer
+FROM base AS developer
 
+WORKDIR ${TICKIT_DIR}
 RUN pipenv install --python python3.9 --system --deploy --dev; \
-    python3.9 -m pip install .
+    python3.9 -m pip install tickit
 
 CMD ["python3.9", "-m", "tickit"]
