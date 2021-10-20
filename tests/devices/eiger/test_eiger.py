@@ -1,3 +1,6 @@
+import json
+from enum import Enum
+
 import pytest
 from aiohttp import web
 from mock import MagicMock, Mock
@@ -23,21 +26,21 @@ def test_eiger_constructor():
 async def test_eiger_initialize(eiger: Eiger):
     await eiger.initialize()
 
-    assert State.IDLE == eiger.get_state()
+    assert State.IDLE.value == eiger.get_state()["value"]
 
 
 @pytest.mark.asyncio
 async def test_eiger_arm(eiger: Eiger):
     await eiger.arm()
 
-    assert State.READY == eiger.get_state()
+    assert State.READY.value == eiger.get_state()["value"]
 
 
 @pytest.mark.asyncio
 async def test_eiger_disarm(eiger: Eiger):
     await eiger.disarm()
 
-    assert State.IDLE == eiger.get_state()
+    assert State.IDLE.value == eiger.get_state()["value"]
 
 
 @pytest.mark.asyncio
@@ -48,7 +51,7 @@ async def test_eiger_trigger_ints_and_ready(eiger: Eiger):
 
     message = await eiger.trigger()
 
-    assert State.ACQUIRE == eiger.get_state()
+    assert State.ACQUIRE.value == eiger.get_state()["value"]
     assert "Aquiring Data from Eiger..." == message
 
 
@@ -61,7 +64,7 @@ async def test_eiger_trigger_not_ints_and_ready(eiger: Eiger):
 
     message = await eiger.trigger()
 
-    assert State.READY == eiger.get_state()
+    assert State.READY.value == eiger.get_state()["value"]
     assert (
         f"Ignoring trigger, state={eiger.status.state},"
         f"trigger_mode={eiger.settings.trigger_mode}" == message
@@ -77,7 +80,7 @@ async def test_eiger_trigger_not_ints_and_not_ready(eiger: Eiger):
 
     message = await eiger.trigger()
 
-    assert State.READY != eiger.get_state()
+    assert State.READY.value != eiger.get_state()["value"]
     assert (
         f"Ignoring trigger, state={eiger.status.state},"
         f"trigger_mode={eiger.settings.trigger_mode}" == message
@@ -88,25 +91,25 @@ async def test_eiger_trigger_not_ints_and_not_ready(eiger: Eiger):
 async def test_eiger_cancel(eiger: Eiger):
     await eiger.cancel()
 
-    assert State.READY == eiger.get_state()
+    assert State.READY.value == eiger.get_state()["value"]
 
 
 @pytest.mark.asyncio
 async def test_eiger_abort(eiger: Eiger):
     await eiger.abort()
 
-    assert State.IDLE == eiger.get_state()
+    assert State.IDLE.value == eiger.get_state()["value"]
 
 
 def test_eiger_get_state(eiger: Eiger):
-    assert State.NA == eiger.get_state()
+    assert State.NA.value == eiger.get_state()["value"]
 
 
 def test_eiger_set_state(eiger: Eiger):
 
     eiger._set_state(State.IDLE)
 
-    assert State.IDLE == eiger.get_state()
+    assert State.IDLE.value == eiger.get_state()["value"]
 
 
 # TODO: Tests for update() once implemented
@@ -150,7 +153,7 @@ def eiger_adapter(mock_eiger: MagicMock) -> EigerAdapter:
     return EigerAdapter(mock_eiger, raise_interrupt, host="localhost", port=8081)
 
 
-def test_eiger_adapter_contructor(mock_eiger):
+def test_eiger_adapter_contructor():
     EigerAdapter(mock_eiger, raise_interrupt, host="localhost", port=8081)
 
 
@@ -158,6 +161,14 @@ def test_eiger_adapter_contructor(mock_eiger):
 def mock_request():
     mock_request = MagicMock(web.Request)
     return mock_request
+
+
+@pytest.fixture
+def mock_valuetype():
+    class mock_valuetype(Enum):
+        INT = "int"
+
+    return mock_valuetype
 
 
 # mock_request.match_info = {"parameter_name": mock_get_params["param_name"]}
@@ -176,7 +187,10 @@ def mock_request():
 )
 @pytest.mark.asyncio
 async def test_eiger_get_config(
-    eiger_adapter: EigerAdapter, mock_request: MagicMock, mock_get_params
+    eiger_adapter: EigerAdapter,
+    mock_request: MagicMock,
+    mock_get_params,
+    mock_valuetype,
 ):
 
     mock_request.match_info = {"parameter_name": mock_get_params["param_name"]}
@@ -184,10 +198,14 @@ async def test_eiger_get_config(
     eiger_adapter._device.settings.__getitem__.return_value = mock_get_params[
         "expected"
     ]
+    eiger_adapter._device.settings.get_metadata.return_value = {
+        "access_mode": "test",
+        "value_type": mock_valuetype.INT,
+    }
 
     resp = await eiger_adapter.get_config(mock_request)
 
-    assert mock_get_params["expected"] == resp.text
+    assert mock_get_params["expected"] == json.loads(resp.text)["value"]
 
 
 @pytest.mark.parametrize(
@@ -197,7 +215,7 @@ async def test_eiger_get_config(
             {
                 "state": State.NA,
                 "param": "count_time",
-                "expected": "Eiger not initialized or is currently running.",
+                "expected": '{"sequence_id": 7}',
             },
             id="good_put_wrong_device_state",
         ),
@@ -205,7 +223,7 @@ async def test_eiger_get_config(
             {
                 "state": State.IDLE,
                 "param": "count_time",
-                "expected": "Set: count_time to 0.5",
+                "expected": '{"sequence_id": 8}',
             },
             id="good_put_right_device_state",
         ),
@@ -213,7 +231,7 @@ async def test_eiger_get_config(
             {
                 "state": State.IDLE,
                 "param": "wrong_param",
-                "expected": "Eiger has no config variable: wrong_param",
+                "expected": '{"sequence_id": 9}',
             },
             id="bad_put_right_device_state",
         ),
@@ -221,7 +239,7 @@ async def test_eiger_get_config(
             {
                 "state": State.NA,
                 "param": "wrong_param",
-                "expected": "Eiger not initialized or is currently running.",
+                "expected": '{"sequence_id": 7}',
             },
             id="bad_put_wrong_device_state",
         ),
@@ -274,22 +292,22 @@ async def test_eiger_get_status(
     resp = await eiger_adapter.get_status(mock_request)
 
     assert isinstance(resp, web.Response)
-    assert get_status_test["expected"] == resp.text
+    assert get_status_test["expected"] == json.loads(str(resp.text))["value"]
 
 
 @pytest.mark.parametrize(
     "command_test",
     [
         pytest.param(
-            {"command_method": "initialize_eiger", "expected": "Initializing Eiger..."},
+            {"command_method": "initialize_eiger", "expected": '{"sequence_id": 1}'},
             id="initialize",
         ),
         pytest.param(
-            {"command_method": "arm_eiger", "expected": "Arming Eiger..."},
+            {"command_method": "arm_eiger", "expected": '{"sequence_id": 2}'},
             id="arm",
         ),
         pytest.param(
-            {"command_method": "disarm_eiger", "expected": "Disarming Eiger..."},
+            {"command_method": "disarm_eiger", "expected": '{"sequence_id": 3}'},
             id="arm",
         ),
         # TODO: Write proper trigger_eiger() test
@@ -298,11 +316,11 @@ async def test_eiger_get_status(
         #     id="trigger",
         # ),
         pytest.param(
-            {"command_method": "cancel_eiger", "expected": "Cancelling Eiger..."},
+            {"command_method": "cancel_eiger", "expected": '{"sequence_id": 5}'},
             id="cancel",
         ),
         pytest.param(
-            {"command_method": "abort_eiger", "expected": "Aborting Eiger..."},
+            {"command_method": "abort_eiger", "expected": '{"sequence_id": 6}'},
             id="abort",
         ),
     ],
