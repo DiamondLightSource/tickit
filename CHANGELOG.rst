@@ -23,6 +23,11 @@ Added:
 
 Changed:
 
+- Reworked config (de)serialization
+  
+  - User may now reference the :code:`ComponentConfig`, which encapsulate a device and adapters
+  - Device & Adapter config classes are no longer autmatically generated, configuration should be performed via the :code:`ComponentConfig`
+
 Deprecated:
 
 Removed:
@@ -30,6 +35,7 @@ Removed:
 Fixed:
 
 - Cryostream flow rate threshold (from 900K > 90K)
+- Added dependency on Click to :code:`setup.cfg`
 
 Security:
 
