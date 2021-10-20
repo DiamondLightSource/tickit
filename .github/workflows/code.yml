@@ -136,7 +136,7 @@ jobs:
           builder: ${{ steps.buildx.output.name }}
           push: ${{ steps.tag.outputs.do_push }}
           tags: |
-            ghcr.io/${{ github.respository }}:${{ steps.tag.outputs.image_tag }}
+            ghcr.io/${{ github.repository }}:${{ steps.tag.outputs.image_tag }}
           target: developer
           cache-from: type=local,src=~/cache
           cache-to: type=local,dest=~/cache
