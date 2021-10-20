@@ -30,6 +30,11 @@ class Status:
     evap_adjust: int
     status_bytes_string: str = ">BBHHhBBHHHHHBBBBBBHHBB"
 
+    @classmethod
+    def from_packed(cls, b: bytes) -> "Status":
+        """Create a status packet from its packed byte format."""
+        return cls(*struct.unpack(cls.status_bytes_string, b))
+
     def pack(self) -> bytes:
         """Perform serialization of the status packet.
 
@@ -100,6 +105,11 @@ class ExtendedStatus:
     time_to_fill: int
     total_hours: int
     extended_packet_string: str = ">BBHHhBBHHHHHBBBBBBHHBBBBBBBBHH"
+
+    @classmethod
+    def from_packed(cls, b: bytes) -> "ExtendedStatus":
+        """Create a status packet from its packed byte format."""
+        return cls(*struct.unpack(cls.extended_packet_string, b))
 
     def pack(self) -> bytes:
         """Perform serialization of the extended status packet.

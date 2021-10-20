@@ -15,16 +15,16 @@ will determine the operation of our device.
 Device Class
 ------------
 
-We shall begin by defining the Shutter class which inerits `ConfigurableDevice` - by
+We shall begin by defining the Shutter class which inherits `Device` - by
 doing so a confiuration dataclass will automatically be created for the device,
 allowing for easy YAML configuration.
 
 .. code-block:: python
 
-    from tickit.core.device import ConfigurableDevice
+    from tickit.core.device import Device
 
 
-    class Shutter(ConfigurableDevice):
+    class ShutterDevice(Device):
 
 Device Constructor and Configuration
 ------------------------------------
@@ -41,10 +41,10 @@ the initial ``position`` will be random.
     from random import random
     from typing import Optional
 
-    from tickit.core.device import ConfigurableDevice
+    from tickit.core.device import Device
 
 
-    class Shutter(ConfigurableDevice):
+    class ShutterDevice(Device):
         def __init__(
             self, default_position: float, initial_position: Optional[float] = None
         ) -> None:
@@ -53,7 +53,7 @@ the initial ``position`` will be random.
 
 .. note::
     Arguments to the ``__init__`` method may be specified in the simulation config file
-    if the device inherits `ConfigurableDevice`.
+    if the device inherits `Device`.
 
 Device Logic
 ------------
@@ -70,11 +70,11 @@ which consists of ``outputs`` - a mapping of output ports and their value - and
     from typing import Optional
     from typing_extensions import TypedDict
 
-    from tickit.core.device import ConfigurableDevice, DeviceUpdate
+    from tickit.core.device import Device, DeviceUpdate
     from tickit.core.typedefs import SimTime
 
 
-    class Shutter(ConfigurableDevice):
+    class ShutterDevice(Device):
         Inputs = TypedDict("Inputs", {"flux": float})
         Outputs = TypedDict("Outputs", {"flux": float})
 
@@ -107,6 +107,33 @@ which consists of ``outputs`` - a mapping of output ports and their value - and
             output_flux = inputs["flux"] * self.position
             return DeviceUpdate(Shutter.Outputs(flux=output_flux), call_at)
 
+Creating a ComponentConfig
+--------------------------
+
+In order to create the Device we must create a `ComponentConfig` that knows how
+to instantiate a Device.
+
+.. code-block:: python
+
+    from tickit.core.components.component import Component, ComponentConfig
+    from tickit.core.components.device_simulation import DeviceSimulation
+
+
+    @dataclass
+    class Shutter(ComponentConfig):
+        default_position: float
+        initial_position: Optional[float] = None
+
+        def __call__(self) -> Component:
+            return DeviceSimulation(
+                name=self.name,
+                device=ShutterDevice(
+                    default_position=self.default_position,
+                    initial_position=self.initial_position,
+                ),
+            )
+
+
 Using the Device
 ----------------
 
@@ -118,28 +145,20 @@ per our implementation, and a `Sink` named sink which will recieve the resulting
 
 .. code-block:: yaml
 
-    - tickit.core.components.device_simulation.DeviceSimulation:
-        adapters: []
-        device:
-          tickit.devices.source.Source:
-            value: 42.0
-        inputs: {}
+    - tickit.devices.source.Source:
         name: source
-    - tickit.core.components.device_simulation.DeviceSimulation:
-        adapters: []
-        device:
-          my_shutter.Shutter:
-            default_position: 0.2
+        inputs: {}
+        value: 42.0
+    - examples.devices.shutter.Shutter:
+        name: shutter
         inputs:
           flux: source:value
-        name: shutter
-    - tickit.core.components.device_simulation.DeviceSimulation:
-        adapters: []
-        device:
-          tickit.devices.sink.Sink: {}
-        inputs:
-          flux: shutter:flux
+        default_position: 0.2
+        initial_position: 0.24
+    - tickit.devices.sink.Sink:
         name: sink
+        inputs:
+        flux: shutter:flux
 
 .. seealso::
     See the `Creating a Simulation` tutorial for a walk-through of creating simulation

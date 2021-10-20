@@ -1,113 +1,65 @@
-import sys
-from dataclasses import dataclass
 from typing import (
-    TYPE_CHECKING,
+    Any,
     AsyncIterable,
     Awaitable,
     Callable,
-    Dict,
+    Generic,
     Optional,
     Tuple,
-    Type,
     TypeVar,
 )
 
-from tickit.utils.configuration.configurable import configurable, configurable_base
+from typing_extensions import Protocol
 
-# TODO: Investigate why import from tickit.utils.compat.typing_compat causes mypy error:
-# >>> 54: error: Argument 1 to "handle" of "Interpreter" has incompatible type
-#     "ComposedAdapter"; expected "Adapter"
-# See mypy issue for details: https://github.com/python/mypy/issues/10851
-if sys.version_info >= (3, 8):
-    from typing import Protocol, runtime_checkable
-elif sys.version_info >= (3, 5):
-    from typing_extensions import Protocol, runtime_checkable
-
-if TYPE_CHECKING:
-    from tickit.core.device import Device
+from tickit.core.device import Device
+from tickit.utils.configuration.configurable import as_tagged_union
 
 #: Message type
 T = TypeVar("T")
 
 
-@runtime_checkable
-class Adapter(Protocol):
-    """An interface for types which implement device adapters."""
+# https://github.com/python/mypy/issues/708#issuecomment-647124281
+class RaiseInterrupt(Protocol):
+    """A raise_interrupt function that should be passed to `Adapter`."""
 
-    def __init__(
-        self, device: "Device", raise_interrupt: Callable[[], Awaitable[None]], **kwargs
-    ) -> None:
-        """The Adapter constructor which takes device, raise_interrupt and key word arguments.
-
-        Args:
-            device (Device): The device which this adapter is attached to.
-            raise_interrupt (Callable): A callback to request that the device is
-                updated immediately.
-        """
+    async def __call__(self) -> None:
+        """The actual call signature."""
         pass
 
-    async def run_forever(self) -> None:
+
+@as_tagged_union
+class Adapter:
+    """An interface for types which implement device adapters."""
+
+    device: Device
+    raise_interrupt: RaiseInterrupt
+
+    def __getattr__(self, name: str) -> Any:
+        """Improve error message for getting attributes before `run_forever`."""
+        if name in ("device", "raise_interrup"):
+            raise RuntimeError(
+                "Can't get self.device or self.raise_interrupt before run_forever()"
+            )
+        return super().__getattribute__(name)
+
+    async def run_forever(
+        self, device: Device, raise_interrupt: RaiseInterrupt
+    ) -> None:
         """An asynchronous method allowing indefinite running of core adapter logic.
 
         An asynchronous method allowing for indefinite running of core adapter logic
         (typically the hosting of a protocol server and the interpretation of commands
         which are supplied via it).
         """
-        pass
-
-
-@runtime_checkable
-class ListeningAdapter(Adapter, Protocol):
-    """An interface for adapters which require to be notified after a device updates."""
+        self.device = device
+        self.raise_interrupt = raise_interrupt
 
     def after_update(self):
         """A method which is called immediately after the device updates."""
-        pass
 
 
-@configurable_base
-@dataclass
-class AdapterConfig:
-    """A data container for adapter configuration.
-
-    A data container for adapter configuration which acts as a named union of subclasses
-    to facilitate automatic deserialization.
-    """
-
-    @staticmethod
-    def configures() -> Type[Adapter]:
-        """A static method which returns the Adapter class configured by this config.
-
-        Returns:
-            Type[Adapter]: The Adapter class configured by this config.
-        """
-        raise NotImplementedError
-
-    @property
-    def kwargs(self) -> Dict[str, object]:
-        """A property which returns the key word arguments of the configured adapter.
-
-        Returns:
-            Dict[str, object]: The key word argument of the configured Adapter.
-        """
-        raise NotImplementedError
-
-
-class ConfigurableAdapter:
-    """A mixin used to create an adapter with a configuration data container."""
-
-    def __init_subclass__(cls) -> None:
-        """A subclass init method which makes the subclass configurable.
-
-        A subclass init method which makes the subclass configurable with a
-        AdapterConfig template, ignoring the "device" and "raise_interrupt"
-        arguments.
-        """
-        cls = configurable(AdapterConfig, ["device", "raise_interrupt"])(cls)
-
-
-@runtime_checkable
-class Interpreter(Protocol[T]):
+@as_tagged_union
+class Interpreter(Generic[T]):
     """An interface for types which handle messages recieved by an adapter."""
 
     async def handle(
@@ -127,16 +79,11 @@ class Interpreter(Protocol[T]):
             Tuple[AsyncIterable[T], bool]: A tuple containing both an asynchronous
                 iterable of reply messages and an interrupt flag.
         """
-        pass
 
 
-@runtime_checkable
-class Server(Protocol[T]):
+@as_tagged_union
+class Server(Generic[T]):
     """An interface for types which implement an external messaging protocol."""
-
-    def __init__(self, **kwargs) -> None:
-        """A Server constructor which may recieve key word arguments."""
-        pass
 
     async def run_forever(
         self,
@@ -152,44 +99,3 @@ class Server(Protocol[T]):
                 asynchronous method used to handle recieved messages, returning an
                 asynchronous iterable of replies.
         """
-        pass
-
-
-@configurable_base
-@dataclass
-class ServerConfig:
-    """A data container for server configuration.
-
-    A data container for server configuration which acts as a named union of subclasses
-    to facilitate automatic deserialization.
-    """
-
-    @staticmethod
-    def configures() -> Type[Server]:
-        """A static method which returns the Adapter class configured by this config.
-
-        Returns:
-            Type[Server]: The Server class configured by this config.
-        """
-        raise NotImplementedError
-
-    @property
-    def kwargs(self) -> Dict[str, object]:
-        """A property which returns the key word arguments of the configured server.
-
-        Returns:
-            Dict[str, object]: The key word argument of the configured Server.
-        """
-        raise NotImplementedError
-
-
-class ConfigurableServer:
-    """A mixin used to create a server with a configuration data container."""
-
-    def __init_subclass__(cls) -> None:
-        """A subclass init method which makes the subclass configurable.
-
-        A subclass init method which makes the subclass configurable with a
-        ServerConfig template.
-        """
-        cls = configurable(ServerConfig)(cls)

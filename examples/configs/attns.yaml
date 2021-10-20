@@ -1,18 +1,11 @@
-- tickit.core.components.device_simulation.DeviceSimulation:
-    adapters: 
-     - tickit.devices.pneumatic.pneumatic.PneumaticAdapter: 
-        ioc_name: PNEUMATIC
-        db_file: tickit/devices/pneumatic/db_files/filter1.db
-    device:
-      tickit.devices.pneumatic.pneumatic.Pneumatic:
-        initial_speed: 2.5
-        initial_state: False
-    inputs: {}
+- tickit.devices.pneumatic.Pneumatic:
     name: filter1
-- tickit.core.components.device_simulation.DeviceSimulation:
-    adapters: []
-    device:
-      tickit.devices.sink.Sink: {}
+    inputs: {}
+    initial_speed: 0.5
+    initial_state: False
+    ioc_name: PNEUMATIC
+    db_file: tickit/devices/pneumatic/db_files/filter1.db
+- tickit.devices.sink.Sink:
+    name: contr_sink
     inputs:
       input: filter1:output
-    name: contr_sink
