@@ -87,7 +87,7 @@ class MasterScheduler(BaseScheduler):
         current: asyncio.Future = asyncio.sleep(self.sleep_time(when))
         new = asyncio.create_task(self.new_wakeup.wait())
         which, _ = await asyncio.wait(
-            {current, new}, return_when=asyncio.tasks.FIRST_COMPLETED
+            [current, new], return_when=asyncio.tasks.FIRST_COMPLETED
         )
 
         if new in which:
