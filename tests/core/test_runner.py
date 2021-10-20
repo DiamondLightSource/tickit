@@ -1,6 +1,5 @@
-from unittest.mock import AsyncMock
-
 import pytest
+from mock import AsyncMock
 
 from tickit.core.runner import run_all_forever
 
