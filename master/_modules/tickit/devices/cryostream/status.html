@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>tickit.devices.cryostream.status &mdash; tickit 0.1.1.pre+6.g653cc5f documentation</title>
+  <title>tickit.devices.cryostream.status &mdash; tickit 0.1.1.pre2+1.g2e41f45 documentation</title>
   
 
   
@@ -254,6 +254,11 @@
     <span class="n">evap_adjust</span><span class="p">:</span> <span class="nb">int</span>
     <span class="n">status_bytes_string</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&gt;BBHHhBBHHHHHBBBBBBHHBB&quot;</span>
 
+<div class="viewcode-block" id="Status.from_packed"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.status.Status.from_packed">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_packed</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Status&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create a status packet from its packed byte format.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span><span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">status_bytes_string</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span></div>
+
 <div class="viewcode-block" id="Status.pack"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.status.Status.pack">[docs]</a>    <span class="k">def</span> <span class="nf">pack</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Perform serialization of the status packet.</span>
 
@@ -324,6 +329,11 @@
     <span class="n">time_to_fill</span><span class="p">:</span> <span class="nb">int</span>
     <span class="n">total_hours</span><span class="p">:</span> <span class="nb">int</span>
     <span class="n">extended_packet_string</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&gt;BBHHhBBHHHHHBBBBBBHHBBBBBBBBHH&quot;</span>
+
+<div class="viewcode-block" id="ExtendedStatus.from_packed"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.status.ExtendedStatus.from_packed">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_packed</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ExtendedStatus&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create a status packet from its packed byte format.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span><span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">extended_packet_string</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="ExtendedStatus.pack"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.status.ExtendedStatus.pack">[docs]</a>    <span class="k">def</span> <span class="nf">pack</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Perform serialization of the extended status packet.</span>

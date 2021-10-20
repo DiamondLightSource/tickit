@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>tickit.adapters.servers.tcp &mdash; tickit 0.1.1.pre+6.g653cc5f documentation</title>
+  <title>tickit.adapters.servers.tcp &mdash; tickit 0.1.1.pre2+1.g2e41f45 documentation</title>
   
 
   
@@ -225,15 +225,15 @@
 <span></span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">asyncio.streams</span> <span class="kn">import</span> <span class="n">StreamReader</span><span class="p">,</span> <span class="n">StreamWriter</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">AsyncIterable</span><span class="p">,</span> <span class="n">Awaitable</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">AsyncIterable</span><span class="p">,</span> <span class="n">Awaitable</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
-<span class="kn">from</span> <span class="nn">tickit.core.adapter</span> <span class="kn">import</span> <span class="n">ConfigurableServer</span>
+<span class="kn">from</span> <span class="nn">tickit.core.adapter</span> <span class="kn">import</span> <span class="n">Server</span>
 <span class="kn">from</span> <span class="nn">tickit.utils.byte_format</span> <span class="kn">import</span> <span class="n">ByteFormat</span>
 
 <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="TcpServer"><a class="viewcode-back" href="../../../../reference/api.html#tickit.adapters.servers.tcp.TcpServer">[docs]</a><span class="k">class</span> <span class="nc">TcpServer</span><span class="p">(</span><span class="n">ConfigurableServer</span><span class="p">):</span>
+<div class="viewcode-block" id="TcpServer"><a class="viewcode-back" href="../../../../reference/api.html#tickit.adapters.servers.tcp.TcpServer">[docs]</a><span class="k">class</span> <span class="nc">TcpServer</span><span class="p">(</span><span class="n">Server</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]):</span>
     <span class="sd">&quot;&quot;&quot;A configurable tcp server with delegated message handling for use in adapters.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -256,8 +256,8 @@
 
 <div class="viewcode-block" id="TcpServer.run_forever"><a class="viewcode-back" href="../../../../reference/api.html#tickit.adapters.servers.tcp.TcpServer.run_forever">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run_forever</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">on_connect</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">AsyncIterable</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]],</span>
-        <span class="n">handler</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">bytes</span><span class="p">],</span> <span class="n">Awaitable</span><span class="p">[</span><span class="n">AsyncIterable</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]]],</span>
+        <span class="n">on_connect</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">AsyncIterable</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]]],</span>
+        <span class="n">handler</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">bytes</span><span class="p">],</span> <span class="n">Awaitable</span><span class="p">[</span><span class="n">AsyncIterable</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]]]],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Runs the TCP server indefinitely on the configured host and port.</span>
 
@@ -277,7 +277,7 @@
         <span class="n">tasks</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">asyncio</span><span class="o">.</span><span class="n">Task</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 
         <span class="k">async</span> <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="n">reader</span><span class="p">:</span> <span class="n">StreamReader</span><span class="p">,</span> <span class="n">writer</span><span class="p">:</span> <span class="n">StreamWriter</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">async</span> <span class="k">def</span> <span class="nf">reply</span><span class="p">(</span><span class="n">replies</span><span class="p">:</span> <span class="n">AsyncIterable</span><span class="p">[</span><span class="nb">bytes</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">async</span> <span class="k">def</span> <span class="nf">reply</span><span class="p">(</span><span class="n">replies</span><span class="p">:</span> <span class="n">AsyncIterable</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">async</span> <span class="k">for</span> <span class="n">reply</span> <span class="ow">in</span> <span class="n">replies</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">reply</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                         <span class="k">continue</span>

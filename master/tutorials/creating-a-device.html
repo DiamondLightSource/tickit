@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Creating a Device &mdash; tickit 0.1.1.pre+6.g653cc5f documentation</title>
+  <title>Creating a Device &mdash; tickit 0.1.1.pre2+1.g2e41f45 documentation</title>
   
 
   
@@ -109,6 +109,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#device-class">Device Class</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#device-constructor-and-configuration">Device Constructor and Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#device-logic">Device Logic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-a-componentconfig">Creating a ComponentConfig</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#using-the-device">Using the Device</a></li>
 </ul>
 </li>
@@ -245,13 +246,13 @@ will determine the operation of our device.</p>
 </div>
 <div class="section" id="device-class">
 <h2>Device Class<a class="headerlink" href="#device-class" title="Permalink to this headline">¶</a></h2>
-<p>We shall begin by defining the Shutter class which inerits <a class="reference internal" href="../reference/api.html#tickit.core.device.ConfigurableDevice" title="tickit.core.device.ConfigurableDevice"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ConfigurableDevice</span></code></a> - by
+<p>We shall begin by defining the Shutter class which inherits <a class="reference internal" href="../reference/api.html#tickit.core.device.Device" title="tickit.core.device.Device"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Device</span></code></a> - by
 doing so a confiuration dataclass will automatically be created for the device,
 allowing for easy YAML configuration.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tickit.core.device</span> <span class="kn">import</span> <span class="n">ConfigurableDevice</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tickit.core.device</span> <span class="kn">import</span> <span class="n">Device</span>
 
 
-<span class="k">class</span> <span class="nc">Shutter</span><span class="p">(</span><span class="n">ConfigurableDevice</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">ShutterDevice</span><span class="p">(</span><span class="n">Device</span><span class="p">):</span>
 </pre></div>
 </div>
 </div>
@@ -266,10 +267,10 @@ the initial <code class="docutils literal notranslate"><span class="pre">positio
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">random</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 
-<span class="kn">from</span> <span class="nn">tickit.core.device</span> <span class="kn">import</span> <span class="n">ConfigurableDevice</span>
+<span class="kn">from</span> <span class="nn">tickit.core.device</span> <span class="kn">import</span> <span class="n">Device</span>
 
 
-<span class="k">class</span> <span class="nc">Shutter</span><span class="p">(</span><span class="n">ConfigurableDevice</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">ShutterDevice</span><span class="p">(</span><span class="n">Device</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">default_position</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">initial_position</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -280,7 +281,7 @@ the initial <code class="docutils literal notranslate"><span class="pre">positio
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Arguments to the <code class="docutils literal notranslate"><span class="pre">__init__</span></code> method may be specified in the simulation config file
-if the device inherits <a class="reference internal" href="../reference/api.html#tickit.core.device.ConfigurableDevice" title="tickit.core.device.ConfigurableDevice"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ConfigurableDevice</span></code></a>.</p>
+if the device inherits <a class="reference internal" href="../reference/api.html#tickit.core.device.Device" title="tickit.core.device.Device"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Device</span></code></a>.</p>
 </div>
 </div>
 <div class="section" id="device-logic">
@@ -294,11 +295,11 @@ which consists of <code class="docutils literal notranslate"><span class="pre">o
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 <span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">TypedDict</span>
 
-<span class="kn">from</span> <span class="nn">tickit.core.device</span> <span class="kn">import</span> <span class="n">ConfigurableDevice</span><span class="p">,</span> <span class="n">DeviceUpdate</span>
+<span class="kn">from</span> <span class="nn">tickit.core.device</span> <span class="kn">import</span> <span class="n">Device</span><span class="p">,</span> <span class="n">DeviceUpdate</span>
 <span class="kn">from</span> <span class="nn">tickit.core.typedefs</span> <span class="kn">import</span> <span class="n">SimTime</span>
 
 
-<span class="k">class</span> <span class="nc">Shutter</span><span class="p">(</span><span class="n">ConfigurableDevice</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">ShutterDevice</span><span class="p">(</span><span class="n">Device</span><span class="p">):</span>
     <span class="n">Inputs</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Inputs&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;flux&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">})</span>
     <span class="n">Outputs</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Outputs&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;flux&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">})</span>
 
@@ -333,6 +334,30 @@ which consists of <code class="docutils literal notranslate"><span class="pre">o
 </pre></div>
 </div>
 </div>
+<div class="section" id="creating-a-componentconfig">
+<h2>Creating a ComponentConfig<a class="headerlink" href="#creating-a-componentconfig" title="Permalink to this headline">¶</a></h2>
+<p>In order to create the Device we must create a <a class="reference internal" href="../reference/api.html#tickit.core.components.component.ComponentConfig" title="tickit.core.components.component.ComponentConfig"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ComponentConfig</span></code></a> that knows how
+to instantiate a Device.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tickit.core.components.component</span> <span class="kn">import</span> <span class="n">Component</span><span class="p">,</span> <span class="n">ComponentConfig</span>
+<span class="kn">from</span> <span class="nn">tickit.core.components.device_simulation</span> <span class="kn">import</span> <span class="n">DeviceSimulation</span>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Shutter</span><span class="p">(</span><span class="n">ComponentConfig</span><span class="p">):</span>
+    <span class="n">default_position</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">initial_position</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Component</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">DeviceSimulation</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">device</span><span class="o">=</span><span class="n">ShutterDevice</span><span class="p">(</span>
+                <span class="n">default_position</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">default_position</span><span class="p">,</span>
+                <span class="n">initial_position</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_position</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="using-the-device">
 <h2>Using the Device<a class="headerlink" href="#using-the-device" title="Permalink to this headline">¶</a></h2>
 <p>In order to use the device we must first create a simulation configuration file, we
@@ -340,28 +365,20 @@ shall create one named <code class="docutils literal notranslate"><span class="p
 editor. This file will be used to set up a simulation consisting of a <a class="reference internal" href="../reference/api.html#tickit.devices.source.Source" title="tickit.devices.source.Source"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Source</span></code></a> named
 source which will produce a constant flux, the shutter which will act on the flux as
 per our implementation, and a <a class="reference internal" href="../reference/api.html#tickit.devices.sink.Sink" title="tickit.devices.sink.Sink"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Sink</span></code></a> named sink which will recieve the resulting flux.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">tickit.core.components.device_simulation.DeviceSimulation</span><span class="p">:</span>
-    <span class="nt">adapters</span><span class="p">:</span> <span class="p p-Indicator">[]</span>
-    <span class="nt">device</span><span class="p">:</span>
-      <span class="nt">tickit.devices.source.Source</span><span class="p">:</span>
-        <span class="nt">value</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">42.0</span>
-    <span class="nt">inputs</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">tickit.devices.source.Source</span><span class="p">:</span>
     <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">source</span>
-<span class="p p-Indicator">-</span> <span class="nt">tickit.core.components.device_simulation.DeviceSimulation</span><span class="p">:</span>
-    <span class="nt">adapters</span><span class="p">:</span> <span class="p p-Indicator">[]</span>
-    <span class="nt">device</span><span class="p">:</span>
-      <span class="nt">my_shutter.Shutter</span><span class="p">:</span>
-        <span class="nt">default_position</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.2</span>
+    <span class="nt">inputs</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
+    <span class="nt">value</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">42.0</span>
+<span class="p p-Indicator">-</span> <span class="nt">examples.devices.shutter.Shutter</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">shutter</span>
     <span class="nt">inputs</span><span class="p">:</span>
       <span class="nt">flux</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">source:value</span>
-    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">shutter</span>
-<span class="p p-Indicator">-</span> <span class="nt">tickit.core.components.device_simulation.DeviceSimulation</span><span class="p">:</span>
-    <span class="nt">adapters</span><span class="p">:</span> <span class="p p-Indicator">[]</span>
-    <span class="nt">device</span><span class="p">:</span>
-      <span class="nt">tickit.devices.sink.Sink</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
-    <span class="nt">inputs</span><span class="p">:</span>
-      <span class="nt">flux</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">shutter:flux</span>
+    <span class="nt">default_position</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.2</span>
+    <span class="nt">initial_position</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.24</span>
+<span class="p p-Indicator">-</span> <span class="nt">tickit.devices.sink.Sink</span><span class="p">:</span>
     <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sink</span>
+    <span class="nt">inputs</span><span class="p">:</span>
+    <span class="nt">flux</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">shutter:flux</span>
 </pre></div>
 </div>
 <div class="admonition seealso">
