@@ -5,8 +5,8 @@ from typing import Any, Awaitable, Callable
 import aiozmq
 import zmq
 
-from examples.devices.counter import Counter
 from tickit.core.adapter import ConfigurableAdapter
+from tickit.core.device import Device
 
 LOGGER = logging.getLogger(__name__)
 
@@ -14,7 +14,7 @@ LOGGER = logging.getLogger(__name__)
 class ZeroMQAdapter(ConfigurableAdapter):
     """An adapter for a ZeroMQ data stream."""
 
-    _device: Counter
+    _device: Device
     _raise_interrupt: Callable[[], Awaitable[None]]
 
     _dealer: zmq.DEALER
@@ -22,7 +22,7 @@ class ZeroMQAdapter(ConfigurableAdapter):
 
     def __init__(
         self,
-        device: Counter,
+        device: Device,
         raise_interrupt: Callable[[], Awaitable[None]],
         host: str = "127.0.0.1",
         port: int = 5555,
