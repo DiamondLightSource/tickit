@@ -64,8 +64,8 @@ class ZeroMQAdapter(ConfigurableAdapter):
         self._router.close()
 
     async def send_message(self, reply: Any) -> None:
-        if reply is None:
-            LOGGER.debug("No reply...")
+        if reply is None or not hasattr(self, "_dealer"):
+            LOGGER.debug("No reply... or dealer not ready")
             pass
         else:
             LOGGER.debug("Data from ZMQ stream: {!r}".format(reply))
