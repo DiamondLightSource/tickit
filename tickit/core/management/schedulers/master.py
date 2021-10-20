@@ -67,8 +67,8 @@ class MasterScheduler(BaseScheduler):
         while True:
             await self._run_tick()
 
-    async def _run_initial_tick(self) -> None:
-        """Method which performs the setup and initial tick of the simulation."""
+    async def _run_initial_tick(self):
+        """Performs the initial tick of the system."""
         await self.setup()
         await self.ticker(
             self._initial_time,
@@ -76,8 +76,8 @@ class MasterScheduler(BaseScheduler):
         )
         self.last_time = time_ns()
 
-    async def _run_tick(self) -> None:
-        """Method which performs ticks as requested by components of the simulation."""
+    async def _run_tick(self):
+        """Continuously schedules ticks according to wakeups."""
         if not self.wakeups:
             await self.new_wakeup.wait()
         components, when = self.get_first_wakeups()
