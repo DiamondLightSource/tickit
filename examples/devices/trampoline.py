@@ -1,14 +1,17 @@
 import logging
+from dataclasses import dataclass
 from random import randint
 
-from tickit.core.device import ConfigurableDevice, DeviceUpdate
+from tickit.core.components.component import Component, ComponentConfig
+from tickit.core.components.device_simulation import DeviceSimulation
+from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.compat.typing_compat import TypedDict
 
 LOGGER = logging.getLogger(__name__)
 
 
-class Trampoline(ConfigurableDevice):
+class TrampolineDevice(Device):
     """A trivial toy device which requests a callback every update."""
 
     #: An empty typed mapping of device inputs
@@ -42,10 +45,12 @@ class Trampoline(ConfigurableDevice):
                 requests a callback after the configured callback period.
         """
         LOGGER.debug("Boing! ({}, {})".format(time, inputs))
-        return DeviceUpdate(Trampoline.Outputs(), SimTime(time + self.callback_period))
+        return DeviceUpdate(
+            TrampolineDevice.Outputs(), SimTime(time + self.callback_period)
+        )
 
 
-class RandomTrampoline(ConfigurableDevice):
+class RandomTrampolineDevice(Device):
     """A trivial toy device which produced a random output and requests a callback."""
 
     #: An empty typed mapping of device inputs
@@ -83,6 +88,19 @@ class RandomTrampoline(ConfigurableDevice):
             "Boing! (delta: {}, inputs: {}, output: {})".format(time, inputs, output)
         )
         return DeviceUpdate(
-            RandomTrampoline.Outputs(output=output),
+            RandomTrampolineDevice.Outputs(output=output),
             SimTime(time + self.callback_period),
+        )
+
+
+@dataclass
+class RandomTrampoline(ComponentConfig):
+    """Random thing that goes boing."""
+
+    callback_period: int = int(1e9)
+
+    def __call__(self) -> Component:  # noqa: D102
+        return DeviceSimulation(
+            name=self.name,
+            device=RandomTrampolineDevice(callback_period=self.callback_period),
         )

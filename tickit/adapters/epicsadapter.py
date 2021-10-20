@@ -8,7 +8,8 @@ from typing import Any, Callable, Dict
 
 from softioc import asyncio_dispatcher, builder, softioc
 
-from tickit.core.adapter import ConfigurableAdapter
+from tickit.core.adapter import Adapter, RaiseInterrupt
+from tickit.core.device import Device
 
 
 @dataclass(frozen=True)
@@ -27,10 +28,8 @@ class OutputRecord:
     name: str
 
 
-class EpicsAdapter(ConfigurableAdapter):
+class EpicsAdapter(Adapter):
     """An adapter implementation which acts as an EPICS IOC."""
-
-    interrupt_records: Dict[InputRecord, Callable[[], Any]]
 
     def __init__(self, db_file: str, ioc_name: str) -> None:
         """An EpicsAdapter constructor which stores the db_file path and the IOC name.
@@ -41,6 +40,7 @@ class EpicsAdapter(ConfigurableAdapter):
         """
         self.db_file = db_file
         self.ioc_name = ioc_name
+        self.interrupt_records: Dict[InputRecord, Callable[[], Any]] = {}
 
     def link_input_on_interrupt(
         self, record: InputRecord, getter: Callable[[], Any]
@@ -65,6 +65,17 @@ class EpicsAdapter(ConfigurableAdapter):
         """Customises records that have been loaded in to suit the simulation."""
         raise NotImplementedError
 
+    def load_records_without_DTYP_fields(self):
+        """Loads the records without DTYP fields."""
+        with open(self.db_file, "rb") as inp:
+            with NamedTemporaryFile(suffix=".db", delete=False) as out:
+                for line in inp.readlines():
+                    if not re.match(rb"\s*field\s*\(\s*DTYP", line):
+                        out.write(line)
+
+        softioc.dbLoadDatabase(out.name, substitutions=f"device={self.ioc_name}")
+        os.unlink(out.name)
+
     def build_ioc(self) -> None:
         """Builds an EPICS python soft IOC for the adapter."""
         builder.SetDeviceName(self.ioc_name)
@@ -79,13 +90,9 @@ class EpicsAdapter(ConfigurableAdapter):
         dispatcher = asyncio_dispatcher.AsyncioDispatcher(event_loop)
         softioc.iocInit(dispatcher)
 
-    def load_records_without_DTYP_fields(self):
-        """Loads the records without DTYP fields."""
-        with open(self.db_file, "rb") as inp:
-            with NamedTemporaryFile(suffix=".db", delete=False) as out:
-                for line in inp.readlines():
-                    if not re.match(rb"\s*field\s*\(\s*DTYP", line):
-                        out.write(line)
-
-        softioc.dbLoadDatabase(out.name, substitutions=f"device={self.ioc_name}")
-        os.unlink(out.name)
+    async def run_forever(
+        self, device: Device, raise_interrupt: RaiseInterrupt
+    ) -> None:
+        """Runs the server continously."""
+        await super().run_forever(device, raise_interrupt)
+        self.build_ioc()

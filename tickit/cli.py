@@ -1,14 +1,12 @@
 import asyncio
 import logging
-from typing import cast
 
 import click
 from click.core import Context
 
-from tickit.core.components.component import create_components
-from tickit.core.lifetime_runnable import LifetimeRunnable, run_all_forever
 from tickit.core.management.event_router import InverseWiring
 from tickit.core.management.schedulers.master import MasterScheduler
+from tickit.core.runner import run_all_forever
 from tickit.core.state_interfaces.state_interface import get_interface, interfaces
 from tickit.utils.configuration.loading import read_configs
 
@@ -48,9 +46,9 @@ def component(config_path: str, component: str, backend: str) -> None:
         backend (str): The message broker to be used.
     """
     configs = read_configs(config_path)
-    config = next(config for config in configs if config.name == component)
-    components = create_components([config], *get_interface(backend))
-    asyncio.run(run_all_forever(components))
+    config = [config for config in configs if config.name == component]
+    assert len(config) == 1, f"Expected only one component {component}"
+    asyncio.run(run_all_forever([config[0]().run_forever(*get_interface(backend))]))
 
 
 @main.command(help="run the simulation scheduler")
@@ -66,7 +64,7 @@ def scheduler(config_path: str, backend: str) -> None:
     configs = read_configs(config_path)
     inverse_wiring = InverseWiring.from_component_configs(configs)
     scheduler = MasterScheduler(inverse_wiring, *get_interface(backend))
-    asyncio.run(run_all_forever([cast(LifetimeRunnable, scheduler)]))
+    asyncio.run(run_all_forever([scheduler.run_forever()]))
 
 
 @main.command(help="run a collection of devices with a scheduler")
@@ -84,5 +82,9 @@ def all(config_path: str, backend: str) -> None:
     configs = read_configs(config_path)
     inverse_wiring = InverseWiring.from_component_configs(configs)
     scheduler = MasterScheduler(inverse_wiring, *get_interface(backend))
-    components = create_components(configs, *get_interface(backend))
-    asyncio.run(run_all_forever([cast(LifetimeRunnable, scheduler), *components]))
+    asyncio.run(
+        run_all_forever(
+            [config().run_forever(*get_interface(backend)) for config in configs]
+            + [scheduler.run_forever()]
+        )
+    )

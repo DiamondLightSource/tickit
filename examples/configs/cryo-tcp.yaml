@@ -1,15 +1,8 @@
-- tickit.core.components.device_simulation.DeviceSimulation:
-    adapters:
-    - tickit.devices.cryostream.cryostream.CryostreamAdapter: {}
-    device:
-      tickit.devices.cryostream.cryostream.Cryostream: {}
-    inputs: {}
+- tickit.devices.cryostream.Cryostream:
     name: cryo
-- tickit.core.components.device_simulation.DeviceSimulation:
-    adapters: []
-    device:
-      tickit.devices.sink.Sink: {}
-    inputs:
-      input: cryo:temperature
-    name: contr_sink
+    inputs: {}
+- tickit.devices.sink.Sink:
+   name: contr_sink
+   inputs:
+     input: cryo:temperature
 
