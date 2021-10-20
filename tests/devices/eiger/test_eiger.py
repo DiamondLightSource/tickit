@@ -150,7 +150,7 @@ def eiger_adapter(mock_eiger: MagicMock) -> EigerAdapter:
     return EigerAdapter(mock_eiger, raise_interrupt, host="localhost", port=8081)
 
 
-def test_eiger_adapter_contructor():
+def test_eiger_adapter_contructor(mock_eiger):
     EigerAdapter(mock_eiger, raise_interrupt, host="localhost", port=8081)
 
 
