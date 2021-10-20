@@ -7,7 +7,7 @@ from immutables import Map
 from tickit.core.adapter import Adapter
 from tickit.core.components.component import BaseComponent
 from tickit.core.device import Device, DeviceUpdate
-from tickit.core.lifetime_runnable import run_all
+from tickit.core.runner import run_all
 from tickit.core.state_interfaces import StateConsumer, StateProducer
 from tickit.core.typedefs import Changes, SimTime, State
 

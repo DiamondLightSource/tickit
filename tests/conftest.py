@@ -5,9 +5,9 @@ from subprocess import PIPE, STDOUT, Popen
 
 import pytest
 
-from tickit.core.lifetime_runnable import run_all_forever
 from tickit.core.management.event_router import InverseWiring
 from tickit.core.management.schedulers.master import MasterScheduler
+from tickit.core.runner import run_all_forever
 from tickit.core.state_interfaces.state_interface import get_interface
 from tickit.utils.configuration.loading import read_configs
 

@@ -216,10 +216,10 @@ API
         ``tickit.core.adapter``
         -----------------------
 
-    .. automodule:: tickit.core.lifetime_runnable
+    .. automodule:: tickit.core.runner
         :members:
 
-        ``tickit.core.lifetime_runnable``
+        ``tickit.core.runner``
         ---------------------------------
 
     .. automodule:: tickit.core.typedefs
