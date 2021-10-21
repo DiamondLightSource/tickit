@@ -1,5 +1,4 @@
 import json
-from enum import Enum
 
 import pytest
 from aiohttp import web
@@ -128,7 +127,10 @@ def mock_status() -> MagicMock:
 @pytest.fixture
 def mock_settings() -> MagicMock:
     settings = create_autospec(EigerSettings, instance=True)
-    settings.count_time = 0.1
+    settings.count_time = {
+        "value": 0.1,
+        "metadata": {"value_type": Mock(value="int"), "access_mode": Mock(value="rw")},
+    }
     return settings
 
 
@@ -163,24 +165,46 @@ def mock_request():
     return mock_request
 
 
-@pytest.fixture
-def mock_valuetype():
-    class mock_valuetype(Enum):
-        INT = "int"
-
-    return mock_valuetype
-
-
 # mock_request.match_info = {"parameter_name": mock_get_params["param_name"]}
 @pytest.mark.parametrize(
     "mock_get_params",
     [
         pytest.param(
-            {"param_name": "count_time", "expected": "0.1"},
+            {
+                "param_name": "count_time",
+                "return": {
+                    "value": 0.1,
+                    "metadata": {
+                        "value_type": Mock(value="int"),
+                        "access_mode": Mock(value="rw"),
+                    },
+                },
+                "expected": {
+                    "value": 0.1,
+                    "value_type": "int",
+                    "access_mode": "rw",
+                    "allowed_values": None,
+                    "max": None,
+                    "min": None,
+                    "unit": None,
+                },
+            },
             id="good_request",
         ),
         pytest.param(
-            {"param_name": "wrong_param", "expected": "None"},
+            {
+                "param_name": "wrong_param",
+                "return": "None",
+                "expected": {
+                    "value": "None",
+                    "value_type": "string",
+                    "access_mode": "None",
+                    "allowed_values": None,
+                    "max": None,
+                    "min": None,
+                    "unit": None,
+                },
+            },
             id="bad_request",
         ),
     ],
@@ -190,22 +214,15 @@ async def test_eiger_get_config(
     eiger_adapter: EigerAdapter,
     mock_request: MagicMock,
     mock_get_params,
-    mock_valuetype,
 ):
 
     mock_request.match_info = {"parameter_name": mock_get_params["param_name"]}
 
-    eiger_adapter._device.settings.__getitem__.return_value = mock_get_params[
-        "expected"
-    ]
-    eiger_adapter._device.settings.get_metadata.return_value = {
-        "access_mode": "test",
-        "value_type": mock_valuetype.INT,
-    }
+    eiger_adapter._device.settings.__getitem__.return_value = mock_get_params["return"]
 
     resp = await eiger_adapter.get_config(mock_request)
 
-    assert mock_get_params["expected"] == json.loads(resp.text)["value"]
+    assert mock_get_params["expected"] == json.loads(resp.text)
 
 
 @pytest.mark.parametrize(
@@ -213,7 +230,7 @@ async def test_eiger_get_config(
     [
         pytest.param(
             {
-                "state": State.NA,
+                "state": {"value": "na"},
                 "param": "count_time",
                 "expected": '{"sequence_id": 7}',
             },
@@ -221,7 +238,7 @@ async def test_eiger_get_config(
         ),
         pytest.param(
             {
-                "state": State.IDLE,
+                "state": {"value": "idle"},
                 "param": "count_time",
                 "expected": '{"sequence_id": 8}',
             },
@@ -229,7 +246,7 @@ async def test_eiger_get_config(
         ),
         pytest.param(
             {
-                "state": State.IDLE,
+                "state": {"value": "idle"},
                 "param": "wrong_param",
                 "expected": '{"sequence_id": 9}',
             },
@@ -237,7 +254,7 @@ async def test_eiger_get_config(
         ),
         pytest.param(
             {
-                "state": State.NA,
+                "state": {"value": "na"},
                 "param": "wrong_param",
                 "expected": '{"sequence_id": 7}',
             },
