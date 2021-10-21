@@ -1,14 +1,17 @@
 import logging
+from dataclasses import dataclass
 from typing import Any
 
-from tickit.core.device import ConfigurableDevice, DeviceUpdate
+from tickit.core.components.component import Component, ComponentConfig
+from tickit.core.components.device_simulation import DeviceSimulation
+from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.compat.typing_compat import TypedDict
 
 LOGGER = logging.getLogger(__name__)
 
 
-class Source(ConfigurableDevice):
+class SourceDevice(Device):
     """A simple device which produces a pre-configured value."""
 
     #: An empty typed mapping of device inputs
@@ -37,4 +40,17 @@ class Source(ConfigurableDevice):
                 never requests a callback.
         """
         LOGGER.debug("Sourced {}".format(self.value))
-        return DeviceUpdate(Source.Outputs(value=self.value), None)
+        return DeviceUpdate(SourceDevice.Outputs(value=self.value), None)
+
+
+@dataclass
+class Source(ComponentConfig):
+    """Source of a fixed value."""
+
+    value: Any
+
+    def __call__(self) -> Component:  # noqa: D102
+        return DeviceSimulation(
+            name=self.name,
+            device=SourceDevice(self.value),
+        )

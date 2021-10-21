@@ -1,32 +1,34 @@
+import asyncio
+
 import pytest
-from mock import Mock, create_autospec
+from aioca import caget, caput
 
 from tickit.core.device import DeviceUpdate
 from tickit.core.typedefs import SimTime
-from tickit.devices.pneumatic.pneumatic import Pneumatic, PneumaticAdapter
+from tickit.devices.pneumatic.pneumatic import PneumaticDevice
 
 
 @pytest.fixture
-def pneumatic() -> Pneumatic:
-    return Pneumatic()
+def pneumatic() -> PneumaticDevice:
+    return PneumaticDevice(initial_speed=0.5, initial_state=False)
 
 
-def test_pneumatic_constructor(pneumatic: Pneumatic):
+def test_pneumatic_constructor(pneumatic: PneumaticDevice):
     pass
 
 
-def test_pneumatic_set_and_get_speed(pneumatic: Pneumatic):
+def test_pneumatic_set_and_get_speed(pneumatic: PneumaticDevice):
     pneumatic.set_speed(3.0)
     assert pneumatic.get_speed() == 3.0
 
 
-def test_pneumatic_set_and_get_state(pneumatic: Pneumatic):
+def test_pneumatic_set_and_get_state(pneumatic: PneumaticDevice):
     initial_state = pneumatic.get_state()
     pneumatic.set_state()
     assert pneumatic.target_state is not initial_state
 
 
-def test_pneumatic_update(pneumatic: Pneumatic):
+def test_pneumatic_update(pneumatic: PneumaticDevice):
     time = SimTime(0)
     initial_state = pneumatic.get_state()
     pneumatic.set_state()
@@ -35,7 +37,7 @@ def test_pneumatic_update(pneumatic: Pneumatic):
     assert device_update.outputs["output"] is not initial_state
 
 
-def test_pneumatic_update_no_state_change(pneumatic: Pneumatic):
+def test_pneumatic_update_no_state_change(pneumatic: PneumaticDevice):
     time = SimTime(0)
     initial_state = pneumatic.get_state()
     device_update: DeviceUpdate = pneumatic.update(time, {})
@@ -43,44 +45,16 @@ def test_pneumatic_update_no_state_change(pneumatic: Pneumatic):
     assert device_update.outputs["output"] is initial_state
 
 
-# # # # # # # # # # PneumaticAdapter # # # # # # # # # #
-
-
-@pytest.fixture
-def mock_pneumatic() -> Mock:
-    return create_autospec(Pneumatic)
-
-
-@pytest.fixture
-def raise_interrupt() -> Mock:
-    async def raise_interrupt():
-        return False
-
-    return Mock(raise_interrupt)
-
-
-@pytest.fixture
-def pneumatic_adapter(mock_pneumatic: Mock, raise_interrupt: Mock) -> PneumaticAdapter:
-    return PneumaticAdapter(mock_pneumatic, raise_interrupt, "data.db")
-
-
-def test_pneumatic_adapter_constructor(pneumatic_adapter: PneumaticAdapter):
-    pass
-
-
 @pytest.mark.asyncio
-async def test_pneumatic_adapter_run_forever(pneumatic_adapter: PneumaticAdapter):
-    pneumatic_adapter.build_ioc = Mock(pneumatic_adapter.build_ioc)
-    await pneumatic_adapter.run_forever()
-    pneumatic_adapter.build_ioc.assert_called_once()
+@pytest.mark.parametrize(
+    "tickit_process", ["examples/configs/attns.yaml"], indirect=True
+)
+async def test_pneumatic_system(tickit_process):
+    async def toggle(expected: bool):
+        assert (await caget("PNEUMATIC:FILTER_RBV")) != expected
+        await caput("PNEUMATIC:FILTER", expected)
+        await asyncio.sleep(0.8)
+        assert (await caget("PNEUMATIC:FILTER_RBV")) == expected
 
-
-@pytest.mark.asyncio
-async def test_pneumatic_adapter_callback(pneumatic_adapter: PneumaticAdapter):
-    await pneumatic_adapter.callback(None)
-    pneumatic_adapter._device.set_state.assert_called_once()
-    pneumatic_adapter.raise_interrupt.assert_awaited_once_with()
-
-
-def test_pneumatic_adapter_on_db_load(pneumatic_adapter: PneumaticAdapter):
-    pneumatic_adapter.on_db_load()
+    await toggle(True)
+    await toggle(False)

@@ -1,12 +1,11 @@
 import asyncio
 import struct
-from typing import AsyncIterable, Awaitable, Callable
+from typing import AsyncIterable
 
 from tickit.adapters.composed import ComposedAdapter
 from tickit.adapters.interpreters.command import CommandInterpreter, RegexCommand
 from tickit.adapters.servers.tcp import TcpServer
-from tickit.core.adapter import ConfigurableAdapter
-from tickit.core.device import ConfigurableDevice, Device, DeviceUpdate
+from tickit.core.device import DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.devices.cryostream.base import CryostreamBase
 from tickit.devices.cryostream.states import PhaseIds
@@ -16,7 +15,7 @@ from tickit.utils.compat.typing_compat import TypedDict
 _EXTENDED_STATUS = ">BBHHHBBHHHHHBBBBBBHHBBBBBBBBHH"
 
 
-class Cryostream(CryostreamBase, ConfigurableDevice):
+class CryostreamDevice(CryostreamBase):
     """A Cryostream device, used for cooling of samples using cold gas."""
 
     #: An empty typed mapping of device inputs
@@ -42,27 +41,25 @@ class Cryostream(CryostreamBase, ConfigurableDevice):
         if self.phase_id in (PhaseIds.RAMP.value, PhaseIds.COOL.value):
             self.gas_temp = self.update_temperature(time)
             return DeviceUpdate(
-                Cryostream.Outputs(temperature=self.gas_temp),
+                self.Outputs(temperature=self.gas_temp),
                 SimTime(time + self.callback_period),
             )
         if self.phase_id == PhaseIds.PLAT.value:
             self.phase_id = PhaseIds.HOLD.value
             return DeviceUpdate(
-                Cryostream.Outputs(temperature=self.gas_temp),
+                self.Outputs(temperature=self.gas_temp),
                 SimTime(time + int(self.plat_duration * 1e10)),
             )
-        return DeviceUpdate(Cryostream.Outputs(temperature=self.gas_temp), None)
+        return DeviceUpdate(self.Outputs(temperature=self.gas_temp), None)
 
 
-class CryostreamAdapter(ComposedAdapter, ConfigurableAdapter):
+class CryostreamAdapter(ComposedAdapter):
     """A Cryostream TCP adapter which sends regular status packets and can set modes."""
 
-    _device: Cryostream
+    device: CryostreamDevice
 
     def __init__(
         self,
-        device: Device,
-        raise_interrupt: Callable[[], Awaitable[None]],
         host: str = "localhost",
         port: int = 25565,
     ) -> None:
@@ -77,8 +74,6 @@ class CryostreamAdapter(ComposedAdapter, ConfigurableAdapter):
             port (Optional[int]): The bound port of the TcpServer. Defaults to 25565.
         """
         super().__init__(
-            device,
-            raise_interrupt,
             TcpServer(format=ByteFormat(b"%b"), host=host, port=port),
             CommandInterpreter(),
         )
@@ -92,39 +87,39 @@ class CryostreamAdapter(ComposedAdapter, ConfigurableAdapter):
         """
         while True:
             await asyncio.sleep(2.0)
-            await self._device.set_status_format(1)
-            status = await self._device.get_status(1)
+            await self.device.set_status_format(1)
+            status = await self.device.get_status(1)
             yield status.pack()
 
     @RegexCommand(b"\\x02\\x0a", interrupt=True)
     async def restart(self) -> None:
         """A regex bytes command which restarts the Cryostream."""
-        await self._device.restart()
+        await self.device.restart()
 
     @RegexCommand(b"\\x02\\x0d", interrupt=True)
     async def hold(self) -> None:
         """A regex bytes command which holds the current temperature."""
-        await self._device.hold()
+        await self.device.hold()
 
     @RegexCommand(b"\\x02\\x10", interrupt=True)
     async def purge(self) -> None:
         """A regex bytes command which purges (immediately raise to 300K)."""
-        await self._device.purge()
+        await self.device.purge()
 
     @RegexCommand(b"\\x02\\x11", interrupt=True)
     async def pause(self) -> None:
         """A regex bytes command which pauses."""
-        await self._device.pause()
+        await self.device.pause()
 
     @RegexCommand(b"\\x02\\x12", interrupt=True)
     async def resume(self) -> None:
         """A regex bytes command which resumes the last command."""
-        await self._device.resume()
+        await self.device.resume()
 
     @RegexCommand(b"\\x02\\x13", interrupt=True)
     async def stop(self) -> None:
         """A regex bytes command which stops gas flow."""
-        await self._device.stop()
+        await self.device.stop()
 
     @RegexCommand(b"\\x03\\x14([\\x00\\x01])", interrupt=True)
     async def turbo(self, turbo_on: bytes) -> None:
@@ -135,7 +130,7 @@ class CryostreamAdapter(ComposedAdapter, ConfigurableAdapter):
                 on.
         """
         turbo_on = struct.unpack(">B", turbo_on)[0]
-        await self._device.turbo(turbo_on)
+        await self.device.turbo(turbo_on)
 
     # Todo set status format not interrupt
     @RegexCommand(b"\\x03\\x28([\\x00\\x01])", interrupt=False)
@@ -147,7 +142,7 @@ class CryostreamAdapter(ComposedAdapter, ConfigurableAdapter):
                 status packet and 1 denotes an extended status packet.
         """
         status_format = struct.unpack(">B", status_format)[0]
-        await self._device.set_status_format(status_format)
+        await self.device.set_status_format(status_format)
 
     @RegexCommand(b"\\x04\\x0c(.{2})", interrupt=True)
     async def plat(self, duration: bytes) -> None:
@@ -157,7 +152,7 @@ class CryostreamAdapter(ComposedAdapter, ConfigurableAdapter):
             duration (bytes): The duration for which the temperature should be held.
         """
         duration = struct.unpack(">H", duration)[0]
-        await self._device.plat(duration)
+        await self.device.plat(duration)
 
     @RegexCommand(b"\\x04\\x0f(.{2})", interrupt=True)
     async def end(self, ramp_rate: bytes) -> None:
@@ -167,7 +162,7 @@ class CryostreamAdapter(ComposedAdapter, ConfigurableAdapter):
             ramp_rate (bytes): The rate at which the temperature should change.
         """
         ramp_rate = struct.unpack(">H", ramp_rate)[0]
-        await self._device.end(ramp_rate)
+        await self.device.end(ramp_rate)
 
     @RegexCommand(b"\\x04\\x0e(.{2})", interrupt=True)
     async def cool(self, target_temp: bytes) -> None:
@@ -177,7 +172,7 @@ class CryostreamAdapter(ComposedAdapter, ConfigurableAdapter):
             target_temp (bytes): The target temperature.
         """
         target_temp = struct.unpack(">H", target_temp)[0]
-        await self._device.cool(target_temp)
+        await self.device.cool(target_temp)
 
     @RegexCommand(b"\\x06\\x0b(.{2,4})", interrupt=True)
     async def ramp(self, values: bytes) -> None:
@@ -188,4 +183,4 @@ class CryostreamAdapter(ComposedAdapter, ConfigurableAdapter):
                 target temperature.
         """
         ramp_rate, target_temp = struct.unpack(">HH", values)
-        await self._device.ramp(ramp_rate, target_temp)
+        await self.device.ramp(ramp_rate, target_temp)

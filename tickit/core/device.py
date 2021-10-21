@@ -1,9 +1,8 @@
 from dataclasses import dataclass
-from typing import Dict, Generic, Hashable, Mapping, Optional, Type, TypeVar
+from typing import Generic, Hashable, Mapping, Optional, TypeVar
 
 from tickit.core.typedefs import SimTime
-from tickit.utils.compat.typing_compat import Protocol, runtime_checkable
-from tickit.utils.configuration.configurable import configurable, configurable_base
+from tickit.utils.configuration.configurable import as_tagged_union
 
 #: A bound typevar for mappings of device inputs
 InMap = TypeVar("InMap", bound=Mapping[str, Hashable])
@@ -24,8 +23,8 @@ class DeviceUpdate(Generic[OutMap]):
     call_at: Optional[SimTime]
 
 
-@runtime_checkable
-class Device(Protocol):
+@as_tagged_union
+class Device:
     """An interface for types which implement simulated devices."""
 
     def update(self, time: SimTime, inputs: InMap) -> DeviceUpdate[OutMap]:
@@ -41,44 +40,3 @@ class Device(Protocol):
             time: The current simulation time (in nanoseconds).
             inputs: A mapping of device inputs and their values.
         """
-        pass
-
-
-@configurable_base
-@dataclass
-class DeviceConfig:
-    """A data container for device configuration.
-
-    A data container for device configuration which acts as a named union of subclasses
-    to facilitate automatic deserialization.
-    """
-
-    @staticmethod
-    def configures() -> Type[Device]:
-        """A static method which returns the Device class configured by this config.
-
-        Returns:
-            Type[Device]: The Device class configured by this config.
-        """
-        raise NotImplementedError
-
-    @property
-    def kwargs(self) -> Dict[str, object]:
-        """A property which returns the key word arguments of the configured device.
-
-        Returns:
-            Dict[str, object]: The key word argument of the configured Device.
-        """
-        raise NotImplementedError
-
-
-class ConfigurableDevice:
-    """A mixin used to create a device with a configuration data container."""
-
-    def __init_subclass__(cls) -> None:
-        """A subclass init method which makes the subclass configurable.
-
-        A subclass init method which makes the subclass configurable with a
-        DeviceConfig template.
-        """
-        cls = configurable(DeviceConfig)(cls)
