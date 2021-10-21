@@ -166,16 +166,11 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
                 Value(
                     attr["value"],
                     attr["metadata"]["value_type"].value,
-                    access_mode=(
-                        attr["metadata"]["access_mode"].value
-                        if hasattr(attr["metadata"], "access_mode")
-                        else "None"
-                    ),
+                    access_mode=attr["metadata"]["access_mode"].value,
                 )
             )
         else:
-            attr = "None"
-            data = {"value": attr}
+            data = serialize(Value("None", "string", access_mode="None"))
 
         return web.json_response(data)
 
@@ -197,12 +192,12 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
 
         response = await request.json()
 
-        if self._device.get_state()["value"] != State.IDLE.value:
+        if self._device.get_state().value != State.IDLE.value:
             LOGGER.warn("Eiger not initialized or is currently running.")
             return web.json_response(serialize(SequenceComplete(7)))
         elif (
             hasattr(self._device.settings, param)
-            and self._device.get_state()["value"] == State.IDLE.value
+            and self._device.get_state().value == State.IDLE.value
         ):
             attr = response["value"]
 
