@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field, fields
 from enum import Enum
-from typing import Any, Dict, List
+from typing import Any, List
 
 from .eiger_schema import (
     AccessMode,
@@ -77,7 +77,7 @@ class EigerSettings:
     detector_distance: float = field(default=2.0, metadata=rw_float())
     detector_number: str = field(default="EIGERSIM001", metadata=ro_str())
     detector_readout_time: float = field(default=0.01, metadata=rw_float())
-    element: str = field(
+    _element: str = field(
         default="Co", metadata=rw_str(allowed_values=[e.name for e in KA_Energy])
     )
     flatfield: List[List[float]] = field(
@@ -119,27 +119,36 @@ class EigerSettings:
     y_pixel_size: float = field(default=0.01, metadata=ro_float())
     y_pixels_in_detector: int = field(default=FRAME_HEIGHT, metadata=rw_int())
 
+    # TODO: Make a decorator so this hacky fix isn't needed
     def __getitem__(self, key: str) -> Any:
         """[Summary]."""
+        key_ = "_" + key
         f = {}
-        for field_ in fields(self):
-            f[field_.name] = vars(self)[field_.name]
-        return f[key]
-
-    def get_metadata(self, attribute_name: str) -> Dict:
-        """Returns the metadata for a field."""
-        return self.__dataclass_fields__[attribute_name].metadata
+        if hasattr(self, key_):
+            for field_ in fields(self):
+                f[field_.name] = {
+                    "value": vars(self)[field_.name],
+                    "metadata": field_.metadata,
+                }
+            return f[key_]
+        else:
+            for field_ in fields(self):
+                f[field_.name] = {
+                    "value": vars(self)[field_.name],
+                    "metadata": field_.metadata,
+                }
+            return f[key]
 
     @property
-    def _element(self) -> str:
+    def element(self) -> str:
         """Property method for element var.
 
         Property method for element var which implicitly maps the property to the
         corresponding field.
         """
-        return self._element[::-1]
+        return self._element
 
-    @_element.setter
-    def _element(self, elmt: str) -> None:
-        self._element = elmt[::-1]
-        self.photon_energy = KA_Energy[elmt].value
+    @element.setter
+    def element(self, elmt: str) -> None:
+        self._element = elmt
+        self.photon_energy = getattr(KA_Energy, elmt).value

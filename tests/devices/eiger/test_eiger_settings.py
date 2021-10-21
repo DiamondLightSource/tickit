@@ -15,7 +15,9 @@ def test_eiger_settings_constructor():
 
 
 def test_eiger_settings_getitem(eiger_settings):
-    assert 0.1 == eiger_settings["count_time"]
+    value = eiger_settings["count_time"]["value"]
+
+    assert 0.1 == value
 
 
 def test_eiger_settings_get_element(eiger_settings):
