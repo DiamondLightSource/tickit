@@ -192,12 +192,12 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
 
         response = await request.json()
 
-        if self._device.get_state().value != State.IDLE.value:
+        if self._device.get_state()["value"] != State.IDLE.value:
             LOGGER.warn("Eiger not initialized or is currently running.")
             return web.json_response(serialize(SequenceComplete(7)))
         elif (
             hasattr(self._device.settings, param)
-            and self._device.get_state().value == State.IDLE.value
+            and self._device.get_state()["value"] == State.IDLE.value
         ):
             attr = response["value"]
 
