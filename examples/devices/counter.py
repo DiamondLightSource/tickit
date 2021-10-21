@@ -17,6 +17,7 @@ class Counter(ConfigurableDevice):
 
     def __init__(self, value: int = 0, callback_period: int = int(1e9)) -> None:
         """A constructor of the counter, which increments the input value.
+
         Args:
             value (Any): A value to increment.
             callback_period (int): The simulation time callback period of the device
@@ -36,9 +37,11 @@ class Counter(ConfigurableDevice):
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
         """The update method which produces the incremented value.
+
         Args:
             time (SimTime): The current simulation time (in nanoseconds).
             inputs (State): A mapping of inputs to the device and their values.
+
         Returns:
             DeviceUpdate[Outputs]:
                 The produced update event which contains the incremented value, and
