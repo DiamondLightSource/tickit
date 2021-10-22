@@ -1,18 +1,15 @@
 import logging
-from typing import Awaitable, Callable
 
 from aiohttp import web
 from apischema import serialize
+from typing_extensions import TypedDict
 
 from tickit.adapters.httpadapter import HTTPAdapter
 from tickit.adapters.interpreters.endpoints.http_endpoint import HTTPEndpoint
-from tickit.adapters.servers.http_server import HTTPServer
-from tickit.core.adapter import ConfigurableAdapter
-from tickit.core.device import ConfigurableDevice, DeviceUpdate
+from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.devices.eiger.eiger_schema import AccessMode, SequenceComplete, Value
 from tickit.devices.eiger.eiger_settings import EigerSettings
-from tickit.utils.byte_format import ByteFormat
 
 from .eiger_status import EigerStatus, State
 
@@ -21,12 +18,16 @@ DETECTOR_API = "detector/api/1.8.0"
 LOGGER = logging.getLogger(__name__)
 
 
-class Eiger(ConfigurableDevice):
+class EigerDevice(Device):
     """A device class for the Eiger detector."""
 
     settings: EigerSettings
-
     status: EigerStatus
+
+    #: An empty typed mapping of input values
+    Inputs: TypedDict = TypedDict("Inputs", {})
+    #: A typed mapping containing the 'value' output value
+    Outputs: TypedDict = TypedDict("Outputs", {})
 
     def __init__(
         self,
@@ -81,7 +82,7 @@ class Eiger(ConfigurableDevice):
         # Do aborting stuff
         self._set_state(State.IDLE)
 
-    def update(self, time: SimTime) -> DeviceUpdate:
+    def update(self, time: SimTime, inputs) -> DeviceUpdate:
         """Generic update function to update the values of the ExampleHTTPDevice.
 
         Args:
@@ -117,33 +118,10 @@ class Eiger(ConfigurableDevice):
         self.status.state = state
 
 
-class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
+class EigerAdapter(HTTPAdapter):
     """An Eiger adapter which parses the commands sent to the HTTP server."""
 
-    _device: Eiger
-
-    def __init__(
-        self,
-        device: Eiger,
-        raise_interrupt: Callable[[], Awaitable[None]],
-        host: str = "localhost",
-        port: int = 8080,
-    ) -> None:
-        """An adapter which instantiates a HTTPServer with configured host and port.
-
-        Args:
-            device (Eiger): The Eiger device
-            raise_interrupt (Callable): A callback to request that the device is
-                updated immediately.
-            host (Optional[str]): The host address of the HTTPServer. Defaults to
-                "localhost".
-            port (Optional[str]): The bound port of the HTTPServer. Defaults to 8080.
-        """
-        super().__init__(
-            device,
-            raise_interrupt,
-            HTTPServer(host, port, ByteFormat(b"%b\r\n")),
-        )
+    device: EigerDevice
 
     # TODO: Make API version setable in the config params?
     @HTTPEndpoint.get(f"/{DETECTOR_API}" + "/config/{parameter_name}")
@@ -159,8 +137,8 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
         """
         param = request.match_info["parameter_name"]
 
-        if hasattr(self._device.settings, param):
-            attr = self._device.settings[param]
+        if hasattr(self.device.settings, param):
+            attr = self.device.settings[param]
 
             data = serialize(
                 Value(
@@ -192,18 +170,18 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
 
         response = await request.json()
 
-        if self._device.get_state()["value"] != State.IDLE.value:
+        if self.device.get_state()["value"] != State.IDLE.value:
             LOGGER.warn("Eiger not initialized or is currently running.")
             return web.json_response(serialize(SequenceComplete(7)))
         elif (
-            hasattr(self._device.settings, param)
-            and self._device.get_state()["value"] == State.IDLE.value
+            hasattr(self.device.settings, param)
+            and self.device.get_state()["value"] == State.IDLE.value
         ):
             attr = response["value"]
 
             LOGGER.debug(f"Changing to {attr} for {param}")
 
-            setattr(self._device.settings, param, attr)
+            setattr(self.device.settings, param, attr)
 
             LOGGER.info("Set: " + str(param) + " to " + str(attr))
             return web.json_response(serialize(SequenceComplete(8)))
@@ -224,8 +202,8 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
         """
         param = request.match_info["status_param"]
 
-        if hasattr(self._device.status, param):
-            attr = self._device.status[param]
+        if hasattr(self.device.status, param):
+            attr = self.device.status[param]
         else:
             attr = "None"
 
@@ -244,7 +222,7 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
             web.Response: The response object returned given the result of the HTTP
                 request.
         """
-        await self._device.initialize()
+        await self.device.initialize()
 
         LOGGER.info("Initializing Eiger...")
         return web.json_response(serialize(SequenceComplete(1)))
@@ -261,7 +239,7 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
                 request.
         """
         # Do arming stuff
-        await self._device.arm()
+        await self.device.arm()
 
         LOGGER.info("Arming Eiger...")
         return web.json_response(serialize(SequenceComplete(2)))
@@ -278,7 +256,7 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
                 request.
         """
         # Do disarming stuff
-        await self._device.disarm()
+        await self.device.disarm()
 
         LOGGER.info("Disarming Eiger...")
         return web.json_response(serialize(SequenceComplete(3)))
@@ -295,8 +273,8 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
                 request.
         """
         # Do triggering stuff
-        trigger_message = await self._device.trigger()
-        self._device._set_state(State.IDLE)
+        trigger_message = await self.device.trigger()
+        self.device._set_state(State.IDLE)
 
         LOGGER.info(trigger_message)
         return web.json_response(serialize(SequenceComplete(4)))
@@ -313,7 +291,7 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
                 request.
         """
         # Do disarming stuff
-        await self._device.cancel()
+        await self.device.cancel()
 
         LOGGER.info("Cancelling Eiger...")
         return web.json_response(serialize(SequenceComplete(5)))
@@ -330,7 +308,7 @@ class EigerAdapter(HTTPAdapter, ConfigurableAdapter):
                 request.
         """
         # Do disarming stuff
-        await self._device.abort()
+        await self.device.abort()
 
         LOGGER.info("Aborting Eiger...")
         return web.json_response(serialize(SequenceComplete(6)))
