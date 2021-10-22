@@ -1,5 +1,7 @@
+import asyncio
 import logging
 
+from tickit.adapters.zmqadapter import ZeroMQAdapter
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.compat.typing_compat import TypedDict
@@ -7,7 +9,7 @@ from tickit.utils.compat.typing_compat import TypedDict
 LOGGER = logging.getLogger(__name__)
 
 
-class Counter(Device):
+class CounterDevice(Device):
     """A simple device which increments a value."""
 
     #: An empty typed mapping of input values
@@ -50,6 +52,18 @@ class Counter(Device):
         self._set_value(self._value + 1)
         LOGGER.debug("Incremented to {}".format(self._value))
         return DeviceUpdate(
-            Counter.Outputs(value=self.get_value()),
+            CounterDevice.Outputs(value=self.get_value()),
             SimTime(time + self.callback_period),
         )
+
+
+class CounterAdapter(ZeroMQAdapter):
+    """An adapter for the Counter's data stream."""
+
+    device: CounterDevice
+
+    def after_update(self) -> None:
+        """Updates IOC values immediately following a device update."""
+        current_value = self.device.get_value()
+        LOGGER.info(f"Value updated to : {current_value}")
+        asyncio.create_task(self.send_message(current_value))

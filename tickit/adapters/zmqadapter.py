@@ -1,21 +1,20 @@
 import asyncio
 import logging
-from typing import Any, Awaitable, Callable
+from typing import Any
 
 import aiozmq
 import zmq
 
-from tickit.core.adapter import ConfigurableAdapter
+from tickit.core.adapter import Adapter
 from tickit.core.device import Device
 
 LOGGER = logging.getLogger(__name__)
 
 
-class ZeroMQAdapter(ConfigurableAdapter):
+class ZeroMQAdapter(Adapter):
     """An adapter for a ZeroMQ data stream."""
 
-    _device: Device
-    _raise_interrupt: Callable[[], Awaitable[None]]
+    device: Device
 
     _dealer: zmq.DEALER
     _router: zmq.ROUTER
@@ -23,8 +22,6 @@ class ZeroMQAdapter(ConfigurableAdapter):
 
     def __init__(
         self,
-        device: Device,
-        raise_interrupt: Callable[[], Awaitable[None]],
         host: str = "127.0.0.1",
         port: int = 5555,
     ) -> None:
@@ -38,16 +35,9 @@ class ZeroMQAdapter(ConfigurableAdapter):
                 "localhost".
             port (Optional[int]): The bound port of the TcpServer. Defaults to 5555.
         """
-        self._device = device
         # self._raise_interrupt = raise_interrupt
         self._host = host
         self._port = port
-
-    def after_update(self) -> None:
-        """Updates IOC values immediately following a device update."""
-        current_value = self._device.get_value()
-        LOGGER.info(f"Value updated to : {current_value}")
-        asyncio.create_task(self.send_message(current_value))
 
     async def start_stream(self) -> None:
         """[summary]."""
@@ -72,7 +62,7 @@ class ZeroMQAdapter(ConfigurableAdapter):
         """
         await self._message_queue.put(message)
 
-    async def run_forever(self) -> None:
+    async def run_forever(self, device, raise_interrupt) -> None:
         """[summary].
 
         Yields:

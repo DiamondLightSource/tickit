@@ -17,14 +17,6 @@ def mock_device() -> Mock:
 
 
 @pytest.fixture
-def raise_interrupt():
-    async def raise_interrupt():
-        return False
-
-    return Mock(raise_interrupt)
-
-
-@pytest.fixture
 @pytest.mark.asyncio
 async def process_message_queue() -> Mock:
     async def _process_message_queue():
@@ -35,14 +27,14 @@ async def process_message_queue() -> Mock:
 
 @pytest.fixture
 def zeromq_adapter(mock_device, process_message_queue) -> ZeroMQAdapter:
-    zmq_adapter = ZeroMQAdapter(mock_device, raise_interrupt)
+    zmq_adapter = ZeroMQAdapter(mock_device)
     zmq_adapter._process_message_queue = process_message_queue
     zmq_adapter._message_queue = Mock(asyncio.Queue)
     return zmq_adapter
 
 
 def test_zeromq_adapter_constructor(mock_device):
-    ZeroMQAdapter(mock_device, raise_interrupt)
+    ZeroMQAdapter(mock_device)
 
 
 # TODO: Would it be better to use something like this?
