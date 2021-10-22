@@ -1,13 +1,13 @@
 import logging
 
-from tickit.core.device import ConfigurableDevice, DeviceUpdate
+from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.compat.typing_compat import TypedDict
 
 LOGGER = logging.getLogger(__name__)
 
 
-class Counter(ConfigurableDevice):
+class Counter(Device):
     """A simple device which increments a value."""
 
     #: An empty typed mapping of input values
