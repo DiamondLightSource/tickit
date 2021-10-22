@@ -16,7 +16,7 @@ WORKDIR ${TICKIT_DIR}
 FROM base AS runtime
 
 WORKDIR ${TICKIT_DIR}
-RUN pipenv install --python python3.9 --system --deploy; \
+RUN pipenv install --python python3.9 --system --deploy --skip-lock; \
     python3.9 -m pip install tickit
 
 CMD ["python3.9", "-m", "tickit"]
@@ -25,7 +25,7 @@ CMD ["python3.9", "-m", "tickit"]
 FROM base AS developer
 
 WORKDIR ${TICKIT_DIR}
-RUN pipenv install --python python3.9 --system --deploy --dev; \
+RUN pipenv install --python python3.9 --system --deploy --dev --skip-lock; \
     python3.9 -m pip install tickit
 
 CMD ["python3.9", "-m", "tickit"]
