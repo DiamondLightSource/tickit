@@ -2,18 +2,9 @@ import asyncio
 
 import aiozmq
 import pytest
-from mock import Mock, create_autospec
+from mock import Mock
 
 from tickit.adapters.zmqadapter import ZeroMQAdapter
-from tickit.core.device import Device
-
-
-@pytest.fixture
-def mock_device() -> Mock:
-    device = create_autospec(Device, instance=True)
-    device.get_value = Mock()
-    device.get_value.return_value = 0
-    return device
 
 
 @pytest.fixture
@@ -26,15 +17,15 @@ async def process_message_queue() -> Mock:
 
 
 @pytest.fixture
-def zeromq_adapter(mock_device, process_message_queue) -> ZeroMQAdapter:
-    zmq_adapter = ZeroMQAdapter(mock_device)
+def zeromq_adapter(process_message_queue) -> ZeroMQAdapter:
+    zmq_adapter = ZeroMQAdapter()
     zmq_adapter._process_message_queue = process_message_queue
     zmq_adapter._message_queue = Mock(asyncio.Queue)
     return zmq_adapter
 
 
-def test_zeromq_adapter_constructor(mock_device):
-    ZeroMQAdapter(mock_device)
+def test_zeromq_adapter_constructor():
+    ZeroMQAdapter()
 
 
 # TODO: Would it be better to use something like this?
