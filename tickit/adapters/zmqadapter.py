@@ -68,6 +68,7 @@ class ZeroMQAdapter(Adapter):
         Yields:
             [type]: [description]
         """
+        await super().run_forever(device, raise_interrupt)
         self._message_queue = asyncio.Queue()
         await self.start_stream()
         await self._process_message_queue()
