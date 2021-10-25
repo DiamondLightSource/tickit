@@ -4,6 +4,13 @@ on:
   push:
   pull_request:
 
+env:
+  TEST_CONTAINER_TAG: user/tickit:test
+  RUNTIME_CONTAINER_TAG: |
+            ghcr.io/${{ github.repository }}:${{ steps.tag.outputs.image_tag }}
+  DEVELOPER_CONTAINER_TAG: |
+            ghcr.io/${{ github.repository }}:${{ steps.tag.outputs.image_tag }}_dev
+
 jobs:
   build:
     strategy:
@@ -135,9 +142,32 @@ jobs:
         with:
           builder: ${{ steps.buildx.output.name }}
           push: ${{ steps.tag.outputs.do_push }}
-          tags: |
-            ghcr.io/${{ github.repository }}:${{ steps.tag.outputs.image_tag }}
-          target: developer
+          tags: ${{ env.TEST_CONTAINER_TAG }}
+          target: runtime
           cache-from: type=local,src=~/cache
           cache-to: type=local,dest=~/cache
-
+      
+      - name: Test container
+        run: |
+          docker run --rm ${{ env.TEST_CONTAINER_TAG }}
+      
+      - name: Run multi-stage build (runtime container)
+        uses: docker/build-push-action@v2
+        with:
+          builder: ${{ steps.buildx.output.name }}
+          push: ${{ steps.tag.outputs.do_push }}
+          tags: $ {{ env.RUNTIME_CONTAINER_TAG }}
+          target: runtime
+          cache-from: type=local,src=~/cache
+          cache-to: type=local,dest=~/cache
+      
+      - name: Run multi-stage build (developer container)
+        uses: docker/build-push-action@v2
+        with:
+          builder: ${{ steps.buildx.output.name }}
+          push: ${{ steps.tag.outputs.do_push }}
+          tags: $ {{ env.DEVELOPER_CONTAINER_TAG }}
+          target: runtime
+          cache-from: type=local,src=~/cache
+          cache-to: type=local,dest=~/cache
+      
