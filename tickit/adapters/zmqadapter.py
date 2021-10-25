@@ -36,14 +36,14 @@ class ZeroMQAdapter(Adapter):
             port (Optional[int]): The bound port of the TcpServer. Defaults to 5555.
         """
         # self._raise_interrupt = raise_interrupt
-        self._host = host
-        self._port = port
+        self.zmq_host = host
+        self.zmq_port = port
 
     async def start_stream(self) -> None:
         """[summary]."""
         LOGGER.debug("Starting stream...")
         self._router = await aiozmq.create_zmq_stream(
-            zmq.ROUTER, bind=f"tcp://{self._host}:{self._port}"
+            zmq.ROUTER, bind=f"tcp://{self.zmq_host}:{self.zmq_port}"
         )
 
         addr = list(self._router.transport.bindings())[0]
