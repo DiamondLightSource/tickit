@@ -36,7 +36,7 @@ class Adapter:
 
     def __getattr__(self, name: str) -> Any:
         """Improve error message for getting attributes before `run_forever`."""
-        if name in ("device", "raise_interrup"):
+        if name in ("device", "raise_interrupt"):
             raise RuntimeError(
                 "Can't get self.device or self.raise_interrupt before run_forever()"
             )
