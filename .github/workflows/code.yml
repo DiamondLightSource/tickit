@@ -136,6 +136,7 @@ jobs:
           builder: ${{ steps.buildx.output.name }}
           tags: user/tickit:test
           target: runtime
+          load: true
           cache-from: type=local,src=~/cache
           cache-to: type=local,dest=~/cache
       
