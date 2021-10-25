@@ -94,13 +94,6 @@ jobs:
         run: pipx run twine upload dist/*
  
   build-image:
-    env:
-      TEST_CONTAINER_TAG: user/tickit:test
-      RUNTIME_CONTAINER_TAG: |
-                ghcr.io/${{ github.repository }}:${{ steps.tag.outputs.image_tag }}
-      DEVELOPER_CONTAINER_TAG: |
-                ghcr.io/${{ github.repository }}:${{ steps.tag.outputs.image_tag }}_dev
-
     needs: [build]
     runs-on: ubuntu-latest
     permissions:
