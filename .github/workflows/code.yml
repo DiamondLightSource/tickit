@@ -135,21 +135,22 @@ jobs:
         with:
           builder: ${{ steps.buildx.output.name }}
           push: ${{ steps.tag.outputs.do_push }}
-          tags: ${{ env.TEST_CONTAINER_TAG }}
+          tags: user/tickit:test
           target: runtime
           cache-from: type=local,src=~/cache
           cache-to: type=local,dest=~/cache
       
       - name: Test container
         run: |
-          docker run --rm ${{ env.TEST_CONTAINER_TAG }}
+          docker run --rm user/tickit:test
       
       - name: Run multi-stage build (runtime container)
         uses: docker/build-push-action@v2
         with:
           builder: ${{ steps.buildx.output.name }}
           push: ${{ steps.tag.outputs.do_push }}
-          tags: $ {{ env.RUNTIME_CONTAINER_TAG }}
+          tags: |
+            ghcr.io/${{ github.repository }}:${{ steps.tag.outputs.image_tag }}
           target: runtime
           cache-from: type=local,src=~/cache
           cache-to: type=local,dest=~/cache
@@ -159,7 +160,8 @@ jobs:
         with:
           builder: ${{ steps.buildx.output.name }}
           push: ${{ steps.tag.outputs.do_push }}
-          tags: $ {{ env.DEVELOPER_CONTAINER_TAG }}
+          tags: |
+            ghcr.io/${{ github.repository }}:${{ steps.tag.outputs.image_tag }}.dev
           target: runtime
           cache-from: type=local,src=~/cache
           cache-to: type=local,dest=~/cache
