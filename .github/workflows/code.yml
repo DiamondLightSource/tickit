@@ -142,7 +142,7 @@ jobs:
         with:
           builder: ${{ steps.buildx.output.name }}
           push: ${{ steps.tag.outputs.do_push }}
-          tags: ${{ user/tickit:test }}
+          tags: ${{ env.TEST_CONTAINER_TAG }}
           target: runtime
           cache-from: type=local,src=~/cache
           cache-to: type=local,dest=~/cache
@@ -156,7 +156,7 @@ jobs:
         with:
           builder: ${{ steps.buildx.output.name }}
           push: ${{ steps.tag.outputs.do_push }}
-          tags: ghcr.io/${{ github.repository }}:${{ steps.tag.outputs.image_tag }}
+          tags: $ {{ env.RUNTIME_CONTAINER_TAG }}
           target: runtime
           cache-from: type=local,src=~/cache
           cache-to: type=local,dest=~/cache
@@ -166,7 +166,7 @@ jobs:
         with:
           builder: ${{ steps.buildx.output.name }}
           push: ${{ steps.tag.outputs.do_push }}
-          tags: ghcr.io/${{ github.repository }}:${{ steps.tag.outputs.image_tag }}_dev
+          tags: $ {{ env.DEVELOPER_CONTAINER_TAG }}
           target: runtime
           cache-from: type=local,src=~/cache
           cache-to: type=local,dest=~/cache
