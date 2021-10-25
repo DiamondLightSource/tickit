@@ -162,7 +162,7 @@ jobs:
           push: ${{ steps.tag.outputs.do_push }}
           tags: |
             ghcr.io/${{ github.repository }}:${{ steps.tag.outputs.image_tag }}.dev
-          target: runtime
+          target: developer
           cache-from: type=local,src=~/cache
           cache-to: type=local,dest=~/cache
       
