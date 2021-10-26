@@ -59,8 +59,8 @@ class TcpServer(Server[bytes]):
 
     def generate_handle_function(
         self,
-        on_connect: Callable[[], AsyncIterable[bytes]],
-        handler: Callable[[bytes], Awaitable[AsyncIterable[bytes]]],
+        on_connect: Callable[[], AsyncIterable[Optional[bytes]]],
+        handler: Callable[[bytes], Awaitable[AsyncIterable[Optional[bytes]]]],
     ) -> Callable[[StreamReader, StreamWriter], Awaitable[None]]:
         """Generates the handle function to be passed to the server.
 
