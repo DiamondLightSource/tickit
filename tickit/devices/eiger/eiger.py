@@ -10,6 +10,10 @@ from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.devices.eiger.eiger_schema import AccessMode, SequenceComplete, Value
 from tickit.devices.eiger.eiger_settings import EigerSettings
+from tickit.devices.eiger.filewriter.eiger_filewriter import (
+    EigerFileWriter,
+    EigerFileWriterAdapter,
+)
 from tickit.devices.eiger.monitor.eiger_monitor import EigerMonitor, EigerMonitorAdapter
 from tickit.devices.eiger.stream.eiger_stream import EigerStream, EigerStreamAdapter
 
@@ -20,7 +24,7 @@ DETECTOR_API = "detector/api/1.8.0"
 LOGGER = logging.getLogger(__name__)
 
 
-class EigerDevice(Device, EigerStream, EigerMonitor):
+class EigerDevice(Device, EigerStream, EigerMonitor, EigerFileWriter):
     """A device class for the Eiger detector."""
 
     settings: EigerSettings
@@ -120,7 +124,9 @@ class EigerDevice(Device, EigerStream, EigerMonitor):
         self.status.state = state
 
 
-class EigerAdapter(HTTPAdapter, EigerStreamAdapter, EigerMonitorAdapter):
+class EigerAdapter(
+    HTTPAdapter, EigerStreamAdapter, EigerMonitorAdapter, EigerFileWriterAdapter
+):
     """An Eiger adapter which parses the commands sent to the HTTP server."""
 
     device: EigerDevice
