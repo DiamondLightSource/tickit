@@ -4,12 +4,12 @@ import pytest
 from mock import Mock, patch
 
 from tickit.core.typedefs import SimTime
-from tickit.devices.sink import Sink
+from tickit.devices.sink import SinkDevice
 
 
 @pytest.fixture
-def sink() -> Sink:
-    return Sink()
+def sink() -> SinkDevice:
+    return SinkDevice()
 
 
 @pytest.fixture
@@ -18,7 +18,7 @@ def mock_logging() -> Iterable[Mock]:
         yield mock
 
 
-def test_sink_update_method(sink: Sink, mock_logging: Mock):
+def test_sink_update_method(sink: SinkDevice, mock_logging: Mock):
     device_update = sink.update(SimTime(0), {"input": "blah"})
     assert device_update.outputs == {}
     assert device_update.call_at is None
