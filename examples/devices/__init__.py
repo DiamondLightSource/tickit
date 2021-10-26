@@ -17,5 +17,5 @@ class Counter(ComponentConfig):
         return DeviceSimulation(
             name=self.name,
             device=CounterDevice(),
-            adapters=[CounterAdapter(host=self.host, port=self.port)],
+            adapters=[CounterAdapter(zmq_host=self.host, zmq_port=self.port)],
         )

@@ -20,10 +20,13 @@ class ZeroMQAdapter(Adapter):
     _router: zmq.ROUTER
     _message_queue: asyncio.Queue
 
+    zmq_host: str
+    zmq_port: int
+
     def __init__(
         self,
-        host: str = "127.0.0.1",
-        port: int = 5555,
+        zmq_host: str = "127.0.0.1",
+        zmq_port: int = 5555,
     ) -> None:
         """A ZeroMQAdapter constructor which instantiates a TcpServer with host and port.
 
@@ -36,8 +39,9 @@ class ZeroMQAdapter(Adapter):
             port (Optional[int]): The bound port of the TcpServer. Defaults to 5555.
         """
         # self._raise_interrupt = raise_interrupt
-        self.zmq_host = host
-        self.zmq_port = port
+        self.zmq_host = zmq_host
+        self.zmq_port = zmq_port
+        LOGGER.debug(f"ZMQ Port = {self.zmq_port}")
 
     async def start_stream(self) -> None:
         """[summary]."""
