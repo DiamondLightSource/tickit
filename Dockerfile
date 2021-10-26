@@ -1,5 +1,5 @@
 ##### Shared Environment stage #########################################################
-FROM python:3.7 AS base
+FROM registry.hub.docker.com/library/python:3.7 AS base
 
 ENV PIP_DEPENDENCIES wheel pipenv
 ENV TICKIT_DIR /tickit
