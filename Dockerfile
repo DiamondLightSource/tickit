@@ -5,9 +5,9 @@ ENV PIP_DEPENDENCIES wheel pipenv
 ENV TICKIT_DIR /tickit
 
 # Install pip dependencies
-RUN rm -rf /usr/bin/python3.9; \
-    python3.7 -m pip install --upgrade pip; \
-    python3.7 -m pip install ${PIP_DEPENDENCIES}
+RUN rm -rf /usr/bin/python3.9
+RUN python3.7 -m pip install --upgrade pip
+RUN python3.7 -m pip install ${PIP_DEPENDENCIES}
 
 # Copy tickit code into container
 COPY . ${TICKIT_DIR}
