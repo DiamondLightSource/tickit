@@ -1,4 +1,5 @@
 import logging
+from dataclasses import fields
 
 from aiohttp import web
 from apischema import serialize
@@ -54,9 +55,32 @@ class EigerDevice(Device, EigerStream, EigerMonitor, EigerFileWriter):
         """Function to arm the Eiger."""
         self._set_state(State.READY)
 
+        header_detail = self.stream_config["header_detail"]["value"]
+
+        json = {
+            "htype": "dheader-1.0",
+            "series": "<id>",
+            "header_detail": header_detail,
+        }
+        if header_detail != "none":
+            config_json = {}
+            disallowed_configs = ["flatfield", "pixelmask" "countrate_correction_table"]
+            for field_ in fields(self.settings):
+                if field_.name not in disallowed_configs:
+                    config_json[field_.name] = vars(self.settings)[field_.name]
+                else:
+                    continue
+
+        LOGGER.info(json)
+        LOGGER.info(config_json)
+
     async def disarm(self) -> None:
         """Function to disarm the Eiger."""
         self._set_state(State.IDLE)
+
+        json = {"htype": "dseries_end-1.0", "series": "<id>"}
+
+        LOGGER.info(json)
 
     async def trigger(self) -> str:
         """Function to trigger the Eiger."""
@@ -67,6 +91,33 @@ class EigerDevice(Device, EigerStream, EigerMonitor, EigerFileWriter):
             # If the detector is in an external trigger mode, this is disabled as
             # this software command interface only works for internal triggers.
             self._set_state(State.ACQUIRE)
+
+            json = {
+                "htype": "dimage-1.0",
+                "series": "<series id>",
+                "frame": "<frame id>",
+                "hash": "<md5>",
+            }
+
+            json2 = {
+                "htype": "dimage_d-1.0",
+                "shape": "[x,y,(z)]",
+                "type": "<data type>",
+                "encoding": "<encoding>",
+                "size": "<size of data blob>",
+            }
+
+            json3 = {
+                "htype": "dconfig-1.0",
+                "start_time": "<start_time>",
+                "stop_time": "<stop_time>",
+                "real_time": "<real_time>",
+            }
+
+            LOGGER.info(json)
+            LOGGER.info(json2)
+            LOGGER.info(json3)
+
             return "Aquiring Data from Eiger..."
         else:
             return (
@@ -83,10 +134,18 @@ class EigerDevice(Device, EigerStream, EigerMonitor, EigerFileWriter):
         # Do data aquisition aborting stuff
         self._set_state(State.READY)
 
+        json = {"htype": "dseries_end-1.0", "series": "<id>"}
+
+        LOGGER.info(json)
+
     async def abort(self) -> None:
         """Function to abort the current task on the Eiger."""
         # Do aborting stuff
         self._set_state(State.IDLE)
+
+        json = {"htype": "dseries_end-1.0", "series": "<id>"}
+
+        LOGGER.info(json)
 
     def update(self, time: SimTime, inputs) -> DeviceUpdate:
         """Generic update function to update the values of the ExampleHTTPDevice.
