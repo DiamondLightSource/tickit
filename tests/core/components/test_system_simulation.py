@@ -1,16 +1,38 @@
-from typing import Any, Iterable
+import asyncio
+from typing import Any, Awaitable, Callable, Iterable
 
 import pytest
 from immutables import Map
 from mock import AsyncMock, Mock, patch
 from mock.mock import create_autospec
 
-from tickit.core.components.system_simulation import SystemSimulation
-from tickit.core.state_interfaces.internal import (
-    InternalStateConsumer,
-    InternalStateProducer,
+from tickit.core.components.component import Component
+from tickit.core.components.system_simulation import (
+    SystemSimulation,
+    SystemSimulationComponent,
 )
-from tickit.core.typedefs import Changes, ComponentID, ComponentPort, PortID, SimTime
+from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
+from tickit.core.typedefs import (
+    Changes,
+    ComponentID,
+    ComponentPort,
+    Output,
+    PortID,
+    SimTime,
+)
+from tickit.utils.topic_naming import output_topic
+
+
+class MockStateConsumer:
+    @staticmethod
+    def __call__(callback: Callable[[Any], Awaitable[None]]) -> None:
+        return create_autospec(StateConsumer)
+
+
+class MockStateProducer:
+    @staticmethod
+    def __call__():
+        return create_autospec(StateProducer)
 
 
 @pytest.fixture
@@ -22,35 +44,22 @@ def patch_scheduler() -> Iterable[Mock]:
             pass
 
         mock.return_value = AsyncMock()
-        dummy_output = Changes(Map({PortID("42"): 42}))
-        mock.return_value.on_tick = AsyncMock(spec=on_tick, side_effect=dummy_output)
+        dummy_output = (Changes(Map({PortID("84"): 84})), 3)
+        mock.return_value.on_tick = AsyncMock(spec=on_tick, return_value=dummy_output)
         mock.return_value.setup
         yield mock
 
 
 @pytest.fixture
-def mock_state_consumer() -> Mock:
-    mock = create_autospec(InternalStateConsumer, instance=False)
-    mock.return_value = create_autospec(InternalStateConsumer, instance=True)
-    return mock
-
-
-@pytest.fixture
-def mock_state_producer() -> Mock:
-    return create_autospec(InternalStateProducer, instance=False)
-
-
-@pytest.fixture
-def system_simulation(
-    patch_scheduler, mock_state_producer, mock_state_consumer
-) -> SystemSimulation:
-    return SystemSimulation(
+def system_simulation(patch_scheduler) -> Component:
+    system_simulation_config = SystemSimulation(
         name=ComponentID("test_system_simulation"),
+        inputs={PortID("24"): ComponentPort(ComponentID("25"), PortID("23"))},
         components=[],
-        state_consumer=mock_state_consumer,
-        state_producer=mock_state_producer,
         expose={PortID("42"): ComponentPort(ComponentID("43"), PortID("44"))},
     )
+
+    return system_simulation_config()
 
 
 def test_system_simulation_constructor(system_simulation: SystemSimulation):
@@ -65,41 +74,39 @@ def patch_asyncio() -> Iterable[Mock]:
         yield mock
 
 
+@pytest.fixture
+def patch_run_all() -> Iterable[Mock]:
+    with patch(
+        "tickit.core.components.system_simulation.run_all", autospec=True
+    ) as mock:
+        mock.return_value = [asyncio.sleep(0)]
+        yield mock
+
+
 @pytest.mark.asyncio
-async def test_system_simulation_set_up_state_inteface_method(
-    system_simulation: SystemSimulation,
+async def test_system_simulation_methods(
+    system_simulation: SystemSimulationComponent,
+    patch_run_all: Mock,
 ):
+    """Test the 'run_forever' and 'on_tick' methods.
 
-    assert not hasattr(system_simulation, "state_producer")
-    assert not hasattr(system_simulation, "state_consumer")
+    The 'on_tick' method depends on 'run_forever' being called first. Therefore tests
+    for both methods have been bundled together. The test succeeds if the mock state
+    interfaces of the system simulation are awaited once with the correct parameters.
+    """
+    await system_simulation.run_forever(
+        MockStateConsumer(), MockStateProducer()  # type: ignore
+    )
 
-    await system_simulation.set_up_state_interfaces()
-
-    assert hasattr(system_simulation, "state_producer")
-    assert hasattr(system_simulation, "state_consumer")
-
-    system_simulation._state_producer_cls.assert_called_once()  # type: ignore
-    system_simulation._state_consumer_cls.assert_called_once()  # type: ignore
     system_simulation.state_consumer.subscribe.assert_awaited_once()  # type: ignore
-
-
-@pytest.mark.asyncio
-async def test_system_simulation_run_forever(
-    system_simulation: SystemSimulation, patch_asyncio
-):
-    await system_simulation.run_forever()
-
-    mock_asyncio: Mock = patch_asyncio
-    mock_asyncio.wait.assert_awaited_once()
-
-
-@pytest.mark.asyncio
-async def test_system_simulation_on_tick(system_simulation: SystemSimulation):
     time = SimTime(0)
-    changes = Changes(Map({PortID("42"): 42}))
+    (
+        expected_changes,
+        expected_call_back,
+    ) = system_simulation.scheduler.on_tick.return_value  # type: ignore
+    await system_simulation.on_tick(time, expected_changes)
 
-    await system_simulation.set_up_state_interfaces()
-    await system_simulation.on_tick(time, changes)
-
-    mock_scheduler: Any = system_simulation.scheduler
-    mock_scheduler.on_tick.assert_called_with(time, changes)
+    system_simulation.state_producer.produce.assert_awaited_once_with(  # type: ignore
+        output_topic(system_simulation.name),
+        Output(system_simulation.name, time, expected_changes, expected_call_back),
+    )
