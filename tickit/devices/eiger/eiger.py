@@ -152,7 +152,11 @@ class EigerAdapter(
                 Value(
                     attr["value"],
                     attr["metadata"]["value_type"].value,
-                    access_mode=attr["metadata"]["access_mode"].value,
+                    access_mode=(
+                        attr["metadata"]["access_mode"].value
+                        if hasattr(attr["metadata"], "access_mode")
+                        else AccessMode.READ_ONLY.value
+                    ),
                 )
             )
         else:
@@ -199,6 +203,50 @@ class EigerAdapter(
 
     @HTTPEndpoint.get(f"/{DETECTOR_API}" + "/status/{status_param}")
     async def get_status(self, request: web.Request) -> web.Response:
+        """A HTTP Endpoint for requesting the status of the Eiger.
+
+        Args:
+            request (web.Request): The request object that takes the request method.
+
+        Returns:
+            web.Response: The response object returned given the result of the HTTP
+                request.
+        """
+        param = request.match_info["status_param"]
+
+        if hasattr(self.device.status, param):
+            attr = self.device.status[param]
+        else:
+            attr = "None"
+
+        data = serialize({"value": attr})
+
+        return web.json_response(data)
+
+    @HTTPEndpoint.get(f"/{DETECTOR_API}" + "/status/board_000/{status_param}")
+    async def get_board_000_status(self, request: web.Request) -> web.Response:
+        """A HTTP Endpoint for requesting the status of the Eiger.
+
+        Args:
+            request (web.Request): The request object that takes the request method.
+
+        Returns:
+            web.Response: The response object returned given the result of the HTTP
+                request.
+        """
+        param = request.match_info["status_param"]
+
+        if hasattr(self.device.status, param):
+            attr = self.device.status[param]
+        else:
+            attr = "None"
+
+        data = serialize({"value": attr})
+
+        return web.json_response(data)
+
+    @HTTPEndpoint.get(f"/{DETECTOR_API}" + "/status/builder/{status_param}")
+    async def get_builder_status(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for requesting the status of the Eiger.
 
         Args:

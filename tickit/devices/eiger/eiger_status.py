@@ -23,9 +23,10 @@ class EigerStatus:
 
     state: State = field(default=State.NA)
     errors: List[str] = field(default_factory=lambda: [])
-    temp: float = field(default=24.5)
-    humidity: float = field(default=0.2)
+    th0_temp: float = field(default=24.5)
+    th0_humidity: float = field(default=0.2)
     time: datetime = field(default=datetime.now())
+    dcu_buffer_free: float = field(default=0.5)
 
     # TODO: Why does this not work when returning a generic TypeVar????
     def __getitem__(self, key: str) -> Any:
