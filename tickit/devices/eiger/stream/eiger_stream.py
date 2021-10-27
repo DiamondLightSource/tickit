@@ -23,10 +23,10 @@ STREAM_API = "stream/api/1.8.0"
 class EigerStream:
     """Simulation of an Eiger stream."""
 
-    # stream_status: StreamStatus = StreamStatus()
-    # stream_config: StreamConfig = StreamConfig()
+    stream_status: StreamStatus
+    stream_config: StreamConfig
     # # stream_messages: asyncio.Queue = asyncio.Queue()
-    # stream_callback_period: SimTime = SimTime(int(1e9))
+    stream_callback_period: SimTime
 
     #: An empty typed mapping of input values
     Inputs: TypedDict = TypedDict("Inputs", {})

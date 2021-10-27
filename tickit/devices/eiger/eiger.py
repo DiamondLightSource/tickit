@@ -13,12 +13,15 @@ from tickit.core.typedefs import SimTime
 from tickit.devices.eiger.data.dummydata import dummy_image
 from tickit.devices.eiger.eiger_schema import AccessMode, SequenceComplete, Value
 from tickit.devices.eiger.eiger_settings import EigerSettings
-from tickit.devices.eiger.filewriter.eiger_filewriter import (
-    EigerFileWriter,
-    EigerFileWriterAdapter,
-)
-from tickit.devices.eiger.monitor.eiger_monitor import EigerMonitor, EigerMonitorAdapter
-from tickit.devices.eiger.stream.eiger_stream import EigerStream, EigerStreamAdapter
+from tickit.devices.eiger.filewriter.eiger_filewriter import EigerFileWriterAdapter
+from tickit.devices.eiger.filewriter.filewriter_config import FileWriterConfig
+from tickit.devices.eiger.filewriter.filewriter_status import FileWriterStatus
+from tickit.devices.eiger.monitor.eiger_monitor import EigerMonitorAdapter
+from tickit.devices.eiger.monitor.monitor_config import MonitorConfig
+from tickit.devices.eiger.monitor.monitor_status import MonitorStatus
+from tickit.devices.eiger.stream.eiger_stream import EigerStreamAdapter
+from tickit.devices.eiger.stream.stream_config import StreamConfig
+from tickit.devices.eiger.stream.stream_status import StreamStatus
 
 from .eiger_status import EigerStatus, State
 
@@ -27,7 +30,7 @@ DETECTOR_API = "detector/api/1.8.0"
 LOGGER = logging.getLogger(__name__)
 
 
-class EigerDevice(Device, EigerStream, EigerMonitor, EigerFileWriter):
+class EigerDevice(Device):
     """A device class for the Eiger detector."""
 
     settings: EigerSettings
@@ -48,6 +51,19 @@ class EigerDevice(Device, EigerStream, EigerMonitor, EigerFileWriter):
         """
         self.settings = EigerSettings()
         self.status = EigerStatus()
+
+        self.stream_status = StreamStatus()
+        self.stream_config = StreamConfig()
+        # self.stream_messages = asyncio.Queue()
+        self.stream_callback_period = SimTime(int(1e9))
+
+        self.filewriter_status: FileWriterStatus = FileWriterStatus()
+        self.filewriter_config: FileWriterConfig = FileWriterConfig()
+        self.filewriter_callback_period = SimTime(int(1e9))
+
+        self.monitor_status: MonitorStatus = MonitorStatus()
+        self.monitor_config: MonitorConfig = MonitorConfig()
+        self.monitor_callback_period = SimTime(int(1e9))
 
     async def initialize(self) -> None:
         """Function to initialise the Eiger."""
