@@ -13,20 +13,39 @@ RUN python3.7 -m pip install ${PIP_DEPENDENCIES}
 COPY . ${TICKIT_DIR}
 WORKDIR ${TICKIT_DIR}
 
-##### Runtime Stage ####################################################################
-FROM base AS runtime
+RUN pipenv install --python python3.7 --system --deploy
 
+##### Runtime Stage ####################################################################
+FROM registry.hub.docker.com/library/python:3.7 AS runtime
+
+ENV TICKIT_DIR /tickit
 WORKDIR ${TICKIT_DIR}
-RUN pipenv install --python python3.7 --system --deploy; \
-    python3.7 -m pip install tickit
+
+ENV PYTHON_SITE_PACKAGES /usr/local/lib/python3.7/site-packages
+
+COPY --from=base ${PYTHON_SITE_PACKAGES} ${PYTHON_SITE_PACKAGES}
+COPY . ${TICKIT_DIR}
+
+RUN python3.7 -m pip install tickit
 
 CMD ["python3.7", "-m", "tickit"]
 
-##### Developer Stage ##################################################################
-FROM base AS developer
+##### Developer Base Stage #############################################################
+FROM base AS base_dev
 
+RUN pipenv install --python python3.7 --system --deploy --dev
+
+##### Developer Stage ##################################################################
+FROM registry.hub.docker.com/library/python:3.7 AS developer
+
+ENV TICKIT_DIR /tickit
 WORKDIR ${TICKIT_DIR}
-RUN pipenv install --python python3.7 --system --deploy --dev; \
-    python3.7 -m pip install tickit
+
+ENV PYTHON_SITE_PACKAGES /usr/local/lib/python3.7/site-packages
+
+COPY --from=base_dev ${PYTHON_SITE_PACKAGES} ${PYTHON_SITE_PACKAGES}
+COPY . ${TICKIT_DIR}
+
+RUN python3.7 -m pip install tickit
 
 CMD ["python3.7", "-m", "tickit"]
