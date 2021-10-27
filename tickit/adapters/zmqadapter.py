@@ -27,12 +27,9 @@ class ZeroMQAdapter(Adapter):
     #     zmq_host: str = "127.0.0.1",
     #     zmq_port: int = 5555,
     # ) -> None:
-    #     """A ZeroMQAdapter constructor which instantiates a TcpServer with host and port.
+    #     """A ZMQAdapter constructor which instantiates a TcpServer with host and port.
 
     #     Args:
-    #         device (ZMQStream): The ZMQ stream/device which this adapter is attached to
-    #         raise_interrupt (Callable): A callback to request that the device is
-    #             updated immediately.
     #         host (Optional[str]): The host address of the TcpServer. Defaults to
     #             "localhost".
     #         port (Optional[int]): The bound port of the TcpServer. Defaults to 5555.
