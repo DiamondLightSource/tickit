@@ -211,7 +211,7 @@ def mock_request():
 #     ],
 # )
 # @pytest.mark.asyncio
-# async def test_eiger_get_config(
+# async def test_eiger_get_config_bad_request(
 #     eiger_adapter: EigerRESTAdapter,
 #     mock_request: MagicMock,
 #     mock_get_params,
@@ -385,18 +385,46 @@ async def test_eiger_system(tickit_task):
     url = "http://0.0.0.0:8081/detector/api/1.8.0/"
     headers = {"content-type": "application/json"}
 
-    async def get_state(expected):
-        async with session.get(url + "status/state") as resp:
+    async def get_status(status, expected):
+        async with session.get(url + f"status/{status}") as resp:
             assert expected == json.loads(str(await resp.text()))["value"]
 
     async with aiohttp.ClientSession() as session:
-        await get_state(expected="na")
+        await get_status(status="state", expected="na")
 
+        # Test setting config var before Eiger set up
+        data = '{"value": "test"}'
+        async with session.put(
+            url + "config/element", headers=headers, data=data
+        ) as resp:
+            assert json.loads(str(await resp.text())) == {"sequence_id": 7}
+
+        # Test each command
         for key, value in commands.items():
             async with session.put(url + f"command/{key}") as resp:
                 assert value == json.loads(str(await resp.text()))
 
-        await get_state(expected="idle")
+        await get_status(status="doesnt_exist", expected="None")
+
+        await get_status(status="board_000/th0_temp", expected=24.5)
+
+        await get_status(status="board_000/doesnt_exist", expected="None")
+
+        await get_status(status="builder/dcu_buffer_free", expected=0.5)
+
+        await get_status(status="builder/doesnt_exist", expected="None")
+
+        # Test Eiger in IDLE state
+        await get_status(status="state", expected="idle")
+
+        async with session.get(url + "config/doesnt_exist") as resp:
+            assert json.loads(str(await resp.text()))["value"] == "None"
+
+        data = '{"value": "test"}'
+        async with session.put(
+            url + "config/doesnt_exist", headers=headers, data=data
+        ) as resp:
+            assert json.loads(str(await resp.text())) == {"sequence_id": 9}
 
         async with session.get(url + "config/element") as resp:
             assert json.loads(str(await resp.text()))["value"] == "Co"
