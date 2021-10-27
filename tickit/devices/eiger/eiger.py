@@ -264,7 +264,7 @@ class EigerRESTAdapter(
             LOGGER.info("Set: " + str(param) + " to " + str(attr))
             return web.json_response(serialize(SequenceComplete(8)))
         else:
-            LOGGER.warn("Eiger has no config variable: " + str(param))
+            LOGGER.warning("Eiger has no config variable: " + str(param))
             return web.json_response(serialize(SequenceComplete(9)))
 
     @HTTPEndpoint.get(f"/{DETECTOR_API}" + "/status/{status_param}")
