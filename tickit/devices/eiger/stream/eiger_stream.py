@@ -1,6 +1,5 @@
-import asyncio
+# import asyncio
 import logging
-from dataclasses import dataclass
 
 from aiohttp import web
 from apischema import serialize
@@ -14,30 +13,32 @@ from tickit.devices.eiger.eiger_schema import Value
 from tickit.devices.eiger.stream.stream_config import StreamConfig
 from tickit.devices.eiger.stream.stream_status import StreamStatus
 
+# from dataclasses import dataclass
+
+
 LOGGER = logging.getLogger(__name__)
 STREAM_API = "stream/api/1.8.0"
 
 
-@dataclass
 class EigerStream:
     """Simulation of an Eiger stream."""
 
-    stream_status: StreamStatus = StreamStatus()
-    stream_config: StreamConfig = StreamConfig()
-    stream_messages: asyncio.Queue = asyncio.Queue()
-    stream_callback_period = SimTime(int(1e9))
+    # stream_status: StreamStatus = StreamStatus()
+    # stream_config: StreamConfig = StreamConfig()
+    # # stream_messages: asyncio.Queue = asyncio.Queue()
+    # stream_callback_period: SimTime = SimTime(int(1e9))
 
     #: An empty typed mapping of input values
     Inputs: TypedDict = TypedDict("Inputs", {})
     #: A typed mapping containing the 'value' output value
     Outputs: TypedDict = TypedDict("Outputs", {})
 
-    # def __init__(self, callback_period: int = int(1e9)) -> None:
-    #     """An Eiger Stream constructor."""
-    #     self.stream_status = StreamStatus()
-    #     self.stream_config = StreamConfig()
-    #     self.stream_messages = asyncio.Queue()
-    #     self.stream_callback_period = SimTime(callback_period)
+    def __init__(self, callback_period: int = int(1e9)) -> None:
+        """An Eiger Stream constructor."""
+        self.stream_status = StreamStatus()
+        self.stream_config = StreamConfig()
+        # self.stream_messages = asyncio.Queue()
+        self.stream_callback_period = SimTime(callback_period)
 
     # def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
     #     """The update method which produces the incremented value.
@@ -56,6 +57,10 @@ class EigerStream:
     #         EigerStream.Outputs(),
     #         SimTime(time + self.stream_callback_period),
     #     )
+
+    def test(self) -> None:
+        """[summary]."""
+        pass
 
 
 class EigerStreamAdapter:

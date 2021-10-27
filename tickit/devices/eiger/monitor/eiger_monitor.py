@@ -1,5 +1,4 @@
 import logging
-from dataclasses import dataclass
 
 from aiohttp import web
 from apischema import serialize
@@ -19,18 +18,19 @@ LOGGER = logging.getLogger(__name__)
 MONITOR_API = "monitor/api/1.8.0"
 
 
-@dataclass
 class EigerMonitor:
     """Simulation of an Eiger monitor."""
-
-    monitor_status: MonitorStatus = MonitorStatus()
-    monitor_config: MonitorConfig = MonitorConfig()
-    monitor_callback_period = SimTime(int(1e9))
 
     #: An empty typed mapping of input values
     Inputs: TypedDict = TypedDict("Inputs", {})
     #: A typed mapping containing the 'value' output value
     Outputs: TypedDict = TypedDict("Outputs", {})
+
+    def __init__(self) -> None:
+        """[Summary]."""
+        self.monitor_status: MonitorStatus = MonitorStatus()
+        self.monitor_config: MonitorConfig = MonitorConfig()
+        self.monitor_callback_period = SimTime(int(1e9))
 
 
 class EigerMonitorAdapter:

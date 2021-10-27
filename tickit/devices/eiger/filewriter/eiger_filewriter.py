@@ -1,5 +1,4 @@
 import logging
-from dataclasses import dataclass
 
 from aiohttp import web
 from apischema import serialize
@@ -19,18 +18,19 @@ LOGGER = logging.getLogger(__name__)
 FILEWRITER_API = "filewriter/api/1.8.0"
 
 
-@dataclass
 class EigerFileWriter:
     """Simulation of an Eiger monitor."""
-
-    filewriter_status: FileWriterStatus = FileWriterStatus()
-    filewriter_config: FileWriterConfig = FileWriterConfig()
-    filewriter_callback_period = SimTime(int(1e9))
 
     #: An empty typed mapping of input values
     Inputs: TypedDict = TypedDict("Inputs", {})
     #: A typed mapping containing the 'value' output value
     Outputs: TypedDict = TypedDict("Outputs", {})
+
+    def __init__(self) -> None:
+        """[Summary]."""
+        self.filewriter_status: FileWriterStatus = FileWriterStatus()
+        self.filewriter_config: FileWriterConfig = FileWriterConfig()
+        self.filewriter_callback_period = SimTime(int(1e9))
 
 
 class EigerFileWriterAdapter:
