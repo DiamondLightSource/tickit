@@ -9,6 +9,7 @@ from tickit.adapters.httpadapter import HTTPAdapter
 from tickit.adapters.interpreters.endpoints.http_endpoint import HTTPEndpoint
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
+from tickit.devices.eiger.data.dummydata import dummy_image
 from tickit.devices.eiger.eiger_schema import AccessMode, SequenceComplete, Value
 from tickit.devices.eiger.eiger_settings import EigerSettings
 from tickit.devices.eiger.filewriter.eiger_filewriter import (
@@ -92,31 +93,36 @@ class EigerDevice(Device, EigerStream, EigerMonitor, EigerFileWriter):
             # this software command interface only works for internal triggers.
             self._set_state(State.ACQUIRE)
 
-            json = {
-                "htype": "dimage-1.0",
-                "series": "<series id>",
-                "frame": "<frame id>",
-                "hash": "<md5>",
-            }
+            for i in range(1, self.settings.nimages + 1):
 
-            json2 = {
-                "htype": "dimage_d-1.0",
-                "shape": "[x,y,(z)]",
-                "type": "<data type>",
-                "encoding": "<encoding>",
-                "size": "<size of data blob>",
-            }
+                # "Aquire" an image
+                aquired = dummy_image(i)
 
-            json3 = {
-                "htype": "dconfig-1.0",
-                "start_time": "<start_time>",
-                "stop_time": "<stop_time>",
-                "real_time": "<real_time>",
-            }
+                json = {
+                    "htype": "dimage-1.0",
+                    "series": "<series id>",
+                    "frame": aquired.index,
+                    "hash": aquired.hash,
+                }
 
-            LOGGER.info(json)
-            LOGGER.info(json2)
-            LOGGER.info(json3)
+                json2 = {
+                    "htype": "dimage_d-1.0",
+                    "shape": "[x,y,(z)]",
+                    "type": aquired.dtype,
+                    "encoding": aquired.encoding,
+                    "size": len(aquired.data),
+                }
+
+                json3 = {
+                    "htype": "dconfig-1.0",
+                    "start_time": "<start_time>",
+                    "stop_time": "<stop_time>",
+                    "real_time": "<real_time>",
+                }
+
+                LOGGER.info(json)
+                LOGGER.info(json2)
+                LOGGER.info(json3)
 
             return "Aquiring Data from Eiger..."
         else:
