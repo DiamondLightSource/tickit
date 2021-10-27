@@ -6,7 +6,7 @@ from aiohttp import web
 from mock import MagicMock, Mock
 from mock.mock import create_autospec
 
-from tickit.devices.eiger.eiger import EigerAdapter, EigerDevice
+from tickit.devices.eiger.eiger import EigerDevice, EigerRESTAdapter
 from tickit.devices.eiger.eiger_settings import EigerSettings
 from tickit.devices.eiger.eiger_status import EigerStatus, State
 
@@ -115,7 +115,7 @@ def test_eiger_set_state(eiger: EigerDevice):
 # TODO: Tests for update() once implemented
 
 
-# # # # # EigerAdapter Tests # # # # #
+# # # # # EigerRESTAdapter Tests # # # # #
 
 
 @pytest.fixture
@@ -152,12 +152,12 @@ def raise_interrupt():
 
 
 @pytest.fixture
-def eiger_adapter(mock_eiger: MagicMock) -> EigerAdapter:
-    return EigerAdapter(mock_eiger, raise_interrupt)
+def eiger_adapter(mock_eiger: MagicMock) -> EigerRESTAdapter:
+    return EigerRESTAdapter(mock_eiger, raise_interrupt)
 
 
 def test_eiger_adapter_contructor():
-    EigerAdapter(mock_eiger, raise_interrupt)
+    EigerRESTAdapter(mock_eiger, raise_interrupt)
 
 
 @pytest.fixture()
@@ -212,7 +212,7 @@ def mock_request():
 # )
 # @pytest.mark.asyncio
 # async def test_eiger_get_config(
-#     eiger_adapter: EigerAdapter,
+#     eiger_adapter: EigerRESTAdapter,
 #     mock_request: MagicMock,
 #     mock_get_params,
 # ):
@@ -265,7 +265,7 @@ def mock_request():
 # )
 # @pytest.mark.asyncio
 # async def test_eiger_put_config(
-#     eiger_adapter: EigerAdapter, mock_request: MagicMock, put_config_test
+#     eiger_adapter: EigerRESTAdapter, mock_request: MagicMock, put_config_test
 # ):
 
 #     mock_request.match_info = {"parameter_name": put_config_test["param"]}
@@ -300,7 +300,7 @@ def mock_request():
 # )
 # @pytest.mark.asyncio
 # async def test_eiger_get_status(
-#     eiger_adapter: EigerAdapter, mock_request: MagicMock, get_status_test
+#     eiger_adapter: EigerRESTAdapter, mock_request: MagicMock, get_status_test
 # ):
 
 #     mock_request.match_info = {"status_param": get_status_test["param"]}
@@ -345,7 +345,7 @@ def mock_request():
 # )
 # @pytest.mark.asyncio
 # async def test_eiger_command(
-#     eiger_adapter: EigerAdapter, mock_request: MagicMock, command_test
+#     eiger_adapter: EigerRESTAdapter, mock_request: MagicMock, command_test
 # ):
 
 #     # eiger_adapter.device.initialize.return_value = State.IDLE
@@ -360,7 +360,7 @@ def mock_request():
 
 # @pytest.mark.asyncio
 # async def test_eiger_trigger_command(
-#     eiger_adapter: EigerAdapter, mock_request: MagicMock
+#     eiger_adapter: EigerRESTAdapter, mock_request: MagicMock
 # ):
 
 #     resp = await eiger_adapter.trigger_eiger(mock_request)
