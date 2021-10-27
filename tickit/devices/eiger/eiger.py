@@ -249,7 +249,7 @@ class EigerRESTAdapter(
         response = await request.json()
 
         if self.device.get_state()["value"] != State.IDLE.value:
-            LOGGER.warn("Eiger not initialized or is currently running.")
+            LOGGER.warning("Eiger not initialized or is currently running.")
             return web.json_response(serialize(SequenceComplete(7)))
         elif (
             hasattr(self.device.settings, param)
