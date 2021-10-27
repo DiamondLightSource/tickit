@@ -1,47 +1,46 @@
 import asyncio
 import logging
+from dataclasses import dataclass
 from typing import Any
 
 import aiozmq
 import zmq
 
 from tickit.core.adapter import Adapter
-from tickit.core.device import Device
 
 LOGGER = logging.getLogger(__name__)
 
 
+@dataclass
 class ZeroMQAdapter(Adapter):
     """An adapter for a ZeroMQ data stream."""
 
-    device: Device
+    # _dealer: zmq.DEALER
+    # _router: zmq.ROUTER
+    # _message_queue: asyncio.Queue
 
-    _dealer: zmq.DEALER
-    _router: zmq.ROUTER
-    _message_queue: asyncio.Queue
+    zmq_host: str = "127.0.0.1"
+    zmq_port: int = 5555
 
-    zmq_host: str
-    zmq_port: int
+    # def __init__(
+    #     self,
+    #     zmq_host: str = "127.0.0.1",
+    #     zmq_port: int = 5555,
+    # ) -> None:
+    #     """A ZeroMQAdapter constructor which instantiates a TcpServer with host and port.
 
-    def __init__(
-        self,
-        zmq_host: str = "127.0.0.1",
-        zmq_port: int = 5555,
-    ) -> None:
-        """A ZeroMQAdapter constructor which instantiates a TcpServer with host and port.
-
-        Args:
-            device (ZMQStream): The ZMQ stream/device which this adapter is attached to
-            raise_interrupt (Callable): A callback to request that the device is
-                updated immediately.
-            host (Optional[str]): The host address of the TcpServer. Defaults to
-                "localhost".
-            port (Optional[int]): The bound port of the TcpServer. Defaults to 5555.
-        """
-        # self._raise_interrupt = raise_interrupt
-        self.zmq_host = zmq_host
-        self.zmq_port = zmq_port
-        LOGGER.debug(f"ZMQ Port = {self.zmq_port}")
+    #     Args:
+    #         device (ZMQStream): The ZMQ stream/device which this adapter is attached to
+    #         raise_interrupt (Callable): A callback to request that the device is
+    #             updated immediately.
+    #         host (Optional[str]): The host address of the TcpServer. Defaults to
+    #             "localhost".
+    #         port (Optional[int]): The bound port of the TcpServer. Defaults to 5555.
+    #     """
+    #     # self._raise_interrupt = raise_interrupt
+    #     self.zmq_host = zmq_host
+    #     self.zmq_port = zmq_port
+    #     LOGGER.debug(f"ZMQ Port = {self.zmq_port}")
 
     async def start_stream(self) -> None:
         """[summary]."""
@@ -73,7 +72,7 @@ class ZeroMQAdapter(Adapter):
             [type]: [description]
         """
         await super().run_forever(device, raise_interrupt)
-        self._message_queue = asyncio.Queue()
+        self._message_queue: asyncio.Queue = asyncio.Queue()
         await self.start_stream()
         await self._process_message_queue()
 

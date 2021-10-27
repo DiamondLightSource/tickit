@@ -7,6 +7,7 @@ from typing_extensions import TypedDict
 
 from tickit.adapters.httpadapter import HTTPAdapter
 from tickit.adapters.interpreters.endpoints.http_endpoint import HTTPEndpoint
+from tickit.adapters.zmqadapter import ZeroMQAdapter
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.devices.eiger.data.dummydata import dummy_image
@@ -189,7 +190,7 @@ class EigerDevice(Device, EigerStream, EigerMonitor, EigerFileWriter):
         self.status.state = state
 
 
-class EigerAdapter(
+class EigerRESTAdapter(
     HTTPAdapter, EigerStreamAdapter, EigerMonitorAdapter, EigerFileWriterAdapter
 ):
     """An Eiger adapter which parses the commands sent to the HTTP server."""
@@ -433,3 +434,9 @@ class EigerAdapter(
 
         LOGGER.info("Aborting Eiger...")
         return web.json_response(serialize(SequenceComplete(6)))
+
+
+class EigerZMQAdapter(ZeroMQAdapter):
+    """An Eiger adapter which parses the datato send along a ZeroMQStream."""
+
+    device: EigerDevice
