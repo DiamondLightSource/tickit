@@ -106,28 +106,6 @@ def patch_asyncio_sleep() -> Iterable[Mock]:
         yield mock
 
 
-@pytest.mark.asyncio
-async def test_master_scheduler_run_tick_methods(
-    master_scheduler: MasterScheduler,
-    patch_asyncio_wait,
-    patch_asyncio_Event,
-    patch_asyncio_sleep,
-):
-    master_scheduler.add_wakeup(ComponentID("foo"), SimTime(42))
-    master_scheduler.add_wakeup(ComponentID("bar"), SimTime(52))
-    master_scheduler.add_wakeup(ComponentID("baz"), SimTime(62))
-    master_scheduler.add_wakeup(ComponentID("boo"), SimTime(72))
-    await master_scheduler._run_initial_tick()
-    await master_scheduler._run_tick()
-    assert master_scheduler.wakeups == {"bar": 52, "baz": 62, "boo": 72}
-    await master_scheduler._run_tick()
-    assert master_scheduler.wakeups == {"baz": 62, "boo": 72}
-    await master_scheduler._run_tick()
-    assert master_scheduler.wakeups == {"boo": 72}
-    await master_scheduler._run_tick()
-    assert master_scheduler.wakeups == {"boo": 72}
-
-
 @pytest.fixture
 def patch_time_ns() -> Iterable[Mock]:
     class frozen_clock:
@@ -144,10 +122,62 @@ def patch_time_ns() -> Iterable[Mock]:
 
 
 @pytest.mark.asyncio
+async def test_master_scheduler_do_initial_tick(
+    master_scheduler: MasterScheduler, patch_time_ns
+):
+    await master_scheduler.setup()
+    await master_scheduler._do_initial_tick()
+    assert master_scheduler.last_time == patch_time_ns()
+
+
+@pytest.mark.asyncio
+async def test_master_scheduler_do_tick_method(
+    master_scheduler: MasterScheduler,
+    patch_asyncio_wait,
+    patch_asyncio_Event,
+    patch_asyncio_sleep,
+):
+    master_scheduler.add_wakeup(ComponentID("foo"), SimTime(42))
+    master_scheduler.add_wakeup(ComponentID("bar"), SimTime(52))
+    master_scheduler.add_wakeup(ComponentID("baz"), SimTime(62))
+    master_scheduler.add_wakeup(ComponentID("boo"), SimTime(72))
+    await master_scheduler.setup()
+    await master_scheduler._do_initial_tick()
+    await master_scheduler._do_tick()
+    assert master_scheduler.wakeups == {"bar": 52, "baz": 62, "boo": 72}
+    await master_scheduler._do_tick()
+    assert master_scheduler.wakeups == {"baz": 62, "boo": 72}
+    await master_scheduler._do_tick()
+    assert master_scheduler.wakeups == {"boo": 72}
+    # After two ticks `patch_asyncio_wait` will switch to returning:
+    # `self.new_wakeup.wait()` instead of `self.sleep_time(when)` (See:
+    # tickit/core/management/schedulers/master.py:89). After that we expect wakeups
+    # to stop being removed.
+    await master_scheduler._do_tick()
+    assert master_scheduler.wakeups == {"boo": 72}
+
+
+@pytest.mark.asyncio
 async def test_master_scheduler_schedule_interrupt_method(
     master_scheduler: MasterScheduler, patch_time_ns
 ):
-    await master_scheduler._run_initial_tick()
+    await master_scheduler.setup()
+    await master_scheduler._do_initial_tick()
     assert master_scheduler.wakeups == {}
     await master_scheduler.schedule_interrupt(ComponentID("foo"))
     assert master_scheduler.wakeups == {"foo": master_scheduler.ticker.time}
+
+
+@pytest.mark.asyncio
+async def test_schedule_interrupt_succeeds_with_queued_wakeup(
+    master_scheduler: MasterScheduler, patch_time_ns
+):
+    master_scheduler.add_wakeup(ComponentID("bar"), SimTime(42))
+    await master_scheduler.setup()
+    await master_scheduler._do_initial_tick()
+    assert master_scheduler.wakeups == {"bar": 42}
+    await master_scheduler.schedule_interrupt(ComponentID("me first"))
+    assert master_scheduler.wakeups == {
+        "me first": master_scheduler.ticker.time,
+        "bar": 42,
+    }

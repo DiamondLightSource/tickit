@@ -19,7 +19,7 @@ class MasterScheduler(BaseScheduler):
         initial_time: int = 0,
         simulation_speed: float = 1.0,
     ) -> None:
-        """A master sheduler constructor  which stores values for reference.
+        """A master scheduler constructor  which stores values for reference.
 
         Args:
             wiring (Union[Wiring, InverseWiring]): A wiring or inverse wiring object
@@ -63,20 +63,20 @@ class MasterScheduler(BaseScheduler):
         which all components are updated, subsequently ticks are performed as requested
         by components of the simulation according to the simulation speed.
         """
-        await self._run_initial_tick()
-        while True:
-            await self._run_tick()
-
-    async def _run_initial_tick(self):
-        """Performs the initial tick of the system."""
         await self.setup()
+        await self._do_initial_tick()
+        while True:
+            await self._do_tick()
+
+    async def _do_initial_tick(self):
+        """Performs the initial tick of the system."""
         await self.ticker(
             self._initial_time,
             self.ticker.components,
         )
         self.last_time = time_ns()
 
-    async def _run_tick(self):
+    async def _do_tick(self):
         """Continuously schedules ticks according to wakeups."""
         if not self.wakeups:
             await self.new_wakeup.wait()
