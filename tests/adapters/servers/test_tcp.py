@@ -1,5 +1,5 @@
 from asyncio import StreamReader, StreamWriter
-from typing import AsyncIterable, Callable
+from typing import AsyncIterable, Awaitable, Callable
 
 import pytest
 from mock import ANY, MagicMock, Mock, patch
@@ -22,8 +22,8 @@ def on_connect() -> Callable[[], AsyncIterable[bytes]]:
 
 
 @pytest.fixture
-def handler() -> Callable[[bytes], AsyncIterable[bytes]]:
-    async def _handler(message: bytes) -> Callable[[], AsyncIterable[bytes]]:
+def handler() -> Callable[[bytes], Awaitable[AsyncIterable[bytes]]]:
+    async def _handler(message: bytes) -> AsyncIterable[bytes]:
         async def async_iterable() -> AsyncIterable[bytes]:
             yield b"hello"
             yield b""
@@ -31,9 +31,9 @@ def handler() -> Callable[[bytes], AsyncIterable[bytes]]:
             yield b"world"
             yield b""
 
-        return async_iterable
+        return async_iterable()
 
-    return _handler  # type: ignore
+    return _handler
 
 
 @pytest.fixture
