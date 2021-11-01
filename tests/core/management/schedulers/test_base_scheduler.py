@@ -83,30 +83,25 @@ async def test_base_scheduler_update_component_method(
     base_scheduler.state_producer.produce.assert_awaited_once()
 
 
-@pytest.mark.parametrize(
-    "message",
-    [
-        pytest.param(Interrupt(ComponentID("foo")), id="interrupt"),
-        pytest.param(
-            Output(
-                ComponentID("bar"),
-                SimTime(42),
-                Changes(Map({PortID("42"): "world"})),
-                SimTime(88),
-            )
-        ),
-    ],
-)
 @pytest.mark.asyncio
-async def test_base_scheduler_handle_message_method(
-    base_scheduler: Any, message: Union[Interrupt, Output]
-):
+async def test_base_scheduler_handle_output_message(base_scheduler: Any):
+    message = Output(
+        ComponentID("bar"),
+        SimTime(42),
+        Changes(Map({PortID("42"): "world"})),
+        SimTime(88),
+    )
     await base_scheduler.handle_message(message)
+    base_scheduler.ticker.propagate.assert_awaited_once_with(message)
 
-    if isinstance(message, Output):
-        base_scheduler.ticker.propagate.assert_awaited_once_with(message)
-    if isinstance(message, Interrupt):
-        assert base_scheduler.schedule_interrupt_call_count == 1
+
+@pytest.mark.asyncio
+async def test_base_scheduler_handle_interrupt_message(
+    base_scheduler: _TestBaseScheduler,
+):
+    message = Interrupt(ComponentID("foo"))
+    await base_scheduler.handle_message(message)
+    assert base_scheduler.schedule_interrupt_call_count == 1
 
 
 def test_base_scheduler_get_first_wakeups_method(base_scheduler: _TestBaseScheduler):
