@@ -7,11 +7,7 @@ from mock import Mock, create_autospec, patch
 
 from tickit.core.adapter import Adapter
 from tickit.core.components.device_simulation import DeviceSimulation
-from tickit.core.state_interfaces.internal import (
-    InternalStateConsumer,
-    InternalStateProducer,
-    InternalStateServer,
-)
+from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import Changes, ComponentID, Output, PortID, SimTime
 from tickit.devices.source import Source, SourceDevice
 
@@ -28,21 +24,15 @@ def mock_adapter() -> Mock:
 
 
 @pytest.fixture
-def mock_server() -> Mock:
-    return create_autospec(InternalStateServer, instance=True)
-
-
-@pytest.fixture
-def mock_state_producer_type(mock_server: Mock) -> Mock:
-    mock: Mock = create_autospec(InternalStateProducer, instance=False)
-    mock.return_value = create_autospec(InternalStateProducer, instance=True)
-    mock.return_value.server = mock_server
+def mock_state_producer_type() -> Mock:
+    mock: Mock = create_autospec(StateProducer, instance=False)
+    mock.return_value = create_autospec(StateProducer, instance=True)
     return mock
 
 
 @pytest.fixture
 def mock_state_consumer_type() -> Mock:
-    return create_autospec(InternalStateConsumer, instance=False)
+    return create_autospec(StateConsumer, instance=False)
 
 
 @pytest.fixture
