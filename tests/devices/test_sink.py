@@ -1,3 +1,4 @@
+import logging
 from typing import Iterable
 
 import pytest
@@ -18,8 +19,15 @@ def mock_logging() -> Iterable[Mock]:
         yield mock
 
 
-def test_sink_update_method(sink: SinkDevice, mock_logging: Mock):
-    device_update = sink.update(SimTime(0), {"input": "blah"})
+def test_sink_update_method(sink: SinkDevice, caplog):
+    inputs = {"input": "blah"}
+    with caplog.at_level(logging.DEBUG):
+        device_update = sink.update(SimTime(0), inputs)
     assert device_update.outputs == {}
     assert device_update.call_at is None
-    assert mock_logging.debug.called
+
+    assert len(caplog.records) == 1
+    record: logging.LogRecord = caplog.records[0]
+
+    assert record.levelname == "DEBUG"
+    assert record.message == "Sunk {}".format(inputs)
