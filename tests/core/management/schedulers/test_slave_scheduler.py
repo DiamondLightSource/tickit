@@ -32,14 +32,6 @@ def mock_state_consumer() -> Mock:
     return create_autospec(StateConsumer, instance=False)
 
 
-# @pytest.fixture
-# def mock_state_producer() -> Mock:
-#     mock = create_autospec(StateProducer, instance=False)
-#     mock.return_value = create_autospec(StateProducer, instance=True)
-#     mock.return_value.produce = AsyncMock()
-#     return mock
-
-
 @pytest.fixture
 def mock_state_producer() -> Mock:
     return create_autospec(StateProducer, instance=False)
