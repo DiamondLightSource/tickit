@@ -33,7 +33,7 @@ def mock_server() -> Mock:
 
 
 @pytest.fixture
-def mock_state_producer(mock_server: Mock) -> Mock:
+def mock_state_producer_type(mock_server: Mock) -> Mock:
     mock: Mock = create_autospec(InternalStateProducer, instance=False)
     mock.return_value = create_autospec(InternalStateProducer, instance=True)
     mock.return_value.server = mock_server
@@ -41,7 +41,7 @@ def mock_state_producer(mock_server: Mock) -> Mock:
 
 
 @pytest.fixture
-def mock_state_consumer() -> Mock:
+def mock_state_consumer_type() -> Mock:
     return create_autospec(InternalStateConsumer, instance=False)
 
 
@@ -81,15 +81,17 @@ def test_device_simulation_constructor(device_simulation: DeviceSimulation):
 @pytest.mark.asyncio
 async def test_device_simulation_run_forever_method(
     device_simulation: DeviceSimulation,
-    mock_state_producer: Mock,
-    mock_state_consumer: Mock,
+    mock_state_producer_type: Mock,
+    mock_state_consumer_type: Mock,
     patch_asyncio_wait: Mock,
 ):
     with patch(
         "tickit.core.components.device_simulation.run_all", autospec=True
     ) as mock_all:
         mock_all.return_value = [asyncio.create_task(asyncio.sleep(0))]
-        await device_simulation.run_forever(mock_state_consumer, mock_state_producer)
+        await device_simulation.run_forever(
+            mock_state_consumer_type, mock_state_producer_type
+        )
         patch_asyncio_wait.assert_awaited_once_with(
             mock_all.return_value, return_when=asyncio.FIRST_COMPLETED
         )
