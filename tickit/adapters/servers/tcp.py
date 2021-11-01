@@ -50,14 +50,14 @@ class TcpServer(Server[bytes]):
                 asynchronous message handler which returns an asynchronous iterable of
                 replies.
         """
-        handle = self.generate_handle_function(on_connect, handler)
+        handle = self._generate_handle_function(on_connect, handler)
 
         server = await asyncio.start_server(handle, self.host, self.port)
 
         async with server:
             await server.serve_forever()
 
-    def generate_handle_function(
+    def _generate_handle_function(
         self,
         on_connect: Callable[[], AsyncIterable[Optional[bytes]]],
         handler: Callable[[bytes], Awaitable[AsyncIterable[Optional[bytes]]]],

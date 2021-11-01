@@ -83,7 +83,7 @@ async def test_TcpServer_generate_handle_function_method(
     mock_stream_reader: Mock,
     mock_stream_writer: Mock,
 ):
-    handle_function = tcp_server.generate_handle_function(on_connect, handler)
+    handle_function = tcp_server._generate_handle_function(on_connect, handler)
 
     assert handle_function is not None
 
