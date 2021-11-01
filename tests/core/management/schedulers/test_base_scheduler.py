@@ -41,12 +41,12 @@ def mock_wiring() -> Mock:
 
 
 @pytest.fixture
-def mock_state_consumer() -> Mock:
+def mock_state_consumer_type() -> Mock:
     return create_autospec(StateConsumer, instance=False)
 
 
 @pytest.fixture
-def mock_state_producer() -> Mock:
+def mock_state_producer_type() -> Mock:
     return create_autospec(StateProducer, instance=False)
 
 
@@ -59,10 +59,10 @@ def patch_ticker() -> Iterable[Mock]:
 @pytest.fixture
 @pytest.mark.asyncio
 async def base_scheduler(
-    mock_wiring: Mock, mock_state_consumer, mock_state_producer, patch_ticker
+    mock_wiring: Mock, mock_state_consumer_type, mock_state_producer_type, patch_ticker
 ) -> _TestBaseScheduler:
     base_scheduler = _TestBaseScheduler(
-        mock_wiring, mock_state_consumer, mock_state_producer
+        mock_wiring, mock_state_consumer_type, mock_state_producer_type
     )
     await base_scheduler.setup()
     return base_scheduler
