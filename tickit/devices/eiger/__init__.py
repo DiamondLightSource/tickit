@@ -10,7 +10,7 @@ from .eiger import EigerDevice, EigerRESTAdapter, EigerZMQAdapter
 class Eiger(ComponentConfig):
     """Eiger simulation with HTTP adapter."""
 
-    host: str = "localhost"
+    host: str = "0.0.0.0"
     port: int = 8081
     zmq_host: str = "127.0.0.1"
     zmq_port: int = 9999
