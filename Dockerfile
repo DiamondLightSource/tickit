@@ -1,5 +1,5 @@
 ##### Shared Environment stage #########################################################
-FROM registry.hub.docker.com/library/python:3.7 AS base
+FROM registry.hub.docker.com/library/python:3.7-slim AS base
 
 ENV PIP_DEPENDENCIES wheel pipenv
 ENV TICKIT_DIR /tickit
@@ -16,7 +16,7 @@ WORKDIR ${TICKIT_DIR}
 RUN pipenv install --python python3.7 --system --deploy
 
 ##### Runtime Stage ####################################################################
-FROM registry.hub.docker.com/library/python:3.7 AS runtime
+FROM registry.hub.docker.com/library/python:3.7-slim AS runtime
 
 ENV TICKIT_DIR /tickit
 WORKDIR ${TICKIT_DIR}
@@ -36,7 +36,7 @@ FROM base AS base_dev
 RUN pipenv install --python python3.7 --system --deploy --dev
 
 ##### Developer Stage ##################################################################
-FROM registry.hub.docker.com/library/python:3.7 AS developer
+FROM registry.hub.docker.com/library/python:3.7-slim AS developer
 
 ENV TICKIT_DIR /tickit
 WORKDIR ${TICKIT_DIR}
