@@ -1,75 +1,94 @@
 from pathlib import Path
+from typing import Iterable
 
-import mock
 import pytest
 from click.testing import CliRunner, Result
-from mock.mock import AsyncMock
+from mock import Mock, patch
+from mock.mock import AsyncMock, create_autospec
+
+from tickit.cli import main
+from tickit.core.components.component import ComponentConfig
+from tickit.core.management.schedulers.master import MasterScheduler
+from tickit.core.typedefs import ComponentID, ComponentPort, PortID
 
 
 @pytest.fixture
-def mock_run_all_forever():
-    with mock.patch("tickit.cli.run_all_forever") as mock_run_all_forever:
-        yield mock_run_all_forever
+def patch_logging() -> Iterable[Mock]:
+    with patch("tickit.cli.logging", autospec=True) as mock:
+        yield mock
 
 
-def test_cli_set_loggging_level():
-    from tickit.cli import main
+@pytest.fixture
+def patch_run_all_forever() -> Iterable[Mock]:
+    with patch("tickit.cli.run_all_forever", autospec=True) as mock:
+        yield mock
+
+
+@pytest.fixture
+def patch_asyncio() -> Iterable[Mock]:
+    with patch("tickit.cli.asyncio", autospec=True) as mock:
+        yield mock
+
+
+@pytest.fixture
+def patch_read_configs() -> Iterable[Mock]:
+    with patch("tickit.cli.read_configs", autospec=True) as mock:
+        mock_config = create_autospec(ComponentConfig, instance=True)
+        mock_config.name = "fake_device"
+        mock_config.inputs = {
+            PortID("42"),
+            ComponentPort(ComponentID("foo"), PortID("24")),
+        }
+        mock.return_value = [mock_config]
+        yield mock
+
+
+def test_cli_set_loggging_level(patch_logging):
 
     runner: CliRunner = CliRunner()
-    with mock.patch("logging.basicConfig") as mock_basicConfig:
-        result: Result = runner.invoke(main, args=["--log-level", "INFO"])
-        assert result.exit_code == 0
-        mock_basicConfig.assert_called_with(level="INFO")
+    result: Result = runner.invoke(main, args=["--log-level", "INFO"])
+    assert result.exit_code == 0
+    patch_logging.basicConfig.assert_called_with(level="INFO")
 
 
-def test_component_command(mock_run_all_forever: AsyncMock):
-    from tickit.cli import main
-
+def test_component_command(
+    patch_run_all_forever,
+    patch_read_configs,
+):
     runner: CliRunner = CliRunner()
-
-    test_config_path: str = (
-        (Path(__file__).parent / "../examples/configs/sunk-trampoline.yaml")
-        .resolve()
-        .__str__()
-    )
 
     result: Result = runner.invoke(
-        main, args=["component", "rand_tramp", test_config_path]
+        main, args=["component", "fake_device", "path/to/fake_device.yaml"]
     )
+
     assert result.exit_code == 0
+    patch_run_all_forever.assert_called_once()
 
-    mock_run_all_forever.assert_called_once()
+
+@pytest.fixture
+def patch_master_scheduler_run_forever_method() -> Iterable[Mock]:
+    with patch.object(MasterScheduler, "run_forever", autospec=True) as mock:
+        yield mock
 
 
-def test_scheduler(mock_run_all_forever: AsyncMock):
-    from tickit.cli import main
+def test_scheduler(
+    patch_read_configs: Mock,
+    patch_master_scheduler_run_forever_method: Mock,
+):
 
     runner: CliRunner = CliRunner()
 
-    test_config_path: str = (
-        (Path(__file__).parent / "../examples/configs/sunk-trampoline.yaml")
-        .resolve()
-        .__str__()
-    )
+    result: Result = runner.invoke(main, args=["scheduler", "path/to/fake_device.yaml"])
 
-    result: Result = runner.invoke(main, args=["scheduler", test_config_path])
     assert result.exit_code == 0
+    patch_master_scheduler_run_forever_method.assert_awaited_once()
 
-    mock_run_all_forever.assert_awaited_once()
 
-
-def test_all(mock_run_all_forever: AsyncMock):
-    from tickit.cli import main
+def test_all(patch_read_configs, patch_master_scheduler_run_forever_method):
 
     runner: CliRunner = CliRunner()
 
-    test_config_path: str = (
-        (Path(__file__).parent / "../examples/configs/sunk-trampoline.yaml")
-        .resolve()
-        .__str__()
-    )
+    result: Result = runner.invoke(main, args=["all", "path/to/fake_device.yaml"])
 
-    result: Result = runner.invoke(main, args=["all", test_config_path])
     assert result.exit_code == 0
-
-    mock_run_all_forever.assert_awaited_once()
+    patch_master_scheduler_run_forever_method.assert_awaited_once()
