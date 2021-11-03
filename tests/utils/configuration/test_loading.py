@@ -6,7 +6,7 @@ from mock import Mock, create_autospec, patch
 from mock.mock import mock_open
 
 from tickit.core.components.component import ComponentConfig
-from tickit.devices.sink import Sink
+from tickit.devices.femto import Current, Femto
 from tickit.utils.configuration.loading import importing_conversion, read_configs
 
 
@@ -84,7 +84,7 @@ def patch_builtins_open() -> Iterable[Mock]:
         yield mock
 
 
-def test_read_configs(patch_builtins_open):
-    configs = read_configs("blah/it/does/not/matter.yaml")
-    assert configs[0].__class__.__name__ == "RandomTrampoline"
-    assert isinstance(configs[1], Sink)
+def test_read_configs():
+    configs = read_configs("examples/configs/current-monitor.yaml")
+    assert isinstance(configs[0], Current)
+    assert isinstance(configs[1], Femto)
