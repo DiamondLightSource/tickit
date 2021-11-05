@@ -3,7 +3,6 @@ import asyncio
 import aiozmq
 import pytest
 from mock import Mock
-from mock.mock import AsyncMock
 
 from tickit.adapters.zmqadapter import ZeroMQAdapter
 
