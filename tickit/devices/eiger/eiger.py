@@ -98,13 +98,15 @@ class EigerDevice(Device):
         LOGGER.debug(json)
 
     async def trigger(self) -> str:
-        """Function to trigger the Eiger."""
+        """Function to trigger the Eiger.
+
+        If the detector is in an external trigger mode, this is disabled as
+        this software command interface only works for internal triggers.
+        """
         trigger_mode = self.settings.trigger_mode
         state = self.status.state
 
         if state == State.READY and trigger_mode == "ints":
-            # If the detector is in an external trigger mode, this is disabled as
-            # this software command interface only works for internal triggers.
             self._set_state(State.ACQUIRE)
 
             for i in range(1, self.settings.nimages + 1):
