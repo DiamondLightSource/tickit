@@ -6,7 +6,7 @@ from mock import Mock, create_autospec, patch
 from mock.mock import mock_open
 
 from tickit.core.components.component import ComponentConfig
-from tickit.devices.femto import Current, Femto
+from tickit.core.typedefs import ComponentID, ComponentPort, PortID
 from tickit.utils.configuration.loading import importing_conversion, read_configs
 
 
@@ -39,9 +39,25 @@ def test_importing_conversion_when_is_not_tagged_union(
     assert conversion is None
 
 
+class MockConfig(ComponentConfig):
+    pass
+
+    def __call__(self):
+        return Mock()
+
+
 @pytest.fixture
 def patch_apischema_deserialize() -> Iterable[Mock]:
-    with patch("tickit.utils.configuration.loading.deserialize", autospec=True) as mock:
+    with patch(
+        "tickit.utils.configuration.loading.deserialize",
+        autospec=True,
+    ) as mock:
+        mock.return_value = [
+            MockConfig(
+                name=ComponentID("foo"),
+                inputs={PortID("42"): ComponentPort(ComponentID("bar"), PortID("24"))},
+            )
+        ]
         yield mock
 
 
@@ -67,24 +83,17 @@ def patch_yaml_library() -> Iterable[Mock]:
 
 @pytest.fixture
 def patch_builtins_open() -> Iterable[Mock]:
-    sunk_trampoline_yaml = """
-    - examples.devices.trampoline.RandomTrampoline:
-        name: rand_tramp
-        inputs: {}
-        callback_period: 1000000000
-    - tickit.devices.sink.Sink:
-        name: tramp_sink
-        inputs:
-          input: rand_tramp:output
-    """
+    blank_yaml = ""
     with patch(
         "tickit.utils.configuration.loading.open",
-        new=mock_open(read_data=sunk_trampoline_yaml),
+        new=mock_open(read_data=blank_yaml),
     ) as mock:
         yield mock
 
 
-def test_read_configs():
-    configs = read_configs("examples/configs/current-monitor.yaml")
-    assert isinstance(configs[0], Current)
-    assert isinstance(configs[1], Femto)
+def test_read_configs(
+    patch_builtins_open: Mock,
+    patch_apischema_deserialize: Mock,
+):
+    configs = read_configs("foo/bar.borg")
+    assert isinstance(configs[0], MockConfig)
