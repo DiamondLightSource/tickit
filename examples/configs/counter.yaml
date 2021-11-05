@@ -1,13 +1,7 @@
-- tickit.core.components.device_simulation.DeviceSimulation:
-    adapters: []
-    device:
-      examples.devices.counter.Counter: {}
+- examples.devices.Counter:
+    name: counter  
     inputs: {}
-    name: counter
-- tickit.core.components.device_simulation.DeviceSimulation:
-    adapters: []
-    device:
-      tickit.devices.sink.Sink: {}
-    inputs:
-      input: counter:value
+- tickit.devices.sink.Sink:
     name: counter_sink
+    inputs:
+      input: counter:_value
