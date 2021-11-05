@@ -6,7 +6,8 @@ from typing import Any
 import aiozmq
 import zmq
 
-from tickit.core.adapter import Adapter
+from tickit.core.adapter import Adapter, RaiseInterrupt
+from tickit.core.device import Device
 
 LOGGER = logging.getLogger(__name__)
 
@@ -41,7 +42,9 @@ class ZeroMQAdapter(Adapter):
         """
         asyncio.create_task(self._message_queue.put(message))
 
-    async def run_forever(self, device, raise_interrupt) -> None:
+    async def run_forever(
+        self, device: Device, raise_interrupt: RaiseInterrupt
+    ) -> None:
         """[summary].
 
         Yields:
