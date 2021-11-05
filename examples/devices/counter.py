@@ -56,5 +56,5 @@ class CounterAdapter(ZeroMQAdapter):
     def after_update(self) -> None:
         """Updates IOC values immediately following a device update."""
         current_value = self.device._value
-        LOGGER.info(f"Value updated to : {current_value}")
+        LOGGER.debug(f"Value updated to : {current_value}")
         self.send_message(current_value)

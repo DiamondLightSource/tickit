@@ -63,6 +63,6 @@ class ZeroMQAdapter(Adapter):
                 data = await self._router.read()
                 self._router.write(data)
                 answer = await self._dealer.read()
-                LOGGER.info("Received {!r}".format(answer))
+                LOGGER.debug("Received {!r}".format(answer))
             else:
                 LOGGER.debug("No message")
