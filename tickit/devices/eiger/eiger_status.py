@@ -22,7 +22,7 @@ class EigerStatus:
     """Stores the status parameters of the Eiger detector."""
 
     state: State = field(default=State.NA)
-    errors: List[str] = field(default_factory=lambda: [])
+    errors: List[str] = field(default_factory=list)
     th0_temp: float = field(default=24.5)
     th0_humidity: float = field(default=0.2)
     time: datetime = field(default=datetime.now())
