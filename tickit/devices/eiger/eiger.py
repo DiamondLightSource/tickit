@@ -85,8 +85,6 @@ class EigerDevice(Device):
             for field_ in fields(self.settings):
                 if field_.name not in disallowed_configs:
                     config_json[field_.name] = vars(self.settings)[field_.name]
-                else:
-                    continue
 
         LOGGER.debug(json)
         LOGGER.debug(config_json)

@@ -21,9 +21,6 @@ def field_config(**kwargs) -> Mapping[str, Any]:
     return dict(**kwargs)
 
 
-#
-# API Access Mode Identifiers
-#
 class AccessMode(Enum):
     """Possible access modes for field metadata."""
 
