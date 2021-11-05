@@ -30,7 +30,7 @@ class HTTPAdapter(Adapter):
     ) -> None:
         """Runs the server continously."""
         await super().run_forever(device, raise_interrupt)
-        LOGGER.debug("Starting HTTP server...")
+        LOGGER.debug(f"Starting HTTP server... {self}")
         app = web.Application()
         app.add_routes(list(self.endpoints()))
         runner = web.AppRunner(app)
