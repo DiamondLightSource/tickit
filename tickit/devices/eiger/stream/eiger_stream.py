@@ -1,4 +1,3 @@
-# import asyncio
 import logging
 
 from aiohttp import web
@@ -6,15 +5,10 @@ from apischema import serialize
 from typing_extensions import TypedDict
 
 from tickit.adapters.interpreters.endpoints.http_endpoint import HTTPEndpoint
-
-# from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.devices.eiger.eiger_schema import Value
 from tickit.devices.eiger.stream.stream_config import StreamConfig
 from tickit.devices.eiger.stream.stream_status import StreamStatus
-
-# from dataclasses import dataclass
-
 
 LOGGER = logging.getLogger(__name__)
 STREAM_API = "stream/api/1.8.0"
@@ -25,7 +19,6 @@ class EigerStream:
 
     stream_status: StreamStatus
     stream_config: StreamConfig
-    # # stream_messages: asyncio.Queue = asyncio.Queue()
     stream_callback_period: SimTime
 
     #: An empty typed mapping of input values
@@ -37,26 +30,7 @@ class EigerStream:
         """An Eiger Stream constructor."""
         self.stream_status = StreamStatus()
         self.stream_config = StreamConfig()
-        # self.stream_messages = asyncio.Queue()
         self.stream_callback_period = SimTime(callback_period)
-
-    # def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
-    #     """The update method which produces the incremented value.
-
-    #     Args:
-    #         time (SimTime): The current simulation time (in nanoseconds).
-    #         inputs (State): A mapping of inputs to the device and their values.
-
-    #     Returns:
-    #         DeviceUpdate[Outputs]:
-    #             The produced update event which contains the incremented value, and
-    #             requests a callback of 1s.
-    #     """
-    #     LOGGER.debug("Stream update...")
-    #     return DeviceUpdate(
-    #         EigerStream.Outputs(),
-    #         SimTime(time + self.stream_callback_period),
-    #     )
 
     def test(self) -> None:
         """[summary]."""
