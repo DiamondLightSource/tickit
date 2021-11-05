@@ -54,13 +54,13 @@ class ZeroMQAdapter(Adapter):
         self._dealer.close()
         self._router.close()
 
-    async def send_message(self, message: Any) -> None:
+    def send_message(self, message: Any) -> None:
         """[summary].
 
         Args:
             message (Any): [description]
         """
-        await self._message_queue.put(message)
+        asyncio.create_task(self._message_queue.put(message))
 
     async def run_forever(self, device, raise_interrupt) -> None:
         """[summary].

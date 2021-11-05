@@ -1,4 +1,3 @@
-import asyncio
 import logging
 
 from tickit.adapters.zmqadapter import ZeroMQAdapter
@@ -17,7 +16,7 @@ class CounterDevice(Device):
     #: A typed mapping containing the 'value' output value
     Outputs: TypedDict = TypedDict("Outputs", {"value": int})
 
-    def __init__(self, value: int = 0, callback_period: int = int(1e9)) -> None:
+    def __init__(self, initial_value: int = 0, callback_period: int = int(1e9)) -> None:
         """A constructor of the counter, which increments the input value.
 
         Args:
@@ -25,17 +24,9 @@ class CounterDevice(Device):
             callback_period (int): The simulation time callback period of the device
                 (in nanoseconds). Defaults to int(1e9).
         """
-        self._value = value
+        self._value = initial_value
         self.callback_period = SimTime(callback_period)
         LOGGER.debug(f"Initialize with value => {self._value}")
-
-    def get_value(self) -> int:
-        """[summary]."""
-        return self._value
-
-    def _set_value(self, value) -> None:
-        """[Summary]."""
-        self._value = value
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
         """The update method which produces the incremented value.
@@ -49,10 +40,10 @@ class CounterDevice(Device):
                 The produced update event which contains the incremented value, and
                 requests a callback of 1s.
         """
-        self._set_value(self._value + 1)
+        self._value = self._value + 1
         LOGGER.debug("Incremented to {}".format(self._value))
         return DeviceUpdate(
-            CounterDevice.Outputs(value=self.get_value()),
+            CounterDevice.Outputs(value=self._value),
             SimTime(time + self.callback_period),
         )
 
@@ -64,6 +55,6 @@ class CounterAdapter(ZeroMQAdapter):
 
     def after_update(self) -> None:
         """Updates IOC values immediately following a device update."""
-        current_value = self.device.get_value()
+        current_value = self.device._value
         LOGGER.info(f"Value updated to : {current_value}")
-        asyncio.create_task(self.send_message(current_value))
+        self.send_message(current_value)
