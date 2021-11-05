@@ -3,6 +3,7 @@ import asyncio
 import aiozmq
 import pytest
 from mock import Mock
+from mock.mock import AsyncMock
 
 from tickit.adapters.zmqadapter import ZeroMQAdapter
 
@@ -28,15 +29,6 @@ def test_zeromq_adapter_constructor():
     ZeroMQAdapter()
 
 
-# TODO: Would it be better to use something like this?
-# @pytest.fixture
-# def patch_aiozmq_create_zmq_stream() -> Iterable[Mock]:
-#     with patch(
-#         "tickit.adapters.zmqadapter.aiozmq.create_zmq_stream", autospec=True
-#     ) as mock:
-#         yield mock
-
-
 @pytest.mark.asyncio
 async def test_zeromq_adapter_start_stream(zeromq_adapter):
     await zeromq_adapter.start_stream()
@@ -58,27 +50,7 @@ async def test_zeromq_adapter_close_stream(zeromq_adapter):
     assert None is zeromq_adapter._dealer._transport
 
 
-# TODO: This currently runs indefinitely due to recent changes, and hangs
-# @pytest.mark.asyncio
-# async def test_zeromq_adapter_run_forever(zeromq_adapter):
-
-#     await zeromq_adapter.run_forever()
-
-#     assert isinstance(zeromq_adapter._router, aiozmq.stream.ZmqStream)
-#     assert isinstance(zeromq_adapter._dealer, aiozmq.stream.ZmqStream)
-
-#     await zeromq_adapter.close_stream()
-
-
 @pytest.mark.asyncio
 async def test_zeromq_adapter_after_update(zeromq_adapter):
 
     zeromq_adapter.after_update()
-
-
-# TODO: How to test the message was sent as nothing is returned from send_message()?
-@pytest.mark.asyncio
-async def test_zeromq_adapter_send_message(zeromq_adapter):
-    await zeromq_adapter.start_stream()
-
-    await zeromq_adapter.send_message(0)
