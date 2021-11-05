@@ -1,15 +1,15 @@
 import asyncio
 import logging
 from asyncio.streams import StreamReader, StreamWriter
-from typing import AsyncIterable, Awaitable, Callable, List
+from typing import AsyncIterable, Awaitable, Callable, List, Optional
 
-from tickit.core.adapter import ConfigurableServer
+from tickit.core.adapter import Server
 from tickit.utils.byte_format import ByteFormat
 
 LOGGER = logging.getLogger(__name__)
 
 
-class TcpServer(ConfigurableServer):
+class TcpServer(Server[bytes]):
     """A configurable tcp server with delegated message handling for use in adapters."""
 
     def __init__(
@@ -32,8 +32,8 @@ class TcpServer(ConfigurableServer):
 
     async def run_forever(
         self,
-        on_connect: Callable[[], AsyncIterable[bytes]],
-        handler: Callable[[bytes], Awaitable[AsyncIterable[bytes]]],
+        on_connect: Callable[[], AsyncIterable[Optional[bytes]]],
+        handler: Callable[[bytes], Awaitable[AsyncIterable[Optional[bytes]]]],
     ) -> None:
         """Runs the TCP server indefinitely on the configured host and port.
 
@@ -50,10 +50,34 @@ class TcpServer(ConfigurableServer):
                 asynchronous message handler which returns an asynchronous iterable of
                 replies.
         """
+        handle = self._generate_handle_function(on_connect, handler)
+
+        server = await asyncio.start_server(handle, self.host, self.port)
+
+        async with server:
+            await server.serve_forever()
+
+    def _generate_handle_function(
+        self,
+        on_connect: Callable[[], AsyncIterable[Optional[bytes]]],
+        handler: Callable[[bytes], Awaitable[AsyncIterable[Optional[bytes]]]],
+    ) -> Callable[[StreamReader, StreamWriter], Awaitable[None]]:
+        """Generates the handle function to be passed to the server.
+
+        The handle function is generated from the specified functions. It's purpose is
+        to define how the server will respond to incoming messages.
+
+        Args:
+            on_connect (Callable[[], AsyncIterable[bytes]]): An asynchronous iterable
+                of messages to be sent upon client connection.
+            handler (Callable[[bytes], Awaitable[AsyncIterable[bytes]]]): An
+                asynchronous message handler which returns an asynchronous iterable of
+                replies.
+        """
         tasks: List[asyncio.Task] = list()
 
         async def handle(reader: StreamReader, writer: StreamWriter) -> None:
-            async def reply(replies: AsyncIterable[bytes]) -> None:
+            async def reply(replies: AsyncIterable[Optional[bytes]]) -> None:
                 async for reply in replies:
                     if reply is None:
                         continue
@@ -76,7 +100,4 @@ class TcpServer(ConfigurableServer):
 
             await asyncio.wait(tasks)
 
-        server = await asyncio.start_server(handle, self.host, self.port)
-
-        async with server:
-            await server.serve_forever()
+        return handle

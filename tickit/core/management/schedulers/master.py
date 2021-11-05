@@ -19,7 +19,7 @@ class MasterScheduler(BaseScheduler):
         initial_time: int = 0,
         simulation_speed: float = 1.0,
     ) -> None:
-        """A master sheduler constructor  which stores values for reference.
+        """A master scheduler constructor  which stores values for reference.
 
         Args:
             wiring (Union[Wiring, InverseWiring]): A wiring or inverse wiring object
@@ -64,31 +64,39 @@ class MasterScheduler(BaseScheduler):
         by components of the simulation according to the simulation speed.
         """
         await self.setup()
+        await self._do_initial_tick()
+        while True:
+            await self._do_tick()
+
+    async def _do_initial_tick(self):
+        """Performs the initial tick of the system."""
         await self.ticker(
             self._initial_time,
             self.ticker.components,
         )
         self.last_time = time_ns()
-        while True:
-            if not self.wakeups:
-                await self.new_wakeup.wait()
-            components, when = self.get_first_wakeups()
-            assert when is not None
-            self.new_wakeup.clear()
 
-            current: asyncio.Future = asyncio.sleep(self.sleep_time(when))
-            new = asyncio.create_task(self.new_wakeup.wait())
-            which, _ = await asyncio.wait(
-                {current, new}, return_when=asyncio.tasks.FIRST_COMPLETED
-            )
+    async def _do_tick(self):
+        """Continuously schedules ticks according to wakeups."""
+        if not self.wakeups:
+            await self.new_wakeup.wait()
+        components, when = self.get_first_wakeups()
+        assert when is not None
+        self.new_wakeup.clear()
 
-            if new in which:
-                continue
+        current: asyncio.Future = asyncio.sleep(self.sleep_time(when))
+        new = asyncio.create_task(self.new_wakeup.wait())
+        which, _ = await asyncio.wait(
+            [current, new], return_when=asyncio.tasks.FIRST_COMPLETED
+        )
 
-            for component in components:
-                del self.wakeups[component]
-            await self.ticker(when, {component for component in components})
-            self.last_time = time_ns()
+        if new in which:
+            return
+
+        for component in components:
+            del self.wakeups[component]
+        await self.ticker(when, {component for component in components})
+        self.last_time = time_ns()
 
     async def schedule_interrupt(self, source: ComponentID) -> None:
         """Schedules the interrupt of a component immediately.

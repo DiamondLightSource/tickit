@@ -26,24 +26,24 @@ API
 
     .. automodule:: examples.devices.trampoline
         :members:
-        :exclude-members: RandomTrampoline 
+        :exclude-members: RandomTrampolineDevice
         
         ..
-            RandomTrampoline excluded such that Inputs & Outputs TypedDicts may be
+            RandomTrampolineDevice excluded such that Inputs & Outputs TypedDicts may be
             :noindex:ed to prevent namespace collision with Trampoline Inputs & Outputs
             as TypedDict lacks proper __qualname__
 
         ``examples.devices.trampoline``
         -------------------------------
 
-        .. autoclass:: examples.devices.trampoline.RandomTrampoline
+        .. autoclass:: examples.devices.trampoline.RandomTrampolineDevice
             :members:
             :exclude-members: Inputs, Outputs
 
-            .. autoclass:: examples.devices.trampoline.RandomTrampoline.Inputs
+            .. autoclass:: examples.devices.trampoline.RandomTrampolineDevice.Inputs
                 :noindex:
 
-            .. autoclass:: examples.devices.trampoline.RandomTrampoline.Outputs
+            .. autoclass:: examples.devices.trampoline.RandomTrampolineDevice.Outputs
                 :noindex:
 
 .. automodule:: tickit
@@ -216,10 +216,10 @@ API
         ``tickit.core.adapter``
         -----------------------
 
-    .. automodule:: tickit.core.lifetime_runnable
+    .. automodule:: tickit.core.runner
         :members:
 
-        ``tickit.core.lifetime_runnable``
+        ``tickit.core.runner``
         ---------------------------------
 
     .. automodule:: tickit.core.typedefs

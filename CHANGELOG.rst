@@ -12,13 +12,30 @@ Unreleased_
 
 Added:
 
+- HTTP REST Adapter & example device
+- Unit tests covering:
+
+  - EPICS Adapter
+  - Cryostream Device & Adapter
+  - Femto Device & Adapter
+  - Pneumatic Device & Adapter
+  - Command Line Interface (CLI)
+
 Changed:
+
+- Reworked config (de)serialization
+  
+  - User may now reference the :code:`ComponentConfig`, which encapsulate a device and adapters
+  - Device & Adapter config classes are no longer autmatically generated, configuration should be performed via the :code:`ComponentConfig`
 
 Deprecated:
 
 Removed:
 
 Fixed:
+
+- Cryostream flow rate threshold (from 900K > 90K)
+- Added dependency on Click to :code:`setup.cfg`
 
 Security:
 
