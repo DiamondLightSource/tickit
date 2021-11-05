@@ -88,8 +88,8 @@ class EigerDevice(Device):
                 else:
                     continue
 
-        LOGGER.info(json)
-        LOGGER.info(config_json)
+        LOGGER.debug(json)
+        LOGGER.debug(config_json)
 
     async def disarm(self) -> None:
         """Function to disarm the Eiger."""
@@ -97,7 +97,7 @@ class EigerDevice(Device):
 
         json = {"htype": "dseries_end-1.0", "series": "<id>"}
 
-        LOGGER.info(json)
+        LOGGER.debug(json)
 
     async def trigger(self) -> str:
         """Function to trigger the Eiger."""
@@ -158,7 +158,7 @@ class EigerDevice(Device):
 
         json = {"htype": "dseries_end-1.0", "series": "<id>"}
 
-        LOGGER.info(json)
+        LOGGER.debug(json)
 
     async def abort(self) -> None:
         """Function to abort the current task on the Eiger."""
@@ -167,7 +167,7 @@ class EigerDevice(Device):
 
         json = {"htype": "dseries_end-1.0", "series": "<id>"}
 
-        LOGGER.info(json)
+        LOGGER.debug(json)
 
     def update(self, time: SimTime, inputs) -> DeviceUpdate:
         """Generic update function to update the values of the ExampleHTTPDevice.
@@ -275,7 +275,7 @@ class EigerRESTAdapter(
 
             setattr(self.device.settings, param, attr)
 
-            LOGGER.info("Set: " + str(param) + " to " + str(attr))
+            LOGGER.debug("Set: " + str(param) + " to " + str(attr))
             return web.json_response(serialize(SequenceComplete(8)))
         else:
             LOGGER.warning("Eiger has no config variable: " + str(param))
@@ -360,7 +360,7 @@ class EigerRESTAdapter(
         """
         await self.device.initialize()
 
-        LOGGER.info("Initializing Eiger...")
+        LOGGER.debug("Initializing Eiger...")
         return web.json_response(serialize(SequenceComplete(1)))
 
     @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/arm")
@@ -377,7 +377,7 @@ class EigerRESTAdapter(
         # Do arming stuff
         await self.device.arm()
 
-        LOGGER.info("Arming Eiger...")
+        LOGGER.debug("Arming Eiger...")
         return web.json_response(serialize(SequenceComplete(2)))
 
     @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/disarm")
@@ -394,7 +394,7 @@ class EigerRESTAdapter(
         # Do disarming stuff
         await self.device.disarm()
 
-        LOGGER.info("Disarming Eiger...")
+        LOGGER.debug("Disarming Eiger...")
         return web.json_response(serialize(SequenceComplete(3)))
 
     @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/trigger")
@@ -412,7 +412,7 @@ class EigerRESTAdapter(
         trigger_message = await self.device.trigger()
         self.device._set_state(State.IDLE)
 
-        LOGGER.info(trigger_message)
+        LOGGER.debug(trigger_message)
         return web.json_response(serialize(SequenceComplete(4)))
 
     @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/cancel")
@@ -429,7 +429,7 @@ class EigerRESTAdapter(
         # Do disarming stuff
         await self.device.cancel()
 
-        LOGGER.info("Cancelling Eiger...")
+        LOGGER.debug("Cancelling Eiger...")
         return web.json_response(serialize(SequenceComplete(5)))
 
     @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/abort")
@@ -446,7 +446,7 @@ class EigerRESTAdapter(
         # Do disarming stuff
         await self.device.abort()
 
-        LOGGER.info("Aborting Eiger...")
+        LOGGER.debug("Aborting Eiger...")
         return web.json_response(serialize(SequenceComplete(6)))
 
 
