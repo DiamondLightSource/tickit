@@ -1,6 +1,5 @@
 import logging
 
-from tickit.adapters.zmqadapter import ZeroMQAdapter
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.compat.typing_compat import TypedDict
@@ -46,15 +45,3 @@ class CounterDevice(Device):
             CounterDevice.Outputs(value=self._value),
             SimTime(time + self.callback_period),
         )
-
-
-class CounterAdapter(ZeroMQAdapter):
-    """An adapter for the Counter's data stream."""
-
-    device: CounterDevice
-
-    def after_update(self) -> None:
-        """Updates IOC values immediately following a device update."""
-        current_value = self.device._value
-        LOGGER.debug(f"Value updated to : {current_value}")
-        self.send_message(current_value)
