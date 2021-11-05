@@ -36,9 +36,9 @@ class KafkaStateConsumer(Generic[C]):
             value_deserializer=lambda m: yaml.load(m.decode("utf-8"), Loader=Loader),
         )
         self.callback = callback
-        asyncio.create_task(self.run_forever())
+        asyncio.create_task(self._run_forever())
 
-    async def run_forever(self) -> None:
+    async def _run_forever(self) -> None:
         """Starts the consumer and waits for messages to arrive."""
         await self.consumer.start()
         while True:

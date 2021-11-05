@@ -32,7 +32,7 @@ def patch_AIOKafkaStateConsumer() -> Iterable[Mock]:
 
 @pytest.fixture
 def patch_kafka_state_consumer_run_forever_method() -> Iterable[Mock]:
-    with patch.object(KafkaStateConsumer, "run_forever") as mock:
+    with patch.object(KafkaStateConsumer, "_run_forever") as mock:
         yield mock
 
 
@@ -57,7 +57,7 @@ def kafka_state_producer(
 async def test_kafka_state_consumer_constructor(
     kafka_state_consumer: KafkaStateConsumer,
 ):
-    kafka_state_consumer.run_forever.assert_called_once()  # type: ignore
+    kafka_state_consumer._run_forever.assert_called_once()  # type: ignore
     pass
 
 
