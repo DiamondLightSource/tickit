@@ -374,7 +374,6 @@ class EigerRESTAdapter(
             web.Response: The response object returned given the result of the HTTP
                 request.
         """
-        # Do arming stuff
         await self.device.arm()
 
         LOGGER.debug("Arming Eiger...")
@@ -391,7 +390,6 @@ class EigerRESTAdapter(
             web.Response: The response object returned given the result of the HTTP
                 request.
         """
-        # Do disarming stuff
         await self.device.disarm()
 
         LOGGER.debug("Disarming Eiger...")
@@ -408,7 +406,6 @@ class EigerRESTAdapter(
             web.Response: The response object returned given the result of the HTTP
                 request.
         """
-        # Do triggering stuff
         trigger_message = await self.device.trigger()
         self.device._set_state(State.IDLE)
 
@@ -426,7 +423,6 @@ class EigerRESTAdapter(
             web.Response: The response object returned given the result of the HTTP
                 request.
         """
-        # Do disarming stuff
         await self.device.cancel()
 
         LOGGER.debug("Cancelling Eiger...")
@@ -443,7 +439,6 @@ class EigerRESTAdapter(
             web.Response: The response object returned given the result of the HTTP
                 request.
         """
-        # Do disarming stuff
         await self.device.abort()
 
         LOGGER.debug("Aborting Eiger...")
