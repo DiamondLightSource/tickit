@@ -442,6 +442,6 @@ class EigerRESTAdapter(
 
 
 class EigerZMQAdapter(ZeroMQAdapter):
-    """An Eiger adapter which parses the datato send along a ZeroMQStream."""
+    """An Eiger adapter which parses the data to send along a ZeroMQStream."""
 
     device: EigerDevice
