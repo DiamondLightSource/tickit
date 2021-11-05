@@ -111,7 +111,6 @@ class EigerDevice(Device):
 
             for i in range(1, self.settings.nimages + 1):
 
-                # "Aquire" an image
                 aquired = dummy_image(i)
 
                 header_json = {
@@ -153,7 +152,6 @@ class EigerDevice(Device):
         Function to stop the data acquisition, but only after the next
         image is finished.
         """
-        # Do data aquisition aborting stuff
         self._set_state(State.READY)
 
         header_json = {"htype": "dseries_end-1.0", "series": "<id>"}
@@ -162,7 +160,6 @@ class EigerDevice(Device):
 
     async def abort(self) -> None:
         """Function to abort the current task on the Eiger."""
-        # Do aborting stuff
         self._set_state(State.IDLE)
 
         header_json = {"htype": "dseries_end-1.0", "series": "<id>"}
@@ -211,7 +208,6 @@ class EigerRESTAdapter(
 
     device: EigerDevice
 
-    # TODO: Make API version setable in the config params?
     @HTTPEndpoint.get(f"/{DETECTOR_API}" + "/config/{parameter_name}")
     async def get_config(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for requesting configuration variables from the Eiger.
