@@ -5,9 +5,6 @@ from apischema import serialize
 from typing_extensions import TypedDict
 
 from tickit.adapters.interpreters.endpoints.http_endpoint import HTTPEndpoint
-
-# from tickit.adapters.zmqadapter import ZeroMQAdapter
-# from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.devices.eiger.eiger_schema import Value
 from tickit.devices.eiger.monitor.monitor_config import MonitorConfig
