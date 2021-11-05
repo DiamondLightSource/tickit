@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tickit.core.state_interfaces.kafka &mdash; tickit 0.1.1.pre2+6.g503c338 documentation</title>
+  <title>tickit.core.state_interfaces.kafka &mdash; tickit 0.1.1.pre2+7.g320d1f0 documentation</title>
       <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
@@ -160,20 +160,20 @@
 <span class="sd">            callback (Callable[[C], Awaitable[None]]): An asynchronous handler function</span>
 <span class="sd">                for consumed values.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">async</span> <span class="k">def</span> <span class="nf">run_forever</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">consumer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-                <span class="k">async</span> <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">consumer</span><span class="p">:</span>
-                    <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">consumer</span> <span class="o">=</span> <span class="n">AIOKafkaConsumer</span><span class="p">(</span>
             <span class="kc">None</span><span class="p">,</span>
             <span class="n">auto_offset_reset</span><span class="o">=</span><span class="s2">&quot;earliest&quot;</span><span class="p">,</span>
             <span class="n">value_deserializer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span> <span class="n">Loader</span><span class="o">=</span><span class="n">Loader</span><span class="p">),</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="n">callback</span>
-        <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">run_forever</span><span class="p">())</span>
+        <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_run_forever</span><span class="p">())</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_run_forever</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Starts the consumer and waits for messages to arrive.&quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">consumer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">async</span> <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">consumer</span><span class="p">:</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 
 <div class="viewcode-block" id="KafkaStateConsumer.subscribe"><a class="viewcode-back" href="../../../../reference/api.html#tickit.core.state_interfaces.kafka.KafkaStateConsumer.subscribe">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">subscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topics</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
         <span class="sd">&quot;&quot;&quot;Subscribes the consumer to the given topics, new messages are passed to the callback.</span>
