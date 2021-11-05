@@ -15,29 +15,8 @@ LOGGER = logging.getLogger(__name__)
 class ZeroMQAdapter(Adapter):
     """An adapter for a ZeroMQ data stream."""
 
-    # _dealer: zmq.DEALER
-    # _router: zmq.ROUTER
-    # _message_queue: asyncio.Queue
-
     zmq_host: str = "127.0.0.1"
     zmq_port: int = 5555
-
-    # def __init__(
-    #     self,
-    #     zmq_host: str = "127.0.0.1",
-    #     zmq_port: int = 5555,
-    # ) -> None:
-    #     """A ZMQAdapter constructor which instantiates a TcpServer with host and port.
-
-    #     Args:
-    #         host (Optional[str]): The host address of the TcpServer. Defaults to
-    #             "localhost".
-    #         port (Optional[int]): The bound port of the TcpServer. Defaults to 5555.
-    #     """
-    #     # self._raise_interrupt = raise_interrupt
-    #     self.zmq_host = zmq_host
-    #     self.zmq_port = zmq_port
-    #     LOGGER.debug(f"ZMQ Port = {self.zmq_port}")
 
     async def start_stream(self) -> None:
         """[summary]."""
