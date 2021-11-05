@@ -30,20 +30,20 @@ class KafkaStateConsumer(Generic[C]):
             callback (Callable[[C], Awaitable[None]]): An asynchronous handler function
                 for consumed values.
         """
-
-        async def run_forever() -> None:
-            await self.consumer.start()
-            while True:
-                async for message in self.consumer:
-                    await self.callback(message.value)
-
         self.consumer = AIOKafkaConsumer(
             None,
             auto_offset_reset="earliest",
             value_deserializer=lambda m: yaml.load(m.decode("utf-8"), Loader=Loader),
         )
         self.callback = callback
-        asyncio.create_task(run_forever())
+        asyncio.create_task(self.run_forever())
+
+    async def run_forever(self) -> None:
+        """Starts the consumer and waits for messages to arrive."""
+        await self.consumer.start()
+        while True:
+            async for message in self.consumer:
+                await self.callback(message.value)
 
     async def subscribe(self, topics: Iterable[str]):
         """Subscribes the consumer to the given topics, new messages are passed to the callback.
