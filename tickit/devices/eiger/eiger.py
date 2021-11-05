@@ -54,7 +54,6 @@ class EigerDevice(Device):
 
         self.stream_status = StreamStatus()
         self.stream_config = StreamConfig()
-        # self.stream_messages = asyncio.Queue()
         self.stream_callback_period = SimTime(int(1e9))
 
         self.filewriter_status: FileWriterStatus = FileWriterStatus()
@@ -137,9 +136,9 @@ class EigerDevice(Device):
                     "real_time": "<real_time>",
                 }
 
-                LOGGER.info(json)
-                LOGGER.info(json2)
-                LOGGER.info(json3)
+                LOGGER.debug(json)
+                LOGGER.debug(json2)
+                LOGGER.debug(json3)
 
             return "Aquiring Data from Eiger..."
         else:
@@ -202,7 +201,6 @@ class EigerDevice(Device):
         )
 
     def _set_state(self, state: State):
-        # LOGGER.info(f"Transitioned State: [{self.state} -> {state}]")
         self.status.state = state
 
 
