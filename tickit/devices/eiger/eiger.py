@@ -112,7 +112,7 @@ class EigerDevice(Device):
                 # "Aquire" an image
                 aquired = dummy_image(i)
 
-                json = {
+                header_json = {
                     "htype": "dimage-1.0",
                     "series": "<series id>",
                     "frame": aquired.index,
@@ -134,7 +134,7 @@ class EigerDevice(Device):
                     "real_time": "<real_time>",
                 }
 
-                LOGGER.debug(json)
+                LOGGER.debug(header_json)
                 LOGGER.debug(json2)
                 LOGGER.debug(json3)
 
@@ -154,18 +154,18 @@ class EigerDevice(Device):
         # Do data aquisition aborting stuff
         self._set_state(State.READY)
 
-        json = {"htype": "dseries_end-1.0", "series": "<id>"}
+        header_json = {"htype": "dseries_end-1.0", "series": "<id>"}
 
-        LOGGER.debug(json)
+        LOGGER.debug(header_json)
 
     async def abort(self) -> None:
         """Function to abort the current task on the Eiger."""
         # Do aborting stuff
         self._set_state(State.IDLE)
 
-        json = {"htype": "dseries_end-1.0", "series": "<id>"}
+        header_json = {"htype": "dseries_end-1.0", "series": "<id>"}
 
-        LOGGER.debug(json)
+        LOGGER.debug(header_json)
 
     def update(self, time: SimTime, inputs) -> DeviceUpdate:
         """Generic update function to update the values of the ExampleHTTPDevice.
