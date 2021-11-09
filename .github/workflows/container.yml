@@ -9,23 +9,33 @@ on:
 
 jobs:
   build-image(tagged):
-    if: startsWith(github.ref, 'refs/tags/')
     timeout-minutes: 60
 
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
+    
+    env:
+      IS_TAGGED_RELEASE: ${{startsWith(github.ref, 'refs/tags/')}}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Identify container image tag
-        id: tag
+      - name: Identify push location
+        id: push_loc
         run: |
-          echo ::set-output name=image_tag::${GITHUB_REF##*/}
           echo ::set-output name=do_push::true
+      
+      - name: Generate image tags
+        id: tagger
+        uses: docker/metadata-action@v3
+        with:
+          images: dls-controls/tickit
+          tags: |
+            type=sha
+            type=ref,event=tag
       
       - name: Cache Docker layers
         uses: actions/cache@v2
@@ -47,7 +57,7 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v1
       
-      - name: Run multi-stage build
+      - name: Multi-stage build for test container
         uses: docker/build-push-action@v2
         with:
           builder: ${{ steps.buildx.output.name }}
@@ -57,7 +67,7 @@ jobs:
           cache-from: type=local,src=~/cache
           cache-to: type=local,dest=~/cache
       
-      - name: Test container
+      - name: Run test container
         run: |
           docker run --rm user/tickit:test
       
@@ -65,9 +75,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           builder: ${{ steps.buildx.output.name }}
-          push: ${{ steps.tag.outputs.do_push }}
-          tags: |
-            ghcr.io/${{ github.repository }}:${{ steps.tag.outputs.image_tag }}
+          push: ${{ steps.push_loc.outputs.do_push }}
+          tags: ${{ steps.tagger.outputs.tags }}
           target: runtime
           cache-from: type=local,src=~/cache
           cache-to: type=local,dest=~/cache
@@ -76,85 +85,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           builder: ${{ steps.buildx.output.name }}
-          push: ${{ steps.tag.outputs.do_push }}
-          tags: |
-            ghcr.io/${{ github.repository }}:${{ steps.tag.outputs.image_tag }}.dev
+          push: ${{ steps.push_loc.outputs.do_push }}
+          tags: ${{ steps.tagger.outputs.tags }}_dev
           target: developer
           cache-from: type=local,src=~/cache
           cache-to: type=local,dest=~/cache
-
-  build-image(commit):
-    if: ! startsWith(github.ref, 'refs/tags/')
-    timeout-minutes: 60
-
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Identify container image tag
-        id: tag
-        run: |
-          echo ::set-output name=image_tag::${GITHUB_SHA##*/}
-          echo ::set-output name=do_push::true
-      
-      - name: Cache Docker layers
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/cache
-            !~/cache/exclude
-          key: ${{ runner.os }}-tickit-${{ github.sha }}
-          restore-keys: ${{ runner.os }}-tickit-
-      
-      - name: Log in to Github Docker Registry
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io/tickit
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-        
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v1
-      
-      - name: Run multi-stage build
-        uses: docker/build-push-action@v2
-        with:
-          builder: ${{ steps.buildx.output.name }}
-          tags: user/tickit:test
-          target: runtime
-          load: true
-          cache-from: type=local,src=~/cache
-          cache-to: type=local,dest=~/cache
-      
-      - name: Test container
-        run: |
-          docker run --rm user/tickit:test
-      
-      - name: Run multi-stage build (runtime container)
-        uses: docker/build-push-action@v2
-        with:
-          builder: ${{ steps.buildx.output.name }}
-          push: ${{ steps.tag.outputs.do_push }}
-          tags: |
-            ghcr.io/${{ github.repository }}:${{ steps.tag.outputs.image_tag }}
-          target: runtime
-          cache-from: type=local,src=~/cache
-          cache-to: type=local,dest=~/cache
-      
-      - name: Run multi-stage build (developer container)
-        uses: docker/build-push-action@v2
-        with:
-          builder: ${{ steps.buildx.output.name }}
-          push: ${{ steps.tag.outputs.do_push }}
-          tags: |
-            ghcr.io/${{ github.repository }}:${{ steps.tag.outputs.image_tag }}.dev
-          target: developer
-          cache-from: type=local,src=~/cache
-          cache-to: type=local,dest=~/cache
-      
