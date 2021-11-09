@@ -1,10 +1,21 @@
 import logging
+from dataclasses import dataclass
 
+from tickit.core.components.component import Component, ComponentConfig
+from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.compat.typing_compat import TypedDict
 
 LOGGER = logging.getLogger(__name__)
+
+
+@dataclass
+class Counter(ComponentConfig):
+    """Simulation of simple counting device."""
+
+    def __call__(self) -> Component:  # noqa: D102
+        return DeviceSimulation(name=self.name, device=CounterDevice())
 
 
 class CounterDevice(Device):
