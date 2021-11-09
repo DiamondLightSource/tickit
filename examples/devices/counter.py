@@ -36,7 +36,7 @@ class CounterDevice(Device):
         """
         self._value = initial_value
         self.callback_period = SimTime(callback_period)
-        LOGGER.debug(f"Initialize with value => {self._value}")
+        LOGGER.debug(f"Counter initialized with value => {self._value}")
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
         """The update method which produces the incremented value.
