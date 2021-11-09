@@ -48,7 +48,7 @@ class CounterDevice(Device):
         Returns:
             DeviceUpdate[Outputs]:
                 The produced update event which contains the incremented value, and
-                requests a callback of 1s.
+                requests a callback after callback_period.
         """
         self._value = self._value + 1
         LOGGER.debug("Incremented to {}".format(self._value))
