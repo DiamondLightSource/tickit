@@ -1,0 +1,7 @@
+- examples.devices.counter.Counter:
+    name: counter  
+    inputs: {}
+- tickit.devices.sink.Sink:
+    name: counter_sink
+    inputs:
+      input: counter:_value

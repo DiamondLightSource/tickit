@@ -13,6 +13,7 @@ Unreleased_
 Added:
 
 - HTTP REST Adapter & example device
+- Example Counter device
 - Unit tests covering:
 
   - EPICS Adapter
