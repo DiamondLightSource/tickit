@@ -48,7 +48,6 @@ class KA_Energy(Enum):
     Ni: float = 7478.15
     Cu: float = 8047.78
     Zn: float = 8638.86
-    # TODO: Add more elements?
 
 
 @dataclass
@@ -119,7 +118,6 @@ class EigerSettings:
     y_pixel_size: float = field(default=0.01, metadata=ro_float())
     y_pixels_in_detector: int = field(default=FRAME_HEIGHT, metadata=rw_int())
 
-    # TODO: Make a decorator so this hacky fix isn't needed
     def __getitem__(self, key: str) -> Any:
         """[Summary]."""
         key_ = "_" + key
@@ -152,3 +150,5 @@ class EigerSettings:
     def element(self, elmt: str) -> None:
         self._element = elmt
         self.photon_energy = getattr(KA_Energy, elmt).value
+
+        self.threshold_energy = 0.5 * self.photon_energy
