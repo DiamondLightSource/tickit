@@ -1,11 +1,21 @@
 import logging
+from dataclasses import dataclass
 
-from tickit.adapters.zmqadapter import ZeroMQAdapter
+from tickit.core.components.component import Component, ComponentConfig
+from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.compat.typing_compat import TypedDict
 
 LOGGER = logging.getLogger(__name__)
+
+
+@dataclass
+class Counter(ComponentConfig):
+    """Simulation of simple counting device."""
+
+    def __call__(self) -> Component:  # noqa: D102
+        return DeviceSimulation(name=self.name, device=CounterDevice())
 
 
 class CounterDevice(Device):
@@ -20,13 +30,13 @@ class CounterDevice(Device):
         """A constructor of the counter, which increments the input value.
 
         Args:
-            initial_value (Any): A value to increment.
+            initial_value (Any): The initial value of the counter.
             callback_period (int): The simulation time callback period of the device
                 (in nanoseconds). Defaults to int(1e9).
         """
         self._value = initial_value
         self.callback_period = SimTime(callback_period)
-        LOGGER.debug(f"Initialize with value => {self._value}")
+        LOGGER.debug(f"Counter initialized with value => {self._value}")
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
         """The update method which produces the incremented value.
@@ -38,23 +48,11 @@ class CounterDevice(Device):
         Returns:
             DeviceUpdate[Outputs]:
                 The produced update event which contains the incremented value, and
-                requests a callback of 1s.
+                requests a callback after callback_period.
         """
         self._value = self._value + 1
-        LOGGER.debug("Incremented to {}".format(self._value))
+        LOGGER.debug("Counter incremented to {}".format(self._value))
         return DeviceUpdate(
             CounterDevice.Outputs(value=self._value),
             SimTime(time + self.callback_period),
         )
-
-
-class CounterAdapter(ZeroMQAdapter):
-    """An adapter for the Counter's data stream."""
-
-    device: CounterDevice
-
-    def after_update(self) -> None:
-        """Updates IOC values immediately following a device update."""
-        current_value = self.device._value
-        LOGGER.debug(f"Value updated to : {current_value}")
-        self.send_message(current_value)
