@@ -3,12 +3,12 @@ name: Container CI
 on:
   push:
     branches:
-    - master
+    - ci_update
   release:
     types: [published]
 
 jobs:
-  build-image(tagged):
+  build-image:
     timeout-minutes: 60
 
     runs-on: ubuntu-latest
@@ -16,18 +16,10 @@ jobs:
       contents: read
       packages: write
     
-    env:
-      IS_TAGGED_RELEASE: ${{startsWith(github.ref, 'refs/tags/')}}
-
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Identify push location
-        id: push_loc
-        run: |
-          echo ::set-output name=do_push::true
-      
       - name: Generate image tags
         id: tagger
         uses: docker/metadata-action@v3
@@ -61,6 +53,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           builder: ${{ steps.buildx.output.name }}
+          push: false
           tags: user/tickit:test
           target: runtime
           load: true
@@ -75,8 +68,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           builder: ${{ steps.buildx.output.name }}
-          push: ${{ steps.push_loc.outputs.do_push }}
-          tags: ${{ steps.tagger.outputs.tags }}
+          push: true
+          tags: ghcr.io/${{ steps.tagger.outputs.tags }}
           target: runtime
           cache-from: type=local,src=~/cache
           cache-to: type=local,dest=~/cache
@@ -85,8 +78,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           builder: ${{ steps.buildx.output.name }}
-          push: ${{ steps.push_loc.outputs.do_push }}
-          tags: ${{ steps.tagger.outputs.tags }}_dev
+          push: true
+          tags: ghcr.io/${{ steps.tagger.outputs.tags }}_dev
           target: developer
           cache-from: type=local,src=~/cache
           cache-to: type=local,dest=~/cache
