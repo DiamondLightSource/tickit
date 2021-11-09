@@ -3,7 +3,7 @@ name: Container CI
 on:
   push:
     branches:
-    - ci_update
+    - master
   release:
     types: [published]
 
