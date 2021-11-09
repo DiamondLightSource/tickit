@@ -30,7 +30,7 @@ class CounterDevice(Device):
         """A constructor of the counter, which increments the input value.
 
         Args:
-            initial_value (Any): A value to increment.
+            initial_value (Any): The initial value of the counter.
             callback_period (int): The simulation time callback period of the device
                 (in nanoseconds). Defaults to int(1e9).
         """
