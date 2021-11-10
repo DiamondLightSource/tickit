@@ -100,6 +100,23 @@ async def test_zeromq_adapter_run_forever_method(
 
 
 @pytest.mark.asyncio
+async def test_zeromq_adapter_check_if_running(zeromq_adapter):
+
+    assert zeromq_adapter.check_if_running() is False
+
+
+@pytest.mark.asyncio
+async def test_zeromq_adapter_process_message_queue(zeromq_adapter):
+
+    zeromq_adapter._process_message = AsyncMock()
+    zeromq_adapter.check_if_running = Mock(return_value=False)
+
+    await zeromq_adapter._process_message_queue()
+
+    zeromq_adapter._process_message.assert_awaited_once()
+
+
+@pytest.mark.asyncio
 async def test_zeromq_adapter_process_message(zeromq_adapter):
 
     mock_message = "test"

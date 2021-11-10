@@ -18,6 +18,7 @@ class ZeroMQAdapter(Adapter):
 
     zmq_host: str = "127.0.0.1"
     zmq_port: int = 5555
+    running: bool = False
 
     async def start_stream(self) -> None:
         """[summary]."""
@@ -33,6 +34,8 @@ class ZeroMQAdapter(Adapter):
         """[summary]."""
         self._dealer.close()
         self._router.close()
+
+        self.running = False
 
     def send_message(self, message: Any) -> None:
         """[summary].
@@ -53,12 +56,19 @@ class ZeroMQAdapter(Adapter):
         await super().run_forever(device, raise_interrupt)
         self._message_queue: asyncio.Queue = asyncio.Queue()
         await self.start_stream()
+        self.running = True
         await self._process_message_queue()
 
+    def check_if_running(self):
+        """Returns the running state of the adapter."""
+        return self.running
+
     async def _process_message_queue(self) -> None:
-        while True:
+        running = True
+        while running:
             message = await self._message_queue.get()
             await self._process_message(message)
+            running = self.check_if_running()
 
     async def _process_message(self, message: str) -> None:
         if message is not None:
