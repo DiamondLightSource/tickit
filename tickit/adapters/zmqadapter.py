@@ -58,14 +58,17 @@ class ZeroMQAdapter(Adapter):
     async def _process_message_queue(self) -> None:
         while True:
             message = await self._message_queue.get()
-            if message is not None:
-                LOGGER.debug("Data from ZMQ stream: {!r}".format(message))
+            await self._process_message(message)
 
-                msg = (b"Data", str(message).encode("utf-8"))
-                self._dealer.write(msg)
-                data = await self._router.read()
-                self._router.write(data)
-                answer = await self._dealer.read()
-                LOGGER.debug("Received {!r}".format(answer))
-            else:
-                LOGGER.debug("No message")
+    async def _process_message(self, message: str) -> None:
+        if message is not None:
+            LOGGER.debug("Data from ZMQ stream: {!r}".format(message))
+
+            msg = (b"Data", str(message).encode("utf-8"))
+            self._dealer.write(msg)
+            data = await self._router.read()
+            self._router.write(data)
+            answer = await self._dealer.read()
+            LOGGER.debug("Received {!r}".format(answer))
+        else:
+            LOGGER.debug("No message")
