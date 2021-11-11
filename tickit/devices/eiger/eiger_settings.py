@@ -76,7 +76,7 @@ class EigerSettings:
     detector_distance: float = field(default=2.0, metadata=rw_float())
     detector_number: str = field(default="EIGERSIM001", metadata=ro_str())
     detector_readout_time: float = field(default=0.01, metadata=rw_float())
-    _element: str = field(
+    element: str = field(
         default="Co", metadata=rw_str(allowed_values=[e.name for e in KA_Energy])
     )
     flatfield: List[List[float]] = field(
@@ -120,43 +120,18 @@ class EigerSettings:
 
     def __getitem__(self, key: str) -> Any:
         """[Summary]."""
-        key_ = "_" + key
         f = {}
-        if hasattr(self, key_):
-            for field_ in fields(self):
-                f[field_.name] = {
-                    "value": vars(self)[field_.name],
-                    "metadata": field_.metadata,
-                }
-            return f[key_]
-        else:
-            for field_ in fields(self):
-                f[field_.name] = {
-                    "value": vars(self)[field_.name],
-                    "metadata": field_.metadata,
-                }
-            return f[key]
+        for field_ in fields(self):
+            f[field_.name] = {
+                "value": vars(self)[field_.name],
+                "metadata": field_.metadata,
+            }
+        return f[key]
 
     def __setitem__(self, key: str, value: Any) -> None:
         """[Summary]."""
-        key_ = "_" + key
-        if hasattr(self, key_):
-            self.__dict__[key_] = value
-        else:
-            self.__dict__[key] = value
+        self.__dict__[key] = value
 
-    @property
-    def element(self) -> str:
-        """Property method for element var.
-
-        Property method for element var which implicitly maps the property to the
-        corresponding field.
-        """
-        return self._element
-
-    @element.setter
-    def element(self, elmt: str) -> None:
-        self._element = elmt
-        self.photon_energy = getattr(KA_Energy, elmt).value
-
-        self.threshold_energy = 0.5 * self.photon_energy
+        if key == "element":
+            self.photon_energy = getattr(KA_Energy, value).value
+            self.threshold_energy = 0.5 * self.photon_energy
