@@ -21,7 +21,7 @@ class ZeroMQAdapter(Adapter):
     running: bool = False
 
     async def start_stream(self) -> None:
-        """[summary]."""
+        """Start the ZeroMQ stream."""
         LOGGER.debug("Starting stream...")
         self._router = await aiozmq.create_zmq_stream(
             zmq.ROUTER, bind=f"tcp://{self.zmq_host}:{self.zmq_port}"
@@ -31,28 +31,27 @@ class ZeroMQAdapter(Adapter):
         self._dealer = await aiozmq.create_zmq_stream(zmq.DEALER, connect=addr)
 
     async def close_stream(self) -> None:
-        """[summary]."""
+        """Close the ZeroMQ stream."""
         self._dealer.close()
         self._router.close()
 
         self.running = False
 
     def send_message(self, message: Any) -> None:
-        """[summary].
+        """Send a message down the ZeroMQ stream.
+
+        Sets up an asyncio task to put the message on the message queue, before
+        being processed.
 
         Args:
-            message (Any): [description]
+            message (str): The message to send down the ZeroMQ stream.
         """
         asyncio.create_task(self._message_queue.put(message))
 
     async def run_forever(
         self, device: Device, raise_interrupt: RaiseInterrupt
     ) -> None:
-        """[summary].
-
-        Yields:
-            [type]: [description]
-        """
+        """Runs the ZeroMQ adapter continuously."""
         await super().run_forever(device, raise_interrupt)
         self._message_queue: asyncio.Queue = asyncio.Queue()
         await self.start_stream()
