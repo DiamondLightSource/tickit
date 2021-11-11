@@ -32,10 +32,6 @@ class EigerStream:
         self.stream_config = StreamConfig()
         self.stream_callback_period = SimTime(callback_period)
 
-    def test(self) -> None:
-        """[summary]."""
-        pass
-
 
 class EigerStreamAdapter:
     """An adapter for the Stream."""

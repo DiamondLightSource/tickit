@@ -17,8 +17,7 @@ class StreamStatus:
     )
     dropped: int = field(default=0, metadata=ro_int())
 
-    def __getitem__(self, key: str) -> Any:
-        """[Summary]."""
+    def __getitem__(self, key: str) -> Any:  # noqa: D105
         f = {}
         for field_ in fields(self):
             f[field_.name] = {

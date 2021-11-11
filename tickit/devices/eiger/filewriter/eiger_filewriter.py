@@ -16,7 +16,7 @@ FILEWRITER_API = "filewriter/api/1.8.0"
 
 
 class EigerFileWriter:
-    """Simulation of an Eiger monitor."""
+    """Simulation of an Eiger FileWriter."""
 
     #: An empty typed mapping of input values
     Inputs: TypedDict = TypedDict("Inputs", {})
@@ -24,14 +24,14 @@ class EigerFileWriter:
     Outputs: TypedDict = TypedDict("Outputs", {})
 
     def __init__(self) -> None:
-        """[Summary]."""
+        """An Eiger FileWriter constructor."""
         self.filewriter_status: FileWriterStatus = FileWriterStatus()
         self.filewriter_config: FileWriterConfig = FileWriterConfig()
         self.filewriter_callback_period = SimTime(int(1e9))
 
 
 class EigerFileWriterAdapter:
-    """An adapter for the Monitor."""
+    """An adapter for the FileWriter."""
 
     device: EigerFileWriter
 

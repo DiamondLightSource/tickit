@@ -16,7 +16,7 @@ MONITOR_API = "monitor/api/1.8.0"
 
 
 class EigerMonitor:
-    """Simulation of an Eiger monitor."""
+    """Simulation of an Eiger Monitor."""
 
     #: An empty typed mapping of input values
     Inputs: TypedDict = TypedDict("Inputs", {})
@@ -24,7 +24,7 @@ class EigerMonitor:
     Outputs: TypedDict = TypedDict("Outputs", {})
 
     def __init__(self) -> None:
-        """[Summary]."""
+        """An Eiger Monitor constructor."""
         self.monitor_status: MonitorStatus = MonitorStatus()
         self.monitor_config: MonitorConfig = MonitorConfig()
         self.monitor_callback_period = SimTime(int(1e9))

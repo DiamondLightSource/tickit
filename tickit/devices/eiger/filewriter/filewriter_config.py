@@ -16,8 +16,7 @@ class FileWriterConfig:
     name_pattern: str = field(default="test.h5", metadata=rw_str())
     compression_enabled: bool = field(default=False, metadata=rw_bool())
 
-    def __getitem__(self, key: str) -> Any:
-        """[Summary]."""
+    def __getitem__(self, key: str) -> Any:  # noqa: D105
         f = {}
         for field_ in fields(self):
             f[field_.name] = {
