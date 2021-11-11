@@ -25,7 +25,7 @@ def test_eiger_settings_get_element(eiger_settings):
 
 
 def test_eiger_settings_set_element(eiger_settings):
-    eiger_settings.element = "Li"
+    eiger_settings["element"] = "Li"
 
     assert "Li" == eiger_settings.element
     assert KA_Energy["Li"].value == eiger_settings.photon_energy

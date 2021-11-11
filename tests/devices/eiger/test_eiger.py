@@ -178,6 +178,10 @@ async def test_eiger_system(tickit_task):
     url = "http://0.0.0.0:8081/detector/api/1.8.0/"
     headers = {"content-type": "application/json"}
 
+    filewriter_url = "http://0.0.0.0:8081/filewriter/api/1.8.0/"
+    monitor_url = "http://0.0.0.0:8081/monitor/api/1.8.0/"
+    stream_url = "http://0.0.0.0:8081/stream/api/1.8.0/"
+
     async def get_status(status, expected):
         async with session.get(url + f"status/{status}") as resp:
             assert expected == json.loads(str(await resp.text()))["value"]
@@ -230,3 +234,21 @@ async def test_eiger_system(tickit_task):
 
         async with session.get(url + "config/photon_energy") as resp:
             assert json.loads(str(await resp.text()))["value"] == 54.3
+
+        async with session.get(filewriter_url + "config/mode") as resp:
+            assert "enabled" == json.loads(str(await resp.text()))["value"]
+
+        async with session.get(filewriter_url + "status/state") as resp:
+            assert "ready" == json.loads(str(await resp.text()))["value"]
+
+        async with session.get(monitor_url + "config/mode") as resp:
+            assert "enabled" == json.loads(str(await resp.text()))["value"]
+
+        async with session.get(monitor_url + "status/error") as resp:
+            assert [] == json.loads(str(await resp.text()))["value"]
+
+        async with session.get(stream_url + "config/mode") as resp:
+            assert "enabled" == json.loads(str(await resp.text()))["value"]
+
+        async with session.get(stream_url + "status/state") as resp:
+            assert "ready" == json.loads(str(await resp.text()))["value"]
