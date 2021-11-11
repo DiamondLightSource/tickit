@@ -10,7 +10,7 @@ from tickit.adapters.interpreters.endpoints.http_endpoint import HTTPEndpoint
 from tickit.adapters.zmqadapter import ZeroMQAdapter
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
-from tickit.devices.eiger.data.dummydata import dummy_image
+from tickit.devices.eiger.data.dummy_image import Image
 from tickit.devices.eiger.eiger_schema import AccessMode, SequenceComplete, Value
 from tickit.devices.eiger.eiger_settings import EigerSettings
 from tickit.devices.eiger.filewriter.eiger_filewriter import EigerFileWriterAdapter
@@ -109,9 +109,9 @@ class EigerDevice(Device):
         if state == State.READY and trigger_mode == "ints":
             self._set_state(State.ACQUIRE)
 
-            for i in range(1, self.settings.nimages + 1):
+            for idx in range(0, self.settings.nimages):
 
-                aquired = dummy_image(i)
+                aquired = Image.create_dummy_image(idx)
 
                 header_json = {
                     "htype": "dimage-1.0",
@@ -262,14 +262,14 @@ class EigerRESTAdapter(
             LOGGER.warning("Eiger not initialized or is currently running.")
             return web.json_response(serialize(SequenceComplete(7)))
         elif (
-            hasattr(self.device.settings, param)
+            param in vars(self.device.settings).keys()
             and self.device.get_state()["value"] == State.IDLE.value
         ):
             attr = response["value"]
 
             LOGGER.debug(f"Changing to {attr} for {param}")
 
-            setattr(self.device.settings, param, attr)
+            self.device.settings[param] = attr
 
             LOGGER.debug("Set: " + str(param) + " to " + str(attr))
             return web.json_response(serialize(SequenceComplete(8)))

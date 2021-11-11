@@ -137,6 +137,14 @@ class EigerSettings:
                 }
             return f[key]
 
+    def __setitem__(self, key: str, value: Any) -> None:
+        """[Summary]."""
+        key_ = "_" + key
+        if hasattr(self, key_):
+            self.__dict__[key_] = value
+        else:
+            self.__dict__[key] = value
+
     @property
     def element(self) -> str:
         """Property method for element var.
