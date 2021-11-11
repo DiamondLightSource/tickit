@@ -262,7 +262,7 @@ class EigerRESTAdapter(
             LOGGER.warning("Eiger not initialized or is currently running.")
             return web.json_response(serialize(SequenceComplete(7)))
         elif (
-            param in vars(self.device.settings).keys()
+            hasattr(self.device.settings, param)
             and self.device.get_state()["value"] == State.IDLE.value
         ):
             attr = response["value"]
@@ -271,7 +271,7 @@ class EigerRESTAdapter(
 
             self.device.settings[param] = attr
 
-            LOGGER.debug("Set: " + str(param) + " to " + str(attr))
+            LOGGER.debug("Set " + str(param) + " to " + str(attr))
             return web.json_response(serialize(SequenceComplete(8)))
         else:
             LOGGER.debug("Eiger has no config variable: " + str(param))
