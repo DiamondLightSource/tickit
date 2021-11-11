@@ -118,8 +118,7 @@ class EigerSettings:
     y_pixel_size: float = field(default=0.01, metadata=ro_float())
     y_pixels_in_detector: int = field(default=FRAME_HEIGHT, metadata=rw_int())
 
-    def __getitem__(self, key: str) -> Any:
-        """[Summary]."""
+    def __getitem__(self, key: str) -> Any:  # noqa: D105
         f = {}
         for field_ in fields(self):
             f[field_.name] = {
@@ -128,8 +127,7 @@ class EigerSettings:
             }
         return f[key]
 
-    def __setitem__(self, key: str, value: Any) -> None:
-        """[Summary]."""
+    def __setitem__(self, key: str, value: Any) -> None:  # noqa: D105
         self.__dict__[key] = value
 
         if key == "element":

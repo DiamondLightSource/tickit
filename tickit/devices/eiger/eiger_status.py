@@ -28,8 +28,7 @@ class EigerStatus:
     time: datetime = field(default=datetime.now())
     dcu_buffer_free: float = field(default=0.5)
 
-    def __getitem__(self, key: str) -> Any:
-        """[Summary]."""
+    def __getitem__(self, key: str) -> Any:  # noqa: D105
         f = {}
         for field_ in fields(self):
             f[field_.name] = vars(self)[field_.name]
