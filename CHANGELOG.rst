@@ -14,6 +14,7 @@ Added:
 
 - HTTP REST Adapter & example device
 - Example Counter device
+- Basic Eiger device w/o major logic
 - Unit tests covering:
 
   - EPICS Adapter
