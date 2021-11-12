@@ -37,7 +37,7 @@ class EigerDevice(Device):
     status: EigerStatus
 
     #: An empty typed mapping of input values
-    Inputs: TypedDict = TypedDict("Inputs", {})
+    Inputs: TypedDict = TypedDict("Inputs", {"flux": float})
     #: A typed mapping containing the 'value' output value
     Outputs: TypedDict = TypedDict("Outputs", {})
 
@@ -178,7 +178,13 @@ class EigerDevice(Device):
                 The produced update event which contains the value of the device
                 variables.
         """
-        pass
+        current_flux = inputs["flux"]
+        # if current_flux > 0:
+        # TODO: Figure out how to scale the output image
+        intensity_scale = (current_flux / 100) * 100
+        LOGGER.debug(f"Relative beam intensity: {intensity_scale}")
+
+        return DeviceUpdate(self.Outputs(), SimTime(time + int(1e8)))
 
     def get_state(self) -> Value:
         """Returns the current state of the Eiger.
