@@ -25,20 +25,8 @@ class Image:
         data = dummy_image_blob()
         hsh = str(hash(data))
         dtype = "uint16"
-        encoding = deduce_encoding("bslz4", dtype)
+        encoding = "bs16-lz4<"
         return Image(index, hsh, dtype, data, encoding)
-
-
-def deduce_encoding(compression_type: str, dtype: str) -> str:
-    """Function to deduce the encoding string for the image."""
-    if compression_type == "lz4":
-        return "lz4<"
-    elif compression_type == "bslz4":
-        if dtype == "uint16":
-            return "bs16-lz4<"
-    raise KeyError(
-        f"Unknown combination, compression={compression_type}, " " dtype={dtype}"
-    )
 
 
 _DUMMY_IMAGE_BLOBS: List[bytes] = []
