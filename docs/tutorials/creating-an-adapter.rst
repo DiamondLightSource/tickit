@@ -130,7 +130,7 @@ parentheses form the capture group from which the argument is extracted.
 Using the Adapter
 -----------------
 
-As explained in `Creating a Device`, an adapter allows us to to control a device
+As explained in `Creating a Device`, an adapter allows us to control a device
 externally. And in order to use the device we created a `ComponentConfig` for said
 device. This is defined in the same file as the device and adapter, and defines any
 default initial configuration values. As well as this, we overwrite the magic method
