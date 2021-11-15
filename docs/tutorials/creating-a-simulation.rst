@@ -20,7 +20,7 @@ adapters to allow the device to be externally controlled. At the top level, tick
 simulations comprise a list of these components - denoted in YAML by ``-``.
 
 In this example our first device shall be a `RandomTrampoline` with a callback_period 
-of :math:`1s` or :math:`10^9\mu\\s` named ``rand_tramp`` with no adapters - denoted 
+of :math:`1s` or :math:`10^9n\s` named ``rand_tramp`` with no adapters - denoted 
 in YAML by ``[]`` - and with no mapped inputs - denoted in YAML by ``{}``. As such 
 we may extend our config, as:
 
