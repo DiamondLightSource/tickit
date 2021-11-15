@@ -17,7 +17,7 @@ Adding Devices
 In order to be included in a simulation, tickit devices must have a `ComponentConfig`
 dataclass associated with them. This defines the device to be used, as well as any
 adapters to allow the device to be externally controlled. At the top level, tickit 
-simulations comprise a list of these components - denoted in YAML by ``-``.
+simulations comprise a list of these components which are denoted in YAML.
 
 In this example our first device shall be a `RandomTrampoline` with a callback_period 
 of :math:`1s` or :math:`10^9n\s` named ``rand_tramp`` with no adapters - denoted 
