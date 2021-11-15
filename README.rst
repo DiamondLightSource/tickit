@@ -33,21 +33,21 @@ a **TCPServer**:
 
     class RandomTrampolineDevice(Device):
 
-    Inputs: TypedDict = TypedDict("Inputs", {})
-    Outputs: TypedDict = TypedDict("Outputs", {"output": int})
+        Inputs: TypedDict = TypedDict("Inputs", {})
+        Outputs: TypedDict = TypedDict("Outputs", {"output": int})
 
-    def __init__(self, callback_period: int = int(1e9)) -> None:
-        self.callback_period = SimTime(callback_period)
+        def __init__(self, callback_period: int = int(1e9)) -> None:
+            self.callback_period = SimTime(callback_period)
 
-    def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
-        output = randint(0, 255)
-        LOGGER.debug(
-            "Boing! (delta: {}, inputs: {}, output: {})".format(time, inputs, output)
-        )
-        return DeviceUpdate(
-            RandomTrampoline.Outputs(output=output),
-            SimTime(time + self.callback_period),
-        )
+        def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
+            output = randint(0, 255)
+            LOGGER.debug(
+                "Boing! (delta: {}, inputs: {}, output: {})".format(time, inputs, output)
+            )
+            return DeviceUpdate(
+                RandomTrampoline.Outputs(output=output),
+                SimTime(time + self.callback_period),
+            )
 
 
 An example simulation defines a **RemoteControlled** device named **tcp_contr**
