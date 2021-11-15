@@ -23,6 +23,18 @@ a **TCPServer**:
 
     @dataclass
     class RandomTrampoline(ComponentConfig):
+<<<<<<< HEAD
+=======
+
+        def __call__(self) -> Component:  # noqa: D102
+            return DeviceSimulation(
+                name=self.name,
+                device=RandomTrampolineDevice(),
+                adapters=[RemoteControlledAdapter(server=TcpServer(format="%b\r\n"))])
+
+
+    class RandomTrampolineDevice(Device):
+>>>>>>> origin/master
 
         def __call__(self) -> Component:  # noqa: D102
             return DeviceSimulation(
