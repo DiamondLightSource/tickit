@@ -157,8 +157,7 @@ object, we also define the device's adapter(s):
                 adapters=[ShutterAdapter(host=self.host, port=self.port)],
             )
 
-As the adapter(s) are defined in the `ComponentConfig`, they are not required to be
-declared in the YAML for the simulation.
+Using `ComponentConfig` the adapters are instantiated in Python so they are not referenced in the YAML config.
 
 .. seealso::
     See the `Creating a Simulation` tutorial for a walk-through of creating simulation
