@@ -26,10 +26,9 @@ created for the adapter, allowing easy YAML configuration.
 
 .. code-block:: python
 
-    from tickit.adapters.composed import ComposedAdapter
-    from tickit.core.adapter import ConfigurableAdapter
+    from tickit.core.adapter import Adapter
 
-    class ShutterAdapter(ComposedAdapter, ConfigurableAdapter):
+    class ShutterAdapter(Adapter):
 
 Adapter Constructor and Configuration
 -------------------------------------
@@ -40,19 +39,18 @@ type ``Device`` and ``raise_interrupt`` of type ``Callable[[], Awaitable[None]]`
 which the device the adapter acts upon and a method used to request an immediate update
 of the device are passed respectively. Additionally, we will include the arguments
 ``host`` and ``port`` which will be used to configure our ``TcpServer``. With these we
-will instantiate a composed adapter with a ``TcpServer`` which formats sent messages by
+will instantiate an adapter with a ``TcpServer`` which formats sent messages by
 appending a line break and a ``CommandInterpreter``.
 
 .. code-block:: python
 
     from typing import Awaitable, Callable
 
-    from tickit.adapters.composed import ComposedAdapter
     from tickit.adapters.interpreters.command.command_interpreter import CommandInterpreter
     from tickit.adapters.servers.tcp import TcpServer
-    from tickit.core.adapter import ConfigurableAdapter
+    from tickit.core.adapter import Adapter
 
-    class ShutterAdapter(ComposedAdapter, ConfigurableAdapter):
+    class ShutterAdapter(Adapter):
         def __init__(
             self,
             device: Shutter,
@@ -84,11 +82,10 @@ be decoded to a string prior to matching using the ``utf-8`` standard.
 
 .. code-block:: python
 
-    from tickit.adapters.composed import ComposedAdapter
     from tickit.adapters.interpreters.command.regex_command import RegexCommand
-    from tickit.core.adapter import ConfigurableAdapter
+    from tickit.core.adapter import Adapter
 
-    class ShutterAdapter(ComposedAdapter, ConfigurableAdapter):
+    class ShutterAdapter(Adapter):
         
         ...
 
@@ -101,11 +98,10 @@ We shall add a similar command to read back the current target position of the
 
 .. code-block:: python
 
-    from tickit.adapters.composed import ComposedAdapter
     from tickit.adapters.interpreters.command.regex_command import RegexCommand
-    from tickit.core.adapter import ConfigurableAdapter
+    from tickit.core.adapter import Adapter
 
-    class ShutterAdapter(ComposedAdapter, ConfigurableAdapter):
+    class ShutterAdapter(Adapter):
         
         ...
 
@@ -119,11 +115,10 @@ parentheses form the capture group from which the argument is extracted.
 
 .. code-block:: python
 
-    from tickit.adapters.composed import ComposedAdapter
     from tickit.adapters.interpreters.command.regex_command import RegexCommand
-    from tickit.core.adapter import ConfigurableAdapter
+    from tickit.core.adapter import Adapter
 
-    class ShutterAdapter(ComposedAdapter, ConfigurableAdapter):
+    class ShutterAdapter(Adapter):
         
         ...
 
@@ -135,40 +130,35 @@ parentheses form the capture group from which the argument is extracted.
 Using the Adapter
 -----------------
 
-In order to use the device we must first create a simulation configuration file, we
-shall create one named ``my_shutter_simulation.yaml``, and open it with our preferred
-editor. This file will be used to set up a simulation consisting of a `Source` named
-source which will produce a constant flux, the shutter which will act on the flux as
-per our implementation, and a `Sink` named sink which will recieve the resulting flux.
-The shutter will be given a ShutterAdapter which uses the default configuration for
-``host`` and ``port``. 
+As explained in `Creating a Device`, an adapter allows us to to control a device
+externally. And in order to use the device we created a `ComponentConfig` for said
+device. This is defined in the same file as the device and adapter, and defines any
+default initial configuration values. As well as this, we overwrite the magic method
+`__call__()`, which return a `DeviceSimulation` object. In the `DeviceSimulation`
+object, we also define the device's adapter(s):
 
-.. code-block:: yaml
+.. code-block:: python
 
-    - tickit.core.components.device_simulation.DeviceSimulation:
-        adapters: []
-        device:
-          tickit.devices.source.Source:
-            value: 42.0
-        inputs: {}
-        name: source
-    - tickit.core.components.device_simulation.DeviceSimulation:
-        adapters:
-        - examples.devices.shutter.ShutterAdapter: {}
-        device:
-          examples.devices.shutter.Shutter:
-            default_position: 0.2
-            initial_position: 0.24
-        inputs:
-          flux: source:value
-        name: shutter
-    - tickit.core.components.device_simulation.DeviceSimulation:
-        adapters: []
-        device:
-          tickit.devices.sink.Sink: {}
-        inputs:
-          flux: shutter:flux
-        name: sink
+    @dataclass
+    class Shutter(ComponentConfig):
+
+        default_position: float
+        initial_position: Optional[float] = None
+        host: str = "localhost"
+        port: int = 25565
+
+        def __call__(self) -> Component:
+            return DeviceSimulation(
+                name=self.name,
+                device=ShutterDevice(
+                    default_position=self.default_position,
+                    initial_position=self.initial_position,
+                ),
+                adapters=[ShutterAdapter(host=self.host, port=self.port)],
+            )
+
+As the adapter(s) are defined in the `ComponentConfig`, they are not required to be
+declared in the YAML for the simulation.
 
 .. seealso::
     See the `Creating a Simulation` tutorial for a walk-through of creating simulation

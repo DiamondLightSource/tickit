@@ -110,8 +110,12 @@ which consists of ``outputs`` - a mapping of output ports and their value - and
 Creating a ComponentConfig
 --------------------------
 
-In order to create the Device we must create a `ComponentConfig` that knows how
-to instantiate a Device.
+In order to run the Device as a simulation, it requires a `ComponentConfig` that 
+knows how to instantiate that Device. This will be defined in the same file as the
+device, and defines any default initial configuration values. As well as this, we
+overwrite the magic method `__call__()`, which returns a `DeviceSimulation` object.
+This object takes the component name, as well as it's device. We will return to this
+if the device requires any adapters to control it externally (see `Creating an Adapter`).
 
 .. code-block:: python
 
