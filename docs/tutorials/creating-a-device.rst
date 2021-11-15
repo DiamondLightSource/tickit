@@ -9,7 +9,7 @@ Device Module File
 ------------------
 
 We shall begin by creating a new python module named ``my_shutter.py``, and open it
-with our preferred editor. This file will be used to store the our Shutter class which
+with our preferred editor. This file will be used to store the ``Shutter`` class which
 will determine the operation of our device.
 
 Device Class
