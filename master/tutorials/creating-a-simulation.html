@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Creating a Simulation &mdash; tickit 0.1.1.pre2+10.gee4ab4c documentation</title>
+  <title>Creating a Simulation &mdash; tickit 0.1.1.pre2+11.g2c006d0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -148,46 +148,30 @@ and wire them together.</p>
 </section>
 <section id="adding-devices">
 <h2>Adding Devices<a class="headerlink" href="#adding-devices" title="Permalink to this headline"></a></h2>
-<p>In order to be included in a simulation, tickit devices must be nested within a
-<a class="reference internal" href="../reference/api.html#tickit.core.components.device_simulation.DeviceSimulation" title="tickit.core.components.device_simulation.DeviceSimulation"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DeviceSimulation</span></code></a> component. At the top level, tickit simulations comprise a list of
-components - denoted in YAML by <code class="docutils literal notranslate"><span class="pre">-</span></code>. As such we shall begin by adding an empty
-<a class="reference internal" href="../reference/api.html#tickit.core.components.device_simulation.DeviceSimulation" title="tickit.core.components.device_simulation.DeviceSimulation"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DeviceSimulation</span></code></a> as the first element of our list, as:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">tickit.core.components.device_simulation.DeviceSimulation</span><span class="p">:</span>
+<p>In order to be included in a simulation, tickit devices must have a <a class="reference internal" href="../reference/api.html#tickit.core.components.component.ComponentConfig" title="tickit.core.components.component.ComponentConfig"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ComponentConfig</span></code></a>
+dataclass associated with them. This defines the device to be used, as well as any
+adapters to allow the device to be externally controlled. At the top level, tickit
+simulations comprise a list of these components which are denoted in YAML.</p>
+<p>In this example our first device shall be a <a class="reference internal" href="../reference/api.html#examples.devices.trampoline.RandomTrampoline" title="examples.devices.trampoline.RandomTrampoline"><code class="xref any py py-class docutils literal notranslate"><span class="pre">RandomTrampoline</span></code></a> with a callback_period
+of <span class="math notranslate nohighlight">\(1s\)</span> or <span class="math notranslate nohighlight">\(10^9n\s\)</span> named <code class="docutils literal notranslate"><span class="pre">rand_tramp</span></code> with no adapters - denoted
+in YAML by <code class="docutils literal notranslate"><span class="pre">[]</span></code> - and with no mapped inputs - denoted in YAML by <code class="docutils literal notranslate"><span class="pre">{}</span></code>. As such
+we may extend our config, as:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">examples.devices.trampoline.RandomTrampoline</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">rand_tramp</span>
+    <span class="nt">inputs</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
 </pre></div>
 </div>
-<p>A <a class="reference internal" href="../reference/api.html#tickit.core.components.device_simulation.DeviceSimulation" title="tickit.core.components.device_simulation.DeviceSimulation"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DeviceSimulation</span></code></a> wraps a device and a set of adapters, giving them a name and
-mapping the device inputs to the outputs of other devices. In this example our first
-device shall be a <a class="reference internal" href="../reference/api.html#examples.devices.trampoline.RandomTrampoline" title="examples.devices.trampoline.RandomTrampoline"><code class="xref any py py-class docutils literal notranslate"><span class="pre">RandomTrampoline</span></code></a> with a callback_period of <span class="math notranslate nohighlight">\(1s\)</span> or
-<span class="math notranslate nohighlight">\(10^9\mu\\s\)</span> named <code class="docutils literal notranslate"><span class="pre">rand_tramp</span></code> with no adapters - denoted in YAML by <code class="docutils literal notranslate"><span class="pre">[]</span></code> -
-and with no mapped inputs - denoted in YAML by <code class="docutils literal notranslate"><span class="pre">{}</span></code>. As such we may extend our
-config, as:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">tickit.core.components.device_simulation.DeviceSimulation</span><span class="p">:</span>
-    <span class="nt">adapters</span><span class="p">:</span> <span class="p p-Indicator">[]</span>
-    <span class="nt">device</span><span class="p">:</span>
-      <span class="nt">examples.devices.trampoline.RandomTrampoline</span><span class="p">:</span>
-        <span class="nt">callback_period</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1000000000</span>
-    <span class="nt">inputs</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
+<p>We will now add a <a class="reference internal" href="../reference/api.html#tickit.devices.sink.Sink" title="tickit.devices.sink.Sink"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Sink</span></code></a> device. This device will be named <code class="docutils literal notranslate"><span class="pre">tramp_sink</span></code>, will have
+no adapters but will take the <code class="docutils literal notranslate"><span class="pre">output</span></code> value of <code class="docutils literal notranslate"><span class="pre">rand_tramp</span></code> as <code class="docutils literal notranslate"><span class="pre">input</span></code>. As
+such we may extend our config, as:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">examples.devices.trampoline.RandomTrampoline</span><span class="p">:</span>
     <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">rand_tramp</span>
-</pre></div>
-</div>
-<p>We will now add a <a class="reference internal" href="../reference/api.html#tickit.devices.sink.Sink" title="tickit.devices.sink.Sink"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Sink</span></code></a> device, again wrapped within a <a class="reference internal" href="../reference/api.html#tickit.core.components.device_simulation.DeviceSimulation" title="tickit.core.components.device_simulation.DeviceSimulation"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DeviceSimulation</span></code></a>. This device
-will be named <code class="docutils literal notranslate"><span class="pre">tramp_sink</span></code>, will have no adapters but will take the <code class="docutils literal notranslate"><span class="pre">output</span></code> value
-of <code class="docutils literal notranslate"><span class="pre">rand_tramp</span></code> as <code class="docutils literal notranslate"><span class="pre">input</span></code>. As such we may extend our config, as:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">tickit.core.components.device_simulation.DeviceSimulation</span><span class="p">:</span>
-    <span class="nt">adapters</span><span class="p">:</span> <span class="p p-Indicator">[]</span>
-    <span class="nt">device</span><span class="p">:</span>
-      <span class="nt">examples.devices.trampoline.RandomTrampoline</span><span class="p">:</span>
-        <span class="nt">callback_period</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1000000000</span>
     <span class="nt">inputs</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
-    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">rand_tramp</span>
-<span class="p p-Indicator">-</span> <span class="nt">tickit.core.components.device_simulation.DeviceSimulation</span><span class="p">:</span>
-    <span class="nt">adapters</span><span class="p">:</span> <span class="p p-Indicator">[]</span>
-    <span class="nt">config</span><span class="p">:</span>
-      <span class="nt">tickit.devices.sink.Sink</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
+<span class="p p-Indicator">-</span> <span class="nt">tickit.devices.sink.Sink</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tramp_sink</span>
     <span class="nt">inputs</span><span class="p">:</span>
       <span class="nt">input</span><span class="p">:</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rand_tramp:output</span>
-    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tramp_sink</span>
 </pre></div>
 </div>
 </section>

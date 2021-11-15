@@ -14,53 +14,36 @@ and wire them together.
 Adding Devices
 --------------
 
-In order to be included in a simulation, tickit devices must be nested within a
-`DeviceSimulation` component. At the top level, tickit simulations comprise a list of
-components - denoted in YAML by ``-``. As such we shall begin by adding an empty
-`DeviceSimulation` as the first element of our list, as:
+In order to be included in a simulation, tickit devices must have a `ComponentConfig`
+dataclass associated with them. This defines the device to be used, as well as any
+adapters to allow the device to be externally controlled. At the top level, tickit 
+simulations comprise a list of these components which are denoted in YAML.
+
+In this example our first device shall be a `RandomTrampoline` with a callback_period 
+of :math:`1s` or :math:`10^9n\s` named ``rand_tramp`` with no adapters - denoted 
+in YAML by ``[]`` - and with no mapped inputs - denoted in YAML by ``{}``. As such 
+we may extend our config, as:
 
 .. code-block:: yaml
     
-    - tickit.core.components.device_simulation.DeviceSimulation:
-
-A `DeviceSimulation` wraps a device and a set of adapters, giving them a name and
-mapping the device inputs to the outputs of other devices. In this example our first
-device shall be a `RandomTrampoline` with a callback_period of :math:`1s` or
-:math:`10^9\mu\\s` named ``rand_tramp`` with no adapters - denoted in YAML by ``[]`` -
-and with no mapped inputs - denoted in YAML by ``{}``. As such we may extend our
-config, as:
-
-.. code-block:: yaml
-    
-    - tickit.core.components.device_simulation.DeviceSimulation:
-        adapters: []
-        device:
-          examples.devices.trampoline.RandomTrampoline:
-            callback_period: 1000000000
-        inputs: {}
+    - examples.devices.trampoline.RandomTrampoline:
         name: rand_tramp
+        inputs: {}
 
-We will now add a `Sink` device, again wrapped within a `DeviceSimulation`. This device
-will be named ``tramp_sink``, will have no adapters but will take the ``output`` value
-of ``rand_tramp`` as ``input``. As such we may extend our config, as:
+We will now add a `Sink` device. This device will be named ``tramp_sink``, will have 
+no adapters but will take the ``output`` value of ``rand_tramp`` as ``input``. As 
+such we may extend our config, as:
 
 .. code-block:: yaml
     
-    - tickit.core.components.device_simulation.DeviceSimulation:
-        adapters: []
-        device:
-          examples.devices.trampoline.RandomTrampoline:
-            callback_period: 1000000000
-        inputs: {}
+    - examples.devices.trampoline.RandomTrampoline:
         name: rand_tramp
-    - tickit.core.components.device_simulation.DeviceSimulation:
-        adapters: []
-        config:
-          tickit.devices.sink.Sink: {}
+        inputs: {}
+    - tickit.devices.sink.Sink: {}
+        name: tramp_sink        
         inputs:
           input:
           - rand_tramp:output
-        name: tramp_sink
 
 Running the Simulation
 ----------------------
@@ -97,4 +80,3 @@ Once run, we expect to see an output akin to:
 
 .. _Sink: <tickit.devices.sink.Sink>
 .. _RandomTrampoline:  <examples.devices.trampoline.RandomTrampoline>
-.. _DeviceSimulation: <tickit.core.components.device_simulation.DeviceSimulation>

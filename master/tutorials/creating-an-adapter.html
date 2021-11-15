@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Creating an Adapter &mdash; tickit 0.1.1.pre2+10.gee4ab4c documentation</title>
+  <title>Creating an Adapter &mdash; tickit 0.1.1.pre2+11.g2c006d0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -159,10 +159,9 @@ ShutterAdapter class which will determine the operation of our adapter.</p>
 <p>We shall begin by defining the ShutterAdapter class which inherits
 <a class="reference internal" href="../reference/api.html#tickit.core.adapter.Adapter" title="tickit.core.adapter.Adapter"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Adapter</span></code></a> - by doing so a configuration dataclass will automatically be
 created for the adapter, allowing easy YAML configuration.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tickit.adapters.composed</span> <span class="kn">import</span> <span class="n">ComposedAdapter</span>
-<span class="kn">from</span> <span class="nn">tickit.core.adapter</span> <span class="kn">import</span> <span class="n">ConfigurableAdapter</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tickit.core.adapter</span> <span class="kn">import</span> <span class="n">Adapter</span>
 
-<span class="k">class</span> <span class="nc">ShutterAdapter</span><span class="p">(</span><span class="n">ComposedAdapter</span><span class="p">,</span> <span class="n">ConfigurableAdapter</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">ShutterAdapter</span><span class="p">(</span><span class="n">Adapter</span><span class="p">):</span>
 </pre></div>
 </div>
 </section>
@@ -174,16 +173,15 @@ type <code class="docutils literal notranslate"><span class="pre">Device</span><
 which the device the adapter acts upon and a method used to request an immediate update
 of the device are passed respectively. Additionally, we will include the arguments
 <code class="docutils literal notranslate"><span class="pre">host</span></code> and <code class="docutils literal notranslate"><span class="pre">port</span></code> which will be used to configure our <code class="docutils literal notranslate"><span class="pre">TcpServer</span></code>. With these we
-will instantiate a composed adapter with a <code class="docutils literal notranslate"><span class="pre">TcpServer</span></code> which formats sent messages by
+will instantiate an adapter with a <code class="docutils literal notranslate"><span class="pre">TcpServer</span></code> which formats sent messages by
 appending a line break and a <code class="docutils literal notranslate"><span class="pre">CommandInterpreter</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Awaitable</span><span class="p">,</span> <span class="n">Callable</span>
 
-<span class="kn">from</span> <span class="nn">tickit.adapters.composed</span> <span class="kn">import</span> <span class="n">ComposedAdapter</span>
 <span class="kn">from</span> <span class="nn">tickit.adapters.interpreters.command.command_interpreter</span> <span class="kn">import</span> <span class="n">CommandInterpreter</span>
 <span class="kn">from</span> <span class="nn">tickit.adapters.servers.tcp</span> <span class="kn">import</span> <span class="n">TcpServer</span>
-<span class="kn">from</span> <span class="nn">tickit.core.adapter</span> <span class="kn">import</span> <span class="n">ConfigurableAdapter</span>
+<span class="kn">from</span> <span class="nn">tickit.core.adapter</span> <span class="kn">import</span> <span class="n">Adapter</span>
 
-<span class="k">class</span> <span class="nc">ShutterAdapter</span><span class="p">(</span><span class="n">ComposedAdapter</span><span class="p">,</span> <span class="n">ConfigurableAdapter</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">ShutterAdapter</span><span class="p">(</span><span class="n">Adapter</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">device</span><span class="p">:</span> <span class="n">Shutter</span><span class="p">,</span>
@@ -214,11 +212,10 @@ returns the current position of the <a class="reference internal" href="../refer
 is called by sending <code class="docutils literal notranslate"><span class="pre">P?</span></code>. Since reading will not alter the device state we shall set
 <code class="docutils literal notranslate"><span class="pre">interrupt</span></code> to <code class="docutils literal notranslate"><span class="pre">False</span></code>. We shall also specify that the byte encoded message should
 be decoded to a string prior to matching using the <code class="docutils literal notranslate"><span class="pre">utf-8</span></code> standard.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tickit.adapters.composed</span> <span class="kn">import</span> <span class="n">ComposedAdapter</span>
-<span class="kn">from</span> <span class="nn">tickit.adapters.interpreters.command.regex_command</span> <span class="kn">import</span> <span class="n">RegexCommand</span>
-<span class="kn">from</span> <span class="nn">tickit.core.adapter</span> <span class="kn">import</span> <span class="n">ConfigurableAdapter</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tickit.adapters.interpreters.command.regex_command</span> <span class="kn">import</span> <span class="n">RegexCommand</span>
+<span class="kn">from</span> <span class="nn">tickit.core.adapter</span> <span class="kn">import</span> <span class="n">Adapter</span>
 
-<span class="k">class</span> <span class="nc">ShutterAdapter</span><span class="p">(</span><span class="n">ComposedAdapter</span><span class="p">,</span> <span class="n">ConfigurableAdapter</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">ShutterAdapter</span><span class="p">(</span><span class="n">Adapter</span><span class="p">):</span>
 
     <span class="o">...</span>
 
@@ -229,11 +226,10 @@ be decoded to a string prior to matching using the <code class="docutils literal
 </div>
 <p>We shall add a similar command to read back the current target position of the
 <a class="reference internal" href="../reference/api.html#examples.devices.shutter.Shutter" title="examples.devices.shutter.Shutter"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Shutter</span></code></a> when <code class="docutils literal notranslate"><span class="pre">T?</span></code> is recieved.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tickit.adapters.composed</span> <span class="kn">import</span> <span class="n">ComposedAdapter</span>
-<span class="kn">from</span> <span class="nn">tickit.adapters.interpreters.command.regex_command</span> <span class="kn">import</span> <span class="n">RegexCommand</span>
-<span class="kn">from</span> <span class="nn">tickit.core.adapter</span> <span class="kn">import</span> <span class="n">ConfigurableAdapter</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tickit.adapters.interpreters.command.regex_command</span> <span class="kn">import</span> <span class="n">RegexCommand</span>
+<span class="kn">from</span> <span class="nn">tickit.core.adapter</span> <span class="kn">import</span> <span class="n">Adapter</span>
 
-<span class="k">class</span> <span class="nc">ShutterAdapter</span><span class="p">(</span><span class="n">ComposedAdapter</span><span class="p">,</span> <span class="n">ConfigurableAdapter</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">ShutterAdapter</span><span class="p">(</span><span class="n">Adapter</span><span class="p">):</span>
 
     <span class="o">...</span>
 
@@ -245,11 +241,10 @@ be decoded to a string prior to matching using the <code class="docutils literal
 <p>Next, we shall add a method which sets a new target position for the <a class="reference internal" href="../reference/api.html#examples.devices.shutter.Shutter" title="examples.devices.shutter.Shutter"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Shutter</span></code></a> when
 <code class="docutils literal notranslate"><span class="pre">T=(\d+\.?\d*)</span></code> is recieved, where <code class="docutils literal notranslate"><span class="pre">\d+\.?\d*</span></code> denotes a decimal number and the
 parentheses form the capture group from which the argument is extracted.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tickit.adapters.composed</span> <span class="kn">import</span> <span class="n">ComposedAdapter</span>
-<span class="kn">from</span> <span class="nn">tickit.adapters.interpreters.command.regex_command</span> <span class="kn">import</span> <span class="n">RegexCommand</span>
-<span class="kn">from</span> <span class="nn">tickit.core.adapter</span> <span class="kn">import</span> <span class="n">ConfigurableAdapter</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tickit.adapters.interpreters.command.regex_command</span> <span class="kn">import</span> <span class="n">RegexCommand</span>
+<span class="kn">from</span> <span class="nn">tickit.core.adapter</span> <span class="kn">import</span> <span class="n">Adapter</span>
 
-<span class="k">class</span> <span class="nc">ShutterAdapter</span><span class="p">(</span><span class="n">ComposedAdapter</span><span class="p">,</span> <span class="n">ConfigurableAdapter</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">ShutterAdapter</span><span class="p">(</span><span class="n">Adapter</span><span class="p">):</span>
 
     <span class="o">...</span>
 
@@ -262,39 +257,32 @@ parentheses form the capture group from which the argument is extracted.</p>
 </section>
 <section id="using-the-adapter">
 <h2>Using the Adapter<a class="headerlink" href="#using-the-adapter" title="Permalink to this headline"></a></h2>
-<p>In order to use the device we must first create a simulation configuration file, we
-shall create one named <code class="docutils literal notranslate"><span class="pre">my_shutter_simulation.yaml</span></code>, and open it with our preferred
-editor. This file will be used to set up a simulation consisting of a <a class="reference internal" href="../reference/api.html#tickit.devices.source.Source" title="tickit.devices.source.Source"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Source</span></code></a> named
-source which will produce a constant flux, the shutter which will act on the flux as
-per our implementation, and a <a class="reference internal" href="../reference/api.html#tickit.devices.sink.Sink" title="tickit.devices.sink.Sink"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Sink</span></code></a> named sink which will recieve the resulting flux.
-The shutter will be given a ShutterAdapter which uses the default configuration for
-<code class="docutils literal notranslate"><span class="pre">host</span></code> and <code class="docutils literal notranslate"><span class="pre">port</span></code>.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">tickit.core.components.device_simulation.DeviceSimulation</span><span class="p">:</span>
-    <span class="nt">adapters</span><span class="p">:</span> <span class="p p-Indicator">[]</span>
-    <span class="nt">device</span><span class="p">:</span>
-      <span class="nt">tickit.devices.source.Source</span><span class="p">:</span>
-        <span class="nt">value</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">42.0</span>
-    <span class="nt">inputs</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
-    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">source</span>
-<span class="p p-Indicator">-</span> <span class="nt">tickit.core.components.device_simulation.DeviceSimulation</span><span class="p">:</span>
-    <span class="nt">adapters</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="nt">examples.devices.shutter.ShutterAdapter</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
-    <span class="nt">device</span><span class="p">:</span>
-      <span class="nt">examples.devices.shutter.Shutter</span><span class="p">:</span>
-        <span class="nt">default_position</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.2</span>
-        <span class="nt">initial_position</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.24</span>
-    <span class="nt">inputs</span><span class="p">:</span>
-      <span class="nt">flux</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">source:value</span>
-    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">shutter</span>
-<span class="p p-Indicator">-</span> <span class="nt">tickit.core.components.device_simulation.DeviceSimulation</span><span class="p">:</span>
-    <span class="nt">adapters</span><span class="p">:</span> <span class="p p-Indicator">[]</span>
-    <span class="nt">device</span><span class="p">:</span>
-      <span class="nt">tickit.devices.sink.Sink</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
-    <span class="nt">inputs</span><span class="p">:</span>
-      <span class="nt">flux</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">shutter:flux</span>
-    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sink</span>
+<p>As explained in <a class="reference internal" href="creating-a-device.html#creating-a-device"><span class="std std-ref">Creating a Device</span></a>, an adapter allows us to control a device
+externally. And in order to use the device we created a <a class="reference internal" href="../reference/api.html#tickit.core.components.component.ComponentConfig" title="tickit.core.components.component.ComponentConfig"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ComponentConfig</span></code></a> for said
+device. This is defined in the same file as the device and adapter, and defines any
+default initial configuration values. As well as this, we override the magic method
+<a class="reference internal" href="../reference/api.html#tickit.utils.singleton.Singleton.__call__" title="tickit.utils.singleton.Singleton.__call__"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a>, which return a <a class="reference internal" href="../reference/api.html#tickit.core.components.device_simulation.DeviceSimulation" title="tickit.core.components.device_simulation.DeviceSimulation"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DeviceSimulation</span></code></a> object. In the <a class="reference internal" href="../reference/api.html#tickit.core.components.device_simulation.DeviceSimulation" title="tickit.core.components.device_simulation.DeviceSimulation"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DeviceSimulation</span></code></a>
+object, we also define the device’s adapter(s):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Shutter</span><span class="p">(</span><span class="n">ComponentConfig</span><span class="p">):</span>
+
+    <span class="n">default_position</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">initial_position</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;localhost&quot;</span>
+    <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">25565</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Component</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">DeviceSimulation</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">device</span><span class="o">=</span><span class="n">ShutterDevice</span><span class="p">(</span>
+                <span class="n">default_position</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">default_position</span><span class="p">,</span>
+                <span class="n">initial_position</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_position</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">adapters</span><span class="o">=</span><span class="p">[</span><span class="n">ShutterAdapter</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">)],</span>
+        <span class="p">)</span>
 </pre></div>
 </div>
+<p>Using <a class="reference internal" href="../reference/api.html#tickit.core.components.component.ComponentConfig" title="tickit.core.components.component.ComponentConfig"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ComponentConfig</span></code></a> the adapters are instantiated in Python so they are not referenced in the YAML config.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p>See the <a class="reference internal" href="creating-a-simulation.html#creating-a-simulation"><span class="std std-ref">Creating a Simulation</span></a> tutorial for a walk-through of creating simulation
