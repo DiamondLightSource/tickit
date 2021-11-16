@@ -59,8 +59,6 @@ async def test_eiger_trigger_ints_and_ready(eiger: EigerDevice):
 async def test_eiger_trigger_not_ints_and_ready(eiger: EigerDevice):
 
     eiger._set_state(State.READY)
-    # Should be 'exts' by default but set just in case
-    eiger.settings.trigger_mode = "exts"
 
     message = await eiger.trigger()
 
@@ -75,8 +73,6 @@ async def test_eiger_trigger_not_ints_and_ready(eiger: EigerDevice):
 async def test_eiger_trigger_not_ints_and_not_ready(eiger: EigerDevice):
 
     eiger._set_state(State.IDLE)
-    # Should be 'exts' by default but set just in case
-    eiger.settings.trigger_mode = "exts"
 
     message = await eiger.trigger()
 
