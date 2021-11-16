@@ -35,7 +35,6 @@ async def mock_process_message_queue() -> AsyncMock:
 @pytest.fixture
 def zeromq_adapter() -> ZeroMQAdapter:
     zmq_adapter = ZeroMQAdapter()
-    # zmq_adapter._process_message_queue = process_message_queue
     zmq_adapter._dealer = AsyncMock()
     zmq_adapter._router = AsyncMock()
     zmq_adapter._message_queue = Mock(asyncio.Queue)
@@ -123,8 +122,6 @@ async def test_zeromq_adapter_process_message(zeromq_adapter):
 
     zeromq_adapter._dealer.read.return_value = ("Data", "test")
     zeromq_adapter._router.read.return_value = ("Data", "test")
-
-    # await zeromq_adapter.start_stream()
 
     await zeromq_adapter._process_message(mock_message)
 
