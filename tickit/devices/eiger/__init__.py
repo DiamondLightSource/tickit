@@ -2,8 +2,8 @@ from dataclasses import dataclass
 
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
-
-from .eiger import EigerDevice, EigerRESTAdapter, EigerZMQAdapter
+from tickit.devices.eiger.eiger import EigerDevice
+from tickit.devices.eiger.eiger_adapters import EigerRESTAdapter, EigerZMQAdapter
 
 
 @dataclass
