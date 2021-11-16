@@ -165,7 +165,6 @@ async def test_eiger_system(tickit_task):
 
     commands = {
         "initialize": {"sequence_id": 1},
-        "arm": {"sequence_id": 2},
         "disarm": {"sequence_id": 3},
         "cancel": {"sequence_id": 5},
         "abort": {"sequence_id": 6},
@@ -248,3 +247,9 @@ async def test_eiger_system(tickit_task):
 
         async with session.get(stream_url + "status/state") as resp:
             assert "ready" == json.loads(str(await resp.text()))["value"]
+
+        async with session.put(url + "command/arm") as resp:
+            assert {"sequence_id": 2} == json.loads(str(await resp.text()))
+
+        async with session.put(url + "command/trigger") as resp:
+            assert {"sequence_id": 4} == json.loads(str(await resp.text()))
