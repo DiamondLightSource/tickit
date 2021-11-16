@@ -36,7 +36,7 @@ def test_importing_conversion_when_is_not_tagged_union(
     mock_component_config_type: ComponentConfig,
 ):
     conversion: Optional[Conversion] = importing_conversion(mock_component_config_type)
-    assert conversion is None
+    assert conversion == []
 
 
 class MockConfig(ComponentConfig):

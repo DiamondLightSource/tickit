@@ -15,54 +15,56 @@ Changelog      https://github.com/dls-controls/tickit/blob/master/CHANGELOG.rst
 
 An example device which emits a random value between *0* and *255* whenever
 called and asks to be called again once the simulation has progressed by the
-``callback_period``:
+``callback_period``.  Additionally, extenal control of **RandomTrampoline** is
+afforded by a **RemoteControlledAdapter** which is exposed extenally through 
+a **TCPServer**:
 
 .. code-block:: python
 
-    class RandomTrampoline(ConfigurableDevice):
+    @dataclass
+    class RandomTrampoline(ComponentConfig):
 
-    Inputs: TypedDict = TypedDict("Inputs", {})
-    Outputs: TypedDict = TypedDict("Outputs", {"output": int})
+        def __call__(self) -> Component:  # noqa: D102
+            return DeviceSimulation(
+                name=self.name,
+                device=RandomTrampolineDevice(),
+                adapters=[RemoteControlledAdapter(server=TcpServer(format="%b\r\n"))])
 
-    def __init__(self, callback_period: int = int(1e9)) -> None:
-        self.callback_period = SimTime(callback_period)
 
-    def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
-        output = randint(0, 255)
-        LOGGER.debug(
-            "Boing! (delta: {}, inputs: {}, output: {})".format(time, inputs, output)
-        )
-        return DeviceUpdate(
-            RandomTrampoline.Outputs(output=output),
-            SimTime(time + self.callback_period),
-        )
+    class RandomTrampolineDevice(Device):
+
+        Inputs: TypedDict = TypedDict("Inputs", {})
+        Outputs: TypedDict = TypedDict("Outputs", {"output": int})
+
+        def __init__(self, callback_period: int = int(1e9)) -> None:
+            self.callback_period = SimTime(callback_period)
+
+        def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
+            output = randint(0, 255)
+            LOGGER.debug(
+                "Boing! (delta: {}, inputs: {}, output: {})".format(time, inputs, output)
+            )
+            return DeviceUpdate(
+                RandomTrampoline.Outputs(output=output),
+                SimTime(time + self.callback_period),
+            )
 
 
 An example simulation defines a **RemoteControlled** device named **tcp_contr**
 and a **Sink** device named **contr_sink**. The **observed** output of
-**tcp_contr** is wired to the **input** input of **contr_sink**. Additionally,
-extenal control of **tcp_contr** is afforded by a **RemoteControlledAdapter**
-which is exposed extenally through a **TCPServer**:
+**tcp_contr** is wired to the **input** input of **contr_sink**:
 
 .. code-block:: yaml
 
-    - tickit.core.components.device_simulation.DeviceSimulation:
-        adapters:
-        - examples.devices.remote_controlled.RemoteControlledAdapter:
-            server:
-            tickit.adapters.servers.tcp.TcpServer:
-                format: "%b\r\n"
-        device:
-          examples.devices.remote_controlled.RemoteControlled: {}
-        inputs: {}
+
+    - examples.devices.remote_controlled.RemoteControlled: {}
         name: tcp_contr
-    - tickit.core.components.device_simulation.DeviceSimulation:
-        adapters: []
-        device:
-          tickit.devices.sink.Sink: {}
+        inputs: {}
+    - tickit.devices.sink.Sink: {}
+        name: contr_sink
         inputs:
           input: tcp_contr:observed
-        name: contr_sink
+
 
 
 .. |code_ci| image:: https://github.com/dls-controls/tickit/workflows/Code%20CI/badge.svg?branch=master

@@ -99,10 +99,10 @@
         },
         "apischema": {
             "hashes": [
-                "sha256:345836c4b90055d7bd0d44c822e93dd76b4ceb197f6ee1dda7092061981a774a",
-                "sha256:c9bcaa901bbbca8699d6ebb05beeff47fac04706bfa358c6b264c10102a5d6c0"
+                "sha256:8e540344bd1073d858f27ae65d5158729ff594488528fe8f84049b4e7a82af87",
+                "sha256:d89d1a439f0aad123596a2b4bc7130eba8e459a4f5748a4f3307e8fe97368796"
             ],
-            "version": "==0.15.7"
+            "version": "==0.16.1"
         },
         "async-timeout": {
             "hashes": [
@@ -538,10 +538,10 @@
         },
         "apischema": {
             "hashes": [
-                "sha256:345836c4b90055d7bd0d44c822e93dd76b4ceb197f6ee1dda7092061981a774a",
-                "sha256:c9bcaa901bbbca8699d6ebb05beeff47fac04706bfa358c6b264c10102a5d6c0"
+                "sha256:8e540344bd1073d858f27ae65d5158729ff594488528fe8f84049b4e7a82af87",
+                "sha256:d89d1a439f0aad123596a2b4bc7130eba8e459a4f5748a4f3307e8fe97368796"
             ],
-            "version": "==0.15.7"
+            "version": "==0.16.1"
         },
         "appdirs": {
             "hashes": [
@@ -580,10 +580,10 @@
         },
         "certifi": {
             "hashes": [
-                "sha256:2bbf76fd432960138b3ef6dda3dde0544f27cbf8546c458e60baf371917ba9ee",
-                "sha256:50b1e4f8446b06f41be7dd6338db18e0990601dce795c2b1686458aa7e8fa7d8"
+                "sha256:78884e7c1d4b00ce3cea67b44566851c4343c120abd683433ce934a68ea58872",
+                "sha256:d62a0163eb4c2344ac042ab2bdf75399a71a2d8c7d47eac2e2ee91b9d6339569"
             ],
-            "version": "==2021.5.30"
+            "version": "==2021.10.8"
         },
         "chardet": {
             "hashes": [
@@ -1336,7 +1336,6 @@
                 "sha256:8dd0e9524d6f386271a36b41dbf6c57d8e32fd96fd22b6584679dc569d20899f",
                 "sha256:a5b75cb6f3968abb47af1b40c1819dc519ea82bcc065776a866e8d74c5ca9442"
             ],
-            "markers": "python_version >= '3.6'",
             "version": "==1.2.1"
         },
         "typed-ast": {
