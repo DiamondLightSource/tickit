@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tickit.core.device &mdash; tickit 0.1.1.pre2+13.g5e85df9 documentation</title>
+  <title>tickit.core.device &mdash; tickit 0.1.1.pre2+14.ge7deef1 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -154,7 +154,7 @@
 
 
 <div class="viewcode-block" id="Device"><a class="viewcode-back" href="../../../reference/api.html#tickit.core.device.Device">[docs]</a><span class="nd">@as_tagged_union</span>
-<span class="k">class</span> <span class="nc">Device</span><span class="p">:</span>
+<span class="k">class</span> <span class="nc">Device</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">InMap</span><span class="p">,</span> <span class="n">OutMap</span><span class="p">]):</span>
     <span class="sd">&quot;&quot;&quot;An interface for types which implement simulated devices.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Device.update"><a class="viewcode-back" href="../../../reference/api.html#tickit.core.device.Device.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">SimTime</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">InMap</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeviceUpdate</span><span class="p">[</span><span class="n">OutMap</span><span class="p">]:</span>

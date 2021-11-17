@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>API &mdash; tickit 0.1.1.pre2+13.g5e85df9 documentation</title>
+  <title>API &mdash; tickit 0.1.1.pre2+14.ge7deef1 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -199,9 +199,6 @@ property. Defaults to 42.</p></li>
 <li><p><strong>initial_hidden</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – The initial value of the hidden device property.
 Defaults to 3.14.</p></li>
 </ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)">None</a></p>
 </dd>
 </dl>
 <dl class="py class">
@@ -494,9 +491,6 @@ None, a random value in the range [0.0,1.0) will be used. Defaults to
 None.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)">None</a></p>
-</dd>
 </dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="examples.devices.shutter.ShutterDevice.Inputs">
@@ -661,9 +655,6 @@ updated immediately.</p></li>
 <dd class="field-odd"><p><strong>callback_period</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The simulation time callback period of the device
 (in nanoseconds). Defaults to int(1e9).</p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)">None</a></p>
-</dd>
 </dl>
 <dl class="py class">
 <dt class="sig sig-object py">
@@ -710,9 +701,6 @@ and requests a callback after the configured callback period.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>callback_period</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The simulation time callback period of the device
 (in nanoseconds). Defaults to int(1e9).</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)">None</a></p>
 </dd>
 </dl>
 <dl class="py class">
@@ -2714,7 +2702,7 @@ interface names to a tuple of their class and their externality flag.</p></li>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="tickit.core.device.Device">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">tickit.core.device.</span></span><span class="sig-name descname"><span class="pre">Device</span></span><a class="reference internal" href="../_modules/tickit/core/device.html#Device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.device.Device" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">tickit.core.device.</span></span><span class="sig-name descname"><span class="pre">Device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tickit/core/device.html#Device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.device.Device" title="Permalink to this definition"></a></dt>
 <dd><p>An interface for types which implement simulated devices.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tickit.core.device.Device.update">
@@ -3035,7 +3023,7 @@ This function blocks until all run_forever methods have completed.</p>
 <h4><code class="docutils literal notranslate"><span class="pre">tickit.devices.sink</span></code><a class="headerlink" href="#tickit-devices-sink" title="Permalink to this headline"></a></h4>
 <dl class="py class">
 <dt class="sig sig-object py" id="tickit.devices.sink.SinkDevice">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">tickit.devices.sink.</span></span><span class="sig-name descname"><span class="pre">SinkDevice</span></span><a class="reference internal" href="../_modules/tickit/devices/sink.html#SinkDevice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.devices.sink.SinkDevice" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">tickit.devices.sink.</span></span><span class="sig-name descname"><span class="pre">SinkDevice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tickit/devices/sink.html#SinkDevice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.devices.sink.SinkDevice" title="Permalink to this definition"></a></dt>
 <dd><p>A simple device which can take any input and produces no output.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="tickit.devices.sink.SinkDevice.Inputs">
@@ -3100,9 +3088,6 @@ requests a callback.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>value</strong> (<em>Any</em>) – A pre-configured output value.</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)">None</a></p>
 </dd>
 </dl>
 <dl class="py class">
@@ -3807,9 +3792,6 @@ target temperature.</p>
 <li><p><strong>initial_current</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>]</em>) – The input signal current.                 Defaults to 0.0.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)">None</a></p>
-</dd>
 </dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="tickit.devices.femto.femto.FemtoDevice.Inputs">
@@ -3961,17 +3943,6 @@ target temperature.</p>
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">tickit.devices.pneumatic.pneumatic.</span></span><span class="sig-name descname"><span class="pre">PneumaticDevice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_speed</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_state</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tickit/devices/pneumatic/pneumatic.html#PneumaticDevice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.devices.pneumatic.pneumatic.PneumaticDevice" title="Permalink to this definition"></a></dt>
 <dd><p>Pneumatic Device with movement controls.</p>
 <p>Initialise a Pneumatic object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>initial_speed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – </p></li>
-<li><p><strong>initial_state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)">None</a></p>
-</dd>
-</dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="tickit.devices.pneumatic.pneumatic.PneumaticDevice.Outputs">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Outputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tickit.devices.pneumatic.pneumatic.PneumaticDevice.Outputs" title="Permalink to this definition"></a></dt>
