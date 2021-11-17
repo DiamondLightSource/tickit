@@ -30,6 +30,8 @@ Changed:
   - User may now reference the :code:`ComponentConfig`, which encapsulate a device and adapters
   - Device & Adapter config classes are no longer autmatically generated, configuration should be performed via the :code:`ComponentConfig`
 
+- Made :code:`Device` a typed :code:`Generic` of :code:`InMap` and :code:`OutMap`
+
 Deprecated:
 
 Removed:
@@ -38,6 +40,7 @@ Fixed:
 
 - Cryostream flow rate threshold (from 900K > 90K)
 - Added dependency on Click to :code:`setup.cfg`
+- Added missing :code:`__init__.py` to :code:`tickit.utils.compat`
 
 Security:
 
