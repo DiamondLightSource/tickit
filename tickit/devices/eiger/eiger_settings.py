@@ -131,8 +131,27 @@ class EigerSettings:
         self.__dict__[key] = value
 
         if key == "element":
-            self.photon_energy = getattr(KA_Energy, value).value
-            self.threshold_energy = 0.5 * self.photon_energy
+            self["photon_energy"] = getattr(KA_Energy, value).value
 
-        if key == "photon_energy":
+        elif key == "photon_energy":
             self.element = ""
+
+            hc = 1240
+            self.wavelength = hc / self.photon_energy
+
+            self._calc_threshold_energy()
+
+        elif key == "wavelength":
+            self.element = ""
+
+            hc = 1240
+            self.photon_energy = hc / self.wavelength
+
+            self._calc_threshold_energy()
+
+        elif key == "count_time":
+            self.frame_time = self.count_time + self.detector_readout_time
+
+    def _calc_threshold_energy(self):
+
+        self.threshold_energy = 0.5 * self.photon_energy
