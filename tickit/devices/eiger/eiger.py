@@ -174,7 +174,7 @@ class EigerDevice(Device):
         intensity_scale = (current_flux / 100) * 100
         LOGGER.debug(f"Relative beam intensity: {intensity_scale}")
 
-        return DeviceUpdate(self.Outputs(), SimTime(time + int(1e8)))
+        return DeviceUpdate(self.Outputs(), None)
 
     def get_state(self) -> Value:
         """Returns the current state of the Eiger.
