@@ -157,7 +157,7 @@ class EigerDevice(Device):
 
         LOGGER.debug(header_json)
 
-    def update(self, time: SimTime, inputs) -> DeviceUpdate:
+    def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
         """Generic update function to update the values of the ExampleHTTPDevice.
 
         Args:
@@ -170,8 +170,7 @@ class EigerDevice(Device):
                 variables.
         """
         current_flux = inputs["flux"]
-        # if current_flux > 0:
-        # TODO: Figure out how to scale the output image
+
         intensity_scale = (current_flux / 100) * 100
         LOGGER.debug(f"Relative beam intensity: {intensity_scale}")
 
