@@ -131,7 +131,9 @@ class EigerSettings:
         self.__dict__[key] = value
 
         if key == "element":
-            self["photon_energy"] = getattr(KA_Energy, value).value
+            self.photon_energy = getattr(KA_Energy, value).value
+            self.wavelength = 1240 / self.photon_energy
+            self._calc_threshold_energy()
 
         elif key == "photon_energy":
             self.element = ""
