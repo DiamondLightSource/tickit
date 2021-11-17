@@ -77,7 +77,7 @@ class EigerSettings:
     detector_number: str = field(default="EIGERSIM001", metadata=ro_str())
     detector_readout_time: float = field(default=0.01, metadata=rw_float())
     element: str = field(
-        default="Co", metadata=rw_str(allowed_values=[e.name for e in KA_Energy])
+        default="Co", metadata=rw_str(allowed_values={"", *(e.name for e in KA_Energy)})
     )
     flatfield: List[List[float]] = field(
         default_factory=lambda: [[]],
@@ -133,3 +133,6 @@ class EigerSettings:
         if key == "element":
             self.photon_energy = getattr(KA_Energy, value).value
             self.threshold_energy = 0.5 * self.photon_energy
+
+        if key == "photon_energy":
+            self.element = ""
