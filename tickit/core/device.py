@@ -24,7 +24,7 @@ class DeviceUpdate(Generic[OutMap]):
 
 
 @as_tagged_union
-class Device:
+class Device(Generic[InMap, OutMap]):
     """An interface for types which implement simulated devices."""
 
     def update(self, time: SimTime, inputs: InMap) -> DeviceUpdate[OutMap]:

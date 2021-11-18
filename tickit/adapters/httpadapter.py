@@ -1,4 +1,5 @@
 import asyncio
+import logging
 from dataclasses import dataclass
 from inspect import getmembers
 from typing import Iterable
@@ -9,6 +10,8 @@ from aiohttp.web_routedef import RouteDef
 from tickit.adapters.interpreters.endpoints.http_endpoint import HTTPEndpoint
 from tickit.core.adapter import Adapter, RaiseInterrupt
 from tickit.core.device import Device
+
+LOGGER = logging.getLogger(__name__)
 
 
 @dataclass
@@ -27,6 +30,7 @@ class HTTPAdapter(Adapter):
     ) -> None:
         """Runs the server continously."""
         await super().run_forever(device, raise_interrupt)
+        LOGGER.debug(f"Starting HTTP server... {self}")
         app = web.Application()
         app.add_routes(list(self.endpoints()))
         runner = web.AppRunner(app)

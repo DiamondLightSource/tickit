@@ -1,0 +1,14 @@
+- tickit.devices.source.Source:
+    name: source
+    inputs: {}
+    value: 42.0
+- examples.devices.shutter.Shutter:
+    name: shutter
+    inputs:
+      flux: source:value
+    default_position: 0.2
+    initial_position: 0.24
+- tickit.devices.eiger.Eiger:
+    inputs: 
+      flux: shutter:flux
+    name: eiger
