@@ -1,3 +1,4 @@
+import logging
 from dataclasses import dataclass, field, fields
 from enum import Enum
 from typing import Any, List
@@ -12,6 +13,9 @@ from .eiger_schema import (
     rw_int,
     rw_str,
 )
+
+LOGGER = logging.getLogger(__name__)
+
 
 FRAME_WIDTH: int = 4148
 FRAME_HEIGHT: int = 4362
@@ -157,3 +161,5 @@ class EigerSettings:
     def _calc_threshold_energy(self):
 
         self.threshold_energy = 0.5 * self.photon_energy
+
+        LOGGER.warning("Flatfield not recalculated.")
