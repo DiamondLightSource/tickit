@@ -21,6 +21,7 @@ Added:
   - Femto Device & Adapter
   - Pneumatic Device & Adapter
   - Command Line Interface (CLI)
+- Dockerfile specifying a multi-stage build process for a tickit container.
 
 Changed:
 
