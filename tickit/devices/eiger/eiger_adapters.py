@@ -160,7 +160,7 @@ class EigerRESTAdapter(
 
         return web.json_response(data)
 
-    @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/initialize")
+    @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/initialize", interrupt=True)
     async def initialize_eiger(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for the 'initialize' command of the Eiger.
 
@@ -176,7 +176,7 @@ class EigerRESTAdapter(
         LOGGER.debug("Initializing Eiger...")
         return web.json_response(serialize(SequenceComplete(1)))
 
-    @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/arm")
+    @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/arm", interrupt=True)
     async def arm_eiger(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for the 'arm' command of the Eiger.
 
@@ -192,7 +192,7 @@ class EigerRESTAdapter(
         LOGGER.debug("Arming Eiger...")
         return web.json_response(serialize(SequenceComplete(2)))
 
-    @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/disarm")
+    @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/disarm", interrupt=True)
     async def disarm_eiger(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for the 'disarm' command of the Eiger.
 
@@ -220,12 +220,11 @@ class EigerRESTAdapter(
                 request.
         """
         trigger_message = await self.device.trigger()
-        self.device._set_state(State.IDLE)
 
         LOGGER.debug(trigger_message)
         return web.json_response(serialize(SequenceComplete(4)))
 
-    @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/cancel")
+    @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/cancel", interrupt=True)
     async def cancel_eiger(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for the 'cancel' command of the Eiger.
 
@@ -241,7 +240,7 @@ class EigerRESTAdapter(
         LOGGER.debug("Cancelling Eiger...")
         return web.json_response(serialize(SequenceComplete(5)))
 
-    @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/abort")
+    @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/abort", interrupt=True)
     async def abort_eiger(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for the 'abort' command of the Eiger.
 

@@ -2,7 +2,7 @@ import asyncio
 import logging
 from dataclasses import dataclass
 from inspect import getmembers
-from typing import Iterable
+from typing import Callable, Iterable
 
 from aiohttp import web
 from aiohttp.web_routedef import RouteDef
@@ -61,11 +61,14 @@ class HTTPAdapter(Adapter):
         for _, func in getmembers(self):
             endpoint: HTTPEndpoint = getattr(func, "__endpoint__", None)
             if endpoint is not None:
-                if endpoint.interrupt:
-                    old_func = func
+                yield self._make_route_def(func, endpoint)
 
-                    async def func(*args, **kwargs):
-                        await old_func(*args, **kwargs)
-                        await self.raise_interrupt()
+    def _make_route_def(self, func: Callable, endpoint: HTTPEndpoint) -> RouteDef:
+        # Create a wrapper around the endpoint function that calls interrupt where necessary
+        async def wrapped_func(*args, **kwargs):
+            reply = await func(*args, **kwargs)
+            if endpoint.interrupt:
+                await self.raise_interrupt()
+            return reply
 
-                yield endpoint.define(func)
+        return endpoint.define(wrapped_func)
