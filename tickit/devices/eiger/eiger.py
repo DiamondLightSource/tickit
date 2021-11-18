@@ -28,6 +28,8 @@ class EigerDevice(Device):
     settings: EigerSettings
     status: EigerStatus
 
+    _num_frames_left: int
+
     #: An empty typed mapping of input values
     Inputs: TypedDict = TypedDict("Inputs", {"flux": float})
     #: A typed mapping containing the 'value' output value
@@ -55,6 +57,8 @@ class EigerDevice(Device):
         self.monitor_status: MonitorStatus = MonitorStatus()
         self.monitor_config: MonitorConfig = MonitorConfig()
         self.monitor_callback_period = SimTime(int(1e9))
+
+        self._num_frames_left = 0
 
     async def initialize(self) -> None:
         """Function to initialise the Eiger."""
@@ -100,8 +104,7 @@ class EigerDevice(Device):
 
         if state == State.READY and trigger_mode == "ints":
             self._set_state(State.ACQUIRE)
-
-            self.frames_left = self.settings.nimages
+            self._num_frames_left = self.settings.nimages
 
             return "Aquiring Data from Eiger..."
         else:
@@ -143,12 +146,10 @@ class EigerDevice(Device):
                 variables.
         """
 
-        idx = self.frames_left
-
         if self.status.state == State.ACQUIRE:
-            if self.frames_left > 0:
+            if self._num_frames_left > 0:
 
-                aquired = Image.create_dummy_image(idx)
+                aquired = Image.create_dummy_image(self._num_frames_left)
 
                 now = datetime.now(timezone.utc).timestamp()
 
@@ -178,8 +179,9 @@ class EigerDevice(Device):
                 LOGGER.debug(json2)
                 LOGGER.debug(json3)
 
-                self.frames_left -= 1
+                self._num_frames_left -= 1
 
+                # Call update() again when time to take the next frame
                 return DeviceUpdate(self.Outputs(), self.settings.frame_time)
 
             else:
