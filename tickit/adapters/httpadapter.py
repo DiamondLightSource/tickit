@@ -61,4 +61,11 @@ class HTTPAdapter(Adapter):
         for _, func in getmembers(self):
             endpoint: HTTPEndpoint = getattr(func, "__endpoint__", None)
             if endpoint is not None:
+                if endpoint.interrupt:
+                    old_func = func
+
+                    async def func(*args, **kwargs):
+                        await old_func(*args, **kwargs)
+                        await self.raise_interrupt()
+
                 yield endpoint.define(func)

@@ -208,7 +208,7 @@ class EigerRESTAdapter(
         LOGGER.debug("Disarming Eiger...")
         return web.json_response(serialize(SequenceComplete(3)))
 
-    @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/trigger")
+    @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/trigger", interrupt=True)
     async def trigger_eiger(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for the 'trigger' command of the Eiger.
 
@@ -262,3 +262,9 @@ class EigerZMQAdapter(ZeroMQAdapter):
     """An Eiger adapter which parses the data to send along a ZeroMQStream."""
 
     device: EigerDevice
+
+    def after_update(self) -> None:
+        """Updates IOC values immediately following a device update."""
+        string_to_send = {"test": "test"}
+        LOGGER.debug(f"JSON string to send: {string_to_send}")
+        self.send_message(string_to_send)

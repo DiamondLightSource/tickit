@@ -101,37 +101,7 @@ class EigerDevice(Device):
         if state == State.READY and trigger_mode == "ints":
             self._set_state(State.ACQUIRE)
 
-            for idx in range(0, self.settings.nimages):
-
-                aquired = Image.create_dummy_image(idx)
-
-                now = datetime.now(timezone.utc).timestamp()
-
-                header_json = {
-                    "htype": "dimage-1.0",
-                    "series": "<series id>",
-                    "frame": aquired.index,
-                    "hash": aquired.hash,
-                }
-
-                json2 = {
-                    "htype": "dimage_d-1.0",
-                    "shape": "[x,y,(z)]",
-                    "type": aquired.dtype,
-                    "encoding": aquired.encoding,
-                    "size": len(aquired.data),
-                }
-
-                json3 = {
-                    "htype": "dconfig-1.0",
-                    "start_time": now,
-                    "stop_time": now + self.settings.frame_time,
-                    "real_time": now,
-                }
-
-                LOGGER.debug(header_json)
-                LOGGER.debug(json2)
-                LOGGER.debug(json3)
+            self.frames_left = self.settings.nimages
 
             return "Aquiring Data from Eiger..."
         else:
@@ -172,10 +142,48 @@ class EigerDevice(Device):
                 The produced update event which contains the value of the device
                 variables.
         """
-        current_flux = inputs["flux"]
 
-        intensity_scale = (current_flux / 100) * 100
-        LOGGER.debug(f"Relative beam intensity: {intensity_scale}")
+        idx = self.frames_left
+
+        if self.status.state == State.ACQUIRE:
+            if self.frames_left > 0:
+
+                aquired = Image.create_dummy_image(idx)
+
+                now = datetime.now(timezone.utc).timestamp()
+
+                header_json = {
+                    "htype": "dimage-1.0",
+                    "series": "<series id>",
+                    "frame": aquired.index,
+                    "hash": aquired.hash,
+                }
+
+                json2 = {
+                    "htype": "dimage_d-1.0",
+                    "shape": "[x,y,(z)]",
+                    "type": aquired.dtype,
+                    "encoding": aquired.encoding,
+                    "size": len(aquired.data),
+                }
+
+                json3 = {
+                    "htype": "dconfig-1.0",
+                    "start_time": now,
+                    "stop_time": now + self.settings.frame_time,
+                    "real_time": now,
+                }
+
+                LOGGER.debug(header_json)
+                LOGGER.debug(json2)
+                LOGGER.debug(json3)
+
+                self.frames_left -= 1
+
+                return DeviceUpdate(self.Outputs(), self.settings.frame_time)
+
+            else:
+                self._set_state(State.IDLE)
 
         return DeviceUpdate(self.Outputs(), None)
 
