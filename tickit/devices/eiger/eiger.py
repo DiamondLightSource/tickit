@@ -1,5 +1,6 @@
 import logging
 from dataclasses import fields
+from datetime import datetime, timezone
 
 from apischema import serialize
 from typing_extensions import TypedDict
@@ -104,6 +105,8 @@ class EigerDevice(Device):
 
                 aquired = Image.create_dummy_image(idx)
 
+                now = datetime.now(timezone.utc).timestamp()
+
                 header_json = {
                     "htype": "dimage-1.0",
                     "series": "<series id>",
@@ -121,9 +124,9 @@ class EigerDevice(Device):
 
                 json3 = {
                     "htype": "dconfig-1.0",
-                    "start_time": "<start_time>",
-                    "stop_time": "<stop_time>",
-                    "real_time": "<real_time>",
+                    "start_time": now,
+                    "stop_time": now + self.settings.frame_time,
+                    "real_time": now,
                 }
 
                 LOGGER.debug(header_json)
