@@ -2,7 +2,7 @@
     name: source
     inputs: {}
     value: 42.0
-- examples.devices.shutter.Shutter:
+- tickit.devices.examples.shutter.Shutter:
     name: shutter
     inputs:
       flux: source:value

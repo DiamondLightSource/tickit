@@ -1,4 +1,4 @@
-- examples.devices.remote_controlled.RemoteControlled:
+- tickit.devices.examples.remote_controlled.RemoteControlled:
     name: tcp_contr
     inputs: {}
     format: "%b\r\n"

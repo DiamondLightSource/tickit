@@ -1,4 +1,4 @@
-- examples.devices.trampoline.RandomTrampoline:
+- tickit.devices.examples.trampoline.RandomTrampoline:
     name: rand_tramp
     inputs: {}
     callback_period: 1000000000

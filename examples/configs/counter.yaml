@@ -1,4 +1,4 @@
-- examples.devices.counter.Counter:
+- tickit.devices.examples.counter.Counter:
     name: counter  
     inputs: {}
 - tickit.devices.sink.Sink:
