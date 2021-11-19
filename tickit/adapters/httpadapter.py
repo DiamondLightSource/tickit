@@ -35,8 +35,6 @@ class HTTPAdapter(Adapter):
 
         try:
             await asyncio.Event().wait()
-        except KeyboardInterrupt:
-            pass
         finally:
             # TODO: This doesn't work yet due to asyncio's own exception handler
             await self.app.shutdown()
