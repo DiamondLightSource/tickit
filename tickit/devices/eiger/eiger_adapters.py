@@ -45,11 +45,7 @@ class EigerRESTAdapter(
                 Value(
                     attr["value"],
                     attr["metadata"]["value_type"].value,
-                    access_mode=(
-                        attr["metadata"]["access_mode"].value
-                        if hasattr(attr["metadata"], "access_mode")
-                        else AccessMode.READ_ONLY.value
-                    ),
+                    access_mode=attr["metadata"]["access_mode"].value,
                 )
             )
         else:
