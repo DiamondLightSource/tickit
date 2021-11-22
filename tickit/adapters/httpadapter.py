@@ -30,21 +30,24 @@ class HTTPAdapter(Adapter):
     ) -> None:
         """Runs the server continously."""
         await super().run_forever(device, raise_interrupt)
+
+        await self._start_server()
+
+        try:
+            await asyncio.Event().wait()
+        finally:
+            # TODO: This doesn't work yet due to asyncio's own exception handler
+            await self.app.shutdown()
+            await self.app.cleanup()
+
+    async def _start_server(self):
         LOGGER.debug(f"Starting HTTP server... {self}")
-        app = web.Application()
-        app.add_routes(list(self.endpoints()))
-        runner = web.AppRunner(app)
+        self.app = web.Application()
+        self.app.add_routes(list(self.endpoints()))
+        runner = web.AppRunner(self.app)
         await runner.setup()
         site = web.TCPSite(runner, host=self.host, port=self.port)
         await site.start()
-        try:
-            await asyncio.Event().wait()
-        except KeyboardInterrupt:
-            pass
-        finally:
-            # TODO: This doesn't work yet due to asyncio's own exception handler
-            await app.shutdown()
-            await app.cleanup()
 
     def endpoints(self) -> Iterable[RouteDef]:
         """Returns list of endpoints.
