@@ -68,13 +68,17 @@ class EigerDevice(Device):
         """Function to arm the Eiger."""
         self._set_state(State.READY)
 
+        jsons = []
+
         header_detail = self.stream_config["header_detail"]["value"]
 
-        json = {
+        header_json = {
             "htype": "dheader-1.0",
             "series": "<id>",
             "header_detail": header_detail,
         }
+        jsons.append(header_json)
+
         if header_detail != "none":
             config_json = {}
             disallowed_configs = ["flatfield", "pixelmask" "countrate_correction_table"]
@@ -82,8 +86,38 @@ class EigerDevice(Device):
                 if field_.name not in disallowed_configs:
                     config_json[field_.name] = vars(self.settings)[field_.name]
 
-        LOGGER.debug(json)
-        LOGGER.debug(config_json)
+            jsons.append(config_json)
+
+            if header_detail == "all":
+                flatfield_header = {
+                    "htype": "flatfield-1.0",
+                    "shape": "[x,y]",
+                    "type": "float32",
+                }
+                jsons.append(flatfield_header)
+                flatfield_data_blob = {"blob": "blob"}
+                jsons.append(flatfield_data_blob)
+
+                pixel_mask_header = {
+                    "htype": "dpixelmask-1.0",
+                    "shape": "[x,y]",
+                    "type": "uint32",
+                }
+                jsons.append(pixel_mask_header)
+                pixel_mask_data_blob = {"blob": "blob"}
+                jsons.append(pixel_mask_data_blob)
+
+                countrate_table_header = {
+                    "htype": "dcountrate_table-1.0",
+                    "shape": "[x,y]",
+                    "type": "float32",
+                }
+                jsons.append(countrate_table_header)
+                countrate_table_data_blob = {"blob": "blob"}
+                jsons.append(countrate_table_data_blob)
+
+        for json_ in jsons:
+            LOGGER.debug(json_)
 
     async def disarm(self) -> None:
         """Function to disarm the Eiger."""
@@ -134,18 +168,17 @@ class EigerDevice(Device):
         LOGGER.debug(header_json)
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
-        """Generic update function to update the values of the ExampleHTTPDevice.
+        """Update function to update the Eiger.
 
         Args:
             time (SimTime): The simulation time in nanoseconds.
-            inputs (Inputs): A TypedDict of the inputs to the ExampleHTTPDevice.
+            inputs (Inputs): A TypedDict of the inputs to the Eiger device.
 
         Returns:
             DeviceUpdate[Outputs]:
                 The produced update event which contains the value of the device
                 variables.
         """
-
         if self.status.state == State.ACQUIRE:
             if self._num_frames_left > 0:
 
