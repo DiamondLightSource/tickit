@@ -4,14 +4,14 @@ from enum import Enum
 from typing import Any, List
 
 from .eiger_schema import (
-    AccessMode,
-    field_config,
     ro_float,
     ro_str,
     rw_bool,
     rw_float,
+    rw_float_grid,
     rw_int,
     rw_str,
+    rw_uint_grid,
 )
 
 LOGGER = logging.getLogger(__name__)
@@ -84,8 +84,7 @@ class EigerSettings:
         default="Co", metadata=rw_str(allowed_values={"", *(e.name for e in KA_Energy)})
     )
     flatfield: List[List[float]] = field(
-        default_factory=lambda: [[]],
-        metadata=field_config(value_type=AccessMode.FLOAT_GRID),
+        default_factory=lambda: [[]], metadata=rw_float_grid()
     )
     flatfield_correction_applied: bool = field(default=True, metadata=rw_bool())
     frame_time: float = field(default=0.12, metadata=rw_float())
@@ -100,8 +99,7 @@ class EigerSettings:
     phi_start: float = field(default=0.0, metadata=rw_float())
     photon_energy: float = field(default=6930.32, metadata=rw_float())
     pixel_mask: List[List[int]] = field(
-        default_factory=lambda: [[]],
-        metadata=field_config(value_type=AccessMode.UINT_GRID),
+        default_factory=lambda: [[]], metadata=rw_uint_grid()
     )
     pixel_mask_applied: bool = field(default=False, metadata=rw_bool())
     roi_mode: str = field(
