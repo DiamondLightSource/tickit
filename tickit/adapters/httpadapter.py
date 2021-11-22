@@ -67,7 +67,7 @@ class HTTPAdapter(Adapter):
                 yield self._make_route_def(func, endpoint)
 
     def _make_route_def(self, func: Callable, endpoint: HTTPEndpoint) -> RouteDef:
-        # Create a wrapper around the endpoint function that calls interrupt where necessary
+        # Create wrapper around endpoint function that calls interrupt where necessary
         async def wrapped_func(*args, **kwargs):
             reply = await func(*args, **kwargs)
             if endpoint.interrupt:
