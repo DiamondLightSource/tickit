@@ -105,32 +105,3 @@ class EigerMonitorAdapter:
         )
 
         return web.json_response(data)
-
-    @HTTPEndpoint.put(f"/{MONITOR_API}" + "/status/{param}", include_json=True)
-    async def put_monitor_status(self, request: web.Request) -> web.Response:
-        """A HTTP Endpoint for setting status values for the Monitor.
-
-        Args:
-            request (web.Request): The request object that takes the given parameter
-            and value.
-
-        Returns:
-            web.Response: The response object returned given the result of the HTTP
-                request.
-        """
-        param = request.match_info["param"]
-
-        response = await request.json()
-
-        if hasattr(self.device.monitor_status, param):
-            attr = response["value"]
-
-            LOGGER.debug(f"Changing to {attr} for {param}")
-
-            self.device.monitor_status[param] = attr
-
-            LOGGER.debug("Set " + str(param) + " to " + str(attr))
-            return web.json_response(serialize(SequenceComplete(16)))
-        else:
-            LOGGER.debug("Eiger has no status variable: " + str(param))
-            return web.json_response(serialize(SequenceComplete(17)))

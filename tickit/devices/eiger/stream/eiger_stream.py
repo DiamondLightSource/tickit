@@ -59,35 +59,6 @@ class EigerStreamAdapter:
 
         return web.json_response(data)
 
-    @HTTPEndpoint.put(f"/{STREAM_API}" + "/status/{param}", include_json=True)
-    async def put_stream_status(self, request: web.Request) -> web.Response:
-        """A HTTP Endpoint for setting status values for the Stream.
-
-        Args:
-            request (web.Request): The request object that takes the given parameter
-            and value.
-
-        Returns:
-            web.Response: The response object returned given the result of the HTTP
-                request.
-        """
-        param = request.match_info["param"]
-
-        response = await request.json()
-
-        if hasattr(self.device.stream_status, param):
-            attr = response["value"]
-
-            LOGGER.debug(f"Changing to {attr} for {param}")
-
-            self.device.stream_status[param] = attr
-
-            LOGGER.debug("Set " + str(param) + " to " + str(attr))
-            return web.json_response(serialize(SequenceComplete(10)))
-        else:
-            LOGGER.debug("Eiger has no status variable: " + str(param))
-            return web.json_response(serialize(SequenceComplete(11)))
-
     @HTTPEndpoint.get(f"/{STREAM_API}" + "/config/{param}")
     async def get_stream_config(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for requesting config values from the Stream.

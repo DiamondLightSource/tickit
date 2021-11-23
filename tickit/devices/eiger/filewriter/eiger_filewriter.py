@@ -105,32 +105,3 @@ class EigerFileWriterAdapter:
         )
 
         return web.json_response(data)
-
-    @HTTPEndpoint.put(f"/{FILEWRITER_API}" + "/status/{param}", include_json=True)
-    async def put_filewriter_status(self, request: web.Request) -> web.Response:
-        """A HTTP Endpoint for setting status values for the Filewriter.
-
-        Args:
-            request (web.Request): The request object that takes the given parameter
-            and value.
-
-        Returns:
-            web.Response: The response object returned given the result of the HTTP
-                request.
-        """
-        param = request.match_info["param"]
-
-        response = await request.json()
-
-        if hasattr(self.device.filewriter_status, param):
-            attr = response["value"]
-
-            LOGGER.debug(f"Changing to {attr} for {param}")
-
-            self.device.filewriter_status[param] = attr
-
-            LOGGER.debug("Set " + str(param) + " to " + str(attr))
-            return web.json_response(serialize(SequenceComplete(20)))
-        else:
-            LOGGER.debug("Eiger has no status variable: " + str(param))
-            return web.json_response(serialize(SequenceComplete(21)))
