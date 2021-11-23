@@ -6,7 +6,7 @@ from typing_extensions import TypedDict
 
 from tickit.adapters.interpreters.endpoints.http_endpoint import HTTPEndpoint
 from tickit.core.typedefs import SimTime
-from tickit.devices.eiger.eiger_schema import SequenceComplete, Value
+from tickit.devices.eiger.eiger_schema import Value
 from tickit.devices.eiger.monitor.monitor_config import MonitorConfig
 from tickit.devices.eiger.monitor.monitor_status import MonitorStatus
 
@@ -80,10 +80,10 @@ class EigerMonitorAdapter:
             self.device.monitor_config[param] = attr
 
             LOGGER.debug("Set " + str(param) + " to " + str(attr))
-            return web.json_response(serialize(SequenceComplete(14)))
+            return web.json_response(serialize([param]))
         else:
             LOGGER.debug("Eiger has no config variable: " + str(param))
-            return web.json_response(serialize(SequenceComplete(15)))
+            return web.json_response(serialize([]))
 
     @HTTPEndpoint.get(f"/{MONITOR_API}" + "/status/{param}")
     async def get_monitor_status(self, request: web.Request) -> web.Response:

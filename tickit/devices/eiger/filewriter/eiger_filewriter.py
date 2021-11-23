@@ -6,7 +6,7 @@ from typing_extensions import TypedDict
 
 from tickit.adapters.interpreters.endpoints.http_endpoint import HTTPEndpoint
 from tickit.core.typedefs import SimTime
-from tickit.devices.eiger.eiger_schema import SequenceComplete, Value
+from tickit.devices.eiger.eiger_schema import Value
 from tickit.devices.eiger.filewriter.filewriter_config import FileWriterConfig
 from tickit.devices.eiger.filewriter.filewriter_status import FileWriterStatus
 
@@ -80,10 +80,10 @@ class EigerFileWriterAdapter:
             self.device.filewriter_config[param] = attr
 
             LOGGER.debug("Set " + str(param) + " to " + str(attr))
-            return web.json_response(serialize(SequenceComplete(18)))
+            return web.json_response(serialize([param]))
         else:
             LOGGER.debug("Eiger has no config variable: " + str(param))
-            return web.json_response(serialize(SequenceComplete(19)))
+            return web.json_response(serialize([]))
 
     @HTTPEndpoint.get(f"/{FILEWRITER_API}" + "/status/{param}")
     async def get_filewriter_status(self, request: web.Request) -> web.Response:

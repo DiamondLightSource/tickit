@@ -6,7 +6,7 @@ from typing_extensions import TypedDict
 
 from tickit.adapters.interpreters.endpoints.http_endpoint import HTTPEndpoint
 from tickit.core.typedefs import SimTime
-from tickit.devices.eiger.eiger_schema import SequenceComplete, Value
+from tickit.devices.eiger.eiger_schema import Value
 from tickit.devices.eiger.stream.stream_config import StreamConfig
 from tickit.devices.eiger.stream.stream_status import StreamStatus
 
@@ -104,7 +104,7 @@ class EigerStreamAdapter:
             self.device.stream_config[param] = attr
 
             LOGGER.debug("Set " + str(param) + " to " + str(attr))
-            return web.json_response(serialize(SequenceComplete(12)))
+            return web.json_response(serialize([param]))
         else:
             LOGGER.debug("Eiger has no config variable: " + str(param))
-            return web.json_response(serialize(SequenceComplete(13)))
+            return web.json_response(serialize([]))
