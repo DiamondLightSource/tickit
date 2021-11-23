@@ -7,7 +7,7 @@ from tickit.adapters.httpadapter import HTTPAdapter
 from tickit.adapters.interpreters.endpoints.http_endpoint import HTTPEndpoint
 from tickit.adapters.zmqadapter import ZeroMQAdapter
 from tickit.devices.eiger.eiger import EigerDevice
-from tickit.devices.eiger.eiger_schema import AccessMode, SequenceComplete, Value
+from tickit.devices.eiger.eiger_schema import SequenceComplete, Value
 from tickit.devices.eiger.eiger_status import State
 from tickit.devices.eiger.filewriter.eiger_filewriter import EigerFileWriterAdapter
 from tickit.devices.eiger.monitor.eiger_monitor import EigerMonitorAdapter
@@ -73,22 +73,22 @@ class EigerRESTAdapter(
 
         if self.device.get_state()["value"] != State.IDLE.value:
             LOGGER.warning("Eiger not initialized or is currently running.")
-            return web.json_response(serialize(SequenceComplete(7)))
+            return web.json_response(serialize([]))
         elif (
             hasattr(self.device.settings, param)
             and self.device.get_state()["value"] == State.IDLE.value
         ):
             attr = response["value"]
 
-            LOGGER.debug(f"Changing to {attr} for {param}")
+            LOGGER.debug(f"Changing to {str(attr)} for {str(param)}")
 
             self.device.settings[param] = attr
 
             LOGGER.debug("Set " + str(param) + " to " + str(attr))
-            return web.json_response(serialize(SequenceComplete(8)))
+            return web.json_response(serialize([param]))
         else:
             LOGGER.debug("Eiger has no config variable: " + str(param))
-            return web.json_response(serialize(SequenceComplete(9)))
+            return web.json_response(serialize([]))
 
     @HTTPEndpoint.get(f"/{DETECTOR_API}" + "/status/{status_param}")
     async def get_status(self, request: web.Request) -> web.Response:
