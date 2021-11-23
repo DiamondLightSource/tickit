@@ -90,7 +90,7 @@ async def test_eiger_system(tickit_task):
         async with session.put(
             url + "config/element", headers=headers, data=data
         ) as resp:
-            assert json.loads(str(await resp.text())) == {"sequence_id": 7}
+            assert json.loads(str(await resp.text())) == []
 
         # Test each command
         for key, value in commands.items():
@@ -117,7 +117,7 @@ async def test_eiger_system(tickit_task):
         async with session.put(
             url + "config/doesnt_exist", headers=headers, data=data
         ) as resp:
-            assert json.loads(str(await resp.text())) == {"sequence_id": 9}
+            assert json.loads(str(await resp.text())) == []
 
         async with session.get(url + "config/element") as resp:
             assert json.loads(str(await resp.text()))["value"] == "Co"
@@ -126,7 +126,7 @@ async def test_eiger_system(tickit_task):
         async with session.put(
             url + "config/element", headers=headers, data=data
         ) as resp:
-            assert json.loads(str(await resp.text())) == {"sequence_id": 8}
+            assert json.loads(str(await resp.text())) == ["element"]
 
         async with session.get(url + "config/photon_energy") as resp:
             assert json.loads(str(await resp.text()))["value"] == 54.3
