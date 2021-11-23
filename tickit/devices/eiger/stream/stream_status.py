@@ -25,6 +25,3 @@ class StreamStatus:
                 "metadata": field_.metadata,
             }
         return f[key]
-
-    def __setitem__(self, key: str, value: Any) -> None:  # noqa: D105
-        self.__dict__[key] = value
