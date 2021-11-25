@@ -3,6 +3,8 @@ from enum import Enum
 from functools import partial
 from typing import Any, Generic, List, Mapping, Optional, TypeVar
 
+from apischema.fields import with_fields_set
+
 T = TypeVar("T")
 
 
@@ -81,6 +83,7 @@ ro_date: partial = partial(
 )
 
 
+@with_fields_set
 @dataclass
 class Value(Generic[T]):
     """Schema for a value to be returned by the API. Most fields are optional."""
