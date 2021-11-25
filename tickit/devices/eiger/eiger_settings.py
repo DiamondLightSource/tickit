@@ -132,6 +132,10 @@ class EigerSettings:
     def __setitem__(self, key: str, value: Any) -> None:  # noqa: D105
         self.__dict__[key] = value
 
+        self._check_dependencies(key, value)
+
+    def _check_dependencies(self, key, value):
+
         if key == "element":
             self.photon_energy = getattr(KA_Energy, value).value
             self.wavelength = 1240 / self.photon_energy
