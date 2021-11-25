@@ -129,10 +129,22 @@ async def test_eiger_system(tickit_task):
             assert json.loads(str(await resp.text())) == ["element"]
 
         async with session.get(url + "config/photon_energy") as resp:
-            assert json.loads(str(await resp.text()))["value"] == 54.3
+            assert 54.3 == json.loads(str(await resp.text()))["value"]
 
         async with session.get(filewriter_url + "config/mode") as resp:
             assert "enabled" == json.loads(str(await resp.text()))["value"]
+
+        data = '{"value": "disabled"}'
+        async with session.put(
+            filewriter_url + "config/mode", headers=headers, data=data
+        ) as resp:
+            assert ["mode"] == json.loads(str(await resp.text()))
+
+        data = '{"value": "test"}'
+        async with session.put(
+            filewriter_url + "config/test", headers=headers, data=data
+        ) as resp:
+            assert [] == json.loads(str(await resp.text()))
 
         async with session.get(filewriter_url + "status/state") as resp:
             assert "ready" == json.loads(str(await resp.text()))["value"]
@@ -140,11 +152,35 @@ async def test_eiger_system(tickit_task):
         async with session.get(monitor_url + "config/mode") as resp:
             assert "enabled" == json.loads(str(await resp.text()))["value"]
 
+        data = '{"value": "disabled"}'
+        async with session.put(
+            monitor_url + "config/mode", headers=headers, data=data
+        ) as resp:
+            assert ["mode"] == json.loads(str(await resp.text()))
+
+        data = '{"value": "test"}'
+        async with session.put(
+            monitor_url + "config/test", headers=headers, data=data
+        ) as resp:
+            assert [] == json.loads(str(await resp.text()))
+
         async with session.get(monitor_url + "status/error") as resp:
             assert [] == json.loads(str(await resp.text()))["value"]
 
         async with session.get(stream_url + "config/mode") as resp:
             assert "enabled" == json.loads(str(await resp.text()))["value"]
+
+        data = '{"value": "disabled"}'
+        async with session.put(
+            stream_url + "config/mode", headers=headers, data=data
+        ) as resp:
+            assert ["mode"] == json.loads(str(await resp.text()))
+
+        data = '{"value": "test"}'
+        async with session.put(
+            stream_url + "config/test", headers=headers, data=data
+        ) as resp:
+            assert [] == json.loads(str(await resp.text()))
 
         async with session.get(stream_url + "status/state") as resp:
             assert "ready" == json.loads(str(await resp.text()))["value"]
