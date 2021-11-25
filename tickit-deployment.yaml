@@ -16,4 +16,6 @@ spec:
     spec:
       containers:
       - name: tickit
-        image: ghcr.io/dls-controls/tickit:sha-86fd829
+        image: ghcr.io/dls-controls/tickit:sha-9aeabcf
+        command: ["python3"]
+        args: ["-m", "tickit", "all", "examples/configs/current-monitor.yaml"]
