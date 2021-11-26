@@ -65,10 +65,10 @@ def mock_request():
 async def test_eiger_system(tickit_task):
 
     commands = {
-        "initialize": {"sequence_id": 1},
-        "disarm": {"sequence_id": 3},
-        "cancel": {"sequence_id": 5},
-        "abort": {"sequence_id": 6},
+        "initialize": {"sequence id": 1},
+        "disarm": {"sequence id": 3},
+        "cancel": {"sequence id": 5},
+        "abort": {"sequence id": 6},
     }
 
     url = "http://0.0.0.0:8081/detector/api/1.8.0/"
@@ -186,7 +186,7 @@ async def test_eiger_system(tickit_task):
             assert "ready" == json.loads(str(await resp.text()))["value"]
 
         async with session.put(url + "command/arm") as resp:
-            assert {"sequence_id": 2} == json.loads(str(await resp.text()))
+            assert {"sequence id": 2} == json.loads(str(await resp.text()))
 
         async with session.put(url + "command/trigger") as resp:
-            assert {"sequence_id": 4} == json.loads(str(await resp.text()))
+            assert {"sequence id": 4} == json.loads(str(await resp.text()))

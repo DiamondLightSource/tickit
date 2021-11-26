@@ -107,5 +107,5 @@ class SequenceComplete:
 
     @serialized("sequence id")  # type: ignore
     @property
-    def sequence_id(self) -> int:
+    def sequence_id(self) -> int:  # noqa: D102
         return self._sequence_id
