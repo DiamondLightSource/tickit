@@ -3,7 +3,9 @@ from enum import Enum
 from functools import partial
 from typing import Any, Generic, List, Mapping, Optional, TypeVar
 
+from apischema import serialized
 from apischema.fields import with_fields_set
+from apischema.metadata import skip
 
 T = TypeVar("T")
 
@@ -101,4 +103,9 @@ class Value(Generic[T]):
 class SequenceComplete:
     """Schema for confirmation returned by operations that do not return values."""
 
-    sequence_id: int = field(default=1, metadata=ro_int())
+    _sequence_id: int = field(default=1, metadata=skip, init=True, repr=False)
+
+    @serialized("sequence id")  # type: ignore
+    @property
+    def sequence_id(self) -> int:
+        return self._sequence_id
