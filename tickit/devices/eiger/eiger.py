@@ -2,13 +2,12 @@ import logging
 from dataclasses import fields
 from datetime import datetime, timezone
 
-from apischema import serialize
 from typing_extensions import TypedDict
 
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.devices.eiger.data.dummy_image import Image
-from tickit.devices.eiger.eiger_schema import AccessMode, Value
+from tickit.devices.eiger.eiger_schema import Value, construct_value
 from tickit.devices.eiger.eiger_settings import EigerSettings
 from tickit.devices.eiger.filewriter.filewriter_config import FileWriterConfig
 from tickit.devices.eiger.filewriter.filewriter_status import FileWriterStatus
@@ -59,6 +58,7 @@ class EigerDevice(Device):
         self.monitor_callback_period = SimTime(int(1e9))
 
         self._num_frames_left = 0
+        self._series_id = 0
 
     async def initialize(self) -> None:
         """Function to initialise the Eiger."""
@@ -68,13 +68,15 @@ class EigerDevice(Device):
         """Function to arm the Eiger."""
         self._set_state(State.READY)
 
+        self._series_id += 1
+
         jsons = []
 
         header_detail = self.stream_config["header_detail"]["value"]
 
         header_json = {
             "htype": "dheader-1.0",
-            "series": "<id>",
+            "series": self._series_id,
             "header_detail": header_detail,
         }
         jsons.append(header_json)
@@ -155,7 +157,7 @@ class EigerDevice(Device):
         """
         self._set_state(State.READY)
 
-        header_json = {"htype": "dseries_end-1.0", "series": "<id>"}
+        header_json = {"htype": "dseries_end-1.0", "series": self._series_id}
 
         LOGGER.debug(header_json)
 
@@ -163,7 +165,7 @@ class EigerDevice(Device):
         """Function to abort the current task on the Eiger."""
         self._set_state(State.IDLE)
 
-        header_json = {"htype": "dseries_end-1.0", "series": "<id>"}
+        header_json = {"htype": "dseries_end-1.0", "series": self._series_id}
 
         LOGGER.debug(header_json)
 
@@ -188,7 +190,7 @@ class EigerDevice(Device):
 
                 header_json = {
                     "htype": "dimage-1.0",
-                    "series": "<series id>",
+                    "series": self._series_id,
                     "frame": aquired.index,
                     "hash": aquired.hash,
                 }
@@ -228,16 +230,9 @@ class EigerDevice(Device):
         Returns:
             State: The state of the Eiger.
         """
-        val = self.status.state
-        allowed = [s.value for s in State]
-        return serialize(
-            Value(
-                val,
-                AccessMode.STRING,
-                access_mode=AccessMode.READ_ONLY,
-                allowed_values=allowed,
-            )
-        )
+        state = construct_value(self.status, "state")
+
+        return state
 
     def _set_state(self, state: State):
         self.status.state = state

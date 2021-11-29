@@ -7,7 +7,7 @@ from tickit.adapters.httpadapter import HTTPAdapter
 from tickit.adapters.interpreters.endpoints.http_endpoint import HTTPEndpoint
 from tickit.adapters.zmqadapter import ZeroMQAdapter
 from tickit.devices.eiger.eiger import EigerDevice
-from tickit.devices.eiger.eiger_schema import SequenceComplete, Value
+from tickit.devices.eiger.eiger_schema import SequenceComplete, Value, construct_value
 from tickit.devices.eiger.eiger_status import State
 from tickit.devices.eiger.filewriter.eiger_filewriter import EigerFileWriterAdapter
 from tickit.devices.eiger.monitor.eiger_monitor import EigerMonitorAdapter
@@ -39,15 +39,9 @@ class EigerRESTAdapter(
         param = request.match_info["parameter_name"]
 
         if hasattr(self.device.settings, param):
-            attr = self.device.settings[param]
 
-            data = serialize(
-                Value(
-                    attr["value"],
-                    attr["metadata"]["value_type"].value,
-                    access_mode=attr["metadata"]["access_mode"].value,
-                )
-            )
+            data = construct_value(self.device.settings, param)
+
         else:
             data = serialize(Value("None", "string", access_mode="None"))
 
@@ -104,11 +98,11 @@ class EigerRESTAdapter(
         param = request.match_info["status_param"]
 
         if hasattr(self.device.status, param):
-            attr = self.device.status[param]
-        else:
-            attr = "None"
 
-        data = serialize({"value": attr})
+            data = construct_value(self.device.status, param)
+
+        else:
+            data = serialize(Value("None", "string", access_mode="None"))
 
         return web.json_response(data)
 
@@ -123,16 +117,7 @@ class EigerRESTAdapter(
             web.Response: The response object returned given the result of the HTTP
                 request.
         """
-        param = request.match_info["status_param"]
-
-        if hasattr(self.device.status, param):
-            attr = self.device.status[param]
-        else:
-            attr = "None"
-
-        data = serialize({"value": attr})
-
-        return web.json_response(data)
+        return await self.get_status(request)
 
     @HTTPEndpoint.get(f"/{DETECTOR_API}" + "/status/builder/{status_param}")
     async def get_builder_status(self, request: web.Request) -> web.Response:
@@ -145,16 +130,7 @@ class EigerRESTAdapter(
             web.Response: The response object returned given the result of the HTTP
                 request.
         """
-        param = request.match_info["status_param"]
-
-        if hasattr(self.device.status, param):
-            attr = self.device.status[param]
-        else:
-            attr = "None"
-
-        data = serialize({"value": attr})
-
-        return web.json_response(data)
+        return await self.get_status(request)
 
     @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/initialize", interrupt=True)
     async def initialize_eiger(self, request: web.Request) -> web.Response:

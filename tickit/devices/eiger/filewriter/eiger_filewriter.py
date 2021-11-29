@@ -6,7 +6,7 @@ from typing_extensions import TypedDict
 
 from tickit.adapters.interpreters.endpoints.http_endpoint import HTTPEndpoint
 from tickit.core.typedefs import SimTime
-from tickit.devices.eiger.eiger_schema import Value
+from tickit.devices.eiger.eiger_schema import construct_value
 from tickit.devices.eiger.filewriter.filewriter_config import FileWriterConfig
 from tickit.devices.eiger.filewriter.filewriter_status import FileWriterStatus
 
@@ -47,12 +47,8 @@ class EigerFileWriterAdapter:
                 request.
         """
         param = request.match_info["param"]
-        val = self.device.filewriter_config[param]["value"]
-        meta = self.device.filewriter_config[param]["metadata"]
 
-        data = serialize(
-            Value(val, meta["value_type"].value, access_mode=meta["access_mode"].value)
-        )
+        data = construct_value(self.device.filewriter_config, param)
 
         return web.json_response(data)
 
@@ -97,11 +93,7 @@ class EigerFileWriterAdapter:
                 request.
         """
         param = request.match_info["param"]
-        val = self.device.filewriter_status[param]["value"]
-        meta = self.device.filewriter_status[param]["metadata"]
 
-        data = serialize(
-            Value(val, meta["value_type"].value, access_mode=meta["access_mode"].value)
-        )
+        data = construct_value(self.device.filewriter_status, param)
 
         return web.json_response(data)

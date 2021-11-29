@@ -6,7 +6,7 @@ from typing_extensions import TypedDict
 
 from tickit.adapters.interpreters.endpoints.http_endpoint import HTTPEndpoint
 from tickit.core.typedefs import SimTime
-from tickit.devices.eiger.eiger_schema import Value
+from tickit.devices.eiger.eiger_schema import construct_value
 from tickit.devices.eiger.monitor.monitor_config import MonitorConfig
 from tickit.devices.eiger.monitor.monitor_status import MonitorStatus
 
@@ -47,12 +47,8 @@ class EigerMonitorAdapter:
                 request.
         """
         param = request.match_info["param"]
-        val = self.device.monitor_config[param]["value"]
-        meta = self.device.monitor_config[param]["metadata"]
 
-        data = serialize(
-            Value(val, meta["value_type"].value, access_mode=meta["access_mode"].value)
-        )
+        data = construct_value(self.device.monitor_config, param)
 
         return web.json_response(data)
 
@@ -97,11 +93,7 @@ class EigerMonitorAdapter:
                 request.
         """
         param = request.match_info["param"]
-        val = self.device.monitor_status[param]["value"]
-        meta = self.device.monitor_status[param]["metadata"]
 
-        data = serialize(
-            Value(val, meta["value_type"].value, access_mode=meta["access_mode"].value)
-        )
+        data = construct_value(self.device.monitor_status, param)
 
         return web.json_response(data)

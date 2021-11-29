@@ -6,7 +6,7 @@ from typing_extensions import TypedDict
 
 from tickit.adapters.interpreters.endpoints.http_endpoint import HTTPEndpoint
 from tickit.core.typedefs import SimTime
-from tickit.devices.eiger.eiger_schema import Value
+from tickit.devices.eiger.eiger_schema import construct_value
 from tickit.devices.eiger.stream.stream_config import StreamConfig
 from tickit.devices.eiger.stream.stream_status import StreamStatus
 
@@ -50,16 +50,8 @@ class EigerStreamAdapter:
                 request.
         """
         param = request.match_info["param"]
-        val = self.device.stream_status[param]["value"]
-        meta = self.device.stream_status[param]["metadata"]
 
-        data = serialize(
-            Value(
-                val,
-                meta["value_type"].value,
-                access_mode=meta["access_mode"].value,
-            )
-        )
+        data = construct_value(self.device.stream_status, param)
 
         return web.json_response(data)
 
@@ -75,19 +67,8 @@ class EigerStreamAdapter:
                 request.
         """
         param = request.match_info["param"]
-        val = self.device.stream_config[param]["value"]
-        meta = self.device.stream_config[param]["metadata"]
 
-        data = serialize(
-            Value(
-                val,
-                meta["value_type"].value,
-                access_mode=meta["access_mode"].value,
-                allowed_values=(
-                    meta["allowed_values"] if "allowed_values" in meta else None
-                ),
-            )
-        )
+        data = construct_value(self.device.stream_config, param)
 
         return web.json_response(data)
 

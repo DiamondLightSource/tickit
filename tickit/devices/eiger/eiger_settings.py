@@ -66,7 +66,7 @@ class EigerSettings:
     chi_increment: float = field(default=0.0, metadata=rw_float())
     chi_start: float = field(default=0.0, metadata=rw_float())
     compression: str = field(
-        default="bslz4", metadata=rw_str(allowed_values={"bslz4", "lz4"})
+        default="bslz4", metadata=rw_str(allowed_values=["bslz4", "lz4"])
     )
     count_time: float = field(default=0.1, metadata=rw_float())
     countrate_correction_applied: bool = field(default=True, metadata=rw_bool())
@@ -81,7 +81,7 @@ class EigerSettings:
     detector_number: str = field(default="EIGERSIM001", metadata=ro_str())
     detector_readout_time: float = field(default=0.01, metadata=rw_float())
     element: str = field(
-        default="Co", metadata=rw_str(allowed_values={"", *(e.name for e in KA_Energy)})
+        default="Co", metadata=rw_str(allowed_values=["", *(e.name for e in KA_Energy)])
     )
     flatfield: List[List[float]] = field(
         default_factory=lambda: [[]], metadata=rw_float_grid()
@@ -103,14 +103,14 @@ class EigerSettings:
     )
     pixel_mask_applied: bool = field(default=False, metadata=rw_bool())
     roi_mode: str = field(
-        default="disabled", metadata=rw_str(allowed_values={"disabled", "4M"})
+        default="disabled", metadata=rw_str(allowed_values=["disabled", "4M"])
     )
     sensor_material: str = field(default="Silicon", metadata=ro_str())
     sensor_thickness: float = field(default=0.01, metadata=ro_float())
     software_version: str = field(default="0.1.0", metadata=ro_str())
     threshold_energy: float = field(default=4020.5, metadata=rw_float())
     trigger_mode: str = field(
-        default="exts", metadata=rw_str(allowed_values={"exts", "ints", "exte", "inte"})
+        default="exts", metadata=rw_str(allowed_values=["exts", "ints", "exte", "inte"])
     )
     two_theta_increment: float = field(default=0.0, metadata=rw_float())
     two_theta_start: float = field(default=0.0, metadata=rw_float())
