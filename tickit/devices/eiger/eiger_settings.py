@@ -114,7 +114,7 @@ class EigerSettings:
     )
     two_theta_increment: float = field(default=0.0, metadata=rw_float())
     two_theta_start: float = field(default=0.0, metadata=rw_float())
-    wavelength: float = field(default=1e-9, metadata=rw_float())
+    wavelength: float = field(default=1.0, metadata=rw_float())
     x_pixel_size: float = field(default=0.01, metadata=ro_float())
     x_pixels_in_detector: int = field(default=FRAME_WIDTH, metadata=rw_int())
     y_pixel_size: float = field(default=0.01, metadata=ro_float())
@@ -138,14 +138,14 @@ class EigerSettings:
 
         if key == "element":
             self.photon_energy = getattr(KA_Energy, value).value
-            self.wavelength = 1240 / self.photon_energy
+            self.wavelength = (1240 / self.photon_energy) / 10  # to convert to Angstrom
             self._calc_threshold_energy()
 
         elif key == "photon_energy":
             self.element = ""
 
             hc = 1240
-            self.wavelength = hc / self.photon_energy
+            self.wavelength = (hc / self.photon_energy) / 10  # to convert to Angstrom
 
             self._calc_threshold_energy()
 
@@ -153,7 +153,7 @@ class EigerSettings:
             self.element = ""
 
             hc = 1240
-            self.photon_energy = hc / self.wavelength
+            self.photon_energy = hc / (self.wavelength * 10)  # to convert from Angstrom
 
             self._calc_threshold_energy()
 
