@@ -9,6 +9,10 @@ Sendable = Union[bytes, Frame, memoryview]
 MultipartMessage = Iterable[Sendable]
 
 
+def fmt_json(j: Json):  # noqa: D103
+    return json.dumps(j).encode("utf_8")
+
+
 @dataclass
 class HeadedBlob:
     """Blob object for frame header."""
@@ -17,7 +21,7 @@ class HeadedBlob:
     blob: bytes
 
     def to_message(self) -> MultipartMessage:  # noqa: D102
-        yield json.dumps(self.header).encode("utf_8")
+        yield fmt_json(self.header)
         yield self.blob
 
 
@@ -29,10 +33,10 @@ class ImageBlob(HeadedBlob):
     times: Json
 
     def to_message(self) -> MultipartMessage:  # noqa: D102
-        yield json.dumps(self.header).encode("utf_8")
-        yield json.dumps(self.dimensions).encode("utf_8")
+        yield fmt_json(self.header)
+        yield fmt_json(self.dimensions)
         yield self.blob
-        yield json.dumps(self.times).encode("utf_8")
+        yield fmt_json(self.times)
 
 
 @dataclass
@@ -47,8 +51,8 @@ class Header:
     countrate: Optional[HeadedBlob] = None
 
     def to_message(self) -> MultipartMessage:  # noqa: D102
-        yield json.dumps(self.global_header).encode("utf_8")
-        yield json.dumps(self.global_header_config).encode("utf_8")
+        yield fmt_json(self.global_header)
+        yield fmt_json(self.global_header_config)
 
         details = [self.flat_field, self.pixel_mask, self.countrate]
         for detail in details:
