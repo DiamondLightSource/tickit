@@ -1,12 +1,15 @@
+import asyncio
 import logging
 from dataclasses import fields
-from datetime import datetime, timezone
+from queue import Queue
+from typing import Any, Iterable, Optional
 
 from typing_extensions import TypedDict
 
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.devices.eiger.data.dummy_image import Image
+from tickit.devices.eiger.data.schema import fmt_json
 from tickit.devices.eiger.eiger_schema import Value, construct_value
 from tickit.devices.eiger.eiger_settings import EigerSettings
 from tickit.devices.eiger.filewriter.filewriter_config import FileWriterConfig
@@ -18,7 +21,7 @@ from tickit.devices.eiger.stream.stream_status import StreamStatus
 
 from .eiger_status import EigerStatus, State
 
-LOGGER = logging.getLogger(__name__)
+LOGGER = logging.getLogger("Eiger")
 
 
 class EigerDevice(Device):
@@ -28,6 +31,7 @@ class EigerDevice(Device):
     status: EigerStatus
 
     _num_frames_left: int
+    _data_queue: Queue
 
     #: An empty typed mapping of input values
     Inputs: TypedDict = TypedDict("Inputs", {"flux": float})
@@ -58,7 +62,19 @@ class EigerDevice(Device):
         self.monitor_callback_period = SimTime(int(1e9))
 
         self._num_frames_left = 0
+        self._total_frames = 0
+        self._data_queue = Queue()
         self._series_id = 0
+
+        self._finished_aquisition: Optional[asyncio.Event] = None
+
+    @property
+    def finished_aquisition(self) -> asyncio.Event:
+
+        if self._finished_aquisition is None:
+            self._finished_aquisition = asyncio.Event()
+
+        return self._finished_aquisition
 
     async def initialize(self) -> None:
         """Function to initialise the Eiger."""
@@ -75,9 +91,9 @@ class EigerDevice(Device):
         header_detail = self.stream_config["header_detail"]["value"]
 
         header_json = {
+            "header_detail": header_detail,
             "htype": "dheader-1.0",
             "series": self._series_id,
-            "header_detail": header_detail,
         }
         jsons.append(header_json)
 
@@ -91,9 +107,13 @@ class EigerDevice(Device):
             jsons.append(config_json)
 
             if header_detail == "all":
+
+                x = self.settings.x_pixels_in_detector
+                y = self.settings.y_pixels_in_detector
+
                 flatfield_header = {
                     "htype": "flatfield-1.0",
-                    "shape": "[x,y]",
+                    "shape": [x, y],
                     "type": "float32",
                 }
                 jsons.append(flatfield_header)
@@ -102,7 +122,7 @@ class EigerDevice(Device):
 
                 pixel_mask_header = {
                     "htype": "dpixelmask-1.0",
-                    "shape": "[x,y]",
+                    "shape": [x, y],
                     "type": "uint32",
                 }
                 jsons.append(pixel_mask_header)
@@ -111,23 +131,23 @@ class EigerDevice(Device):
 
                 countrate_table_header = {
                     "htype": "dcountrate_table-1.0",
-                    "shape": "[x,y]",
+                    "shape": [x, y],
                     "type": "float32",
                 }
                 jsons.append(countrate_table_header)
                 countrate_table_data_blob = {"blob": "blob"}
                 jsons.append(countrate_table_data_blob)
 
-        for json_ in jsons:
-            LOGGER.debug(json_)
+        # for json_ in jsons:
+        self._data_queue.put([fmt_json(json_) for json_ in jsons])
 
     async def disarm(self) -> None:
         """Function to disarm the Eiger."""
         self._set_state(State.IDLE)
 
-        json = {"htype": "dseries_end-1.0", "series": "<id>"}
+        end_json = {"htype": "dseries_end-1.0", "series": self._series_id}
 
-        LOGGER.debug(json)
+        self._data_queue.put([fmt_json(end_json)])
 
     async def trigger(self) -> str:
         """Function to trigger the Eiger.
@@ -139,8 +159,10 @@ class EigerDevice(Device):
         state = self.status.state
 
         if state == State.READY and trigger_mode == "ints":
-            self._set_state(State.ACQUIRE)
             self._num_frames_left = self.settings.nimages
+            self._set_state(State.ACQUIRE)
+
+            self.finished_aquisition.clear()
 
             return "Aquiring Data from Eiger..."
         else:
@@ -157,17 +179,17 @@ class EigerDevice(Device):
         """
         self._set_state(State.READY)
 
-        header_json = {"htype": "dseries_end-1.0", "series": self._series_id}
+        end_json = {"htype": "dseries_end-1.0", "series": self._series_id}
 
-        LOGGER.debug(header_json)
+        self._data_queue.put([fmt_json(end_json)])
 
     async def abort(self) -> None:
         """Function to abort the current task on the Eiger."""
         self._set_state(State.IDLE)
 
-        header_json = {"htype": "dseries_end-1.0", "series": self._series_id}
+        end_json = {"htype": "dseries_end-1.0", "series": self._series_id}
 
-        LOGGER.debug(header_json)
+        self._data_queue.put([fmt_json(end_json)])
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
         """Update function to update the Eiger.
@@ -184,45 +206,65 @@ class EigerDevice(Device):
         if self.status.state == State.ACQUIRE:
             if self._num_frames_left > 0:
 
-                aquired = Image.create_dummy_image(self._num_frames_left)
+                frame_id = self.settings.nimages - self._num_frames_left
+                LOGGER.debug(f"Frame id {frame_id}")
 
-                now = datetime.now(timezone.utc).timestamp()
+                aquired = Image.create_dummy_image(frame_id)
 
-                header_json = {
-                    "htype": "dimage-1.0",
-                    "series": self._series_id,
-                    "frame": aquired.index,
-                    "hash": aquired.hash,
-                }
+                header_json = fmt_json(
+                    {
+                        "frame": aquired.index,
+                        "hash": aquired.hash,
+                        "htype": "dimage-1.0",
+                        "series": self._series_id,
+                    }
+                )
 
-                json2 = {
-                    "htype": "dimage_d-1.0",
-                    "shape": "[x,y,(z)]",
-                    "type": aquired.dtype,
-                    "encoding": aquired.encoding,
-                    "size": len(aquired.data),
-                }
+                x = self.settings.x_pixels_in_detector
+                y = self.settings.y_pixels_in_detector
 
-                json3 = {
-                    "htype": "dconfig-1.0",
-                    "start_time": now,
-                    "stop_time": now + self.settings.frame_time,
-                    "real_time": now,
-                }
+                json2 = fmt_json(
+                    {
+                        "encoding": aquired.encoding,
+                        "htype": "dimage_d-1.0",
+                        "shape": [x, y],
+                        "size": len(aquired.data),
+                        "type": aquired.dtype,
+                    }
+                )
 
-                LOGGER.debug(header_json)
-                LOGGER.debug(json2)
-                LOGGER.debug(json3)
+                json3 = fmt_json(
+                    {
+                        "htype": "dconfig-1.0",
+                        "real_time": 0,
+                        "start_time": 0,
+                        "stop_time": 0,
+                    }
+                )
 
+                self._data_queue.put([header_json, json2, aquired.data, json3])
                 self._num_frames_left -= 1
+                LOGGER.debug(f"Frames left: {self._num_frames_left}")
 
-                # Call update() again when time to take the next frame
-                return DeviceUpdate(self.Outputs(), self.settings.frame_time)
+                return DeviceUpdate(
+                    self.Outputs(), SimTime(time + int(self.settings.frame_time * 1e9))
+                )
 
             else:
+                self.finished_aquisition.set()
+
+                LOGGER.debug("Ending Series...")
+                end_json = {"htype": "dseries_end-1.0", "series": self._series_id}
+                self._data_queue.put([fmt_json(end_json)])
+
                 self._set_state(State.IDLE)
 
         return DeviceUpdate(self.Outputs(), None)
+
+    def consume_data(self) -> Iterable[Any]:
+        """Function to work through the data queue, yielding anything queued."""
+        while not self._data_queue.empty():
+            yield self._data_queue.get()
 
     def get_state(self) -> Value:
         """Returns the current state of the Eiger.
