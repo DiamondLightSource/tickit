@@ -1,8 +1,7 @@
 import asyncio
 import logging
-from collections.abc import Iterable as Iterable_
 from dataclasses import dataclass
-from typing import Iterable, Union
+from typing import Iterable
 
 import aiozmq
 import zmq
@@ -68,11 +67,9 @@ class ZeroMQAdapter(Adapter):
             await self._process_message(message)
             running = self.check_if_running()
 
-    async def _process_message(self, message: Union[bytes, Iterable[bytes]]) -> None:
+    async def _process_message(self, message: Iterable[bytes]) -> None:
         if message is not None:
 
-            if not isinstance(message, Iterable_):
-                message = [message]
             self._socket.write(message)
         else:
             LOGGER.debug("No message")
