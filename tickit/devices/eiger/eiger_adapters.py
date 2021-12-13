@@ -15,7 +15,7 @@ from tickit.devices.eiger.stream.eiger_stream import EigerStreamAdapter
 
 DETECTOR_API = "detector/api/1.8.0"
 
-LOGGER = logging.getLogger(__name__)
+LOGGER = logging.getLogger("EigerAdapter")
 
 
 class EigerRESTAdapter(
@@ -180,7 +180,7 @@ class EigerRESTAdapter(
         LOGGER.debug("Disarming Eiger...")
         return web.json_response(serialize(SequenceComplete(3)))
 
-    @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/trigger", interrupt=True)
+    @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/trigger", interrupt=False)
     async def trigger_eiger(self, request: web.Request) -> web.Response:
         """A HTTP Endpoint for the 'trigger' command of the Eiger.
 
@@ -194,6 +194,10 @@ class EigerRESTAdapter(
         trigger_message = await self.device.trigger()
 
         LOGGER.debug(trigger_message)
+
+        await self.raise_interrupt()
+        await self.device.finished_aquisition.wait()
+
         return web.json_response(serialize(SequenceComplete(4)))
 
     @HTTPEndpoint.put(f"/{DETECTOR_API}" + "/command/cancel", interrupt=True)
@@ -236,6 +240,5 @@ class EigerZMQAdapter(ZeroMQAdapter):
 
     def after_update(self) -> None:
         """Updates IOC values immediately following a device update."""
-        string_to_send = {"test": "test"}
-        LOGGER.debug(f"JSON string to send: {string_to_send}")
-        self.send_message(string_to_send)
+        for message in self.device.consume_data():
+            self.send_message(message)
