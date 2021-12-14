@@ -71,7 +71,6 @@ class EigerDevice(Device):
     @property
     def finished_aquisition(self) -> asyncio.Event:
         """Property to instanciate an asyncio Event if it hasn't aready been."""
-
         if self._finished_aquisition is None:
             self._finished_aquisition = asyncio.Event()
 
