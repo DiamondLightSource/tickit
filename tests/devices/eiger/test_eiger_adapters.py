@@ -134,7 +134,7 @@ async def test_eiger_system(tickit_task):
         async with session.get(filewriter_url + "config/mode") as resp:
             assert "enabled" == json.loads(str(await resp.text()))["value"]
 
-        data = '{"value": "disabled"}'
+        data = '{"value": "enabled"}'
         async with session.put(
             filewriter_url + "config/mode", headers=headers, data=data
         ) as resp:
@@ -152,7 +152,7 @@ async def test_eiger_system(tickit_task):
         async with session.get(monitor_url + "config/mode") as resp:
             assert "enabled" == json.loads(str(await resp.text()))["value"]
 
-        data = '{"value": "disabled"}'
+        data = '{"value": "enabled"}'
         async with session.put(
             monitor_url + "config/mode", headers=headers, data=data
         ) as resp:
@@ -170,7 +170,7 @@ async def test_eiger_system(tickit_task):
         async with session.get(stream_url + "config/mode") as resp:
             assert "enabled" == json.loads(str(await resp.text()))["value"]
 
-        data = '{"value": "disabled"}'
+        data = '{"value": "enabled"}'
         async with session.put(
             stream_url + "config/mode", headers=headers, data=data
         ) as resp:
@@ -182,11 +182,21 @@ async def test_eiger_system(tickit_task):
         ) as resp:
             assert [] == json.loads(str(await resp.text()))
 
+        data = '{"value": "ints"}'
+        async with session.put(
+            url + "config/trigger_mode", headers=headers, data=data
+        ) as resp:
+            assert ["trigger_mode"] == json.loads(str(await resp.text()))
+
         async with session.get(stream_url + "status/state") as resp:
             assert "ready" == json.loads(str(await resp.text()))["value"]
 
+        assert get_status(status="state", expected="idle")
+
         async with session.put(url + "command/arm") as resp:
             assert {"sequence id": 2} == json.loads(str(await resp.text()))
+
+        assert get_status(status="state", expected="ready")
 
         async with session.put(url + "command/trigger") as resp:
             assert {"sequence id": 4} == json.loads(str(await resp.text()))

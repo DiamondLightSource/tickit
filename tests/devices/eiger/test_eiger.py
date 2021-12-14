@@ -1,6 +1,7 @@
 import pytest
 
 from tickit.core.device import DeviceUpdate
+from tickit.core.typedefs import SimTime
 from tickit.devices.eiger.eiger import EigerDevice
 from tickit.devices.eiger.eiger_status import State
 
@@ -119,7 +120,7 @@ def test_eiger_update_aquiring(eiger: EigerDevice):
 
     eiger._num_frames_left = 1
 
-    time = None
+    time = SimTime(int(1e8))
     device_input = {"bleep", "bloop"}
 
     update: DeviceUpdate = eiger.update(time, device_input)
