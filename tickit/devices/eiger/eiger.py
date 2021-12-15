@@ -61,10 +61,10 @@ class EigerDevice(Device):
         self.monitor_config: MonitorConfig = MonitorConfig()
         self.monitor_callback_period = SimTime(int(1e9))
 
-        self._num_frames_left = 0
-        self._total_frames = 0
-        self._data_queue = Queue()
-        self._series_id = 0
+        self._num_frames_left: int = 0
+        self._total_frames: int = 0
+        self._data_queue: Queue = Queue()
+        self._series_id: int = 0
 
         self._finished_aquisition: Optional[asyncio.Event] = None
 
