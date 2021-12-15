@@ -66,6 +66,7 @@ class EigerDevice(Device):
         self._data_queue = Queue()
         self._series_id = 0
 
+        self._triggered: bool = False
         self._finished_aquisition: Optional[asyncio.Event] = None
 
     @property
@@ -141,6 +142,10 @@ class EigerDevice(Device):
         # for json_ in jsons:
         self._data_queue.put([fmt_json(json_) for json_ in jsons])
 
+        self._num_frames_left = self.settings.nimages
+
+        self._set_state(State.ACQUIRE)
+
     async def disarm(self) -> None:
         """Function to disarm the Eiger."""
         self._set_state(State.IDLE)
@@ -158,9 +163,9 @@ class EigerDevice(Device):
         trigger_mode = self.settings.trigger_mode
         state = self.status.state
 
-        if state == State.READY and trigger_mode == "ints":
-            self._num_frames_left = self.settings.nimages
-            self._set_state(State.ACQUIRE)
+        if state == State.ACQUIRE and trigger_mode == "ints":
+
+            self._triggered = True
 
             self.finished_aquisition.clear()
 
@@ -203,54 +208,18 @@ class EigerDevice(Device):
                 The produced update event which contains the value of the device
                 variables.
         """
-        if self.status.state == State.ACQUIRE:
+        if self._triggered:
             if self._num_frames_left > 0:
 
-                frame_id = self.settings.nimages - self._num_frames_left
-                LOGGER.debug(f"Frame id {frame_id}")
-
-                aquired = Image.create_dummy_image(frame_id)
-
-                header_json = fmt_json(
-                    {
-                        "frame": aquired.index,
-                        "hash": aquired.hash,
-                        "htype": "dimage-1.0",
-                        "series": self._series_id,
-                    }
-                )
-
-                x = self.settings.x_pixels_in_detector
-                y = self.settings.y_pixels_in_detector
-
-                json2 = fmt_json(
-                    {
-                        "encoding": aquired.encoding,
-                        "htype": "dimage_d-1.0",
-                        "shape": [x, y],
-                        "size": len(aquired.data),
-                        "type": aquired.dtype,
-                    }
-                )
-
-                json3 = fmt_json(
-                    {
-                        "htype": "dconfig-1.0",
-                        "real_time": 0,
-                        "start_time": 0,
-                        "stop_time": 0,
-                    }
-                )
-
-                self._data_queue.put([header_json, json2, aquired.data, json3])
-                self._num_frames_left -= 1
-                LOGGER.debug(f"Frames left: {self._num_frames_left}")
+                self._acquire_frame()
 
                 return DeviceUpdate(
                     self.Outputs(), SimTime(time + int(self.settings.frame_time * 1e9))
                 )
 
             else:
+                self._triggered = False
+
                 self.finished_aquisition.set()
 
                 LOGGER.debug("Ending Series...")
@@ -260,6 +229,48 @@ class EigerDevice(Device):
                 self._set_state(State.IDLE)
 
         return DeviceUpdate(self.Outputs(), None)
+
+    def _acquire_frame(self) -> None:
+
+        frame_id = self.settings.nimages - self._num_frames_left
+        LOGGER.debug(f"Frame id {frame_id}")
+
+        aquired = Image.create_dummy_image(frame_id)
+
+        header_json = fmt_json(
+            {
+                "frame": aquired.index,
+                "hash": aquired.hash,
+                "htype": "dimage-1.0",
+                "series": self._series_id,
+            }
+        )
+
+        x = self.settings.x_pixels_in_detector
+        y = self.settings.y_pixels_in_detector
+
+        json2 = fmt_json(
+            {
+                "encoding": aquired.encoding,
+                "htype": "dimage_d-1.0",
+                "shape": [x, y],
+                "size": len(aquired.data),
+                "type": aquired.dtype,
+            }
+        )
+
+        json3 = fmt_json(
+            {
+                "htype": "dconfig-1.0",
+                "real_time": 0,
+                "start_time": 0,
+                "stop_time": 0,
+            }
+        )
+
+        self._data_queue.put([header_json, json2, aquired.data, json3])
+        self._num_frames_left -= 1
+        LOGGER.debug(f"Frames left: {self._num_frames_left}")
 
     def consume_data(self) -> Iterable[Any]:
         """Function to work through the data queue, yielding anything queued."""
