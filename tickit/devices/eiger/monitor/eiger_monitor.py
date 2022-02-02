@@ -51,7 +51,7 @@ class EigerMonitorAdapter:
         meta = self.device.monitor_config[param]["metadata"]
 
         data = serialize(
-            Value(val, meta["value_type"].value, access_mode=meta["access_mode"].value)
+            Value(val, meta["value_type"].value, access_mode=meta["access_mode"])
         )
 
         return web.json_response(data)
@@ -72,7 +72,7 @@ class EigerMonitorAdapter:
         meta = self.device.monitor_status[param]["metadata"]
 
         data = serialize(
-            Value(val, meta["value_type"].value, access_mode=meta["access_mode"].value)
+            Value(val, meta["value_type"].value, access_mode=meta["access_mode"])
         )
 
         return web.json_response(data)

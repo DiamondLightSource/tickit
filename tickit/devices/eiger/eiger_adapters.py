@@ -1,3 +1,4 @@
+import json
 import logging
 
 from aiohttp import web
@@ -18,10 +19,12 @@ DETECTOR_API = "detector/api/1.8.0"
 LOGGER = logging.getLogger(__name__)
 
 
-class EigerDeviceAdapter:
+class EigerRESTAdapter(
+    HTTPAdapter, EigerStreamAdapter, EigerMonitorAdapter, EigerFileWriterAdapter
+):
     """An Eiger adapter which parses the commands sent to the HTTP server."""
 
-    device: EigerDevice
+    device: EigerDevice  # type: ignore
 
     @HTTPEndpoint.get(f"/{DETECTOR_API}" + "/config/{parameter_name}")
     async def get_config(self, request: web.Request) -> web.Response:
@@ -46,13 +49,13 @@ class EigerDeviceAdapter:
                     access_mode=(
                         attr["metadata"]["access_mode"].value  # type: ignore
                         if hasattr(attr["metadata"], "access_mode")
-                        else AccessMode.READ_ONLY.value
+                        else AccessMode.READ_ONLY
                     ),
                 )
             )
         else:
             data = serialize(
-                Value("None", "string", access_mode="None")  # type: ignore
+                Value("None", "string", access_mode=AccessMode.NONE)  # type: ignore
             )
 
         return web.json_response(data)
@@ -73,7 +76,7 @@ class EigerDeviceAdapter:
         """
         param = request.match_info["parameter_name"]
 
-        response = await request.json()
+        response = json.loads(await request.json())
 
         if self.device.get_state()["value"] != State.IDLE.value:  # type: ignore
             LOGGER.warning("Eiger not initialized or is currently running.")
@@ -262,15 +265,3 @@ class EigerZMQAdapter(ZeroMQAdapter):
     """An Eiger adapter which parses the data to send along a ZeroMQStream."""
 
     device: EigerDevice
-
-
-class EigerRESTAdapter(  # type: ignore
-    EigerDeviceAdapter,
-    HTTPAdapter,
-    EigerStreamAdapter,
-    EigerMonitorAdapter,
-    EigerFileWriterAdapter,
-):
-    """Adapter for Eiger device."""
-
-    ...

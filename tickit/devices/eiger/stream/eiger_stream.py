@@ -54,7 +54,7 @@ class EigerStreamAdapter:
         meta = self.device.stream_status[param]["metadata"]
 
         data = serialize(
-            Value(val, meta["value_type"].value, access_mode=meta["access_mode"].value)
+            Value(val, meta["value_type"].value, access_mode=meta["access_mode"])
         )
 
         return web.json_response(data)
@@ -75,7 +75,7 @@ class EigerStreamAdapter:
         meta = self.device.stream_config[param]["metadata"]
 
         data = serialize(
-            Value(val, meta["value_type"].value, access_mode=meta["access_mode"].value)
+            Value(val, meta["value_type"].value, access_mode=meta["access_mode"])
         )
 
         return web.json_response(data)
