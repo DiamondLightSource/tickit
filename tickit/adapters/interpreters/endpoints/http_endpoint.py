@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import AnyStr, Awaitable, Callable, Generic, Union
+from typing import AnyStr, Awaitable, Callable, Generic
 
 from aiohttp import web
 from aiohttp.web_response import StreamResponse

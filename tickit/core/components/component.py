@@ -1,7 +1,6 @@
 import logging
 from abc import abstractmethod
 from dataclasses import dataclass
-from re import S
 from typing import Dict, Optional, Type, Union
 
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
@@ -21,6 +20,7 @@ from tickit.utils.topic_naming import input_topic, output_topic
 LOGGER = logging.getLogger(__name__)
 
 
+@dataclass  # type: ignore
 @as_tagged_union
 class Component:
     """An interface for types which implement stand-alone simulation components.
@@ -32,9 +32,6 @@ class Component:
     """
 
     name: ComponentID
-
-    def __init__(self, name: ComponentID) -> None:  # noqa: D107
-        self.name = name
 
     @abstractmethod
     async def run_forever(
@@ -53,6 +50,7 @@ class Component:
         """
 
 
+@dataclass  # type: ignore
 @as_tagged_union
 class ComponentConfig:
     """A data container for component configuration.
@@ -63,12 +61,6 @@ class ComponentConfig:
 
     name: ComponentID
     inputs: Dict[PortID, ComponentPort]
-
-    def __init__(
-        self, name: ComponentID, inputs: Dict[PortID, ComponentPort]
-    ) -> None:  # noqa: D107
-        self.name = name
-        self.inputs = inputs
 
     @abstractmethod
     def __call__(self) -> Component:

@@ -18,9 +18,7 @@ DETECTOR_API = "detector/api/1.8.0"
 LOGGER = logging.getLogger(__name__)
 
 
-class EigerRESTAdapter(
-    HTTPAdapter, EigerStreamAdapter, EigerMonitorAdapter, EigerFileWriterAdapter
-):
+class EigerDeviceAdapter:
     """An Eiger adapter which parses the commands sent to the HTTP server."""
 
     device: EigerDevice
@@ -46,14 +44,16 @@ class EigerRESTAdapter(
                     attr["value"],
                     attr["metadata"]["value_type"].value,
                     access_mode=(
-                        attr["metadata"]["access_mode"].value
+                        attr["metadata"]["access_mode"].value  # type: ignore
                         if hasattr(attr["metadata"], "access_mode")
                         else AccessMode.READ_ONLY.value
                     ),
                 )
             )
         else:
-            data = serialize(Value("None", "string", access_mode="None"))
+            data = serialize(
+                Value("None", "string", access_mode="None")  # type: ignore
+            )
 
         return web.json_response(data)
 
@@ -75,12 +75,12 @@ class EigerRESTAdapter(
 
         response = await request.json()
 
-        if self.device.get_state()["value"] != State.IDLE.value:
+        if self.device.get_state()["value"] != State.IDLE.value:  # type: ignore
             LOGGER.warning("Eiger not initialized or is currently running.")
             return web.json_response(serialize(SequenceComplete(7)))
         elif (
             hasattr(self.device.settings, param)
-            and self.device.get_state()["value"] == State.IDLE.value
+            and self.device.get_state()["value"] == State.IDLE.value  # type: ignore
         ):
             attr = response["value"]
 
@@ -262,3 +262,15 @@ class EigerZMQAdapter(ZeroMQAdapter):
     """An Eiger adapter which parses the data to send along a ZeroMQStream."""
 
     device: EigerDevice
+
+
+class EigerRESTAdapter(  # type: ignore
+    EigerDeviceAdapter,
+    HTTPAdapter,
+    EigerStreamAdapter,
+    EigerMonitorAdapter,
+    EigerFileWriterAdapter,
+):
+    """Adapter for Eiger device."""
+
+    ...

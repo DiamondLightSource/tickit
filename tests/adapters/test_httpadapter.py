@@ -67,6 +67,6 @@ async def test_http_adapter_endpoints():
 
     adapter = MockAdapter()
 
-    resp = await list(adapter.endpoints())[0].handler()
+    resp = await list(adapter.endpoints())[0].handler(None)
 
     assert resp.text == "test"

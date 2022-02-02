@@ -1,4 +1,4 @@
-from typing import Any, Callable, Iterable, Optional, Type
+from typing import Any, Callable, Iterable, Type
 
 import pytest
 from apischema.conversions.conversions import Conversion

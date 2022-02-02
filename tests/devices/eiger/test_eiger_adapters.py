@@ -47,7 +47,7 @@ def raise_interrupt():
 
 @pytest.fixture
 def eiger_adapter(mock_eiger: MagicMock) -> EigerRESTAdapter:
-    return EigerRESTAdapter(mock_eiger, raise_interrupt)
+    return EigerRESTAdapter(mock_eiger, raise_interrupt)  # type: ignore
 
 
 def test_eiger_adapter_contructor():

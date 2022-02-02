@@ -9,7 +9,7 @@ from tickit.core.adapter import Adapter
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import Changes, ComponentID, Output, PortID, SimTime
-from tickit.devices.source import Source, SourceDevice
+from tickit.devices.source import SourceDevice
 
 
 @pytest.fixture

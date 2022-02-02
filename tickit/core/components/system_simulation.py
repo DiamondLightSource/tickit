@@ -1,6 +1,5 @@
 import asyncio
 from dataclasses import dataclass
-from tkinter import N
 from typing import Dict, List, Type
 
 from tickit.core.components.component import BaseComponent, Component, ComponentConfig

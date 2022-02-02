@@ -196,7 +196,9 @@ async def test_end(test_params: Dict[str, Any]):
 
     cryostream_base = CryostreamBase()
     cryostream_base.gas_temp = test_params["initial_gas_temp"]
-    cryostream_base.ramp = Mock(cryostream_base.ramp, side_effect=set_gas_flow)  # type: ignore
+    cryostream_base.ramp = Mock(  # type: ignore
+        cryostream_base.ramp, side_effect=set_gas_flow
+    )
     await cryostream_base.end(ramp_rate=cryostream_base.max_rate)
     assert cryostream_base.phase_id == PhaseIds.END.value
     assert cryostream_base.run_mode == test_params["expected_run_mode"]
