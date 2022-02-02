@@ -2,7 +2,7 @@ import asyncio
 import logging
 import struct
 from dataclasses import dataclass
-from typing import AsyncIterable
+from typing import AsyncIterable, Optional
 
 from tickit.adapters.composed import ComposedAdapter
 from tickit.adapters.interpreters.command import CommandInterpreter, RegexCommand
@@ -61,7 +61,7 @@ class RemoteControlledDevice(Device):
         return DeviceUpdate(self.Outputs(observed=self.observed), None)
 
 
-class RemoteControlledAdapter(ComposedAdapter):
+class RemoteControlledAdapter(ComposedAdapter[bytes]):
     """A trivial composed adapter which gets and sets device properties."""
 
     device: RemoteControlledDevice
@@ -84,7 +84,7 @@ class RemoteControlledAdapter(ComposedAdapter):
             CommandInterpreter(),
         )
 
-    async def on_connect(self) -> AsyncIterable[bytes]:
+    async def on_connect(self) -> AsyncIterable[Optional[bytes]]:
         """An on_connect method which continiously sends the unobserved value to the client.
 
         Returns:

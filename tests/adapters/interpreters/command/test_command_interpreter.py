@@ -88,9 +88,9 @@ async def test_command_interpreter_handle_wraps_non_iterable_reply(
     )
     assert (
         reply
-        == await (await command_interpreter.handle(test_adapter, b"\x01"))[
-            0
-        ].__anext__()
+        == await (await command_interpreter.handle(test_adapter, b"\x01"))[0]
+        .__aiter__()
+        .__anext__()
     )
 
 
@@ -133,7 +133,9 @@ async def test_command_interpreter_handle_skips_unparsed(
             await command_interpreter.handle(
                 test_adapter, "TestCommand".encode("utf-8")
             )
-        )[0].__anext__()
+        )[0]
+        .__aiter__()
+        .__anext__()
     )
 
 
@@ -148,5 +150,7 @@ async def test_command_interpreter_handle_returns_message_for_no_commands(
             await command_interpreter.handle(
                 test_adapter, "TestCommand".encode("utf-8")
             )
-        )[0].__anext__()
+        )[0]
+        .__aiter__()
+        .__anext__()
     )

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import AsyncIterable, Optional, TypeVar
+from typing import AsyncIterable, Generic, Optional, TypeVar
 
 from tickit.core.adapter import Adapter, Interpreter, RaiseInterrupt, Server
 from tickit.core.device import Device
@@ -9,7 +9,7 @@ T = TypeVar("T")
 
 
 @dataclass
-class ComposedAdapter(Adapter):
+class ComposedAdapter(Adapter, Generic[T]):
     """An adapter implementation which delegates to a server and interpreter.
 
     An adapter implementation which delegates the hosting of an external messaging

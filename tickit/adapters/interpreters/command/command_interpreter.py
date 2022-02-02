@@ -2,7 +2,7 @@ from abc import abstractmethod
 from inspect import getmembers
 from typing import AnyStr, AsyncIterable, Optional, Sequence, Tuple, Union
 
-from tickit.core.adapter import Adapter
+from tickit.core.adapter import Adapter, Interpreter
 from tickit.utils.compat.typing_compat import Protocol, runtime_checkable
 
 
@@ -31,7 +31,10 @@ class Command(Protocol):
         pass
 
 
-class CommandInterpreter:
+_StrOrBytes = Union[str, bytes]
+
+
+class CommandInterpreter(Interpreter[_StrOrBytes]):
     """An interpreter which routes to commands registered to adapter methods.
 
     An interpreter which attempts to parse messages according to the parse method of
@@ -53,7 +56,7 @@ class CommandInterpreter:
         yield reply
 
     @staticmethod
-    async def unknown_command() -> AsyncIterable[bytes]:
+    async def unknown_command() -> AsyncIterable[_StrOrBytes]:
         """An asynchronous iterable of containing a single unknown command reply.
 
         Returns:
@@ -64,8 +67,8 @@ class CommandInterpreter:
         yield b"Request does not match any known command"
 
     async def handle(
-        self, adapter: Adapter, message: bytes
-    ) -> Tuple[AsyncIterable[Union[str, bytes]], bool]:
+        self, adapter: Adapter, message: _StrOrBytes
+    ) -> Tuple[AsyncIterable[_StrOrBytes], bool]:
         """Matches the message to an adapter command and calls the corresponding method.
 
         An asynchronous method which handles a message by attempting to match the

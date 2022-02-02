@@ -28,7 +28,7 @@ class MockAdapter(HTTPAdapter):
     device: Device
 
     @HTTPEndpoint.get("/mock_endpoint")
-    async def mock_endpoint(request: web.Request) -> web.Response:
+    async def mock_endpoint(self, request: web.Request) -> web.Response:
         return web.Response(text="test")
 
 

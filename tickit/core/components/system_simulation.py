@@ -1,5 +1,6 @@
 import asyncio
 from dataclasses import dataclass
+from tkinter import N
 from typing import Dict, List, Type
 
 from tickit.core.components.component import BaseComponent, Component, ComponentConfig
@@ -7,7 +8,7 @@ from tickit.core.management.event_router import InverseWiring
 from tickit.core.management.schedulers.slave import SlaveScheduler
 from tickit.core.runner import run_all
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
-from tickit.core.typedefs import Changes, ComponentPort, PortID, SimTime
+from tickit.core.typedefs import Changes, ComponentID, ComponentPort, PortID, SimTime
 
 
 @dataclass
@@ -18,6 +19,8 @@ class SystemSimulationComponent(BaseComponent):
     and a set of internal components, this component delegates core behaviour to the
     components within it, whilst outputting their requests for wakeups and interrupts.
     """
+
+    name: ComponentID
 
     #: A list of immutable component configuration data containers, used to
     #: construct internal components.
@@ -70,6 +73,8 @@ class SystemSimulationComponent(BaseComponent):
 class SystemSimulation(ComponentConfig):
     """Simulation of a nested set of components."""
 
+    name: ComponentID
+    inputs: Dict[PortID, ComponentPort]
     components: List[ComponentConfig]
     expose: Dict[PortID, ComponentPort]
 

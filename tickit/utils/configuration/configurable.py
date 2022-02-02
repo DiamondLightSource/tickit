@@ -1,4 +1,4 @@
-from typing import Any, DefaultDict, Dict, Iterator, TypeVar
+from typing import Any, DefaultDict, Dict, Iterator, Type, TypeVar
 
 from apischema import deserializer
 from apischema.conversions import Conversion
@@ -26,7 +26,7 @@ def rec_subclasses(cls: type) -> Iterator[type]:
 
 
 #: Whether the current class is registered as a tagged union
-is_tagged_union = DefaultDict(lambda: False)
+is_tagged_union: Dict[Type[Any], bool] = DefaultDict(lambda: False)
 
 
 def as_tagged_union(cls: Cls) -> Cls:

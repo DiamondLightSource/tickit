@@ -44,7 +44,7 @@ def fake_endpoint(request: web.Request):
     ],
 )
 def test_http_get_endpoint_define_returns_get_routedef(
-    http_endpoint: HTTPEndpoint.get, expected: web.RouteDef
+    http_endpoint: HTTPEndpoint, expected: web.RouteDef
 ):
     assert expected == http_endpoint.define(fake_endpoint)
 
@@ -62,6 +62,6 @@ def test_http_get_endpoint_define_returns_get_routedef(
     ],
 )
 def test_http_put_endpoint_define_returns_put_routedef(
-    http_endpoint: HTTPEndpoint.put, expected: web.RouteDef
+    http_endpoint: HTTPEndpoint, expected: web.RouteDef
 ):
     assert expected == http_endpoint.define(fake_endpoint)

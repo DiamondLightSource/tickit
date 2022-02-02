@@ -54,7 +54,7 @@ def patch_run_all() -> Iterable[Mock]:
 
 @pytest.fixture
 def device_simulation(
-    source: Source,
+    source: SourceDevice,
     mock_adapter: Adapter,
 ) -> DeviceSimulation:
     return DeviceSimulation(

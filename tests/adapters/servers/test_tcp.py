@@ -1,5 +1,5 @@
 from asyncio import StreamReader, StreamWriter
-from typing import AsyncIterable, Awaitable, Callable
+from typing import AsyncIterable, Awaitable, Callable, Optional
 
 import pytest
 from mock import ANY, MagicMock, Mock, patch
@@ -62,7 +62,7 @@ def mock_stream_writer() -> Mock:
 async def test_TcpServer_run_forever_method(
     tcp_server: TcpServer,
     on_connect: Callable[[], AsyncIterable[bytes]],
-    handler: Callable[[bytes], AsyncIterable[bytes]],
+    handler: Callable[[bytes], Awaitable[AsyncIterable[Optional[bytes]]]],
     patch_start_server: Mock,
 ):
 
@@ -79,7 +79,7 @@ async def test_TcpServer_run_forever_method(
 async def test_TcpServer_generate_handle_function_method(
     tcp_server: TcpServer,
     on_connect: Callable[[], AsyncIterable[bytes]],
-    handler: Callable[[bytes], AsyncIterable[bytes]],
+    handler: Callable[[bytes], Awaitable[AsyncIterable[Optional[bytes]]]],
     mock_stream_reader: Mock,
     mock_stream_writer: Mock,
 ):

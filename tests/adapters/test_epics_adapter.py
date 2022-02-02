@@ -20,7 +20,7 @@ def MockInterpreter() -> Mock:
 
 @pytest.fixture
 def epics_adapter() -> EpicsAdapter:
-    return EpicsAdapter("db_file", "ioc_name")
+    return EpicsAdapter("db_file", "ioc_name")  # type: ignore
 
 
 @pytest.fixture

@@ -187,7 +187,7 @@ class EigerDevice(Device):
         return serialize(
             Value(
                 val,
-                AccessMode.STRING,
+                "str",
                 access_mode=AccessMode.READ_ONLY,
                 allowed_values=allowed,
             )
