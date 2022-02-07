@@ -5,7 +5,7 @@ from typing import AsyncIterable
 from tickit.adapters.composed import ComposedAdapter
 from tickit.adapters.interpreters.command import CommandInterpreter, RegexCommand
 from tickit.adapters.servers.tcp import TcpServer
-from tickit.core.device import DeviceUpdate
+from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.devices.cryostream.base import CryostreamBase
 from tickit.devices.cryostream.states import PhaseIds
@@ -15,7 +15,7 @@ from tickit.utils.compat.typing_compat import TypedDict
 _EXTENDED_STATUS = ">BBHHHBBHHHHHBBBBBBHHBBBBBBBBHH"
 
 
-class CryostreamDevice(CryostreamBase):
+class CryostreamDevice(Device, CryostreamBase):
     """A Cryostream device, used for cooling of samples using cold gas."""
 
     #: An empty typed mapping of device inputs
@@ -53,7 +53,7 @@ class CryostreamDevice(CryostreamBase):
         return DeviceUpdate(self.Outputs(temperature=self.gas_temp), None)
 
 
-class CryostreamAdapter(ComposedAdapter):
+class CryostreamAdapter(ComposedAdapter[bytes]):
     """A Cryostream TCP adapter which sends regular status packets and can set modes."""
 
     device: CryostreamDevice
@@ -130,7 +130,7 @@ class CryostreamAdapter(ComposedAdapter):
                 on.
         """
         turbo_on = struct.unpack(">B", turbo_on)[0]
-        await self.device.turbo(turbo_on)
+        await self.device.turbo(turbo_on)  # type: ignore
 
     # Todo set status format not interrupt
     @RegexCommand(b"\\x03\\x28([\\x00\\x01])", interrupt=False)
@@ -142,7 +142,7 @@ class CryostreamAdapter(ComposedAdapter):
                 status packet and 1 denotes an extended status packet.
         """
         status_format = struct.unpack(">B", status_format)[0]
-        await self.device.set_status_format(status_format)
+        await self.device.set_status_format(status_format)  # type: ignore
 
     @RegexCommand(b"\\x04\\x0c(.{2})", interrupt=True)
     async def plat(self, duration: bytes) -> None:
@@ -152,7 +152,7 @@ class CryostreamAdapter(ComposedAdapter):
             duration (bytes): The duration for which the temperature should be held.
         """
         duration = struct.unpack(">H", duration)[0]
-        await self.device.plat(duration)
+        await self.device.plat(duration)  # type: ignore
 
     @RegexCommand(b"\\x04\\x0f(.{2})", interrupt=True)
     async def end(self, ramp_rate: bytes) -> None:
@@ -162,7 +162,7 @@ class CryostreamAdapter(ComposedAdapter):
             ramp_rate (bytes): The rate at which the temperature should change.
         """
         ramp_rate = struct.unpack(">H", ramp_rate)[0]
-        await self.device.end(ramp_rate)
+        await self.device.end(ramp_rate)  # type: ignore
 
     @RegexCommand(b"\\x04\\x0e(.{2})", interrupt=True)
     async def cool(self, target_temp: bytes) -> None:
@@ -172,7 +172,7 @@ class CryostreamAdapter(ComposedAdapter):
             target_temp (bytes): The target temperature.
         """
         target_temp = struct.unpack(">H", target_temp)[0]
-        await self.device.cool(target_temp)
+        await self.device.cool(target_temp)  # type: ignore
 
     @RegexCommand(b"\\x06\\x0b(.{2,4})", interrupt=True)
     async def ramp(self, values: bytes) -> None:
@@ -183,4 +183,4 @@ class CryostreamAdapter(ComposedAdapter):
                 target temperature.
         """
         ramp_rate, target_temp = struct.unpack(">HH", values)
-        await self.device.ramp(ramp_rate, target_temp)
+        await self.device.ramp(ramp_rate, target_temp)  # type: ignore

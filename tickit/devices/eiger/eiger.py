@@ -176,7 +176,7 @@ class EigerDevice(Device):
 
         return DeviceUpdate(self.Outputs(), None)
 
-    def get_state(self) -> Value:
+    def get_state(self):  # TODO: Add return type hint
         """Returns the current state of the Eiger.
 
         Returns:
@@ -187,7 +187,7 @@ class EigerDevice(Device):
         return serialize(
             Value(
                 val,
-                AccessMode.STRING,
+                AccessMode.STRING,  # type: ignore
                 access_mode=AccessMode.READ_ONLY,
                 allowed_values=allowed,
             )

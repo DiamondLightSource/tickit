@@ -20,7 +20,7 @@ def mock_logging() -> Iterable[Mock]:
 
 
 def test_sink_update_method(sink: SinkDevice, caplog):
-    inputs = {"input": "blah"}
+    inputs = SinkDevice.Inputs({"input": "blah"})
     with caplog.at_level(logging.DEBUG):
         device_update = sink.update(SimTime(0), inputs)
     assert device_update.outputs == {}

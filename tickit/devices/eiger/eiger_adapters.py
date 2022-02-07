@@ -1,3 +1,4 @@
+import json
 import logging
 
 from aiohttp import web
@@ -23,7 +24,7 @@ class EigerRESTAdapter(
 ):
     """An Eiger adapter which parses the commands sent to the HTTP server."""
 
-    device: EigerDevice
+    device: EigerDevice  # type: ignore
 
     @HTTPEndpoint.get(f"/{DETECTOR_API}" + "/config/{parameter_name}")
     async def get_config(self, request: web.Request) -> web.Response:
@@ -46,14 +47,16 @@ class EigerRESTAdapter(
                     attr["value"],
                     attr["metadata"]["value_type"].value,
                     access_mode=(
-                        attr["metadata"]["access_mode"].value
+                        attr["metadata"]["access_mode"].value  # type: ignore
                         if hasattr(attr["metadata"], "access_mode")
-                        else AccessMode.READ_ONLY.value
+                        else AccessMode.READ_ONLY
                     ),
                 )
             )
         else:
-            data = serialize(Value("None", "string", access_mode="None"))
+            data = serialize(
+                Value("None", "string", access_mode=AccessMode.NONE)  # type: ignore
+            )
 
         return web.json_response(data)
 
@@ -73,14 +76,14 @@ class EigerRESTAdapter(
         """
         param = request.match_info["parameter_name"]
 
-        response = await request.json()
+        response = json.loads(await request.json())
 
-        if self.device.get_state()["value"] != State.IDLE.value:
+        if self.device.get_state()["value"] != State.IDLE.value:  # type: ignore
             LOGGER.warning("Eiger not initialized or is currently running.")
             return web.json_response(serialize(SequenceComplete(7)))
         elif (
             hasattr(self.device.settings, param)
-            and self.device.get_state()["value"] == State.IDLE.value
+            and self.device.get_state()["value"] == State.IDLE.value  # type: ignore
         ):
             attr = response["value"]
 

@@ -1,4 +1,4 @@
-from typing import Any, Callable, Iterable, Optional
+from typing import Any, Callable, Iterable, Type
 
 import pytest
 from apischema.conversions.conversions import Conversion
@@ -25,17 +25,17 @@ def patch_tagged_union_dict(mock_component_config_type) -> Iterable[Mock]:
 
 
 def test_importing_conversion(
-    mock_component_config_type: ComponentConfig, patch_tagged_union_dict
+    mock_component_config_type: Type[ComponentConfig], patch_tagged_union_dict
 ):
-    conversion: Conversion = importing_conversion(mock_component_config_type)
+    conversion = importing_conversion(mock_component_config_type)
     assert isinstance(conversion, Conversion)
     assert conversion.target == mock_component_config_type
 
 
 def test_importing_conversion_when_is_not_tagged_union(
-    mock_component_config_type: ComponentConfig,
+    mock_component_config_type: Type[ComponentConfig],
 ):
-    conversion: Optional[Conversion] = importing_conversion(mock_component_config_type)
+    conversion = importing_conversion(mock_component_config_type)
     assert conversion == []
 
 
@@ -66,7 +66,7 @@ def test_conversion(
     patch_tagged_union_dict,
     patch_apischema_deserialize: Mock,
 ):
-    conversion: Conversion = importing_conversion(mock_component_config_type)
+    conversion = importing_conversion(mock_component_config_type)
     converter: Callable[[Any], Any] = conversion.converter  # type: ignore
 
     _ = converter({"mock.Mock": 42})

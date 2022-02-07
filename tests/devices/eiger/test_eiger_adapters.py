@@ -47,7 +47,7 @@ def raise_interrupt():
 
 @pytest.fixture
 def eiger_adapter(mock_eiger: MagicMock) -> EigerRESTAdapter:
-    return EigerRESTAdapter(mock_eiger, raise_interrupt)
+    return EigerRESTAdapter("0.0.0.0", 8081)
 
 
 def test_eiger_adapter_contructor():
@@ -88,7 +88,7 @@ async def test_eiger_system(tickit_task):
         # Test setting config var before Eiger set up
         data = '{"value": "test"}'
         async with session.put(
-            url + "config/element", headers=headers, data=data
+            url + "config/element", headers=headers, json=data
         ) as resp:
             assert json.loads(str(await resp.text())) == {"sequence_id": 7}
 
@@ -115,7 +115,7 @@ async def test_eiger_system(tickit_task):
 
         data = '{"value": "test"}'
         async with session.put(
-            url + "config/doesnt_exist", headers=headers, data=data
+            url + "config/doesnt_exist", headers=headers, json=data
         ) as resp:
             assert json.loads(str(await resp.text())) == {"sequence_id": 9}
 
@@ -124,7 +124,7 @@ async def test_eiger_system(tickit_task):
 
         data = '{"value": "Li"}'
         async with session.put(
-            url + "config/element", headers=headers, data=data
+            url + "config/element", headers=headers, json=data
         ) as resp:
             assert json.loads(str(await resp.text())) == {"sequence_id": 8}
 

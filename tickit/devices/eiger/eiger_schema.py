@@ -87,7 +87,7 @@ class Value(Generic[T]):
 
     value: T
     value_type: str
-    access_mode: Optional[str] = None
+    access_mode: Optional[AccessMode] = None
     unit: Optional[str] = None
     min: Optional[T] = None
     max: Optional[T] = None

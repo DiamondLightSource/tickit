@@ -29,7 +29,7 @@ def test_set_and_get_current(femto: FemtoDevice):
 
 
 def test_femto_update(femto: FemtoDevice):
-    device_input = {"input": 3.0}
+    device_input = FemtoDevice.Inputs({"input": 3.0})
     time = SimTime(0)
     update: DeviceUpdate = femto.update(time, device_input)
     assert update.outputs["current"] == 3.0 * femto.get_gain()

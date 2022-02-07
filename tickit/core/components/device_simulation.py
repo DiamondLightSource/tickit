@@ -9,7 +9,7 @@ from tickit.core.components.component import BaseComponent
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.runner import run_all
 from tickit.core.state_interfaces import StateConsumer, StateProducer
-from tickit.core.typedefs import Changes, SimTime, State
+from tickit.core.typedefs import Changes, ComponentID, SimTime, State
 
 InterruptHandler = Callable[[], Awaitable[None]]
 
@@ -23,6 +23,7 @@ class DeviceSimulation(BaseComponent):
     allowing adapters to raise interrupts.
     """
 
+    name: ComponentID
     device: Device
     adapters: List[Adapter] = field(default_factory=list)
     last_outputs: State = field(init=False, default_factory=lambda: State({}))

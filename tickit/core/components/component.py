@@ -20,7 +20,7 @@ from tickit.utils.topic_naming import input_topic, output_topic
 LOGGER = logging.getLogger(__name__)
 
 
-@dataclass
+@dataclass  # type: ignore
 @as_tagged_union
 class Component:
     """An interface for types which implement stand-alone simulation components.
@@ -50,7 +50,7 @@ class Component:
         """
 
 
-@dataclass
+@dataclass  # type: ignore
 @as_tagged_union
 class ComponentConfig:
     """A data container for component configuration.

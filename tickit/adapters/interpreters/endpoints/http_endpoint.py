@@ -28,9 +28,9 @@ class HTTPEndpoint(Generic[AnyStr]):
     include_json: bool = False
     interrupt: bool = False
 
-    def __call__(
-        self, func: Callable[[web.Request], web.Response]
-    ) -> Callable[[web.Request], web.Response]:
+    # Type signature can become more specific if support is dropped for
+    # Python 3.7, see https://github.com/python/mypy/issues/708
+    def __call__(self, func: Callable) -> Callable:
         """A decorator which registers the adapter method as an endpoint.
 
         Args:

@@ -27,7 +27,7 @@ def test_regex_command_registers_command():
     ],
 )
 def test_regex_command_parse_unmatched_returns_none(
-    regex_command: RegexCommand, message: AnyStr
+    regex_command: RegexCommand, message: bytes
 ):
     assert regex_command.parse(message) is None
 
@@ -48,6 +48,6 @@ def test_regex_command_parse_unmatched_returns_none(
     ],
 )
 def test_regex_command_parse_match_returns_args(
-    regex_command: RegexCommand, message: AnyStr, expected: Tuple[object]
+    regex_command: RegexCommand, message: bytes, expected: Tuple[object]
 ):
     assert expected == regex_command.parse(message)
