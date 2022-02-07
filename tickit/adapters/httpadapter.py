@@ -62,6 +62,6 @@ class HTTPAdapter(Adapter):
             Iterator[Iterable[HTTPEndpoint]]: The iterator of the defined endpoints
         """
         for _, func in getmembers(self):
-            endpoint: HTTPEndpoint = getattr(func, "__endpoint__", None)  # type: ignore
-            if endpoint is not None:
+            endpoint = getattr(func, "__endpoint__", None)  # type: ignore
+            if endpoint is not None and isinstance(endpoint, HTTPEndpoint):
                 yield endpoint.define(func)
