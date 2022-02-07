@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>API &mdash; tickit 0.1.1.pre2+18.g25e92a6 documentation</title>
+  <title>API &mdash; tickit 0.1.1.pre2+19.g13355b5 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -251,13 +251,10 @@ updated immediately.</p></li>
 server.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)">None</a></p>
-</dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="examples.devices.remote_controlled.RemoteControlledAdapter.on_connect">
-<span class="sig-name descname"><span class="pre">on_connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">AsyncIterable</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.10)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/examples/devices/remote_controlled.html#RemoteControlledAdapter.on_connect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#examples.devices.remote_controlled.RemoteControlledAdapter.on_connect" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">on_connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">AsyncIterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.10)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/examples/devices/remote_controlled.html#RemoteControlledAdapter.on_connect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#examples.devices.remote_controlled.RemoteControlledAdapter.on_connect" title="Permalink to this definition"></a></dt>
 <dd><p>An on_connect method which continiously sends the unobserved value to the client.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -573,9 +570,6 @@ updated immediately.</p></li>
 <li><p><strong>port</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>]</em>) – The bound port of the TcpServer. Defaults to 25565.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)">None</a></p>
-</dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="examples.devices.shutter.ShutterAdapter.get_position">
@@ -812,7 +806,7 @@ otherwise None.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="tickit.adapters.interpreters.command.command_interpreter.CommandInterpreter">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">tickit.adapters.interpreters.command.command_interpreter.</span></span><span class="sig-name descname"><span class="pre">CommandInterpreter</span></span><a class="reference internal" href="../_modules/tickit/adapters/interpreters/command/command_interpreter.html#CommandInterpreter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.interpreters.command.command_interpreter.CommandInterpreter" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">tickit.adapters.interpreters.command.command_interpreter.</span></span><span class="sig-name descname"><span class="pre">CommandInterpreter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tickit/adapters/interpreters/command/command_interpreter.html#CommandInterpreter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.interpreters.command.command_interpreter.CommandInterpreter" title="Permalink to this definition"></a></dt>
 <dd><p>An interpreter which routes to commands registered to adapter methods.</p>
 <p>An interpreter which attempts to parse messages according to the parse method of
 commands registered against adapter methods, if a match is found the method is
@@ -834,7 +828,7 @@ called with the parsed arguments.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tickit.adapters.interpreters.command.command_interpreter.CommandInterpreter.handle">
-<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">handle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#tickit.core.adapter.Adapter" title="tickit.core.adapter.Adapter"><span class="pre">tickit.core.adapter.Adapter</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.10)"><span class="pre">bytes</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">AsyncIterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.10)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/tickit/adapters/interpreters/command/command_interpreter.html#CommandInterpreter.handle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.interpreters.command.command_interpreter.CommandInterpreter.handle" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">handle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#tickit.core.adapter.Adapter" title="tickit.core.adapter.Adapter"><span class="pre">tickit.core.adapter.Adapter</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">AnyStr</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">AsyncIterable</span><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/tickit/adapters/interpreters/command/command_interpreter.html#CommandInterpreter.handle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.interpreters.command.command_interpreter.CommandInterpreter.handle" title="Permalink to this definition"></a></dt>
 <dd><p>Matches the message to an adapter command and calls the corresponding method.</p>
 <p>An asynchronous method which handles a message by attempting to match the
 message against each of the registered commands, if a match is found the
@@ -974,17 +968,6 @@ replies.</p></li>
 <dd><p>An adapter implementation which delegates to a server and interpreter.</p>
 <p>An adapter implementation which delegates the hosting of an external messaging
 protocol to a server and message handling to an interpreter.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>server</strong> (<a class="reference internal" href="#tickit.core.adapter.Server" title="tickit.core.adapter.Server"><em>tickit.core.adapter.Server</em></a>) – </p></li>
-<li><p><strong>interpreter</strong> (<a class="reference internal" href="#tickit.core.adapter.Interpreter" title="tickit.core.adapter.Interpreter"><em>tickit.core.adapter.Interpreter</em></a>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)">None</a></p>
-</dd>
-</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="tickit.adapters.composed.ComposedAdapter.on_connect">
 <span class="sig-name descname"><span class="pre">on_connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">AsyncIterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#tickit.adapters.composed.T" title="tickit.adapters.composed.T"><span class="pre">tickit.adapters.composed.T</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/tickit/adapters/composed.html#ComposedAdapter.on_connect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.composed.ComposedAdapter.on_connect" title="Permalink to this definition"></a></dt>
@@ -3368,11 +3351,6 @@ tickit.devices.cryostream.status.ExtendedStatus]: The status packet.</p>
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">tickit.devices.cryostream.cryostream.</span></span><span class="sig-name descname"><span class="pre">CryostreamDevice</span></span><a class="reference internal" href="../_modules/tickit/devices/cryostream/cryostream.html#CryostreamDevice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.devices.cryostream.cryostream.CryostreamDevice" title="Permalink to this definition"></a></dt>
 <dd><p>A Cryostream device, used for cooling of samples using cold gas.</p>
 <p>A Cryostream constructor sets up initial internal values.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)">None</a></p>
-</dd>
-</dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="tickit.devices.cryostream.cryostream.CryostreamDevice.Inputs">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Inputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tickit.devices.cryostream.cryostream.CryostreamDevice.Inputs" title="Permalink to this definition"></a></dt>
@@ -3424,9 +3402,6 @@ updated immediately.</p></li>
 “localhost”.</p></li>
 <li><p><strong>port</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>]</em>) – The bound port of the TcpServer. Defaults to 25565.</p></li>
 </ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)">None</a></p>
 </dd>
 </dl>
 <dl class="py method">
@@ -4143,7 +4118,7 @@ device is returned.</p>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="tickit.utils.configuration.configurable.is_tagged_union">
-<span class="sig-prename descclassname"><span class="pre">tickit.utils.configuration.configurable.</span></span><span class="sig-name descname"><span class="pre">is_tagged_union</span></span><em class="property"> <span class="pre">=</span> <span class="pre">defaultdict(&lt;function</span> <span class="pre">&lt;lambda&gt;&gt;,</span> <span class="pre">{&lt;class</span> <span class="pre">'tickit.core.device.Device'&gt;:</span> <span class="pre">True,</span> <span class="pre">&lt;class</span> <span class="pre">'tickit.core.adapter.Adapter'&gt;:</span> <span class="pre">True,</span> <span class="pre">&lt;class</span> <span class="pre">'tickit.core.adapter.Interpreter'&gt;:</span> <span class="pre">True,</span> <span class="pre">&lt;class</span> <span class="pre">'tickit.core.adapter.Server'&gt;:</span> <span class="pre">True,</span> <span class="pre">&lt;class</span> <span class="pre">'tickit.core.components.component.Component'&gt;:</span> <span class="pre">True,</span> <span class="pre">&lt;class</span> <span class="pre">'tickit.core.components.component.ComponentConfig'&gt;:</span> <span class="pre">True})</span></em><a class="headerlink" href="#tickit.utils.configuration.configurable.is_tagged_union" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">tickit.utils.configuration.configurable.</span></span><span class="sig-name descname"><span class="pre">is_tagged_union</span></span><em class="property"><span class="pre">:</span> <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"> <span class="pre">=</span> <span class="pre">defaultdict(&lt;function</span> <span class="pre">&lt;lambda&gt;&gt;,</span> <span class="pre">{&lt;class</span> <span class="pre">'tickit.core.device.Device'&gt;:</span> <span class="pre">True,</span> <span class="pre">&lt;class</span> <span class="pre">'tickit.core.adapter.Adapter'&gt;:</span> <span class="pre">True,</span> <span class="pre">&lt;class</span> <span class="pre">'tickit.core.adapter.Interpreter'&gt;:</span> <span class="pre">True,</span> <span class="pre">&lt;class</span> <span class="pre">'tickit.core.adapter.Server'&gt;:</span> <span class="pre">True,</span> <span class="pre">&lt;class</span> <span class="pre">'tickit.core.components.component.Component'&gt;:</span> <span class="pre">True,</span> <span class="pre">&lt;class</span> <span class="pre">'tickit.core.components.component.ComponentConfig'&gt;:</span> <span class="pre">True})</span></em><a class="headerlink" href="#tickit.utils.configuration.configurable.is_tagged_union" title="Permalink to this definition"></a></dt>
 <dd><p>Whether the current class is registered as a tagged union</p>
 </dd></dl>
 

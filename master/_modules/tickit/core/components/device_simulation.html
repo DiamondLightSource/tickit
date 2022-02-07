@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tickit.core.components.device_simulation &mdash; tickit 0.1.1.pre2+18.g25e92a6 documentation</title>
+  <title>tickit.core.components.device_simulation &mdash; tickit 0.1.1.pre2+19.g13355b5 documentation</title>
       <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
@@ -139,7 +139,7 @@
 <span class="kn">from</span> <span class="nn">tickit.core.device</span> <span class="kn">import</span> <span class="n">Device</span><span class="p">,</span> <span class="n">DeviceUpdate</span>
 <span class="kn">from</span> <span class="nn">tickit.core.runner</span> <span class="kn">import</span> <span class="n">run_all</span>
 <span class="kn">from</span> <span class="nn">tickit.core.state_interfaces</span> <span class="kn">import</span> <span class="n">StateConsumer</span><span class="p">,</span> <span class="n">StateProducer</span>
-<span class="kn">from</span> <span class="nn">tickit.core.typedefs</span> <span class="kn">import</span> <span class="n">Changes</span><span class="p">,</span> <span class="n">SimTime</span><span class="p">,</span> <span class="n">State</span>
+<span class="kn">from</span> <span class="nn">tickit.core.typedefs</span> <span class="kn">import</span> <span class="n">Changes</span><span class="p">,</span> <span class="n">ComponentID</span><span class="p">,</span> <span class="n">SimTime</span><span class="p">,</span> <span class="n">State</span>
 
 <span class="n">InterruptHandler</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">Awaitable</span><span class="p">[</span><span class="kc">None</span><span class="p">]]</span>
 
@@ -153,6 +153,7 @@
 <span class="sd">    allowing adapters to raise interrupts.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="n">name</span><span class="p">:</span> <span class="n">ComponentID</span>
     <span class="n">device</span><span class="p">:</span> <span class="n">Device</span>
     <span class="n">adapters</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Adapter</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
     <span class="n">last_outputs</span><span class="p">:</span> <span class="n">State</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">State</span><span class="p">({}))</span>

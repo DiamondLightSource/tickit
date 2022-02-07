@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tickit.adapters.composed &mdash; tickit 0.1.1.pre2+18.g25e92a6 documentation</title>
+  <title>tickit.adapters.composed &mdash; tickit 0.1.1.pre2+19.g13355b5 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -129,7 +129,7 @@
              
   <h1>Source code for tickit.adapters.composed</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">AsyncIterable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TypeVar</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">AsyncIterable</span><span class="p">,</span> <span class="n">Generic</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TypeVar</span>
 
 <span class="kn">from</span> <span class="nn">tickit.core.adapter</span> <span class="kn">import</span> <span class="n">Adapter</span><span class="p">,</span> <span class="n">Interpreter</span><span class="p">,</span> <span class="n">RaiseInterrupt</span><span class="p">,</span> <span class="n">Server</span>
 <span class="kn">from</span> <span class="nn">tickit.core.device</span> <span class="kn">import</span> <span class="n">Device</span>
@@ -139,7 +139,7 @@
 
 
 <div class="viewcode-block" id="ComposedAdapter"><a class="viewcode-back" href="../../../reference/api.html#tickit.adapters.composed.ComposedAdapter">[docs]</a><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">ComposedAdapter</span><span class="p">(</span><span class="n">Adapter</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">ComposedAdapter</span><span class="p">(</span><span class="n">Adapter</span><span class="p">,</span> <span class="n">Generic</span><span class="p">[</span><span class="n">T</span><span class="p">]):</span>
     <span class="sd">&quot;&quot;&quot;An adapter implementation which delegates to a server and interpreter.</span>
 
 <span class="sd">    An adapter implementation which delegates the hosting of an external messaging</span>
