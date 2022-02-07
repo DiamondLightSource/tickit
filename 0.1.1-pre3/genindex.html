@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Index &mdash; tickit 0.1.1.pre3 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/tickit-logo.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: rgb(7, 43, 93)" >
+            <a href="index.html" class="icon icon-home"> tickit
+            <img src="_static/tickit-logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.1.1.pre3
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+  
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/installation.html">Installation Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/running-a-simulation.html">Running a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/creating-a-simulation.html">Creating a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/creating-a-device.html">Creating a Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/creating-an-adapter.html">Creating an Adapter</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">How-to Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="how-to/accomplish-a-task.html">How to accomplish a task</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Explanations</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="explanations/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="explanations/how-component-updates-are-ordered.html">How component updates are ordered</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="reference/api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/dls-controls/tickit/blob/master/CHANGELOG.rst">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="genindex.html#http://">Index</a></li>
+</ul>
+
+  <!-- Add versions for selected branches + tags -->
+  <p class="caption">
+    <span class="caption-text">Versions</span>
+  </p>
+  <ul id="versions"/>
+  <script>
+    // Add any branches to appear in the side pane here, tags will be added below
+    // Will only appear if docs are built and pushed in gh-pages
+    var versions = ['main', 'master'];
+    var dirs = new Set();
+    function addVersion(name) {
+      if (dirs.has(name)) {
+        var li = document.createElement("li");
+        var a = document.createElement("a");
+        a.href = 'https://dls-controls.github.io/tickit/' + name;
+        a.innerText = name;
+        li.appendChild(a)
+        document.getElementById('versions').appendChild(li);
+      }
+    }
+    Promise.all([
+      // Find gh-pages directories and populate `dirs`
+      fetch("https://api.github.com/repos/dls-controls/tickit/contents?ref=gh-pages")
+      .then(response => response.json())
+      .then(data => data.forEach(function(e) {
+        if (e.type == "dir") dirs.add(e.name);
+      })),
+      // Add tags to `versions`
+      fetch('https://api.github.com/repos/dls-controls/tickit/tags')
+        .then(response => response.json())
+        .then(data => data.forEach(function(e) {
+          versions.push(e.name);
+        }))
+      ]).then(_ => versions.forEach(addVersion))
+  </script>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: rgb(7, 43, 93)" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">tickit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Index</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#_"><strong>_</strong></a>
+ | <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#K"><strong>K</strong></a>
+ | <a href="#L"><strong>L</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#O"><strong>O</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
+ | <a href="#V"><strong>V</strong></a>
+ | <a href="#W"><strong>W</strong></a>
+ | <a href="#Y"><strong>Y</strong></a>
+ 
+</div>
+<h2 id="_">_</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.utils.singleton.Singleton.__call__">__call__() (tickit.utils.singleton.Singleton method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="explanations/glossary.html#term-Adapter"><strong>Adapter</strong></a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.core.adapter.Adapter">(class in tickit.core.adapter)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.core.state_interfaces.state_interface.add">add() (in module tickit.core.state_interfaces.state_interface)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.management.schedulers.slave.SlaveScheduler.add_exposing_wiring">add_exposing_wiring() (tickit.core.management.schedulers.slave.SlaveScheduler static method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.state_interfaces.internal.InternalStateConsumer.add_message">add_message() (tickit.core.state_interfaces.internal.InternalStateConsumer method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.add_wakeup">add_wakeup() (tickit.core.management.schedulers.base.BaseScheduler method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.core.management.schedulers.master.MasterScheduler.add_wakeup">(tickit.core.management.schedulers.master.MasterScheduler method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.adapters.epicsadapter.EpicsAdapter.after_update">after_update() (tickit.adapters.epicsadapter.EpicsAdapter method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.core.adapter.Adapter.after_update">(tickit.core.adapter.Adapter method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.states.AlarmCodes">AlarmCodes (class in tickit.devices.cryostream.states)</a>
+</li>
+      <li><a href="reference/api.html#tickit.utils.configuration.configurable.as_tagged_union">as_tagged_union() (in module tickit.utils.configuration.configurable)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.core.components.component.BaseComponent">BaseComponent (class in tickit.core.components.component)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.management.schedulers.base.BaseScheduler">BaseScheduler (class in tickit.core.management.schedulers.base)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.adapters.epicsadapter.EpicsAdapter.build_ioc">build_ioc() (tickit.adapters.epicsadapter.EpicsAdapter method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.utils.byte_format.ByteFormat">ByteFormat (class in tickit.utils.byte_format)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.core.state_interfaces.internal.C">C (in module tickit.core.state_interfaces.internal)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.core.state_interfaces.kafka.C">(in module tickit.core.state_interfaces.kafka)</a>
+</li>
+        <li><a href="reference/api.html#tickit.core.state_interfaces.state_interface.C">(in module tickit.core.state_interfaces.state_interface)</a>
+</li>
+      </ul></li>
+      <li><a href="explanations/glossary.html#term-Callback"><strong>Callback</strong></a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.femto.femto.FemtoAdapter.callback">callback() (tickit.devices.femto.femto.FemtoAdapter method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.devices.pneumatic.pneumatic.PneumaticAdapter.callback">(tickit.devices.pneumatic.pneumatic.PneumaticAdapter method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.core.typedefs.Changes">Changes (in module tickit.core.typedefs)</a>
+</li>
+      <li><a href="reference/api.html#tickit.utils.configuration.configurable.Cls">Cls (in module tickit.utils.configuration.configurable)</a>
+</li>
+      <li><a href="reference/api.html#tickit.adapters.interpreters.command.command_interpreter.Command">Command (class in tickit.adapters.interpreters.command.command_interpreter)</a>
+</li>
+      <li><a href="reference/api.html#tickit.adapters.interpreters.command.command_interpreter.CommandInterpreter">CommandInterpreter (class in tickit.adapters.interpreters.command.command_interpreter)</a>
+</li>
+      <li><a href="explanations/glossary.html#term-Component"><strong>Component</strong></a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.core.components.component.Component">(class in tickit.core.components.component)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.core.management.event_router.EventRouter.component_tree">component_tree (tickit.core.management.event_router.EventRouter property)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.components.component.ComponentConfig">ComponentConfig (class in tickit.core.components.component)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.core.typedefs.ComponentID">ComponentID (in module tickit.core.typedefs)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.typedefs.ComponentPort">ComponentPort (class in tickit.core.typedefs)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.components.system_simulation.SystemSimulationComponent.components">components (tickit.core.components.system_simulation.SystemSimulationComponent attribute)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.core.management.event_router.EventRouter.components">(tickit.core.management.event_router.EventRouter property)</a>
+</li>
+        <li><a href="reference/api.html#tickit.core.management.ticker.Ticker.components">(tickit.core.management.ticker.Ticker property)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.adapters.composed.ComposedAdapter">ComposedAdapter (class in tickit.adapters.composed)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.base.CryostreamBase.cool">cool() (tickit.devices.cryostream.base.CryostreamBase method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.cool">(tickit.devices.cryostream.cryostream.CryostreamAdapter method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.core.state_interfaces.internal.InternalStateServer.create_topic">create_topic() (tickit.core.state_interfaces.internal.InternalStateServer method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter">CryostreamAdapter (class in tickit.devices.cryostream.cryostream)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.base.CryostreamBase">CryostreamBase (class in tickit.devices.cryostream.base)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamDevice">CryostreamDevice (class in tickit.devices.cryostream.cryostream)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamDevice.Inputs">CryostreamDevice.Inputs (class in tickit.devices.cryostream.cryostream)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamDevice.Outputs">CryostreamDevice.Outputs (class in tickit.devices.cryostream.cryostream)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.core.management.event_router.Default_InverseWiring_Struct">Default_InverseWiring_Struct (in module tickit.core.management.event_router)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.management.event_router.Default_Wiring_Struct">Default_Wiring_Struct (in module tickit.core.management.event_router)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.management.event_router.EventRouter.dependants">dependants() (tickit.core.management.event_router.EventRouter method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.typedefs.ComponentPort.deserialize">deserialize() (tickit.core.typedefs.ComponentPort static method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.utils.byte_format.ByteFormat.deserialize">(tickit.utils.byte_format.ByteFormat static method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="explanations/glossary.html#term-Device"><strong>Device</strong></a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.core.device.Device">(class in tickit.core.device)</a>
+</li>
+      </ul></li>
+      <li><a href="explanations/glossary.html#term-Device-Simulation"><strong>Device Simulation</strong></a>
+</li>
+      <li><a href="reference/api.html#tickit.core.components.device_simulation.DeviceSimulation">DeviceSimulation (class in tickit.core.components.device_simulation)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.device.DeviceUpdate">DeviceUpdate (class in tickit.core.device)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.devices.cryostream.base.CryostreamBase.end">end() (tickit.devices.cryostream.base.CryostreamBase method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.end">(tickit.devices.cryostream.cryostream.CryostreamAdapter method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.adapters.epicsadapter.EpicsAdapter">EpicsAdapter (class in tickit.adapters.epicsadapter)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.management.event_router.EventRouter">EventRouter (class in tickit.core.management.event_router)</a>
+</li>
+      <li>
+    examples
+
+      <ul>
+        <li><a href="reference/api.html#module-examples">module</a>
+</li>
+      </ul></li>
+      <li>
+    examples.devices
+
+      <ul>
+        <li><a href="reference/api.html#module-examples.devices">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    examples.devices.remote_controlled
+
+      <ul>
+        <li><a href="reference/api.html#module-examples.devices.remote_controlled">module</a>
+</li>
+      </ul></li>
+      <li>
+    examples.devices.shutter
+
+      <ul>
+        <li><a href="reference/api.html#module-examples.devices.shutter">module</a>
+</li>
+      </ul></li>
+      <li>
+    examples.devices.trampoline
+
+      <ul>
+        <li><a href="reference/api.html#module-examples.devices.trampoline">module</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.core.components.system_simulation.SystemSimulationComponent.expose">expose (tickit.core.components.system_simulation.SystemSimulationComponent attribute)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.status.ExtendedStatus">ExtendedStatus (class in tickit.devices.cryostream.status)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.devices.femto.femto.FemtoAdapter">FemtoAdapter (class in tickit.devices.femto.femto)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.femto.femto.FemtoDevice">FemtoDevice (class in tickit.devices.femto.femto)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.femto.femto.FemtoDevice.Inputs">FemtoDevice.Inputs (class in tickit.devices.femto.femto)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.femto.femto.FemtoDevice.Outputs">FemtoDevice.Outputs (class in tickit.devices.femto.femto)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.core.management.event_router.InverseWiring.from_component_configs">from_component_configs() (tickit.core.management.event_router.InverseWiring class method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.management.event_router.Wiring.from_inverse_wiring">from_inverse_wiring() (tickit.core.management.event_router.Wiring class method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.status.ExtendedStatus.from_packed">from_packed() (tickit.devices.cryostream.status.ExtendedStatus class method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.devices.cryostream.status.Status.from_packed">(tickit.devices.cryostream.status.Status class method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.core.management.event_router.InverseWiring.from_wiring">from_wiring() (tickit.core.management.event_router.InverseWiring class method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.devices.femto.femto.FemtoDevice.get_current">get_current() (tickit.devices.femto.femto.FemtoDevice method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.get_first_wakeups">get_first_wakeups() (tickit.core.management.schedulers.base.BaseScheduler method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.femto.femto.FemtoDevice.get_gain">get_gain() (tickit.devices.femto.femto.FemtoDevice method)</a>
+</li>
+      <li><a href="reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.get_hidden">get_hidden() (examples.devices.remote_controlled.RemoteControlledAdapter method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.state_interfaces.state_interface.get_interface">get_interface() (in module tickit.core.state_interfaces.state_interface)</a>
+</li>
+      <li><a href="reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.get_observed_bytes">get_observed_bytes() (examples.devices.remote_controlled.RemoteControlledAdapter method)</a>
+</li>
+      <li><a href="reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.get_observed_str">get_observed_str() (examples.devices.remote_controlled.RemoteControlledAdapter method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#examples.devices.shutter.ShutterAdapter.get_position">get_position() (examples.devices.shutter.ShutterAdapter method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.pneumatic.pneumatic.PneumaticDevice.get_speed">get_speed() (tickit.devices.pneumatic.pneumatic.PneumaticDevice method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.pneumatic.pneumatic.PneumaticDevice.get_state">get_state() (tickit.devices.pneumatic.pneumatic.PneumaticDevice method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.base.CryostreamBase.get_status">get_status() (tickit.devices.cryostream.base.CryostreamBase method)</a>
+</li>
+      <li><a href="reference/api.html#examples.devices.shutter.ShutterAdapter.get_target">get_target() (examples.devices.shutter.ShutterAdapter method)</a>
+</li>
+      <li><a href="reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.get_unobserved_bytes">get_unobserved_bytes() (examples.devices.remote_controlled.RemoteControlledAdapter method)</a>
+</li>
+      <li><a href="reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.get_unobserved_str">get_unobserved_str() (examples.devices.remote_controlled.RemoteControlledAdapter method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.adapters.interpreters.command.command_interpreter.CommandInterpreter.handle">handle() (tickit.adapters.interpreters.command.command_interpreter.CommandInterpreter method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.core.adapter.Interpreter.handle">(tickit.core.adapter.Interpreter method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.core.components.component.BaseComponent.handle_input">handle_input() (tickit.core.components.component.BaseComponent method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.adapters.composed.ComposedAdapter.handle_message">handle_message() (tickit.adapters.composed.ComposedAdapter method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.handle_message">(tickit.core.management.schedulers.base.BaseScheduler method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.devices.cryostream.states.HardwareType">HardwareType (class in tickit.devices.cryostream.states)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.base.CryostreamBase.hold">hold() (tickit.devices.cryostream.base.CryostreamBase method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.hold">(tickit.devices.cryostream.cryostream.CryostreamAdapter method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.utils.configuration.loading.importing_conversion">importing_conversion() (in module tickit.utils.configuration.loading)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.device.InMap">InMap (in module tickit.core.device)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.typedefs.Input">Input (class in tickit.core.typedefs)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.management.event_router.EventRouter.input_components">input_components (tickit.core.management.event_router.EventRouter property)</a>
+</li>
+      <li><a href="reference/api.html#tickit.utils.topic_naming.input_topic">input_topic() (in module tickit.utils.topic_naming)</a>
+</li>
+      <li><a href="reference/api.html#tickit.adapters.epicsadapter.InputRecord">InputRecord (class in tickit.adapters.epicsadapter)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.state_interfaces.state_interface.interfaces">interfaces() (in module tickit.core.state_interfaces.state_interface)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.state_interfaces.internal.InternalStateConsumer">InternalStateConsumer (class in tickit.core.state_interfaces.internal)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.state_interfaces.internal.InternalStateProducer">InternalStateProducer (class in tickit.core.state_interfaces.internal)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.core.state_interfaces.internal.InternalStateServer">InternalStateServer (class in tickit.core.state_interfaces.internal)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.adapter.Interpreter">Interpreter (class in tickit.core.adapter)</a>
+</li>
+      <li><a href="explanations/glossary.html#term-Interrupt"><strong>Interrupt</strong></a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.core.typedefs.Interrupt">(class in tickit.core.typedefs)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.adapters.interpreters.command.command_interpreter.Command.interrupt">interrupt (tickit.adapters.interpreters.command.command_interpreter.Command attribute)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.management.event_router.EventRouter.inverse_component_tree">inverse_component_tree (tickit.core.management.event_router.EventRouter property)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.management.event_router.Inverse_Wiring_Struct">Inverse_Wiring_Struct (in module tickit.core.management.event_router)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.management.event_router.InverseWiring">InverseWiring (class in tickit.core.management.event_router)</a>
+</li>
+      <li><a href="reference/api.html#tickit.utils.configuration.configurable.is_tagged_union">is_tagged_union (in module tickit.utils.configuration.configurable)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="K">K</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.core.state_interfaces.kafka.KafkaStateConsumer">KafkaStateConsumer (class in tickit.core.state_interfaces.kafka)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.core.state_interfaces.kafka.KafkaStateProducer">KafkaStateProducer (class in tickit.core.state_interfaces.kafka)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.adapters.epicsadapter.EpicsAdapter.link_input_on_interrupt">link_input_on_interrupt() (tickit.adapters.epicsadapter.EpicsAdapter method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.adapters.epicsadapter.EpicsAdapter.load_records_without_DTYP_fields">load_records_without_DTYP_fields() (tickit.adapters.epicsadapter.EpicsAdapter method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.core.management.schedulers.master.MasterScheduler">MasterScheduler (class in tickit.core.management.schedulers.master)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.state_interfaces.internal.Message">Message (class in tickit.core.state_interfaces.internal)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.state_interfaces.internal.Messages">Messages (in module tickit.core.state_interfaces.internal)</a>
+</li>
+      <li><a href="reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.misc">misc() (examples.devices.remote_controlled.RemoteControlledAdapter method)</a>
+</li>
+      <li>
+    module
+
+      <ul>
+        <li><a href="reference/api.html#module-examples">examples</a>
+</li>
+        <li><a href="reference/api.html#module-examples.devices">examples.devices</a>
+</li>
+        <li><a href="reference/api.html#module-examples.devices.remote_controlled">examples.devices.remote_controlled</a>
+</li>
+        <li><a href="reference/api.html#module-examples.devices.shutter">examples.devices.shutter</a>
+</li>
+        <li><a href="reference/api.html#module-examples.devices.trampoline">examples.devices.trampoline</a>
+</li>
+        <li><a href="reference/api.html#module-tickit">tickit</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.adapters">tickit.adapters</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.adapters.composed">tickit.adapters.composed</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.adapters.epicsadapter">tickit.adapters.epicsadapter</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.adapters.interpreters">tickit.adapters.interpreters</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.adapters.interpreters.command">tickit.adapters.interpreters.command</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.adapters.interpreters.command.command_interpreter">tickit.adapters.interpreters.command.command_interpreter</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.adapters.interpreters.command.regex_command">tickit.adapters.interpreters.command.regex_command</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.adapters.servers">tickit.adapters.servers</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.adapters.servers.tcp">tickit.adapters.servers.tcp</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.core">tickit.core</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.core.adapter">tickit.core.adapter</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.core.components">tickit.core.components</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.core.components.component">tickit.core.components.component</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.core.components.device_simulation">tickit.core.components.device_simulation</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.core.components.system_simulation">tickit.core.components.system_simulation</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.core.device">tickit.core.device</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.core.management">tickit.core.management</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.core.management.event_router">tickit.core.management.event_router</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.core.management.schedulers">tickit.core.management.schedulers</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.core.management.schedulers.base">tickit.core.management.schedulers.base</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.core.management.schedulers.master">tickit.core.management.schedulers.master</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.core.management.schedulers.slave">tickit.core.management.schedulers.slave</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.core.management.ticker">tickit.core.management.ticker</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.core.runner">tickit.core.runner</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.core.state_interfaces">tickit.core.state_interfaces</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.core.state_interfaces.internal">tickit.core.state_interfaces.internal</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.core.state_interfaces.kafka">tickit.core.state_interfaces.kafka</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.core.state_interfaces.state_interface">tickit.core.state_interfaces.state_interface</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.core.typedefs">tickit.core.typedefs</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.devices">tickit.devices</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.devices.cryostream">tickit.devices.cryostream</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.devices.cryostream.base">tickit.devices.cryostream.base</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.devices.cryostream.cryostream">tickit.devices.cryostream.cryostream</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.devices.cryostream.states">tickit.devices.cryostream.states</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.devices.cryostream.status">tickit.devices.cryostream.status</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.devices.femto">tickit.devices.femto</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.devices.femto.femto">tickit.devices.femto.femto</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.devices.pneumatic">tickit.devices.pneumatic</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.devices.pneumatic.pneumatic">tickit.devices.pneumatic.pneumatic</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.devices.sink">tickit.devices.sink</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.devices.source">tickit.devices.source</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.utils">tickit.utils</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.utils.byte_format">tickit.utils.byte_format</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.utils.configuration">tickit.utils.configuration</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.utils.configuration.configurable">tickit.utils.configuration.configurable</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.utils.configuration.loading">tickit.utils.configuration.loading</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.utils.singleton">tickit.utils.singleton</a>
+</li>
+        <li><a href="reference/api.html#module-tickit.utils.topic_naming">tickit.utils.topic_naming</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#examples.devices.shutter.ShutterDevice.move">move() (examples.devices.shutter.ShutterDevice static method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.on_connect">on_connect() (examples.devices.remote_controlled.RemoteControlledAdapter method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.adapters.composed.ComposedAdapter.on_connect">(tickit.adapters.composed.ComposedAdapter method)</a>
+</li>
+        <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.on_connect">(tickit.devices.cryostream.cryostream.CryostreamAdapter method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.adapters.epicsadapter.EpicsAdapter.on_db_load">on_db_load() (tickit.adapters.epicsadapter.EpicsAdapter method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.devices.femto.femto.FemtoAdapter.on_db_load">(tickit.devices.femto.femto.FemtoAdapter method)</a>
+</li>
+        <li><a href="reference/api.html#tickit.devices.pneumatic.pneumatic.PneumaticAdapter.on_db_load">(tickit.devices.pneumatic.pneumatic.PneumaticAdapter method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.core.components.component.BaseComponent.on_tick">on_tick() (tickit.core.components.component.BaseComponent method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.core.components.component.Component.on_tick">(tickit.core.components.component.Component method)</a>
+</li>
+        <li><a href="reference/api.html#tickit.core.components.device_simulation.DeviceSimulation.on_tick">(tickit.core.components.device_simulation.DeviceSimulation method)</a>
+</li>
+        <li><a href="reference/api.html#tickit.core.components.system_simulation.SystemSimulationComponent.on_tick">(tickit.core.components.system_simulation.SystemSimulationComponent method)</a>
+</li>
+        <li><a href="reference/api.html#tickit.core.management.schedulers.slave.SlaveScheduler.on_tick">(tickit.core.management.schedulers.slave.SlaveScheduler method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.core.device.OutMap">OutMap (in module tickit.core.device)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.typedefs.Output">Output (class in tickit.core.typedefs)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.components.component.BaseComponent.output">output() (tickit.core.components.component.BaseComponent method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.management.event_router.EventRouter.output_components">output_components (tickit.core.management.event_router.EventRouter property)</a>
+</li>
+      <li><a href="reference/api.html#tickit.utils.topic_naming.output_topic">output_topic() (in module tickit.utils.topic_naming)</a>
+</li>
+      <li><a href="reference/api.html#tickit.adapters.epicsadapter.OutputRecord">OutputRecord (class in tickit.adapters.epicsadapter)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.core.state_interfaces.internal.P">P (in module tickit.core.state_interfaces.internal)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.core.state_interfaces.kafka.P">(in module tickit.core.state_interfaces.kafka)</a>
+</li>
+        <li><a href="reference/api.html#tickit.core.state_interfaces.state_interface.P">(in module tickit.core.state_interfaces.state_interface)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.status.ExtendedStatus.pack">pack() (tickit.devices.cryostream.status.ExtendedStatus method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.devices.cryostream.status.Status.pack">(tickit.devices.cryostream.status.Status method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.adapters.interpreters.command.command_interpreter.Command.parse">parse() (tickit.adapters.interpreters.command.command_interpreter.Command method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.adapters.interpreters.command.regex_command.RegexCommand.parse">(tickit.adapters.interpreters.command.regex_command.RegexCommand method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.base.CryostreamBase.pause">pause() (tickit.devices.cryostream.base.CryostreamBase method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.pause">(tickit.devices.cryostream.cryostream.CryostreamAdapter method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.states.PhaseIds">PhaseIds (class in tickit.devices.cryostream.states)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.base.CryostreamBase.plat">plat() (tickit.devices.cryostream.base.CryostreamBase method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.plat">(tickit.devices.cryostream.cryostream.CryostreamAdapter method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.devices.pneumatic.pneumatic.PneumaticAdapter">PneumaticAdapter (class in tickit.devices.pneumatic.pneumatic)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.pneumatic.pneumatic.PneumaticDevice">PneumaticDevice (class in tickit.devices.pneumatic.pneumatic)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.pneumatic.pneumatic.PneumaticDevice.Outputs">PneumaticDevice.Outputs (class in tickit.devices.pneumatic.pneumatic)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.typedefs.PortID">PortID (in module tickit.core.typedefs)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.state_interfaces.internal.InternalStateProducer.produce">produce() (tickit.core.state_interfaces.internal.InternalStateProducer method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.core.state_interfaces.kafka.KafkaStateProducer.produce">(tickit.core.state_interfaces.kafka.KafkaStateProducer method)</a>
+</li>
+        <li><a href="reference/api.html#tickit.core.state_interfaces.state_interface.StateProducer.produce">(tickit.core.state_interfaces.state_interface.StateProducer method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.core.management.ticker.Ticker.propagate">propagate() (tickit.core.management.ticker.Ticker method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.base.CryostreamBase.purge">purge() (tickit.devices.cryostream.base.CryostreamBase method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.purge">(tickit.devices.cryostream.cryostream.CryostreamAdapter method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.core.state_interfaces.internal.InternalStateServer.push">push() (tickit.core.state_interfaces.internal.InternalStateServer method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.core.components.component.BaseComponent.raise_interrupt">raise_interrupt() (tickit.core.components.component.BaseComponent method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.adapter.RaiseInterrupt">RaiseInterrupt (class in tickit.core.adapter)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.base.CryostreamBase.ramp">ramp() (tickit.devices.cryostream.base.CryostreamBase method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.ramp">(tickit.devices.cryostream.cryostream.CryostreamAdapter method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#examples.devices.trampoline.RandomTrampoline">RandomTrampoline (class in examples.devices.trampoline)</a>
+</li>
+      <li><a href="reference/api.html#examples.devices.trampoline.RandomTrampolineDevice">RandomTrampolineDevice (class in examples.devices.trampoline)</a>
+</li>
+      <li><a href="reference/api.html#tickit.utils.configuration.loading.read_configs">read_configs() (in module tickit.utils.configuration.loading)</a>
+</li>
+      <li><a href="reference/api.html#tickit.utils.configuration.configurable.rec_subclasses">rec_subclasses() (in module tickit.utils.configuration.configurable)</a>
+</li>
+      <li><a href="reference/api.html#tickit.adapters.interpreters.command.regex_command.RegexCommand">RegexCommand (class in tickit.adapters.interpreters.command.regex_command)</a>
+</li>
+      <li><a href="reference/api.html#examples.devices.remote_controlled.RemoteControlled">RemoteControlled (class in examples.devices.remote_controlled)</a>
+</li>
+      <li><a href="reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter">RemoteControlledAdapter (class in examples.devices.remote_controlled)</a>
+</li>
+      <li><a href="reference/api.html#examples.devices.remote_controlled.RemoteControlledDevice">RemoteControlledDevice (class in examples.devices.remote_controlled)</a>
+</li>
+      <li><a href="reference/api.html#examples.devices.remote_controlled.RemoteControlledDevice.Inputs">RemoteControlledDevice.Inputs (class in examples.devices.remote_controlled)</a>
+</li>
+      <li><a href="reference/api.html#examples.devices.remote_controlled.RemoteControlledDevice.Outputs">RemoteControlledDevice.Outputs (class in examples.devices.remote_controlled)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.state_interfaces.internal.InternalStateServer.remove_topic">remove_topic() (tickit.core.state_interfaces.internal.InternalStateServer method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.base.CryostreamBase.restart">restart() (tickit.devices.cryostream.base.CryostreamBase method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.restart">(tickit.devices.cryostream.cryostream.CryostreamAdapter method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.devices.cryostream.base.CryostreamBase.resume">resume() (tickit.devices.cryostream.base.CryostreamBase method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.resume">(tickit.devices.cryostream.cryostream.CryostreamAdapter method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.core.management.event_router.EventRouter.route">route() (tickit.core.management.event_router.EventRouter method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.runner.run_all">run_all() (in module tickit.core.runner)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.runner.run_all_forever">run_all_forever() (in module tickit.core.runner)</a>
+</li>
+      <li><a href="reference/api.html#tickit.adapters.composed.ComposedAdapter.run_forever">run_forever() (tickit.adapters.composed.ComposedAdapter method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.adapters.epicsadapter.EpicsAdapter.run_forever">(tickit.adapters.epicsadapter.EpicsAdapter method)</a>
+</li>
+        <li><a href="reference/api.html#tickit.adapters.servers.tcp.TcpServer.run_forever">(tickit.adapters.servers.tcp.TcpServer method)</a>
+</li>
+        <li><a href="reference/api.html#tickit.core.adapter.Adapter.run_forever">(tickit.core.adapter.Adapter method)</a>
+</li>
+        <li><a href="reference/api.html#tickit.core.adapter.Server.run_forever">(tickit.core.adapter.Server method)</a>
+</li>
+        <li><a href="reference/api.html#tickit.core.components.component.BaseComponent.run_forever">(tickit.core.components.component.BaseComponent method)</a>
+</li>
+        <li><a href="reference/api.html#tickit.core.components.component.Component.run_forever">(tickit.core.components.component.Component method)</a>
+</li>
+        <li><a href="reference/api.html#tickit.core.components.device_simulation.DeviceSimulation.run_forever">(tickit.core.components.device_simulation.DeviceSimulation method)</a>
+</li>
+        <li><a href="reference/api.html#tickit.core.components.system_simulation.SystemSimulationComponent.run_forever">(tickit.core.components.system_simulation.SystemSimulationComponent method)</a>
+</li>
+        <li><a href="reference/api.html#tickit.core.management.schedulers.master.MasterScheduler.run_forever">(tickit.core.management.schedulers.master.MasterScheduler method)</a>
+</li>
+        <li><a href="reference/api.html#tickit.core.management.schedulers.slave.SlaveScheduler.run_forever">(tickit.core.management.schedulers.slave.SlaveScheduler method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.states.RunModes">RunModes (class in tickit.devices.cryostream.states)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.core.state_interfaces.state_interface.satisfy_externality">satisfy_externality() (in module tickit.core.state_interfaces.state_interface)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.schedule_interrupt">schedule_interrupt() (tickit.core.management.schedulers.base.BaseScheduler method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.core.management.schedulers.master.MasterScheduler.schedule_interrupt">(tickit.core.management.schedulers.master.MasterScheduler method)</a>
+</li>
+        <li><a href="reference/api.html#tickit.core.management.schedulers.slave.SlaveScheduler.schedule_interrupt">(tickit.core.management.schedulers.slave.SlaveScheduler method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.core.management.ticker.Ticker.schedule_possible_updates">schedule_possible_updates() (tickit.core.management.ticker.Ticker method)</a>
+</li>
+      <li><a href="explanations/glossary.html#term-Scheduler"><strong>Scheduler</strong></a>
+</li>
+      <li><a href="reference/api.html#tickit.core.typedefs.ComponentPort.serialize">serialize() (tickit.core.typedefs.ComponentPort method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.utils.byte_format.ByteFormat.serialize">(tickit.utils.byte_format.ByteFormat method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.core.adapter.Server">Server (class in tickit.core.adapter)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.femto.femto.FemtoDevice.set_current">set_current() (tickit.devices.femto.femto.FemtoDevice method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.femto.femto.FemtoDevice.set_gain">set_gain() (tickit.devices.femto.femto.FemtoDevice method)</a>
+</li>
+      <li><a href="reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.set_hidden">set_hidden() (examples.devices.remote_controlled.RemoteControlledAdapter method)</a>
+</li>
+      <li><a href="reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.set_observed_bytes">set_observed_bytes() (examples.devices.remote_controlled.RemoteControlledAdapter method)</a>
+</li>
+      <li><a href="reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.set_observed_str">set_observed_str() (examples.devices.remote_controlled.RemoteControlledAdapter method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.pneumatic.pneumatic.PneumaticDevice.set_speed">set_speed() (tickit.devices.pneumatic.pneumatic.PneumaticDevice method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.pneumatic.pneumatic.PneumaticDevice.set_state">set_state() (tickit.devices.pneumatic.pneumatic.PneumaticDevice method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.base.CryostreamBase.set_status_format">set_status_format() (tickit.devices.cryostream.base.CryostreamBase method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.set_status_format">(tickit.devices.cryostream.cryostream.CryostreamAdapter method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#examples.devices.shutter.ShutterAdapter.set_target">set_target() (examples.devices.shutter.ShutterAdapter method)</a>
+</li>
+      <li><a href="reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.set_unobserved_bytes">set_unobserved_bytes() (examples.devices.remote_controlled.RemoteControlledAdapter method)</a>
+</li>
+      <li><a href="reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.set_unobserved_str">set_unobserved_str() (examples.devices.remote_controlled.RemoteControlledAdapter method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.setup">setup() (tickit.core.management.schedulers.base.BaseScheduler method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.core.management.schedulers.master.MasterScheduler.setup">(tickit.core.management.schedulers.master.MasterScheduler method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#examples.devices.shutter.Shutter">Shutter (class in examples.devices.shutter)</a>
+</li>
+      <li><a href="reference/api.html#examples.devices.shutter.ShutterAdapter">ShutterAdapter (class in examples.devices.shutter)</a>
+</li>
+      <li><a href="reference/api.html#examples.devices.shutter.ShutterDevice">ShutterDevice (class in examples.devices.shutter)</a>
+</li>
+      <li><a href="reference/api.html#examples.devices.shutter.ShutterDevice.Inputs">ShutterDevice.Inputs (class in examples.devices.shutter)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#examples.devices.shutter.ShutterDevice.Outputs">ShutterDevice.Outputs (class in examples.devices.shutter)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.typedefs.SimTime">SimTime (in module tickit.core.typedefs)</a>
+</li>
+      <li><a href="reference/api.html#tickit.utils.singleton.Singleton">Singleton (class in tickit.utils.singleton)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.sink.Sink">Sink (class in tickit.devices.sink)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.sink.SinkDevice">SinkDevice (class in tickit.devices.sink)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.sink.SinkDevice.Inputs">SinkDevice.Inputs (class in tickit.devices.sink)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.sink.SinkDevice.Outputs">SinkDevice.Outputs (class in tickit.devices.sink)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.management.schedulers.slave.SlaveScheduler">SlaveScheduler (class in tickit.core.management.schedulers.slave)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.management.schedulers.master.MasterScheduler.sleep_time">sleep_time() (tickit.core.management.schedulers.master.MasterScheduler method)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.source.Source">Source (class in tickit.devices.source)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.source.SourceDevice">SourceDevice (class in tickit.devices.source)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.source.SourceDevice.Inputs">SourceDevice.Inputs (class in tickit.devices.source)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.source.SourceDevice.Outputs">SourceDevice.Outputs (class in tickit.devices.source)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.typedefs.State">State (in module tickit.core.typedefs)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.state_interfaces.state_interface.StateConsumer">StateConsumer (class in tickit.core.state_interfaces.state_interface)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.state_interfaces.state_interface.StateInterface">StateInterface (in module tickit.core.state_interfaces.state_interface)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.state_interfaces.state_interface.StateProducer">StateProducer (class in tickit.core.state_interfaces.state_interface)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.status.Status">Status (class in tickit.devices.cryostream.status)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.base.CryostreamBase.stop">stop() (tickit.devices.cryostream.base.CryostreamBase method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.stop">(tickit.devices.cryostream.cryostream.CryostreamAdapter method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.core.state_interfaces.internal.InternalStateConsumer.subscribe">subscribe() (tickit.core.state_interfaces.internal.InternalStateConsumer method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.core.state_interfaces.internal.InternalStateServer.subscribe">(tickit.core.state_interfaces.internal.InternalStateServer method)</a>
+</li>
+        <li><a href="reference/api.html#tickit.core.state_interfaces.kafka.KafkaStateConsumer.subscribe">(tickit.core.state_interfaces.kafka.KafkaStateConsumer method)</a>
+</li>
+        <li><a href="reference/api.html#tickit.core.state_interfaces.state_interface.StateConsumer.subscribe">(tickit.core.state_interfaces.state_interface.StateConsumer method)</a>
+</li>
+      </ul></li>
+      <li><a href="explanations/glossary.html#term-System-Simulation"><strong>System Simulation</strong></a>
+</li>
+      <li><a href="reference/api.html#tickit.core.components.system_simulation.SystemSimulation">SystemSimulation (class in tickit.core.components.system_simulation)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.components.system_simulation.SystemSimulationComponent">SystemSimulationComponent (class in tickit.core.components.system_simulation)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.adapters.composed.T">T (in module tickit.adapters.composed)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.core.adapter.T">(in module tickit.core.adapter)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.adapters.servers.tcp.TcpServer">TcpServer (class in tickit.adapters.servers.tcp)</a>
+</li>
+      <li><a href="explanations/glossary.html#term-Ticker"><strong>Ticker</strong></a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.core.management.ticker.Ticker">(class in tickit.core.management.ticker)</a>
+</li>
+      </ul></li>
+      <li>
+    tickit
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit">module</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.tickit.__version__">tickit.__version__ (in module tickit)</a>
+</li>
+      <li>
+    tickit.adapters
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.adapters">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.adapters.composed
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.adapters.composed">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.adapters.epicsadapter
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.adapters.epicsadapter">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.adapters.interpreters
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.adapters.interpreters">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.adapters.interpreters.command
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.adapters.interpreters.command">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.adapters.interpreters.command.command_interpreter
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.adapters.interpreters.command.command_interpreter">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.adapters.interpreters.command.regex_command
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.adapters.interpreters.command.regex_command">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.adapters.servers
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.adapters.servers">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.adapters.servers.tcp
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.adapters.servers.tcp">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.core
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.core">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.core.adapter
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.core.adapter">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.core.components
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.core.components">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.core.components.component
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.core.components.component">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.core.components.device_simulation
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.core.components.device_simulation">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.core.components.system_simulation
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.core.components.system_simulation">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.core.device
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.core.device">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.core.management
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.core.management">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.core.management.event_router
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.core.management.event_router">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.core.management.schedulers
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.core.management.schedulers">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.core.management.schedulers.base
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.core.management.schedulers.base">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.core.management.schedulers.master
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.core.management.schedulers.master">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.core.management.schedulers.slave
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.core.management.schedulers.slave">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.core.management.ticker
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.core.management.ticker">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.core.runner
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.core.runner">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    tickit.core.state_interfaces
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.core.state_interfaces">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.core.state_interfaces.internal
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.core.state_interfaces.internal">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.core.state_interfaces.kafka
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.core.state_interfaces.kafka">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.core.state_interfaces.state_interface
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.core.state_interfaces.state_interface">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.core.typedefs
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.core.typedefs">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.devices
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.devices">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.devices.cryostream
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.devices.cryostream">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.devices.cryostream.base
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.devices.cryostream.base">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.devices.cryostream.cryostream
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.devices.cryostream.cryostream">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.devices.cryostream.states
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.devices.cryostream.states">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.devices.cryostream.status
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.devices.cryostream.status">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.devices.femto
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.devices.femto">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.devices.femto.femto
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.devices.femto.femto">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.devices.pneumatic
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.devices.pneumatic">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.devices.pneumatic.pneumatic
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.devices.pneumatic.pneumatic">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.devices.sink
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.devices.sink">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.devices.source
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.devices.source">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.utils
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.utils">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.utils.byte_format
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.utils.byte_format">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.utils.configuration
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.utils.configuration">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.utils.configuration.configurable
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.utils.configuration.configurable">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.utils.configuration.loading
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.utils.configuration.loading">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.utils.singleton
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.utils.singleton">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.utils.topic_naming
+
+      <ul>
+        <li><a href="reference/api.html#module-tickit.utils.topic_naming">module</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.core.state_interfaces.internal.InternalStateServer.topics">topics (tickit.core.state_interfaces.internal.InternalStateServer property)</a>
+</li>
+      <li><a href="reference/api.html#examples.devices.trampoline.TrampolineDevice">TrampolineDevice (class in examples.devices.trampoline)</a>
+</li>
+      <li><a href="reference/api.html#examples.devices.trampoline.TrampolineDevice.Inputs">TrampolineDevice.Inputs (class in examples.devices.trampoline)</a>
+</li>
+      <li><a href="reference/api.html#examples.devices.trampoline.TrampolineDevice.Outputs">TrampolineDevice.Outputs (class in examples.devices.trampoline)</a>
+</li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.base.CryostreamBase.turbo">turbo() (tickit.devices.cryostream.base.CryostreamBase method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamAdapter.turbo">(tickit.devices.cryostream.cryostream.CryostreamAdapter method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.adapters.interpreters.command.command_interpreter.CommandInterpreter.unknown_command">unknown_command() (tickit.adapters.interpreters.command.command_interpreter.CommandInterpreter static method)</a>
+</li>
+      <li><a href="reference/api.html#examples.devices.remote_controlled.RemoteControlledDevice.update">update() (examples.devices.remote_controlled.RemoteControlledDevice method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#examples.devices.shutter.ShutterDevice.update">(examples.devices.shutter.ShutterDevice method)</a>
+</li>
+        <li><a href="reference/api.html#examples.devices.trampoline.RandomTrampolineDevice.update">(examples.devices.trampoline.RandomTrampolineDevice method)</a>
+</li>
+        <li><a href="reference/api.html#examples.devices.trampoline.TrampolineDevice.update">(examples.devices.trampoline.TrampolineDevice method)</a>
+</li>
+        <li><a href="reference/api.html#tickit.core.device.Device.update">(tickit.core.device.Device method)</a>
+</li>
+        <li><a href="reference/api.html#tickit.devices.cryostream.cryostream.CryostreamDevice.update">(tickit.devices.cryostream.cryostream.CryostreamDevice method)</a>
+</li>
+        <li><a href="reference/api.html#tickit.devices.femto.femto.FemtoDevice.update">(tickit.devices.femto.femto.FemtoDevice method)</a>
+</li>
+        <li><a href="reference/api.html#tickit.devices.pneumatic.pneumatic.PneumaticDevice.update">(tickit.devices.pneumatic.pneumatic.PneumaticDevice method)</a>
+</li>
+        <li><a href="reference/api.html#tickit.devices.sink.SinkDevice.update">(tickit.devices.sink.SinkDevice method)</a>
+</li>
+        <li><a href="reference/api.html#tickit.devices.source.SourceDevice.update">(tickit.devices.source.SourceDevice method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.update_component">update_component() (tickit.core.management.schedulers.base.BaseScheduler method)</a>
+
+      <ul>
+        <li><a href="reference/api.html#tickit.core.management.schedulers.slave.SlaveScheduler.update_component">(tickit.core.management.schedulers.slave.SlaveScheduler method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/api.html#tickit.devices.cryostream.base.CryostreamBase.update_temperature">update_temperature() (tickit.devices.cryostream.base.CryostreamBase method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.utils.topic_naming.valid_component_id">valid_component_id() (in module tickit.utils.topic_naming)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.core.state_interfaces.internal.Message.value">value (tickit.core.state_interfaces.internal.Message property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.core.management.event_router.Wiring">Wiring (class in tickit.core.management.event_router)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#tickit.core.management.event_router.EventRouter.wiring">wiring (tickit.core.management.event_router.EventRouter property)</a>
+</li>
+      <li><a href="reference/api.html#tickit.core.management.event_router.Wiring_Struct">Wiring_Struct (in module tickit.core.management.event_router)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Y">Y</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/api.html#examples.devices.remote_controlled.RemoteControlledAdapter.yield_observed">yield_observed() (examples.devices.remote_controlled.RemoteControlledAdapter method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Diamond Light Source.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
