@@ -1,6 +1,5 @@
 import asyncio
 import logging
-from dataclasses import dataclass
 from typing import Any
 
 import aiozmq
@@ -12,13 +11,24 @@ from tickit.core.device import Device
 LOGGER = logging.getLogger(__name__)
 
 
-@dataclass
 class ZeroMQAdapter(Adapter):
     """An adapter for a ZeroMQ data stream."""
 
-    zmq_host: str = "127.0.0.1"
-    zmq_port: int = 5555
-    running: bool = False
+    zmq_host: str
+    zmq_port: int
+    running: bool
+
+    _router: aiozmq.ZmqStream
+    _dealer: aiozmq.ZmqStream
+
+    def __init__(
+        self, zmq_host: str = "127.0.0.1", zmq_port: int = 5555, running: bool = False
+    ) -> None:
+        """Initialize with default values."""
+        super().__init__()
+        self.zmq_host = zmq_host
+        self.zmq_port = zmq_port
+        self.running = running
 
     async def start_stream(self) -> None:
         """Start the ZeroMQ stream."""
@@ -29,6 +39,9 @@ class ZeroMQAdapter(Adapter):
 
         addr = list(self._router.transport.bindings())[0]
         self._dealer = await aiozmq.create_zmq_stream(zmq.DEALER, connect=addr)
+
+        self._router.transport.setsockopt(zmq.LINGER, 0)
+        self._dealer.transport.setsockopt(zmq.LINGER, 0)
 
     async def close_stream(self) -> None:
         """Close the ZeroMQ stream."""

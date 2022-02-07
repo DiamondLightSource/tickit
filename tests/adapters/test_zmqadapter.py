@@ -46,7 +46,7 @@ def test_zeromq_adapter_constructor():
 
 
 @pytest.mark.asyncio
-async def test_zeromq_adapter_start_stream(zeromq_adapter):
+async def test_zeromq_adapter_start_stream(zeromq_adapter: ZeroMQAdapter):
     await zeromq_adapter.start_stream()
 
     assert isinstance(zeromq_adapter._router, aiozmq.stream.ZmqStream)
@@ -56,7 +56,7 @@ async def test_zeromq_adapter_start_stream(zeromq_adapter):
 
 
 @pytest.mark.asyncio
-async def test_zeromq_adapter_close_stream(zeromq_adapter):
+async def test_zeromq_adapter_close_stream(zeromq_adapter: ZeroMQAdapter):
     await zeromq_adapter.start_stream()
 
     await zeromq_adapter.close_stream()
