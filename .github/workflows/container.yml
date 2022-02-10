@@ -4,6 +4,7 @@ on:
   push:
     branches:
     - master
+    - fix-container-build
   release:
     types: [published]
 
@@ -68,7 +69,7 @@ jobs:
           builder: ${{ steps.buildx.output.name }}
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:${{ steps.tag.outputs.image_tag }}
+            ghcr.io/${{ github.repository }}:${{ steps.tagger.outputs.image_tag }}
           target: runtime
           cache-from: type=local,src=~/cache
           cache-to: type=local,dest=~/cache
@@ -79,7 +80,7 @@ jobs:
           builder: ${{ steps.buildx.output.name }}
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:${{ steps.tag.outputs.image_tag }}.dev
+            ghcr.io/${{ github.repository }}:${{ steps.tagger.outputs.image_tag }}.dev
           target: developer
           cache-from: type=local,src=~/cache
           cache-to: type=local,dest=~/cache
