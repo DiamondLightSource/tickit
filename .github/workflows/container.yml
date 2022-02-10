@@ -22,12 +22,10 @@ jobs:
 
       - name: Generate image tags
         id: tagger
-        uses: docker/metadata-action@v3
-        with:
-          images: dls-controls/tickit
-          tags: |
-            type=sha
-            type=ref,event=tag
+        run: |
+          # tag is branch name or tag if there is a tag
+          echo ::set-output name=image_tag::${GITHUB_REF##*/}
+          echo ::set-output name=do_push::true
       
       - name: Cache Docker layers
         uses: actions/cache@v2
@@ -69,7 +67,8 @@ jobs:
         with:
           builder: ${{ steps.buildx.output.name }}
           push: true
-          tags: ghcr.io/${{ steps.tagger.outputs.tags }}
+          tags: |
+            ghcr.io/${{ github.repository }}:${{ steps.tagger.outputs.image_tag }}
           target: runtime
           cache-from: type=local,src=~/cache
           cache-to: type=local,dest=~/cache
@@ -79,7 +78,8 @@ jobs:
         with:
           builder: ${{ steps.buildx.output.name }}
           push: true
-          tags: ghcr.io/${{ steps.tagger.outputs.tags }}_dev
+          tags: |
+            ghcr.io/${{ github.repository }}:${{ steps.tagger.outputs.image_tag }}.dev
           target: developer
           cache-from: type=local,src=~/cache
           cache-to: type=local,dest=~/cache
