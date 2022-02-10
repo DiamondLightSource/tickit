@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tickit.utils.configuration.loading &mdash; tickit 0.1.1.pre5 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/theme_overrides.css" type="text/css" />
+    <link rel="shortcut icon" href="../../../../_static/tickit-logo.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: rgb(7, 43, 93)" >
+            <a href="../../../../index.html" class="icon icon-home"> tickit
+            <img src="../../../../_static/tickit-logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.1.1.pre5
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+  
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/installation.html">Installation Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/running-a-simulation.html">Running a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/creating-a-simulation.html">Creating a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/creating-a-device.html">Creating a Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/creating-an-adapter.html">Creating an Adapter</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">How-to Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../how-to/accomplish-a-task.html">How to accomplish a task</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Explanations</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../explanations/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../explanations/how-component-updates-are-ordered.html">How component updates are ordered</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../reference/api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../reference/contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/dls-controls/tickit/blob/master/CHANGELOG.rst">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="genindex.html#http://">Index</a></li>
+</ul>
+
+  <!-- Add versions for selected branches + tags -->
+  <p class="caption">
+    <span class="caption-text">Versions</span>
+  </p>
+  <ul id="versions"/>
+  <script>
+    // Add any branches to appear in the side pane here, tags will be added below
+    // Will only appear if docs are built and pushed in gh-pages
+    var versions = ['main', 'master'];
+    var dirs = new Set();
+    function addVersion(name) {
+      if (dirs.has(name)) {
+        var li = document.createElement("li");
+        var a = document.createElement("a");
+        a.href = 'https://dls-controls.github.io/tickit/' + name;
+        a.innerText = name;
+        li.appendChild(a)
+        document.getElementById('versions').appendChild(li);
+      }
+    }
+    Promise.all([
+      // Find gh-pages directories and populate `dirs`
+      fetch("https://api.github.com/repos/dls-controls/tickit/contents?ref=gh-pages")
+      .then(response => response.json())
+      .then(data => data.forEach(function(e) {
+        if (e.type == "dir") dirs.add(e.name);
+      })),
+      // Add tags to `versions`
+      fetch('https://api.github.com/repos/dls-controls/tickit/tags')
+        .then(response => response.json())
+        .then(data => data.forEach(function(e) {
+          versions.push(e.name);
+        }))
+      ]).then(_ => versions.forEach(addVersion))
+  </script>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: rgb(7, 43, 93)" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">tickit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      <li>tickit.utils.configuration.loading</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tickit.utils.configuration.loading</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">import_module</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Type</span>
+
+<span class="kn">import</span> <span class="nn">yaml</span>
+<span class="kn">from</span> <span class="nn">apischema</span> <span class="kn">import</span> <span class="n">deserialize</span>
+<span class="kn">from</span> <span class="nn">apischema.conversions</span> <span class="kn">import</span> <span class="n">AnyConversion</span><span class="p">,</span> <span class="n">Conversion</span>
+<span class="kn">from</span> <span class="nn">apischema.conversions.conversions</span> <span class="kn">import</span> <span class="n">Conversion</span>
+<span class="kn">from</span> <span class="nn">apischema.conversions.converters</span> <span class="kn">import</span> <span class="n">default_deserialization</span>
+
+<span class="kn">from</span> <span class="nn">tickit.core.components.component</span> <span class="kn">import</span> <span class="n">ComponentConfig</span>
+<span class="kn">from</span> <span class="nn">tickit.utils.configuration.configurable</span> <span class="kn">import</span> <span class="n">is_tagged_union</span>
+
+
+<div class="viewcode-block" id="importing_conversion"><a class="viewcode-back" href="../../../../reference/api.html#tickit.utils.configuration.loading.importing_conversion">[docs]</a><span class="k">def</span> <span class="nf">importing_conversion</span><span class="p">(</span><span class="n">typ</span><span class="p">:</span> <span class="n">Type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnyConversion</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Create a conversion that imports the module of a ComponentConfig.</span>
+
+<span class="sd">    When a ComponentConfig is requested from a dict, take its fully qualified</span>
+<span class="sd">    name from the tagged union dict and import it before deserializing it</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">is_tagged_union</span><span class="p">[</span><span class="n">typ</span><span class="p">]:</span>
+
+        <span class="k">def</span> <span class="nf">conversion</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
+            <span class="c1"># We can&#39;t use the deserialization union above as the classes</span>
+            <span class="c1"># haven&#39;t been imported so won&#39;t appear in __subclasses__, so use a</span>
+            <span class="c1"># single element dict instead</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="n">d</span>
+            <span class="n">fullname</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">pkg</span><span class="p">,</span> <span class="n">clsname</span> <span class="o">=</span> <span class="n">fullname</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="bp">cls</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">import_module</span><span class="p">(</span><span class="n">pkg</span><span class="p">),</span> <span class="n">clsname</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">deserialize</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">default_conversion</span><span class="o">=</span><span class="n">importing_conversion</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Conversion</span><span class="p">(</span><span class="n">conversion</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="nb">dict</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">typ</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">default_deserialization</span><span class="p">(</span><span class="n">typ</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="read_configs"><a class="viewcode-back" href="../../../../reference/api.html#tickit.utils.configuration.loading.read_configs">[docs]</a><span class="k">def</span> <span class="nf">read_configs</span><span class="p">(</span><span class="n">config_path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">ComponentConfig</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;A utility function which reads and deserializes configs.</span>
+
+<span class="sd">    A utility function which reads config files, performs yaml deserialization,</span>
+<span class="sd">    loads the required internal and external modules then subsequently performs</span>
+<span class="sd">    apischema deserialization to produce a list of component configuration objects.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        config_path ([type]): The path to the config file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        List[Component]: A list of component configuration objects.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">yaml_struct</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">config_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">),</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">Loader</span><span class="p">)</span>
+    <span class="n">configs</span> <span class="o">=</span> <span class="n">deserialize</span><span class="p">(</span>
+        <span class="n">List</span><span class="p">[</span><span class="n">ComponentConfig</span><span class="p">],</span>
+        <span class="n">yaml_struct</span><span class="p">,</span>
+        <span class="n">default_conversion</span><span class="o">=</span><span class="n">importing_conversion</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">configs</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Diamond Light Source.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

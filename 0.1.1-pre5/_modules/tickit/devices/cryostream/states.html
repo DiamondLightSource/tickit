@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tickit.devices.cryostream.states &mdash; tickit 0.1.1.pre5 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/theme_overrides.css" type="text/css" />
+    <link rel="shortcut icon" href="../../../../_static/tickit-logo.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: rgb(7, 43, 93)" >
+            <a href="../../../../index.html" class="icon icon-home"> tickit
+            <img src="../../../../_static/tickit-logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.1.1.pre5
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+  
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/installation.html">Installation Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/running-a-simulation.html">Running a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/creating-a-simulation.html">Creating a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/creating-a-device.html">Creating a Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/creating-an-adapter.html">Creating an Adapter</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">How-to Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../how-to/accomplish-a-task.html">How to accomplish a task</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Explanations</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../explanations/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../explanations/how-component-updates-are-ordered.html">How component updates are ordered</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../reference/api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../reference/contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/dls-controls/tickit/blob/master/CHANGELOG.rst">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="genindex.html#http://">Index</a></li>
+</ul>
+
+  <!-- Add versions for selected branches + tags -->
+  <p class="caption">
+    <span class="caption-text">Versions</span>
+  </p>
+  <ul id="versions"/>
+  <script>
+    // Add any branches to appear in the side pane here, tags will be added below
+    // Will only appear if docs are built and pushed in gh-pages
+    var versions = ['main', 'master'];
+    var dirs = new Set();
+    function addVersion(name) {
+      if (dirs.has(name)) {
+        var li = document.createElement("li");
+        var a = document.createElement("a");
+        a.href = 'https://dls-controls.github.io/tickit/' + name;
+        a.innerText = name;
+        li.appendChild(a)
+        document.getElementById('versions').appendChild(li);
+      }
+    }
+    Promise.all([
+      // Find gh-pages directories and populate `dirs`
+      fetch("https://api.github.com/repos/dls-controls/tickit/contents?ref=gh-pages")
+      .then(response => response.json())
+      .then(data => data.forEach(function(e) {
+        if (e.type == "dir") dirs.add(e.name);
+      })),
+      // Add tags to `versions`
+      fetch('https://api.github.com/repos/dls-controls/tickit/tags')
+        .then(response => response.json())
+        .then(data => data.forEach(function(e) {
+          versions.push(e.name);
+        }))
+      ]).then(_ => versions.forEach(addVersion))
+  </script>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: rgb(7, 43, 93)" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">tickit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      <li>tickit.devices.cryostream.states</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tickit.devices.cryostream.states</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">IntEnum</span>
+
+
+<div class="viewcode-block" id="RunModes"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.states.RunModes">[docs]</a><span class="k">class</span> <span class="nc">RunModes</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An enumerator for Cryostream run modes.&quot;&quot;&quot;</span>
+
+    <span class="n">STARTUP</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">STARTUPFAIL</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">STARTUPOK</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">RUN</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">SETUP</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">SHUTDOWNOK</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">SHUTDOWNFAIL</span> <span class="o">=</span> <span class="mi">6</span></div>
+
+
+<div class="viewcode-block" id="PhaseIds"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.states.PhaseIds">[docs]</a><span class="k">class</span> <span class="nc">PhaseIds</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An enumerator for Cryostream phases.&quot;&quot;&quot;</span>
+
+    <span class="n">RAMP</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">COOL</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">PLAT</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">HOLD</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">END</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">PURGE</span> <span class="o">=</span> <span class="mi">5</span></div>
+
+
+<div class="viewcode-block" id="AlarmCodes"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.states.AlarmCodes">[docs]</a><span class="k">class</span> <span class="nc">AlarmCodes</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An enumerator for Cryostream alarm codes alarm levels.&quot;&quot;&quot;</span>
+
+    <span class="n">NO_ERRORS</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">STOP_PRESSED</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">STOP_COMMAND</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">END_COMPLETE</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">PURGE_COMPLETE</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">TEMP_WARNING</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">PRESSURE_WARNING</span> <span class="o">=</span> <span class="mi">6</span>
+    <span class="n">CHECK_VACUUM</span> <span class="o">=</span> <span class="mi">7</span>
+    <span class="n">SELF_CHECK_FAIL</span> <span class="o">=</span> <span class="mi">8</span>
+    <span class="n">FLOW_RATE</span> <span class="o">=</span> <span class="mi">9</span>
+    <span class="n">TEMP_CONTROL_ERROR</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">GAS_TYPE_ERROR</span> <span class="o">=</span> <span class="mi">11</span>
+    <span class="n">TEMP_READING_ERROR</span> <span class="o">=</span> <span class="mi">12</span>
+    <span class="n">SUCT_TEMP_ERROR</span> <span class="o">=</span> <span class="mi">13</span>
+    <span class="n">SENSOR_FAIL</span> <span class="o">=</span> <span class="mi">14</span>
+    <span class="n">BROWNOUT</span> <span class="o">=</span> <span class="mi">15</span>
+    <span class="n">SINK_OVERHEAT</span> <span class="o">=</span> <span class="mi">16</span>
+    <span class="n">PSU_OVERHEAT</span> <span class="o">=</span> <span class="mi">17</span>
+    <span class="n">POWER_LOSS</span> <span class="o">=</span> <span class="mi">18</span>
+    <span class="n">COLHEAD_TOO_COLD</span> <span class="o">=</span> <span class="mi">19</span>
+    <span class="n">COLHEAD_TIMEOUT</span> <span class="o">=</span> <span class="mi">20</span>
+    <span class="n">CRYODRIVE_NOT_FOUND</span> <span class="o">=</span> <span class="mi">21</span>
+    <span class="n">CRYODRIVE_ERROR</span> <span class="o">=</span> <span class="mi">22</span>
+    <span class="n">NO_NITROGEN</span> <span class="o">=</span> <span class="mi">23</span>
+    <span class="n">NO_HELIUM</span> <span class="o">=</span> <span class="mi">24</span>
+    <span class="n">VAC_GAUGE_FAIL</span> <span class="o">=</span> <span class="mi">25</span>
+    <span class="n">VAC_READING_ERROR</span> <span class="o">=</span> <span class="mi">26</span>
+    <span class="n">RS232_ERROR</span> <span class="o">=</span> <span class="mi">27</span>
+    <span class="n">COLDHEAD_TEMP_WARNING</span> <span class="o">=</span> <span class="mi">28</span>
+    <span class="n">COLDHEAD_TEMP_ERROR</span> <span class="o">=</span> <span class="mi">29</span>
+    <span class="n">DO_NOT_OPEN_CRYOSTAT_L2</span> <span class="o">=</span> <span class="mi">30</span>
+    <span class="n">DO_NOT_OPEN_CRYOSTAT_L3</span> <span class="o">=</span> <span class="mi">31</span>
+    <span class="n">UNPLUG_XTAL_SENSOR</span> <span class="o">=</span> <span class="mi">32</span>
+    <span class="n">CRYOSTAT_OPEN</span> <span class="o">=</span> <span class="mi">33</span>
+    <span class="n">CRYOSTAT_OPEN_TIMEOUT</span> <span class="o">=</span> <span class="mi">34</span>
+    <span class="n">HIGH_TEMP_WARNING</span> <span class="o">=</span> <span class="mi">35</span>
+    <span class="n">HIGH_TEMP_ERROR</span> <span class="o">=</span> <span class="mi">36</span>
+    <span class="n">CRYODRIVE_T_SENSOR_FAULT</span> <span class="o">=</span> <span class="mi">37</span>
+    <span class="n">CRYODRIVE_P_SENSOR_FAULT</span> <span class="o">=</span> <span class="mi">38</span>
+    <span class="n">CRYODRIVE_LOW_T_TRIP</span> <span class="o">=</span> <span class="mi">39</span>
+    <span class="n">CRYODRIVE_HIGH_T_TRIP</span> <span class="o">=</span> <span class="mi">40</span>
+    <span class="n">CRYODRIVE_LOW_P_TRIP</span> <span class="o">=</span> <span class="mi">41</span>
+    <span class="n">CRYODRIVE_HIGH_T_WARNING</span> <span class="o">=</span> <span class="mi">42</span>
+    <span class="n">CRYODRIVE_LOW_P_WARNING</span> <span class="o">=</span> <span class="mi">43</span>
+    <span class="n">CONNECT_GAS_SUPPLY</span> <span class="o">=</span> <span class="mi">44</span>
+    <span class="n">AUTOFILL_FAULT</span> <span class="o">=</span> <span class="mi">45</span>
+    <span class="n">AUTOFILL_ABOUT_TO_FILL</span> <span class="o">=</span> <span class="mi">46</span>
+    <span class="n">AUTOFILL_FILLING</span> <span class="o">=</span> <span class="mi">47</span>
+    <span class="n">COLLAR_TEMP_ERROR</span> <span class="o">=</span> <span class="mi">48</span>
+    <span class="n">COLDHEAD_ERROR</span> <span class="o">=</span> <span class="mi">49</span>
+    <span class="n">TURBO_FLOW</span> <span class="o">=</span> <span class="mi">50</span>
+    <span class="n">HE_SELECTED</span> <span class="o">=</span> <span class="mi">51</span>
+    <span class="n">CRYODRIVE_NOT_READY</span> <span class="o">=</span> <span class="mi">52</span>
+    <span class="n">REGEN_REQUIRED</span> <span class="o">=</span> <span class="mi">53</span>
+    <span class="n">REGEN_COMPLETE</span> <span class="o">=</span> <span class="mi">54</span>
+    <span class="n">CONNECT_VACUUM</span> <span class="o">=</span> <span class="mi">55</span>
+    <span class="n">DISCONNECT_VACUUM</span> <span class="o">=</span> <span class="mi">56</span></div>
+
+
+<div class="viewcode-block" id="HardwareType"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.states.HardwareType">[docs]</a><span class="k">class</span> <span class="nc">HardwareType</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An enumerator for Cryostream hardware types.&quot;&quot;&quot;</span>
+
+    <span class="n">PLUS_SYSTEM</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># Max temp 500 K (Cryostream, Cobra and Smartstream)</span>
+    <span class="n">HAS_CRYOSHUTTER</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># 700 series Cryostream and Cobra</span>
+    <span class="n">SERIES_800</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">HAS_AUTOFILL</span> <span class="o">=</span> <span class="mi">4</span>  <span class="c1"># 800 series Cryostream from firmware version 150</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Diamond Light Source.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
