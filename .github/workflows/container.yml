@@ -4,7 +4,6 @@ on:
   push:
     branches:
     - master
-    - fix-container-build
   release:
     types: [published]
 
