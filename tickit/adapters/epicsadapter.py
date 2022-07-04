@@ -3,7 +3,6 @@ import itertools
 import logging
 import os
 import re
-import threading
 from abc import abstractmethod
 from dataclasses import dataclass
 from tempfile import NamedTemporaryFile
