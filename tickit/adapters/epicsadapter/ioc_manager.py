@@ -7,13 +7,25 @@ from softioc import asyncio_dispatcher, builder, softioc
 
 LOGGER = logging.getLogger(__name__)
 
-
+#: Name for the global Tickit IOC, will prefix some meta PVs.
 _TICKIT_IOC_NAME: str = "TICKIT_IOC"
+
+#: Ids of all adapters currently registered but not ready.
 _REGISTERED_ADAPTER_IDS: List[int] = []
+
+#: Iterator of unique IDs for new adapters
 _ID_COUNTER: itertools.count = itertools.count()
 
 
 def register_adapter() -> int:
+    """Register a new adapter that may be creating records for the process-wide IOC.
+
+    The IOC will not be initialized until all registered adapters have notified that
+    they are ready.
+
+    Returns:
+        int: A unique ID for this adapter to use when notifiying that it is ready.
+    """
     adapter_id = next(_ID_COUNTER)
     LOGGER.info(f"New IOC adapter registering with ID: {adapter_id}")
     _REGISTERED_ADAPTER_IDS.append(adapter_id)
@@ -21,6 +33,13 @@ def register_adapter() -> int:
 
 
 def notify_adapter_ready(adapter_id: int) -> None:
+    """Notify the builder that a particular adpater has made all the records it needs to.
+
+    Once all registered adapters have notified, the IOC will start.
+
+    Args:
+        adapter_id (int): Unique ID of the adapter
+    """
     _REGISTERED_ADAPTER_IDS.remove(adapter_id)
     LOGGER.info(f"IOC adapter #{adapter_id} reports ready")
     if not _REGISTERED_ADAPTER_IDS:
@@ -29,7 +48,7 @@ def notify_adapter_ready(adapter_id: int) -> None:
 
 
 def _build_and_run_ioc() -> None:
-    """Builds an EPICS python soft IOC for the adapter."""
+    """Build an EPICS python soft IOC for the adapter."""
     LOGGER.info("Initializing database")
     builder.SetDeviceName(_TICKIT_IOC_NAME)
     softioc.devIocStats(_TICKIT_IOC_NAME)
