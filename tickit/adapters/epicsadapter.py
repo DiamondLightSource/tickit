@@ -128,6 +128,8 @@ class EpicsAdapter(Adapter):
     ) -> None:
         """Runs the server continously."""
         await super().run_forever(device, raise_interrupt)
+        builder.SetDeviceName(self.ioc_name)
         self.load_records_without_DTYP_fields()
         self.on_db_load()
+        builder.UnsetDevice()
         _IOC_SINGLETON.notify_adapter_ready(self.ioc_num)
