@@ -1,7 +1,7 @@
 import asyncio
 import itertools
 import logging
-from typing import List
+from typing import Set
 
 from softioc import asyncio_dispatcher, builder, softioc
 
@@ -11,7 +11,7 @@ LOGGER = logging.getLogger(__name__)
 _TICKIT_IOC_NAME: str = "TICKIT_IOC"
 
 #: Ids of all adapters currently registered but not ready.
-_REGISTERED_ADAPTER_IDS: List[int] = []
+_REGISTERED_ADAPTER_IDS: Set[int] = set()
 
 #: Iterator of unique IDs for new adapters
 _ID_COUNTER: itertools.count = itertools.count()
@@ -28,7 +28,7 @@ def register_adapter() -> int:
     """
     adapter_id = next(_ID_COUNTER)
     LOGGER.debug(f"New IOC adapter registering with ID: {adapter_id}")
-    _REGISTERED_ADAPTER_IDS.append(adapter_id)
+    _REGISTERED_ADAPTER_IDS.add(adapter_id)
     return adapter_id
 
 
