@@ -2,8 +2,9 @@ import asyncio
 import logging
 from collections import defaultdict
 from typing import (
-    Awaitable,
+    Any,
     Callable,
+    Coroutine,
     DefaultDict,
     Dict,
     Hashable,
@@ -30,7 +31,7 @@ class Ticker:
     def __init__(
         self,
         wiring: Union[Wiring, InverseWiring],
-        update_component: Callable[[Input], Awaitable[None]],
+        update_component: Callable[[Input], Coroutine[Any, Any, None]],
     ) -> None:
         """A Ticker constructor which creates an event router and performs initial setup.
 

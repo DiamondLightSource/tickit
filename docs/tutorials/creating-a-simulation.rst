@@ -39,7 +39,7 @@ such we may extend our config, as:
     - examples.devices.trampoline.RandomTrampoline:
         name: rand_tramp
         inputs: {}
-    - tickit.devices.sink.Sink: {}
+    - tickit.devices.sink.Sink:
         name: tramp_sink        
         inputs:
           input:
