@@ -71,6 +71,7 @@ def test_epics_adapter_after_update_method(
 
     epics_adapter.after_update()
 
+    assert isinstance(input_record.set, Mock)
     input_record.set.assert_called()
 
 
