@@ -27,7 +27,7 @@ def register_adapter() -> int:
         int: A unique ID for this adapter to use when notifiying that it is ready.
     """
     adapter_id = next(_ID_COUNTER)
-    LOGGER.info(f"New IOC adapter registering with ID: {adapter_id}")
+    LOGGER.debug(f"New IOC adapter registering with ID: {adapter_id}")
     _REGISTERED_ADAPTER_IDS.append(adapter_id)
     return adapter_id
 
@@ -41,9 +41,9 @@ def notify_adapter_ready(adapter_id: int) -> None:
         adapter_id (int): Unique ID of the adapter
     """
     _REGISTERED_ADAPTER_IDS.remove(adapter_id)
-    LOGGER.info(f"IOC adapter #{adapter_id} reports ready")
+    LOGGER.debug(f"IOC adapter #{adapter_id} reports ready")
     if not _REGISTERED_ADAPTER_IDS:
-        LOGGER.info("All registered adapters are ready, starting IOC")
+        LOGGER.debug("All registered adapters are ready, starting IOC")
         _build_and_run_ioc()
 
 
