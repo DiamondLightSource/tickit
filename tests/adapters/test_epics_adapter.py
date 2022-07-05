@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, cast
 
 import pytest
 from mock import MagicMock, Mock, create_autospec, mock_open, patch
@@ -71,7 +71,7 @@ def test_epics_adapter_after_update_method(
 
     epics_adapter.after_update()
 
-    input_record.set.assert_called()
+    cast(Mock, input_record.set).assert_called()
 
 
 def test_epics_adapter_on_db_load_method(epics_adapter: EpicsAdapter):
