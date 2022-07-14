@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>API &mdash; tickit 0.1.1+2.g3141025 documentation</title>
+  <title>API &mdash; tickit 0.1.1+3.g215582f documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -985,8 +985,88 @@ protocol to a server and message handling to an interpreter.</p>
 <span class="target" id="module-tickit.adapters.epicsadapter"></span><section id="tickit-adapters-epicsadapter">
 <h4><code class="docutils literal notranslate"><span class="pre">tickit.adapters.epicsadapter</span></code><a class="headerlink" href="#tickit-adapters-epicsadapter" title="Permalink to this headline"></a></h4>
 <dl class="py class">
+<dt class="sig sig-object py" id="tickit.adapters.epicsadapter.EpicsAdapter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.adapters.epicsadapter.</span></span><span class="sig-name descname"><span class="pre">EpicsAdapter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ioc_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tickit/adapters/epicsadapter/adapter.html#EpicsAdapter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.EpicsAdapter" title="Permalink to this definition"></a></dt>
+<dd><p>An adapter implementation which acts as an EPICS IOC.</p>
+<p>An EpicsAdapter constructor which stores the db_file path and the IOC name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>db_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The path to the db_file.</p></li>
+<li><p><strong>ioc_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The name of the EPICS IOC.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)">None</a></p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tickit.adapters.epicsadapter.EpicsAdapter.link_input_on_interrupt">
+<span class="sig-name descname"><span class="pre">link_input_on_interrupt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.adapters.epicsadapter.InputRecord" title="tickit.adapters.epicsadapter.adapter.InputRecord"><span class="pre">tickit.adapters.epicsadapter.adapter.InputRecord</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">getter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/tickit/adapters/epicsadapter/adapter.html#EpicsAdapter.link_input_on_interrupt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.EpicsAdapter.link_input_on_interrupt" title="Permalink to this definition"></a></dt>
+<dd><p>Adds a record and a getter to the mapping of interrupting records.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>record</strong> (<a class="reference internal" href="#tickit.adapters.epicsadapter.InputRecord" title="tickit.adapters.epicsadapter.InputRecord"><em>InputRecord</em></a>) – The record to be added.</p></li>
+<li><p><strong>getter</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>Any</em><em>]</em>) – The getter handle.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)">None</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tickit.adapters.epicsadapter.EpicsAdapter.after_update">
+<span class="sig-name descname"><span class="pre">after_update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/tickit/adapters/epicsadapter/adapter.html#EpicsAdapter.after_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.EpicsAdapter.after_update" title="Permalink to this definition"></a></dt>
+<dd><p>Updates IOC records immediately following a device update.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)">None</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tickit.adapters.epicsadapter.EpicsAdapter.on_db_load">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">on_db_load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/tickit/adapters/epicsadapter/adapter.html#EpicsAdapter.on_db_load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.EpicsAdapter.on_db_load" title="Permalink to this definition"></a></dt>
+<dd><p>Customises records that have been loaded in to suit the simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)">None</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tickit.adapters.epicsadapter.EpicsAdapter.load_records_without_DTYP_fields">
+<span class="sig-name descname"><span class="pre">load_records_without_DTYP_fields</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tickit/adapters/epicsadapter/adapter.html#EpicsAdapter.load_records_without_DTYP_fields"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.EpicsAdapter.load_records_without_DTYP_fields" title="Permalink to this definition"></a></dt>
+<dd><p>Loads the records without DTYP fields.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tickit.adapters.epicsadapter.EpicsAdapter.run_forever">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run_forever</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.device.Device" title="tickit.core.device.Device"><span class="pre">tickit.core.device.Device</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">raise_interrupt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.adapter.RaiseInterrupt" title="tickit.core.adapter.RaiseInterrupt"><span class="pre">tickit.core.adapter.RaiseInterrupt</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/tickit/adapters/epicsadapter/adapter.html#EpicsAdapter.run_forever"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.EpicsAdapter.run_forever" title="Permalink to this definition"></a></dt>
+<dd><p>Runs the server continously.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device</strong> (<a class="reference internal" href="#tickit.core.device.Device" title="tickit.core.device.Device"><em>tickit.core.device.Device</em></a>) – </p></li>
+<li><p><strong>raise_interrupt</strong> (<a class="reference internal" href="#tickit.core.adapter.RaiseInterrupt" title="tickit.core.adapter.RaiseInterrupt"><em>tickit.core.adapter.RaiseInterrupt</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)">None</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="tickit.adapters.epicsadapter.InputRecord">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.adapters.epicsadapter.</span></span><span class="sig-name descname"><span class="pre">InputRecord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tickit/adapters/epicsadapter.html#InputRecord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.InputRecord" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.adapters.epicsadapter.</span></span><span class="sig-name descname"><span class="pre">InputRecord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tickit/adapters/epicsadapter/adapter.html#InputRecord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.InputRecord" title="Permalink to this definition"></a></dt>
 <dd><p>A data container representing an EPICS input record.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1004,7 +1084,7 @@ protocol to a server and message handling to an interpreter.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="tickit.adapters.epicsadapter.OutputRecord">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.adapters.epicsadapter.</span></span><span class="sig-name descname"><span class="pre">OutputRecord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tickit/adapters/epicsadapter.html#OutputRecord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.OutputRecord" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.adapters.epicsadapter.</span></span><span class="sig-name descname"><span class="pre">OutputRecord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tickit/adapters/epicsadapter/adapter.html#OutputRecord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.OutputRecord" title="Permalink to this definition"></a></dt>
 <dd><p>A data container representing an EPICS output record.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1014,97 +1094,6 @@ protocol to a server and message handling to an interpreter.</p>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)">None</a></p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="tickit.adapters.epicsadapter.EpicsAdapter">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.adapters.epicsadapter.</span></span><span class="sig-name descname"><span class="pre">EpicsAdapter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ioc_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tickit/adapters/epicsadapter.html#EpicsAdapter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.EpicsAdapter" title="Permalink to this definition"></a></dt>
-<dd><p>An adapter implementation which acts as an EPICS IOC.</p>
-<p>An EpicsAdapter constructor which stores the db_file path and the IOC name.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>db_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The path to the db_file.</p></li>
-<li><p><strong>ioc_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The name of the EPICS IOC.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)">None</a></p>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="tickit.adapters.epicsadapter.EpicsAdapter.link_input_on_interrupt">
-<span class="sig-name descname"><span class="pre">link_input_on_interrupt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.adapters.epicsadapter.InputRecord" title="tickit.adapters.epicsadapter.InputRecord"><span class="pre">tickit.adapters.epicsadapter.InputRecord</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">getter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/tickit/adapters/epicsadapter.html#EpicsAdapter.link_input_on_interrupt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.EpicsAdapter.link_input_on_interrupt" title="Permalink to this definition"></a></dt>
-<dd><p>Adds a record and a getter to the mapping of interrupting records.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>record</strong> (<a class="reference internal" href="#tickit.adapters.epicsadapter.InputRecord" title="tickit.adapters.epicsadapter.InputRecord"><em>InputRecord</em></a>) – The record to be added.</p></li>
-<li><p><strong>getter</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>Any</em><em>]</em>) – The getter handle.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)">None</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tickit.adapters.epicsadapter.EpicsAdapter.after_update">
-<span class="sig-name descname"><span class="pre">after_update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/tickit/adapters/epicsadapter.html#EpicsAdapter.after_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.EpicsAdapter.after_update" title="Permalink to this definition"></a></dt>
-<dd><p>Updates IOC records immediately following a device update.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)">None</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tickit.adapters.epicsadapter.EpicsAdapter.on_db_load">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">on_db_load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/tickit/adapters/epicsadapter.html#EpicsAdapter.on_db_load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.EpicsAdapter.on_db_load" title="Permalink to this definition"></a></dt>
-<dd><p>Customises records that have been loaded in to suit the simulation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)">None</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tickit.adapters.epicsadapter.EpicsAdapter.load_records_without_DTYP_fields">
-<span class="sig-name descname"><span class="pre">load_records_without_DTYP_fields</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tickit/adapters/epicsadapter.html#EpicsAdapter.load_records_without_DTYP_fields"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.EpicsAdapter.load_records_without_DTYP_fields" title="Permalink to this definition"></a></dt>
-<dd><p>Loads the records without DTYP fields.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tickit.adapters.epicsadapter.EpicsAdapter.build_ioc">
-<span class="sig-name descname"><span class="pre">build_ioc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/tickit/adapters/epicsadapter.html#EpicsAdapter.build_ioc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.EpicsAdapter.build_ioc" title="Permalink to this definition"></a></dt>
-<dd><p>Builds an EPICS python soft IOC for the adapter.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)">None</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tickit.adapters.epicsadapter.EpicsAdapter.run_forever">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run_forever</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.device.Device" title="tickit.core.device.Device"><span class="pre">tickit.core.device.Device</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">raise_interrupt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.adapter.RaiseInterrupt" title="tickit.core.adapter.RaiseInterrupt"><span class="pre">tickit.core.adapter.RaiseInterrupt</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/tickit/adapters/epicsadapter.html#EpicsAdapter.run_forever"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.EpicsAdapter.run_forever" title="Permalink to this definition"></a></dt>
-<dd><p>Runs the server continously.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>device</strong> (<a class="reference internal" href="#tickit.core.device.Device" title="tickit.core.device.Device"><em>tickit.core.device.Device</em></a>) – </p></li>
-<li><p><strong>raise_interrupt</strong> (<a class="reference internal" href="#tickit.core.adapter.RaiseInterrupt" title="tickit.core.adapter.RaiseInterrupt"><em>tickit.core.adapter.RaiseInterrupt</em></a>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)">None</a></p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 </section>

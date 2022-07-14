@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tickit.adapters.epicsadapter.adapter &mdash; tickit 0.1.1+3.g215582f documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/theme_overrides.css" type="text/css" />
+    <link rel="shortcut icon" href="../../../../_static/tickit-logo.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: rgb(7, 43, 93)" >
+            <a href="../../../../index.html" class="icon icon-home"> tickit
+            <img src="../../../../_static/tickit-logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                master
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/installation.html">Installation Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/running-a-simulation.html">Running a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/creating-a-simulation.html">Creating a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/creating-a-device.html">Creating a Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/creating-an-adapter.html">Creating an Adapter</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">How-to Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../how-to/accomplish-a-task.html">How to accomplish a task</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Explanations</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../explanations/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../explanations/how-component-updates-are-ordered.html">How component updates are ordered</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../reference/api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../reference/contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/dls-controls/tickit/blob/master/CHANGELOG.rst">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="genindex.html#http://">Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: rgb(7, 43, 93)" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">tickit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      <li>tickit.adapters.epicsadapter.adapter</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tickit.adapters.epicsadapter.adapter</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">tempfile</span> <span class="kn">import</span> <span class="n">NamedTemporaryFile</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span>
+
+<span class="kn">from</span> <span class="nn">softioc</span> <span class="kn">import</span> <span class="n">builder</span><span class="p">,</span> <span class="n">softioc</span>
+
+<span class="kn">from</span> <span class="nn">tickit.core.adapter</span> <span class="kn">import</span> <span class="n">Adapter</span><span class="p">,</span> <span class="n">RaiseInterrupt</span>
+<span class="kn">from</span> <span class="nn">tickit.core.device</span> <span class="kn">import</span> <span class="n">Device</span>
+
+<span class="kn">from</span> <span class="nn">.ioc_manager</span> <span class="kn">import</span> <span class="n">notify_adapter_ready</span><span class="p">,</span> <span class="n">register_adapter</span>
+
+
+<div class="viewcode-block" id="InputRecord"><a class="viewcode-back" href="../../../../reference/api.html#tickit.adapters.epicsadapter.InputRecord">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">InputRecord</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;A data container representing an EPICS input record.&quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="nb">set</span><span class="p">:</span> <span class="n">Callable</span>
+    <span class="n">get</span><span class="p">:</span> <span class="n">Callable</span></div>
+
+
+<div class="viewcode-block" id="OutputRecord"><a class="viewcode-back" href="../../../../reference/api.html#tickit.adapters.epicsadapter.OutputRecord">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">OutputRecord</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;A data container representing an EPICS output record.&quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span></div>
+
+
+<div class="viewcode-block" id="EpicsAdapter"><a class="viewcode-back" href="../../../../reference/api.html#tickit.adapters.epicsadapter.EpicsAdapter">[docs]</a><span class="k">class</span> <span class="nc">EpicsAdapter</span><span class="p">(</span><span class="n">Adapter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An adapter implementation which acts as an EPICS IOC.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ioc_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;An EpicsAdapter constructor which stores the db_file path and the IOC name.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            db_file (str): The path to the db_file.</span>
+<span class="sd">            ioc_name (str): The name of the EPICS IOC.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db_file</span> <span class="o">=</span> <span class="n">db_file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ioc_name</span> <span class="o">=</span> <span class="n">ioc_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interrupt_records</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">InputRecord</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ioc_num</span> <span class="o">=</span> <span class="n">register_adapter</span><span class="p">()</span>
+
+<div class="viewcode-block" id="EpicsAdapter.link_input_on_interrupt"><a class="viewcode-back" href="../../../../reference/api.html#tickit.adapters.epicsadapter.EpicsAdapter.link_input_on_interrupt">[docs]</a>    <span class="k">def</span> <span class="nf">link_input_on_interrupt</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">:</span> <span class="n">InputRecord</span><span class="p">,</span> <span class="n">getter</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">Any</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Adds a record and a getter to the mapping of interrupting records.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            record (InputRecord): The record to be added.</span>
+<span class="sd">            getter (Callable[[], Any]): The getter handle.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interrupt_records</span><span class="p">[</span><span class="n">record</span><span class="p">]</span> <span class="o">=</span> <span class="n">getter</span></div>
+
+<div class="viewcode-block" id="EpicsAdapter.after_update"><a class="viewcode-back" href="../../../../reference/api.html#tickit.adapters.epicsadapter.EpicsAdapter.after_update">[docs]</a>    <span class="k">def</span> <span class="nf">after_update</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Updates IOC records immediately following a device update.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">record</span><span class="p">,</span> <span class="n">getter</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">interrupt_records</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">current_value</span> <span class="o">=</span> <span class="n">getter</span><span class="p">()</span>
+            <span class="n">record</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">current_value</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Record </span><span class="si">{}</span><span class="s2"> updated to : </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">current_value</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="EpicsAdapter.on_db_load"><a class="viewcode-back" href="../../../../reference/api.html#tickit.adapters.epicsadapter.EpicsAdapter.on_db_load">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">on_db_load</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Customises records that have been loaded in to suit the simulation.&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="EpicsAdapter.load_records_without_DTYP_fields"><a class="viewcode-back" href="../../../../reference/api.html#tickit.adapters.epicsadapter.EpicsAdapter.load_records_without_DTYP_fields">[docs]</a>    <span class="k">def</span> <span class="nf">load_records_without_DTYP_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Loads the records without DTYP fields.&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_file</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">inp</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;.db&quot;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">inp</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">rb</span><span class="s2">&quot;\s*field\s*\(\s*DTYP&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+                        <span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+        <span class="n">softioc</span><span class="o">.</span><span class="n">dbLoadDatabase</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">substitutions</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;device=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ioc_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="EpicsAdapter.run_forever"><a class="viewcode-back" href="../../../../reference/api.html#tickit.adapters.epicsadapter.EpicsAdapter.run_forever">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run_forever</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">Device</span><span class="p">,</span> <span class="n">raise_interrupt</span><span class="p">:</span> <span class="n">RaiseInterrupt</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Runs the server continously.&quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">run_forever</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">raise_interrupt</span><span class="p">)</span>
+        <span class="n">builder</span><span class="o">.</span><span class="n">SetDeviceName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ioc_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_records_without_DTYP_fields</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_db_load</span><span class="p">()</span>
+        <span class="n">builder</span><span class="o">.</span><span class="n">UnsetDevice</span><span class="p">()</span>
+        <span class="n">notify_adapter_ready</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ioc_num</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Diamond Light Source.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+   
+  <div id="other-versions-div" class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions" style="visibility: hidden">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Other Versions</span>
+      master
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl id="other-versions-dl"/>
+    </div>
+  </div>
+  <script>
+    function addVersion(name) {
+      var dd = document.createElement("dd");
+      var a = document.createElement("a");
+      a.href = "../../../../../" + name;
+      a.innerText = name;
+      dd.appendChild(a);
+      document.getElementById('other-versions-dl').appendChild(dd);
+    }
+    // Get versions.txt and add a version for each line
+    fetch("../../../../../versions.txt").then(response => {
+      if (response.ok) {
+        document.getElementById('other-versions-div').style.visibility = "visible";
+        return response.text().then(text => text.split(/\r?\n/).forEach(addVersion))
+      }
+    });
+  </script>
+
+
+</body>
+</html>
