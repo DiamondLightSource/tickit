@@ -1,4 +1,3 @@
-import asyncio
 import os
 import re
 from abc import abstractmethod
@@ -6,10 +5,12 @@ from dataclasses import dataclass
 from tempfile import NamedTemporaryFile
 from typing import Any, Callable, Dict
 
-from softioc import asyncio_dispatcher, builder, softioc
+from softioc import builder, softioc
 
 from tickit.core.adapter import Adapter, RaiseInterrupt
 from tickit.core.device import Device
+
+from .ioc_manager import notify_adapter_ready, register_adapter
 
 
 @dataclass(frozen=True)
@@ -41,6 +42,7 @@ class EpicsAdapter(Adapter):
         self.db_file = db_file
         self.ioc_name = ioc_name
         self.interrupt_records: Dict[InputRecord, Callable[[], Any]] = {}
+        self.ioc_num = register_adapter()
 
     def link_input_on_interrupt(
         self, record: InputRecord, getter: Callable[[], Any]
@@ -76,23 +78,13 @@ class EpicsAdapter(Adapter):
         softioc.dbLoadDatabase(out.name, substitutions=f"device={self.ioc_name}")
         os.unlink(out.name)
 
-    def build_ioc(self) -> None:
-        """Builds an EPICS python soft IOC for the adapter."""
-        builder.SetDeviceName(self.ioc_name)
-
-        self.load_records_without_DTYP_fields()
-        self.on_db_load()
-
-        softioc.devIocStats(self.ioc_name)
-
-        builder.LoadDatabase()
-        event_loop = asyncio.get_event_loop()
-        dispatcher = asyncio_dispatcher.AsyncioDispatcher(event_loop)
-        softioc.iocInit(dispatcher)
-
     async def run_forever(
         self, device: Device, raise_interrupt: RaiseInterrupt
     ) -> None:
         """Runs the server continously."""
         await super().run_forever(device, raise_interrupt)
-        self.build_ioc()
+        builder.SetDeviceName(self.ioc_name)
+        self.load_records_without_DTYP_fields()
+        self.on_db_load()
+        builder.UnsetDevice()
+        notify_adapter_ready(self.ioc_num)
