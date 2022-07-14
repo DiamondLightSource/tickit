@@ -49,14 +49,14 @@ def notify_adapter_ready(adapter_id: int) -> None:
 
 def _build_and_run_ioc() -> None:
     """Build an EPICS python soft IOC for the adapter."""
-    LOGGER.info("Initializing database")
+    LOGGER.debug("Initializing database")
 
     # Records become immutable after this point
     builder.SetDeviceName(_TICKIT_IOC_NAME)
     softioc.devIocStats(_TICKIT_IOC_NAME)
     builder.LoadDatabase()
 
-    LOGGER.info("Starting IOC")
+    LOGGER.debug("Starting IOC")
     event_loop = asyncio.get_event_loop()
     dispatcher = asyncio_dispatcher.AsyncioDispatcher(event_loop)
     softioc.iocInit(dispatcher)
@@ -64,4 +64,4 @@ def _build_and_run_ioc() -> None:
     # the log level in order to only do it in DEBUG.
     if LOGGER.level <= logging.DEBUG:
         softioc.dbl()
-    LOGGER.info("IOC started")
+    LOGGER.debug("IOC started")
