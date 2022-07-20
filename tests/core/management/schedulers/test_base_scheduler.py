@@ -1,6 +1,7 @@
 from typing import Any, Iterable
 
 import pytest
+import pytest_asyncio
 from immutables import Map
 from mock import Mock, create_autospec, patch
 
@@ -45,8 +46,7 @@ def patch_ticker() -> Iterable[Mock]:
         yield mock
 
 
-@pytest.fixture
-@pytest.mark.asyncio
+@pytest_asyncio.fixture
 async def base_scheduler(
     mock_wiring: Mock,
     mock_state_consumer_type,

@@ -1,6 +1,7 @@
 from typing import Iterable
 
 import pytest
+import pytest_asyncio
 from mock import AsyncMock, Mock, patch
 
 from tickit.core.state_interfaces.kafka import KafkaStateConsumer, KafkaStateProducer
@@ -36,7 +37,7 @@ def patch_kafka_state_consumer_run_forever_method() -> Iterable[Mock]:
         yield mock
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def kafka_state_consumer(
     mock_callback: AsyncMock,
     patch_AIOKafkaStateConsumer: Mock,
