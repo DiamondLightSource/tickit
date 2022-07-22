@@ -58,6 +58,7 @@ class Wiring(Default_Wiring_Struct):
         """
         wiring: Wiring = cls()
         for in_dev, in_ios in inverse_wiring.items():
+            wiring[in_dev]
             for in_io, (out_dev, out_io) in in_ios.items():
                 wiring[out_dev][out_io].add(ComponentPort(in_dev, in_io))
         return wiring
@@ -82,7 +83,7 @@ class InverseWiring(Default_InverseWiring_Struct):
                 Defaults to None.
         """
         _wiring = (
-            {dev: DefaultDict(None, io) for dev, io in wiring.items() if io}
+            {dev: DefaultDict(None, io) for dev, io in wiring.items()}
             if wiring
             else dict()
         )
@@ -101,6 +102,7 @@ class InverseWiring(Default_InverseWiring_Struct):
         """
         inverse_wiring: InverseWiring = cls()
         for out_dev, out_ids in wiring.items():
+            inverse_wiring[out_dev]
             for out_io, ports in out_ids.items():
                 for in_dev, in_io in ports:
                     inverse_wiring[in_dev][in_io] = ComponentPort(out_dev, out_io)
@@ -174,7 +176,7 @@ class EventRouter:
         Returns:
             Set[ComponentID]: A set of components which provide outputs.
         """
-        return set(self.wiring.keys())
+        return {component for component, port in self.wiring.items() if port}
 
     @cached_property
     def input_components(self) -> Set[ComponentID]:
