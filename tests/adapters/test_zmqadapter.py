@@ -3,7 +3,6 @@ import logging
 
 import aiozmq
 import pytest
-import pytest_asyncio
 from mock import Mock
 from mock.mock import AsyncMock, create_autospec
 
@@ -24,8 +23,8 @@ def mock_raise_interrupt():
     return Mock(raise_interrupt)
 
 
-@pytest_asyncio.fixture
-async def mock_process_message_queue() -> AsyncMock:
+@pytest.fixture
+def mock_process_message_queue() -> AsyncMock:
     async def _process_message_queue():
         return True
 

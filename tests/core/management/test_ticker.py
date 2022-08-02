@@ -2,7 +2,6 @@ from collections import defaultdict
 from typing import List
 
 import pytest
-import pytest_asyncio
 from immutables import Map
 from mock import AsyncMock, MagicMock
 
@@ -38,8 +37,8 @@ def inverse_wiring(inverse_wiring_struct: Inverse_Wiring_Struct) -> InverseWirin
     return InverseWiring(inverse_wiring_struct)
 
 
-@pytest_asyncio.fixture
-async def ticker(inverse_wiring: InverseWiring) -> Ticker:
+@pytest.fixture
+def ticker(inverse_wiring: InverseWiring) -> Ticker:
     return Ticker(inverse_wiring, AsyncMock())
 
 
