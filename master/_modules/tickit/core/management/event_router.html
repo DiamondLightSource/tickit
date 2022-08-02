@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tickit.core.management.event_router &mdash; tickit 0.1.1+4.ge2e6c8f documentation</title>
+  <title>tickit.core.management.event_router &mdash; tickit 0.1.1+5.gdb5cde0 documentation</title>
       <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
@@ -151,6 +151,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">wiring</span><span class="p">:</span> <span class="n">Wiring</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">in_dev</span><span class="p">,</span> <span class="n">in_ios</span> <span class="ow">in</span> <span class="n">inverse_wiring</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">wiring</span><span class="p">[</span><span class="n">in_dev</span><span class="p">]</span>
             <span class="k">for</span> <span class="n">in_io</span><span class="p">,</span> <span class="p">(</span><span class="n">out_dev</span><span class="p">,</span> <span class="n">out_io</span><span class="p">)</span> <span class="ow">in</span> <span class="n">in_ios</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="n">wiring</span><span class="p">[</span><span class="n">out_dev</span><span class="p">][</span><span class="n">out_io</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ComponentPort</span><span class="p">(</span><span class="n">in_dev</span><span class="p">,</span> <span class="n">in_io</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">wiring</span></div></div>
@@ -175,7 +176,7 @@
 <span class="sd">                Defaults to None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">_wiring</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="p">{</span><span class="n">dev</span><span class="p">:</span> <span class="n">DefaultDict</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">io</span><span class="p">)</span> <span class="k">for</span> <span class="n">dev</span><span class="p">,</span> <span class="n">io</span> <span class="ow">in</span> <span class="n">wiring</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">io</span><span class="p">}</span>
+            <span class="p">{</span><span class="n">dev</span><span class="p">:</span> <span class="n">DefaultDict</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">io</span><span class="p">)</span> <span class="k">for</span> <span class="n">dev</span><span class="p">,</span> <span class="n">io</span> <span class="ow">in</span> <span class="n">wiring</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
             <span class="k">if</span> <span class="n">wiring</span>
             <span class="k">else</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="p">)</span>
@@ -194,6 +195,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">inverse_wiring</span><span class="p">:</span> <span class="n">InverseWiring</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">out_dev</span><span class="p">,</span> <span class="n">out_ids</span> <span class="ow">in</span> <span class="n">wiring</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">inverse_wiring</span><span class="p">[</span><span class="n">out_dev</span><span class="p">]</span>
             <span class="k">for</span> <span class="n">out_io</span><span class="p">,</span> <span class="n">ports</span> <span class="ow">in</span> <span class="n">out_ids</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">for</span> <span class="n">in_dev</span><span class="p">,</span> <span class="n">in_io</span> <span class="ow">in</span> <span class="n">ports</span><span class="p">:</span>
                     <span class="n">inverse_wiring</span><span class="p">[</span><span class="n">in_dev</span><span class="p">][</span><span class="n">in_io</span><span class="p">]</span> <span class="o">=</span> <span class="n">ComponentPort</span><span class="p">(</span><span class="n">out_dev</span><span class="p">,</span> <span class="n">out_io</span><span class="p">)</span>
@@ -267,7 +269,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            Set[ComponentID]: A set of components which provide outputs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wiring</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">component</span> <span class="k">for</span> <span class="n">component</span><span class="p">,</span> <span class="n">port</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wiring</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">port</span><span class="p">}</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">input_components</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">]:</span>
