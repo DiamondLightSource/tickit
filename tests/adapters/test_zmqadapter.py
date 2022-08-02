@@ -24,8 +24,7 @@ def mock_raise_interrupt():
 
 
 @pytest.fixture
-@pytest.mark.asyncio
-async def mock_process_message_queue() -> AsyncMock:
+def mock_process_message_queue() -> AsyncMock:
     async def _process_message_queue():
         return True
 

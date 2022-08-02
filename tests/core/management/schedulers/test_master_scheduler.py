@@ -1,6 +1,7 @@
 from typing import Awaitable, Iterable, Set
 
 import pytest
+import pytest_asyncio
 from mock import AsyncMock, Mock, create_autospec, patch
 
 from tickit.core.management.event_router import Wiring
@@ -33,8 +34,7 @@ def patch_ticker() -> Iterable[Mock]:
         yield mock
 
 
-@pytest.fixture
-@pytest.mark.asyncio
+@pytest_asyncio.fixture
 async def master_scheduler(
     mock_wiring, mock_state_consumer, mock_state_producer, patch_ticker
 ) -> MasterScheduler:

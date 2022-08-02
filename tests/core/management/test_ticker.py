@@ -38,7 +38,7 @@ def inverse_wiring(inverse_wiring_struct: Inverse_Wiring_Struct) -> InverseWirin
 
 
 @pytest.fixture
-async def ticker(inverse_wiring: InverseWiring) -> Ticker:
+def ticker(inverse_wiring: InverseWiring) -> Ticker:
     return Ticker(inverse_wiring, AsyncMock())
 
 
