@@ -4,6 +4,7 @@ import sys
 from subprocess import PIPE, STDOUT, Popen
 
 import pytest
+import pytest_asyncio
 
 from tickit.core.management.event_router import InverseWiring
 from tickit.core.management.schedulers.master import MasterScheduler
@@ -32,7 +33,7 @@ def tickit_process(request):
     print(proc.communicate()[0])
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def tickit_task(request):
     """Task that runs ``tickit all <config_path>``."""
     config_path: str = request.param
