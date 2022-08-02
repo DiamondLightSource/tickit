@@ -23,12 +23,15 @@ def wiring_struct():
         ComponentID("Mid1"): {
             PortID("Mid1>1"): {ComponentPort(ComponentID("In1"), PortID("In1<1"))}
         },
+        ComponentID("In1"): {},
     }
 
 
 @pytest.fixture
 def inverse_wiring_struct():
     return {
+        ComponentID("Out1"): {},
+        ComponentID("Out2"): {},
         ComponentID("Mid1"): {
             PortID("Mid1<1"): ComponentPort(ComponentID("Out1"), PortID("Out1>1")),
             PortID("Mid1<2"): ComponentPort(ComponentID("Out2"), PortID("Out2>1")),
@@ -136,6 +139,7 @@ def test_event_router_output_components(event_router: EventRouter):
 
 def test_event_router_component_tree(event_router: EventRouter):
     assert {
+        "In1": set(),
         "Out1": {"Mid1"},
         "Out2": {"Mid1", "In1"},
         "Mid1": {"In1"},
