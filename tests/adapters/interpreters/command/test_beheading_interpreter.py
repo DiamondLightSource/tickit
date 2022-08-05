@@ -1,6 +1,5 @@
-from unittest.mock import ANY, AsyncMock
-
 import pytest
+from mock import ANY, AsyncMock
 
 from tickit.adapters.interpreters.command import BeheadingInterpreter
 
