@@ -2,6 +2,7 @@ from abc import abstractmethod
 from inspect import getmembers
 from typing import AnyStr, AsyncIterable, Optional, Sequence, Tuple, get_type_hints
 
+from tickit.adapters.interpreters.utils import wrap_as_async_iterable
 from tickit.core.adapter import Adapter, Interpreter
 from tickit.utils.compat.typing_compat import Protocol, runtime_checkable
 
@@ -38,19 +39,6 @@ class CommandInterpreter(Interpreter[AnyStr]):
     commands registered against adapter methods, if a match is found the method is
     called with the parsed arguments.
     """
-
-    @staticmethod
-    async def _wrap(reply: AnyStr) -> AsyncIterable[AnyStr]:
-        """Wraps the reply in an asynchronous iterable.
-
-        Args:
-            response (AnyStr): A singular reply message.
-
-        Returns:
-            AsyncIterable[AnyStr]: An asynchronous iterable containing the reply
-                message.
-        """
-        yield reply
 
     @staticmethod
     async def unknown_command() -> AsyncIterable[bytes]:
@@ -96,7 +84,7 @@ class CommandInterpreter(Interpreter[AnyStr]):
             )
             resp = await method(*args)
             if not isinstance(resp, AsyncIterable):
-                resp = CommandInterpreter._wrap(resp)
+                resp = wrap_as_async_iterable(resp)
             return resp, command.interrupt
         resp = CommandInterpreter.unknown_command()
         return resp, False
