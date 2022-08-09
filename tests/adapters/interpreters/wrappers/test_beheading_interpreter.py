@@ -1,7 +1,7 @@
 import pytest
 from mock import ANY, AsyncMock
 
-from tickit.adapters.interpreters.command import BeheadingInterpreter
+from tickit.adapters.interpreters.wrappers import BeheadingInterpreter
 
 
 @pytest.mark.asyncio
