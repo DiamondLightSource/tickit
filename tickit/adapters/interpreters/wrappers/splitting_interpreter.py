@@ -1,6 +1,4 @@
-import asyncio
 import functools
-from abc import abstractmethod
 from typing import AnyStr, AsyncIterable, List, Tuple, overload
 
 from tickit.adapters.interpreters.utils import wrap_as_async_iterable
@@ -8,7 +6,7 @@ from tickit.core.adapter import Adapter, Interpreter
 
 
 class SplittingInterpreter(Interpreter[AnyStr]):
-    """An abstract wrapper for an interpreter that splits a single message into multiple.
+    """An wrapper for an interpreter that splits a single message into multiple.
 
     An interpreter wrapper class that takes a message, splits it according to a given
     delimiter, and passes on the resulting sub-messages individually on to the
@@ -38,11 +36,14 @@ class SplittingInterpreter(Interpreter[AnyStr]):
         self.interpreter: Interpreter[AnyStr] = interpreter
         self.delimiter: AnyStr = delimiter
 
-    @abstractmethod
     async def _handle_individual_messages(
         self, adapter: Adapter, individual_messages: List[AnyStr]
     ) -> List[Tuple[AsyncIterable[AnyStr], bool]]:
-        pass
+        results = [
+            await self.interpreter.handle(adapter, message)
+            for message in individual_messages
+        ]
+        return results
 
     @staticmethod
     async def _get_response_and_interrupt_from_individual_results(
@@ -107,43 +108,3 @@ class SplittingInterpreter(Interpreter[AnyStr]):
         ) = await self._get_response_and_interrupt_from_individual_results(results)
 
         return resp, interrupt
-
-
-class SyncSplittingInterpreter(SplittingInterpreter[AnyStr]):
-    """A wrapper for an interpreter that splits a message into multiple sub-messages.
-
-    An interpreter wrapper class that takes a message, splits it according to a given
-    delimiter, and passes on the resulting sub-messages individually on to the
-    wrapped interpreter in a synchronous fashion. The individual responses to the sub-
-    messages are combined into a single response.
-    """
-
-    async def _handle_individual_messages(
-        self, adapter: Adapter, individual_messages: List[AnyStr]
-    ) -> List[Tuple[AsyncIterable[AnyStr], bool]]:
-        results = [
-            await self.interpreter.handle(adapter, message)
-            for message in individual_messages
-        ]
-        return results
-
-
-class AsyncSplittingInterpreter(SplittingInterpreter[AnyStr]):
-    """A wrapper for an interpreter that splits a message into multiple sub-messages.
-
-    An interpreter wrapper class that takes a message, splits it according to a given
-    delimiter, and passes on the resulting sub-messages individually on to the
-    wrapped interpreter in a asynchronous fashion. The individual responses to the sub-
-    messages are combined into a single response.
-    """
-
-    async def _handle_individual_messages(
-        self, adapter: Adapter, individual_messages: List[AnyStr]
-    ) -> List[Tuple[AsyncIterable[AnyStr], bool]]:
-
-        return await asyncio.gather(
-            *[
-                self.interpreter.handle(adapter, message)
-                for message in individual_messages
-            ]
-        )

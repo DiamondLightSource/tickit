@@ -1,16 +1,10 @@
-import asyncio
-import time
-from typing import AnyStr, AsyncIterable, List, Tuple, Type, Union
+from typing import AnyStr, AsyncIterable, List, Tuple
 
 import pytest
 from mock import ANY, AsyncMock, patch
 
 from tickit.adapters.interpreters.utils import wrap_as_async_iterable
-from tickit.adapters.interpreters.wrappers import (
-    AsyncSplittingInterpreter,
-    SplittingInterpreter,
-    SyncSplittingInterpreter,
-)
+from tickit.adapters.interpreters.wrappers import SplittingInterpreter
 from tickit.core.adapter import Adapter
 
 
@@ -136,39 +130,3 @@ async def test_individual_results_combined_correctly(
     )
     mock_wrap_message.assert_called_once_with(expected_combined_message)
     assert combined_interrupt == expected_combined_interrupt
-
-
-TEST_HANDLE_TIME = 0.1
-NUM_HANDLE_CALLS = 3
-
-
-async def dummy_slow_handle(*args):
-    await asyncio.sleep(TEST_HANDLE_TIME)
-
-
-async def time_handle_individual_messages(
-    splitting_interpreter_type: Type[
-        Union[SyncSplittingInterpreter, AsyncSplittingInterpreter]
-    ],
-) -> float:
-    mock_interpreter = AsyncMock()
-    mock_interpreter.handle = dummy_slow_handle
-    splitting_interpreter = splitting_interpreter_type(mock_interpreter)
-    t0 = time.time()
-    await splitting_interpreter._handle_individual_messages(
-        AsyncMock(), ["one", "two", "three"]
-    )
-    t1 = time.time()
-    return t1 - t0
-
-
-@pytest.mark.asyncio
-async def test_async_splitting_interpreter_handles_messages_asynchronously():
-    total_handle_time = await time_handle_individual_messages(AsyncSplittingInterpreter)
-    assert total_handle_time < NUM_HANDLE_CALLS * TEST_HANDLE_TIME
-
-
-@pytest.mark.asyncio
-async def test_sync_splitting_interpreter_handles_messages_synchronously():
-    total_handle_time = await time_handle_individual_messages(SyncSplittingInterpreter)
-    assert total_handle_time > NUM_HANDLE_CALLS * TEST_HANDLE_TIME
