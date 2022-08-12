@@ -15,13 +15,13 @@ class SplittingInterpreter(Interpreter[AnyStr]):
     """
 
     @overload
-    def __init__(self, interpreter: Interpreter[AnyStr]) -> None:
-        """Placeholder."""  # See: https://github.com/PyCQA/pydocstyle/issues/525
+    def __init__(self, interpreter: Interpreter[AnyStr]) -> None:  # noqa: D105
         pass
 
     @overload
-    def __init__(self, interpreter: Interpreter[AnyStr], delimiter: AnyStr) -> None:
-        """Placeholder."""  # See: https://github.com/PyCQA/pydocstyle/issues/525
+    def __init__(
+        self, interpreter: Interpreter[AnyStr], delimiter: AnyStr
+    ) -> None:  # noqa: D105
         pass
 
     def __init__(self, interpreter: Interpreter[AnyStr], delimiter=b" ") -> None:
