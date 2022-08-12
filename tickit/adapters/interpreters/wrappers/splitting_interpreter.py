@@ -1,4 +1,5 @@
 import functools
+import re
 from typing import AnyStr, AsyncIterable, List, Tuple, overload
 
 from tickit.adapters.interpreters.utils import wrap_as_async_iterable
@@ -24,7 +25,7 @@ class SplittingInterpreter(Interpreter[AnyStr]):
     ) -> None:  # noqa: D107
         pass
 
-    def __init__(self, interpreter: Interpreter[AnyStr], delimiter=b" ") -> None:
+    def __init__(self, interpreter: Interpreter[AnyStr], delimiter=rb"\s") -> None:
         """A decorator for an interpreter that splits a message into multiple sub-messages.
 
         Args:
@@ -98,7 +99,7 @@ class SplittingInterpreter(Interpreter[AnyStr]):
                 A tuple of the asynchronous iterable of reply messages and a flag
                 indicating whether an interrupt should be raised by the adapter.
         """
-        individual_messages = message.split(self.delimiter)
+        individual_messages = [_ for _ in re.split(self.delimiter, message) if _]
 
         results = await self._handle_individual_messages(adapter, individual_messages)
 

@@ -40,6 +40,8 @@ async def _test_sub_messages(
         ("test message", " ", ["test", "message"]),
         (b"foo/bar", b"/", [b"foo", b"bar"]),
         ("single message", "/", ["single message"]),
+        ("1just2the3words4", r"[1-4]", ["just", "the", "words"]),
+        ("#1J=1 #2 P", r"(#[1-8])|\s", ["#1", "J=1", "#2", "P"]),
     ],
 )
 @patch.object(
@@ -70,6 +72,7 @@ async def test_handle_passes_on_correct_sub_messages(
     [
         (b"test message", [b"test", b"message"]),
         (b"foo/bar", [b"foo/bar"]),
+        (b"line1\nline2", [b"line1", b"line2"]),
     ],
 )
 @patch.object(
