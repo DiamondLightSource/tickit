@@ -1,7 +1,7 @@
 from typing import AnyStr, AsyncIterable, List, Tuple
 
 import pytest
-from mock import ANY, AsyncMock, patch
+from mock import ANY, AsyncMock, call, patch
 
 from tickit.adapters.interpreters.utils import wrap_as_async_iterable
 from tickit.adapters.interpreters.wrappers import SplittingInterpreter
@@ -91,6 +91,16 @@ async def test_handle_passes_on_correct_sub_messages_with_default_delimiter(
         test_message,
         expected_sub_messages,
     )
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("sub_messages", [["one", "two", "three"], ["test", "message"]])
+async def test_handle_individual_messages_makes_correct_handle_calls(sub_messages):
+    mock_interpreter = AsyncMock()
+    splitting_interpreter = SplittingInterpreter(mock_interpreter)
+    await splitting_interpreter._handle_individual_messages(AsyncMock(), sub_messages)
+    mock_handle_calls = mock_interpreter.handle.mock_calls
+    assert mock_handle_calls == [call(ANY, msg) for msg in sub_messages]
 
 
 @pytest.mark.asyncio
