@@ -44,9 +44,7 @@ async def _test_sub_messages(
         ("#1J=1 #2 P", r"(#[1-8])|\s", ["#1", "J=1", "#2", "P"]),
     ],
 )
-@patch.object(
-    DummySplittingInterpreter, "_get_response_and_interrupt_from_individual_results"
-)
+@patch.object(DummySplittingInterpreter, "_collect_responses")
 @patch.object(DummySplittingInterpreter, "_handle_individual_messages")
 async def test_handle_passes_on_correct_sub_messages(
     mock_handle_individual_messages: AsyncMock,
@@ -75,9 +73,7 @@ async def test_handle_passes_on_correct_sub_messages(
         (b"line1\nline2", [b"line1", b"line2"]),
     ],
 )
-@patch.object(
-    DummySplittingInterpreter, "_get_response_and_interrupt_from_individual_results"
-)
+@patch.object(DummySplittingInterpreter, "_collect_responses")
 @patch.object(DummySplittingInterpreter, "_handle_individual_messages")
 async def test_handle_passes_on_correct_sub_messages_with_default_delimiter(
     mock_handle_individual_messages: AsyncMock,
@@ -138,8 +134,23 @@ async def test_individual_results_combined_correctly(
     (
         _,
         combined_interrupt,
-    ) = await splitting_interpreter._get_response_and_interrupt_from_individual_results(
-        individual_results
-    )
+    ) = await splitting_interpreter._collect_responses(individual_results)
     mock_wrap_message.assert_called_once_with(expected_combined_message)
     assert combined_interrupt == expected_combined_interrupt
+
+
+@pytest.mark.asyncio
+@patch(
+    "tickit.adapters.interpreters.wrappers.splitting_interpreter.wrap_as_async_iterable"
+)
+async def test_multi_resp(
+    mock_wrap_message: AsyncMock,
+):
+    async def multi_resp(msgs):
+        for msg in msgs:
+            yield msg
+
+    splitting_interpreter = DummySplittingInterpreter(AsyncMock(), " ")
+    individual_results = [(multi_resp(["resp1", "resp2"]), True)]
+    await splitting_interpreter._collect_responses(individual_results)
+    mock_wrap_message.assert_called_once_with("resp1resp2")

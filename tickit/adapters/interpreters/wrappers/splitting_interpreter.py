@@ -30,7 +30,9 @@ class SplittingInterpreter(Interpreter[AnyStr]):
 
         Args:
             interpreter (Interpreter): The interpreter messages are passed on to.
-            delimiter (AnyStr): The delimiter by which the message is split up.
+            delimiter (AnyStr): The delimiter by which the message is split up. Can be
+                a regex pattern. Must be of the same type as the message. The default
+                is for splitting a bytes message by whitespace.
 
         """
         super().__init__()
@@ -47,7 +49,7 @@ class SplittingInterpreter(Interpreter[AnyStr]):
         return results
 
     @staticmethod
-    async def _get_response_and_interrupt_from_individual_results(
+    async def _collect_responses(
         results: List[Tuple[AsyncIterable[AnyStr], bool]]
     ) -> Tuple[AsyncIterable[AnyStr], bool]:
         """Combines results from handling multiple messages.
@@ -99,6 +101,7 @@ class SplittingInterpreter(Interpreter[AnyStr]):
                 A tuple of the asynchronous iterable of reply messages and a flag
                 indicating whether an interrupt should be raised by the adapter.
         """
+        # re.split(...) can contain empty strings and None - we discard these
         individual_messages = [_ for _ in re.split(self.delimiter, message) if _]
 
         results = await self._handle_individual_messages(adapter, individual_messages)
@@ -106,6 +109,6 @@ class SplittingInterpreter(Interpreter[AnyStr]):
         (
             resp,
             interrupt,
-        ) = await self._get_response_and_interrupt_from_individual_results(results)
+        ) = await self._collect_responses(results)
 
         return resp, interrupt
