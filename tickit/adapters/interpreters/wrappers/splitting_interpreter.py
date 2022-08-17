@@ -97,7 +97,6 @@ class SplittingInterpreter(Interpreter[AnyStr]):
                 A tuple of the asynchronous iterable of reply messages and a flag
                 indicating whether an interrupt should be raised by the adapter.
         """
-
         # re.split(...) can contain empty strings and None - we discard these
         individual_messages = [_ for _ in re.split(self.delimiter, message) if _]
 
