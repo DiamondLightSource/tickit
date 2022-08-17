@@ -1,13 +1,12 @@
-import functools
 import re
-from typing import AnyStr, AsyncIterable, List, Tuple, overload
+from typing import AnyStr, AsyncIterable, List, Tuple
 
 from tickit.adapters.interpreters.utils import wrap_as_async_iterable
 from tickit.core.adapter import Adapter, Interpreter
 
 
 class SplittingInterpreter(Interpreter[AnyStr]):
-    """An wrapper for an interpreter that splits a single message into multiple.
+    """A wrapper for an interpreter that splits a single message into multiple.
 
     An interpreter wrapper class that takes a message, splits it according to a given
     delimiter, and passes on the resulting sub-messages individually on to the
@@ -15,29 +14,27 @@ class SplittingInterpreter(Interpreter[AnyStr]):
     a single response.
     """
 
-    @overload
-    def __init__(self, interpreter: Interpreter[AnyStr]) -> None:  # noqa: D107
-        pass
-
-    @overload
     def __init__(
-        self, interpreter: Interpreter[AnyStr], delimiter: AnyStr
-    ) -> None:  # noqa: D107
-        pass
-
-    def __init__(self, interpreter: Interpreter[AnyStr], delimiter=rb"\s") -> None:
+        self,
+        interpreter: Interpreter[AnyStr],
+        message_delimiter: AnyStr,
+        response_delimiter: AnyStr,
+    ) -> None:
         """A decorator for an interpreter that splits a message into multiple sub-messages.
 
         Args:
             interpreter (Interpreter): The interpreter messages are passed on to.
-            delimiter (AnyStr): The delimiter by which the message is split up. Can be
-                a regex pattern. Must be of the same type as the message. The default
-                is for splitting a bytes message by whitespace.
+            message_delimiter (AnyStr): The delimiter by which the message is split up.
+                Can be a regex pattern. Must be of the same type as the message.
+            response_delimiter (AnyStr): The delimiter separating the responses to the
+                individual sub-mesages when they are combined into a single response
+                message.
 
         """
         super().__init__()
         self.interpreter: Interpreter[AnyStr] = interpreter
-        self.delimiter: AnyStr = delimiter
+        self.delimiter: AnyStr = message_delimiter
+        self.response_delimiter: AnyStr = response_delimiter
 
     async def _handle_individual_messages(
         self, adapter: Adapter, individual_messages: List[AnyStr]
@@ -48,9 +45,8 @@ class SplittingInterpreter(Interpreter[AnyStr]):
         ]
         return results
 
-    @staticmethod
     async def _collect_responses(
-        results: List[Tuple[AsyncIterable[AnyStr], bool]]
+        self, results: List[Tuple[AsyncIterable[AnyStr], bool]]
     ) -> Tuple[AsyncIterable[AnyStr], bool]:
         """Combines results from handling multiple messages.
 
@@ -76,7 +72,7 @@ class SplittingInterpreter(Interpreter[AnyStr]):
             for response_gen in individual_responses
             async for response in response_gen
         ]
-        response = functools.reduce(lambda a, b: a + b, response_list)
+        response = self.response_delimiter.join(response_list)
         resp = wrap_as_async_iterable(response)
 
         interrrupt = any(individual_interrupts)
@@ -101,8 +97,13 @@ class SplittingInterpreter(Interpreter[AnyStr]):
                 A tuple of the asynchronous iterable of reply messages and a flag
                 indicating whether an interrupt should be raised by the adapter.
         """
+
         # re.split(...) can contain empty strings and None - we discard these
         individual_messages = [_ for _ in re.split(self.delimiter, message) if _]
+
+        # If splitting/filtering gives no sub-messages, pass on an empty message
+        if not individual_messages:
+            individual_messages = [type(message)()]
 
         results = await self._handle_individual_messages(adapter, individual_messages)
 

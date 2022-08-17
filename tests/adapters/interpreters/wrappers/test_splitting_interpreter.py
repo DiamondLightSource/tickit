@@ -35,7 +35,7 @@ async def _test_sub_messages(
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
-    "test_message, delimiter, expected_sub_messages",
+    "test_message, message_delimiter, expected_sub_messages",
     [
         ("test message", " ", ["test", "message"]),
         (b"foo/bar", b"/", [b"foo", b"bar"]),
@@ -50,38 +50,12 @@ async def test_handle_passes_on_correct_sub_messages(
     mock_handle_individual_messages: AsyncMock,
     mock_get_response: AsyncMock,
     test_message: AnyStr,
-    delimiter: AnyStr,
+    message_delimiter: AnyStr,
     expected_sub_messages: List[AnyStr],
 ):
-    splitting_interpreter = DummySplittingInterpreter(AsyncMock(), delimiter)
-
-    await _test_sub_messages(
-        splitting_interpreter,
-        mock_handle_individual_messages,
-        mock_get_response,
-        test_message,
-        expected_sub_messages,
+    splitting_interpreter = DummySplittingInterpreter(
+        AsyncMock(), message_delimiter, response_delimiter=type(test_message)()
     )
-
-
-@pytest.mark.asyncio
-@pytest.mark.parametrize(
-    "test_message, expected_sub_messages",
-    [
-        (b"test message", [b"test", b"message"]),
-        (b"foo/bar", [b"foo/bar"]),
-        (b"line1\nline2", [b"line1", b"line2"]),
-    ],
-)
-@patch.object(DummySplittingInterpreter, "_collect_responses")
-@patch.object(DummySplittingInterpreter, "_handle_individual_messages")
-async def test_handle_passes_on_correct_sub_messages_with_default_delimiter(
-    mock_handle_individual_messages: AsyncMock,
-    mock_get_response: AsyncMock,
-    test_message: AnyStr,
-    expected_sub_messages: List[AnyStr],
-):
-    splitting_interpreter = DummySplittingInterpreter(AsyncMock())
 
     await _test_sub_messages(
         splitting_interpreter,
@@ -96,7 +70,7 @@ async def test_handle_passes_on_correct_sub_messages_with_default_delimiter(
 @pytest.mark.parametrize("sub_messages", [["one", "two", "three"], ["test", "message"]])
 async def test_handle_individual_messages_makes_correct_handle_calls(sub_messages):
     mock_interpreter = AsyncMock()
-    splitting_interpreter = SplittingInterpreter(mock_interpreter)
+    splitting_interpreter = SplittingInterpreter(mock_interpreter, " ", "")
     await splitting_interpreter._handle_individual_messages(AsyncMock(), sub_messages)
     mock_handle_calls = mock_interpreter.handle.mock_calls
     assert mock_handle_calls == [call(ANY, msg) for msg in sub_messages]
@@ -107,13 +81,14 @@ async def test_handle_individual_messages_makes_correct_handle_calls(sub_message
     [
         "individual_messages",
         "individual_interrupts",
+        "response_delimiter",
         "expected_combined_message",
         "expected_combined_interrupt",
     ],
     [
-        (["one", "two"], [False, False], "onetwo", False),
-        (["three", "four"], [False, True], "threefour", True),
-        (["five", "six"], [True, True], "fivesix", True),
+        (["one", "two"], [False, False], "", "onetwo", False),
+        (["three", "four"], [False, True], "/", "three/four", True),
+        (["five", "six"], [True, True], "", "fivesix", True),
     ],
 )
 @patch(
@@ -123,10 +98,13 @@ async def test_individual_results_combined_correctly(
     mock_wrap_message: AsyncMock,
     individual_messages: List[AnyStr],
     individual_interrupts: List[bool],
+    response_delimiter: AnyStr,
     expected_combined_message: AnyStr,
     expected_combined_interrupt: bool,
 ):
-    splitting_interpreter = DummySplittingInterpreter(AsyncMock(), " ")
+    splitting_interpreter = DummySplittingInterpreter(
+        AsyncMock(), " ", response_delimiter
+    )
     individual_results = [
         (wrap_as_async_iterable(msg), interrupt)
         for msg, interrupt in zip(individual_messages, individual_interrupts)
@@ -150,7 +128,51 @@ async def test_multi_resp(
         for msg in msgs:
             yield msg
 
-    splitting_interpreter = DummySplittingInterpreter(AsyncMock(), " ")
+    splitting_interpreter = DummySplittingInterpreter(AsyncMock(), " ", "")
     individual_results = [(multi_resp(["resp1", "resp2"]), True)]
     await splitting_interpreter._collect_responses(individual_results)
     mock_wrap_message.assert_called_once_with("resp1resp2")
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ["message_delimiter", "response_delimiter"], [(" ", "/"), ("/", " ")]
+)
+@patch.object(DummySplittingInterpreter, "_collect_responses")
+@patch.object(DummySplittingInterpreter, "_handle_individual_messages")
+async def test_handles_empty_messages_correctly(
+    mock_handle_individual_messages: AsyncMock,
+    mock_collect: AsyncMock,
+    message_delimiter: str,
+    response_delimiter: str,
+):
+    splitting_interpreter = DummySplittingInterpreter(
+        AsyncMock(), message_delimiter, response_delimiter
+    )
+    mock_collect.return_value = "", False
+
+    await splitting_interpreter.handle(AsyncMock(), "")
+
+    mock_handle_individual_messages.assert_called_once_with(ANY, [""])
+
+
+@pytest.mark.parametrize(
+    ["message", "message_delimiter"], [(" ", " "), (" ", r"\s"), ("delim", "delim")]
+)
+@patch.object(DummySplittingInterpreter, "_collect_responses")
+@patch.object(DummySplittingInterpreter, "_handle_individual_messages")
+@pytest.mark.asyncio
+async def test_delimiter_only_message_results_in_empty_message_handled(
+    mock_handle_individual_messages: AsyncMock,
+    mock_collect: AsyncMock,
+    message: str,
+    message_delimiter: str,
+):
+    splitting_interpreter = DummySplittingInterpreter(
+        AsyncMock(), message_delimiter, ""
+    )
+    mock_collect.return_value = "", False
+
+    await splitting_interpreter.handle(AsyncMock(), message)
+
+    mock_handle_individual_messages.assert_called_once_with(ANY, [""])
