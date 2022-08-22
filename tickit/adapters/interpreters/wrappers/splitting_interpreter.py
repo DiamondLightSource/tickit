@@ -33,7 +33,7 @@ class SplittingInterpreter(Interpreter[AnyStr]):
         """
         super().__init__()
         self.interpreter: Interpreter[AnyStr] = interpreter
-        self.delimiter: AnyStr = message_delimiter
+        self.message_delimiter: AnyStr = message_delimiter
         self.response_delimiter: AnyStr = response_delimiter
 
     async def _handle_individual_messages(
@@ -98,17 +98,17 @@ class SplittingInterpreter(Interpreter[AnyStr]):
                 indicating whether an interrupt should be raised by the adapter.
         """
         # re.split(...) can contain empty strings and None - we discard these
-        individual_messages = [_ for _ in re.split(self.delimiter, message) if _]
+        individual_messages = [
+            _ for _ in re.split(self.message_delimiter, message) if _
+        ]
 
         # If splitting/filtering gives no sub-messages, pass on an empty message
-        if not individual_messages:
-            individual_messages = [type(message)()]
+        individual_messages = (
+            individual_messages if individual_messages else [type(message)()]
+        )
 
         results = await self._handle_individual_messages(adapter, individual_messages)
 
-        (
-            resp,
-            interrupt,
-        ) = await self._collect_responses(results)
+        (resp, interrupt) = await self._collect_responses(results)
 
         return resp, interrupt
