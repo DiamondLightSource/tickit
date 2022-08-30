@@ -99,7 +99,7 @@ class SplittingInterpreter(Interpreter[AnyStr]):
         """
         # re.split(...) can contain empty strings and None - we discard these
         individual_messages = [
-            _ for _ in re.split(self.message_delimiter, message) if _
+            msg for msg in re.split(self.message_delimiter, message) if msg is not None
         ]
 
         # If splitting/filtering gives no sub-messages, pass on an empty message
