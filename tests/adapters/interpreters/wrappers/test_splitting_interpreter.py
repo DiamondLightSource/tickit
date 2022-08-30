@@ -40,8 +40,8 @@ async def _test_sub_messages(
         ("test message", " ", ["test", "message"]),
         (b"foo/bar", b"/", [b"foo", b"bar"]),
         ("single message", "/", ["single message"]),
-        ("1just2the3words4", r"[1-4]", ["just", "the", "words"]),
-        ("#1J=1 #2 P", r"(#[1-8])|\s", ["#1", "J=1", "#2", "P"]),
+        ("just1the2words", r"[1-4]", ["just", "the", "words"]),
+        ("#1J=1 #2 P", r"(#[1-8])|\s", ["", "#1", "J=1", "", "#2", "", "P"]),
     ],
 )
 @patch.object(DummySplittingInterpreter, "_collect_responses")
@@ -162,7 +162,7 @@ async def test_handles_empty_messages_correctly(
 @patch.object(DummySplittingInterpreter, "_collect_responses")
 @patch.object(DummySplittingInterpreter, "_handle_individual_messages")
 @pytest.mark.asyncio
-async def test_delimiter_only_message_results_in_empty_message_handled(
+async def test_delimiter_only_message_results_in_empty_messages_handled(
     mock_handle_individual_messages: AsyncMock,
     mock_collect: AsyncMock,
     message: str,
@@ -175,4 +175,4 @@ async def test_delimiter_only_message_results_in_empty_message_handled(
 
     await splitting_interpreter.handle(AsyncMock(), message)
 
-    mock_handle_individual_messages.assert_called_once_with(ANY, [""])
+    mock_handle_individual_messages.assert_called_once_with(ANY, ["", ""])
