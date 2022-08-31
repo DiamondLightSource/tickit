@@ -51,7 +51,7 @@ class MultiCommandInterpreter(Interpreter[AnyStr]):
             ]
             return arg_strings
 
-    async def _wrap_messages_as_async_iterable(self, messages: list[AnyStr]):
+    async def _wrap_messages_as_async_iterable(self, messages: List[AnyStr]):
         for message in messages:
             yield message
 
