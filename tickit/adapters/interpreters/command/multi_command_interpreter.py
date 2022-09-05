@@ -14,7 +14,7 @@ from tickit.adapters.interpreters.command.command_interpreter import Command
 from tickit.core.adapter import Adapter, Interpreter
 
 
-class MultiCommandInterpreter(Interpreter[AnyStr, AnyStr]):
+class MultiCommandInterpreter(Interpreter[AnyStr]):
     """An interpreter which routes to commands registered to adapter methods.
 
     An interpreter which attempts to parse commands from within a message. Matching
@@ -47,7 +47,7 @@ class MultiCommandInterpreter(Interpreter[AnyStr, AnyStr]):
         return args
 
     @staticmethod
-    async def unknown_command() -> AsyncIterable[bytes]:
+    async def unknown_command() -> AsyncIterable[AnyStr]:
         """An asynchronous iterable of containing a single unknown command reply.
 
         Returns:
@@ -55,7 +55,7 @@ class MultiCommandInterpreter(Interpreter[AnyStr, AnyStr]):
                 An asynchronous iterable of containing a single unknown command reply:
                 "Request does not match any known command".
         """
-        yield b"Request does not match any known command"
+        yield cast(AnyStr, b"Request does not match any known command")
 
     async def handle(
         self, adapter: Adapter, message: AnyStr
@@ -82,7 +82,7 @@ class MultiCommandInterpreter(Interpreter[AnyStr, AnyStr]):
         ]
 
         commands = [
-            cast(Optional[Command[AnyStr]], getattr(method, "__command__", None))
+            cast(Optional[Command], getattr(method, "__command__", None))
             for method in command_methods
         ]
 
@@ -104,7 +104,7 @@ class MultiCommandInterpreter(Interpreter[AnyStr, AnyStr]):
                 parse_result = command.parse(remaining_message)
                 if parse_result is None:
                     continue
-                args, match_start, match_end = parse_result
+                args, match_start, match_end, _ = parse_result
                 if args is None:
                     continue
                 if match_start != 0:
@@ -116,7 +116,7 @@ class MultiCommandInterpreter(Interpreter[AnyStr, AnyStr]):
                     matched_command = command
 
             if matched_command_method is None or matched_command is None:
-                resp = MultiCommandInterpreter.unknown_command()
+                resp = self.unknown_command()
                 return (
                     resp,
                     False,
