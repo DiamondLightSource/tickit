@@ -121,3 +121,16 @@ def test_parse_gives_correct_whole_matches(
     _, _, end, message_length = result
     full_match = end == message_length
     assert full_match == full_match_expected
+
+
+@pytest.mark.parametrize(
+    ["regex", "interrupt", "format", "message"],
+    [
+        (r"Test", False, None, rb"Test"),
+    ],
+)
+def test_parse_returns_none_if_message_and_regex_incompatible(
+    regex_command: RegexCommand, message
+):
+    result = regex_command.parse(message)
+    assert result is None
