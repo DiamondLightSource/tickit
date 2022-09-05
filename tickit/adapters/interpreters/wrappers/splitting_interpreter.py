@@ -1,7 +1,7 @@
 import re
 from typing import AnyStr, AsyncIterable, List, Tuple
 
-from tickit.adapters.interpreters.utils import wrap_as_async_iterable
+from tickit.adapters.interpreters.utils import wrap_messages_as_async_iterable
 from tickit.core.adapter import Adapter, Interpreter
 
 
@@ -10,15 +10,13 @@ class SplittingInterpreter(Interpreter[AnyStr]):
 
     An interpreter wrapper class that takes a message, splits it according to a given
     delimiter, and passes on the resulting sub-messages individually on to the
-    wrapped interpreter. The individual responses to the sub-messages are combined into
-    a single response.
+    wrapped interpreter.
     """
 
     def __init__(
         self,
         interpreter: Interpreter[AnyStr],
         message_delimiter: AnyStr,
-        response_delimiter: AnyStr,
     ) -> None:
         """A decorator for an interpreter that splits a message into multiple sub-messages.
 
@@ -26,15 +24,10 @@ class SplittingInterpreter(Interpreter[AnyStr]):
             interpreter (Interpreter): The interpreter messages are passed on to.
             message_delimiter (AnyStr): The delimiter by which the message is split up.
                 Can be a regex pattern. Must be of the same type as the message.
-            response_delimiter (AnyStr): The delimiter separating the responses to the
-                individual sub-mesages when they are combined into a single response
-                message.
-
         """
         super().__init__()
         self.interpreter: Interpreter[AnyStr] = interpreter
         self.message_delimiter: AnyStr = message_delimiter
-        self.response_delimiter: AnyStr = response_delimiter
 
     async def _handle_individual_messages(
         self, adapter: Adapter, individual_messages: List[AnyStr]
@@ -51,10 +44,9 @@ class SplittingInterpreter(Interpreter[AnyStr]):
         """Combines results from handling multiple messages.
 
         Takes the responses from when the wrapped interpreter handles multiple messages
-        and returns an appropriate composite repsonse and interrrupt. The composite
-        response is the concatentation of each of the individual responses, the
-        composite interrupt is a logical inclusive 'or' of all of the individual
-        responses.
+        and returns an appropriate composite repsonse and interrrupt. The response is
+        an asyncronous iterable of each of the individual responses, the composite
+        interrupt is a logical inclusive 'or' of all of the individual interrupts.
 
         Args:
             results (List[Tuple[AsyncIterable[AnyStr], bool]]): a list of returned
@@ -67,16 +59,14 @@ class SplittingInterpreter(Interpreter[AnyStr]):
         """
         individual_responses, individual_interrupts = zip(*results)
 
-        response_list = [
+        responses = [
             response
             for response_gen in individual_responses
             async for response in response_gen
         ]
-        response = self.response_delimiter.join(response_list)
-        resp = wrap_as_async_iterable(response)
 
+        resp = wrap_messages_as_async_iterable(responses)
         interrrupt = any(individual_interrupts)
-
         return resp, interrrupt
 
     async def handle(
@@ -85,8 +75,7 @@ class SplittingInterpreter(Interpreter[AnyStr]):
         """Splits a message and passes the resulting sub-messages on to an interpreter.
 
         Splits a given message and passes the resulting sub-messages on to an
-        interpreter. The responses to the individual sub-messages are then combined
-        into a single response and returned.
+        interpreter. The responses to the individual sub-messages are then returned.
 
         Args:
             adapter (Adapter): The adapter in which the function should be executed

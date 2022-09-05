@@ -54,7 +54,8 @@ async def test_handle_passes_on_correct_sub_messages(
     expected_sub_messages: List[AnyStr],
 ):
     splitting_interpreter = DummySplittingInterpreter(
-        AsyncMock(), message_delimiter, response_delimiter=type(test_message)()
+        AsyncMock(),
+        message_delimiter,
     )
 
     await _test_sub_messages(
@@ -70,7 +71,7 @@ async def test_handle_passes_on_correct_sub_messages(
 @pytest.mark.parametrize("sub_messages", [["one", "two", "three"], ["test", "message"]])
 async def test_handle_individual_messages_makes_correct_handle_calls(sub_messages):
     mock_interpreter = AsyncMock()
-    splitting_interpreter = SplittingInterpreter(mock_interpreter, " ", "")
+    splitting_interpreter = SplittingInterpreter(mock_interpreter, " ")
     await splitting_interpreter._handle_individual_messages(AsyncMock(), sub_messages)
     mock_handle_calls = mock_interpreter.handle.mock_calls
     assert mock_handle_calls == [call(ANY, msg) for msg in sub_messages]
@@ -81,30 +82,25 @@ async def test_handle_individual_messages_makes_correct_handle_calls(sub_message
     [
         "individual_messages",
         "individual_interrupts",
-        "response_delimiter",
-        "expected_combined_message",
         "expected_combined_interrupt",
     ],
     [
-        (["one", "two"], [False, False], "", "onetwo", False),
-        (["three", "four"], [False, True], "/", "three/four", True),
-        (["five", "six"], [True, True], "", "fivesix", True),
+        (["one", "two"], [False, False], False),
+        (["three", "four"], [False, True], True),
+        (["five", "six"], [True, True], True),
     ],
 )
 @patch(
-    "tickit.adapters.interpreters.wrappers.splitting_interpreter.wrap_as_async_iterable"
+    "tickit.adapters.interpreters.wrappers."
+    "splitting_interpreter.wrap_messages_as_async_iterable"
 )
 async def test_individual_results_combined_correctly(
     mock_wrap_message: AsyncMock,
     individual_messages: List[AnyStr],
     individual_interrupts: List[bool],
-    response_delimiter: AnyStr,
-    expected_combined_message: AnyStr,
     expected_combined_interrupt: bool,
 ):
-    splitting_interpreter = DummySplittingInterpreter(
-        AsyncMock(), " ", response_delimiter
-    )
+    splitting_interpreter = DummySplittingInterpreter(AsyncMock(), " ")
     individual_results = [
         (wrap_as_async_iterable(msg), interrupt)
         for msg, interrupt in zip(individual_messages, individual_interrupts)
@@ -113,13 +109,14 @@ async def test_individual_results_combined_correctly(
         _,
         combined_interrupt,
     ) = await splitting_interpreter._collect_responses(individual_results)
-    mock_wrap_message.assert_called_once_with(expected_combined_message)
+    mock_wrap_message.assert_called_once_with(individual_messages)
     assert combined_interrupt == expected_combined_interrupt
 
 
 @pytest.mark.asyncio
 @patch(
-    "tickit.adapters.interpreters.wrappers.splitting_interpreter.wrap_as_async_iterable"
+    "tickit.adapters.interpreters.wrappers."
+    "splitting_interpreter.wrap_messages_as_async_iterable"
 )
 async def test_multi_resp(
     mock_wrap_message: AsyncMock,
@@ -128,10 +125,10 @@ async def test_multi_resp(
         for msg in msgs:
             yield msg
 
-    splitting_interpreter = DummySplittingInterpreter(AsyncMock(), " ", "")
+    splitting_interpreter = DummySplittingInterpreter(AsyncMock(), " ")
     individual_results = [(multi_resp(["resp1", "resp2"]), True)]
     await splitting_interpreter._collect_responses(individual_results)
-    mock_wrap_message.assert_called_once_with("resp1resp2")
+    mock_wrap_message.assert_called_once_with(["resp1", "resp2"])
 
 
 @pytest.mark.asyncio
@@ -146,9 +143,7 @@ async def test_handles_empty_messages_correctly(
     message_delimiter: str,
     response_delimiter: str,
 ):
-    splitting_interpreter = DummySplittingInterpreter(
-        AsyncMock(), message_delimiter, response_delimiter
-    )
+    splitting_interpreter = DummySplittingInterpreter(AsyncMock(), message_delimiter)
     mock_collect.return_value = "", False
 
     await splitting_interpreter.handle(AsyncMock(), "")
@@ -169,7 +164,8 @@ async def test_delimiter_only_message_results_in_empty_messages_handled(
     message_delimiter: str,
 ):
     splitting_interpreter = DummySplittingInterpreter(
-        AsyncMock(), message_delimiter, ""
+        AsyncMock(),
+        message_delimiter,
     )
     mock_collect.return_value = "", False
 
