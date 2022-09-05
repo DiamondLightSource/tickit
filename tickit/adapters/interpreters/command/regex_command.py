@@ -36,34 +36,6 @@ class RegexCommand(Generic[AnyStr]):
         setattr(func, "__command__", self)
         return func
 
-    # def parse(self, data: AnyStr) -> Optional[Sequence[AnyStr]]:
-    #     """Performs message decoding and regex matching to match and extract args.
-
-    #     A method which performs message decoding accoridng to the command formatting
-    #     string, checks for a full regular expression match and returns a sequence of
-    #     function arguments if a match is found, otherwise the method returns None.
-
-    #     Args:
-    #         data (bytes): The message data to be parsed.
-
-    #     Returns:
-    #         Optional[Sequence[AnyStr]]:
-    #             If a full match is found a sequence of function arguments is returned,
-    #             otherwise the method returns None.
-    #     """
-    #     if isinstance(data, bytes):
-    #         message = cast(bytes, data)
-    #         message_formatted = (
-    #             message.decode(self.format, "ignore").strip() if self.format else data
-    #         )
-    #     else:
-    #         message_formatted = data
-    #     if isinstance(message_formatted, type(self.regex)):
-    #         match = re.fullmatch(self.regex, message_formatted)
-    #         if match:
-    #             return match.groups()
-    #     return None
-
     def parse(self, data: AnyStr) -> Optional[Tuple[Sequence[AnyStr], int, int, int]]:
         """Performs message decoding and regex matching to match and extract arguments.
 
