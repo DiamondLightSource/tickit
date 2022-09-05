@@ -57,7 +57,7 @@ class RegexCommand(Generic[AnyStr]):
         to_format = (
             self.format and isinstance(data, bytes) and isinstance(self.regex, str)
         )
-        if to_format:  # isinstance(data, bytes) and isinstance(self.regex, str):
+        if to_format:
             # We only want to format if matching a string pattern against bytes data.
             # Formatting consists of encoding the pattern and stripping the data of
             # ascii whitespace.
