@@ -1,6 +1,14 @@
 from abc import abstractmethod
 from inspect import getmembers
-from typing import AnyStr, AsyncIterable, Optional, Sequence, Tuple, get_type_hints
+from typing import (
+    AnyStr,
+    AsyncIterable,
+    Optional,
+    Sequence,
+    Tuple,
+    cast,
+    get_type_hints,
+)
 
 from tickit.core.adapter import Adapter, Interpreter
 from tickit.utils.compat.typing_compat import Protocol, runtime_checkable
@@ -12,16 +20,17 @@ class Command(Protocol):
 
     #: A flag which indicates whether calling of the method should trigger an interrupt
     interrupt: bool
+    # format: Optional[str] = None
 
     @abstractmethod
-    def parse(self, data: bytes) -> Optional[Sequence[AnyStr]]:
+    def parse(self, data: AnyStr) -> Optional[Tuple[Sequence[AnyStr], int, int, int]]:
         """An abstract method which parses a message and extracts arguments.
 
         An abstract method which parses a message and produces arguments if a match is
         found, otherwise None is returned.
 
         Args:
-            data (bytes): The message to be parsed.
+            data (AnyStr): The message to be parsed.
 
         Returns:
             Optional[Sequence[AnyStr]]:
@@ -84,16 +93,33 @@ class CommandInterpreter(Interpreter[AnyStr]):
                 indicating whether an interrupt should be raised by the adapter.
         """
         for _, method in getmembers(adapter):
-            command = getattr(method, "__command__", None)
+            message = message
+            command = cast(Command, getattr(method, "__command__", None))
             if command is None:
                 continue
-            args = command.parse(message)
-            if args is None:
+            parse_result = command.parse(message)
+            if parse_result is None:
+                continue
+            (
+                match_groups,
+                _,
+                match_end,
+                message_end,
+            ) = parse_result
+            if match_end != message_end:
+                # We want the whole (formatted) message to match a command
                 continue
             args = (
                 argtype(arg)
-                for arg, argtype in zip(args, get_type_hints(method).values())
+                for arg, argtype in zip(match_groups, get_type_hints(method).values())
             )
+            # can we use signature instead to more cleverly do conversions? i.e. if
+            # type hints aren't available just pass on with no conversion? Otherwise
+            # we can get unhelpful error messages.
+            # Also, should we deal with str/bytes conversions seperately?
+            # Create a mapping function that does conversion rather than argtype(arg)?
+            # It would take args and inspect.Parameters as parameters?
+            # Is type hints enough? - doesn't know about non-hinted vars
             resp = await method(*args)
             if not isinstance(resp, AsyncIterable):
                 resp = CommandInterpreter._wrap(resp)
