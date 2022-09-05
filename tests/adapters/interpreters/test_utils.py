@@ -10,16 +10,16 @@ from tickit.adapters.interpreters.utils import (
 async def test_wrap_list_correctly():
     messages = ["Hello", "World"]
     wrapped = wrap_messages_as_async_iterable(messages)
-    assert "Hello" == await anext(wrapped)  # noqa: F821
-    assert "World" == await anext(wrapped)  # noqa: F821
+    assert "Hello" == await wrapped.__anext__()
+    assert "World" == await wrapped.__anext__()
     with pytest.raises(StopAsyncIteration):
-        await anext(wrapped)  # noqa: F821
+        await wrapped.__anext__()
 
 
 @pytest.mark.asyncio
 async def test_wrap_message_correctly():
     message = b"Hello World"
     wrapped = wrap_as_async_iterable(message)
-    assert b"Hello World" == await anext(wrapped)  # noqa: F821
+    assert b"Hello World" == await wrapped.__anext__()
     with pytest.raises(StopAsyncIteration):
-        await anext(wrapped)  # noqa: F821
+        await wrapped.__anext__()
