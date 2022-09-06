@@ -4,13 +4,16 @@ from typing import (
     AsyncIterable,
     Callable,
     List,
+    NamedTuple,
     Optional,
+    Sequence,
     Tuple,
     cast,
     get_type_hints,
 )
 
 from tickit.adapters.interpreters.command.command_interpreter import Command
+from tickit.adapters.interpreters.utils import wrap_messages_as_async_iterable
 from tickit.core.adapter import Adapter, Interpreter
 
 
@@ -34,12 +37,8 @@ class MultiCommandInterpreter(Interpreter[AnyStr]):
         super().__init__()
         self.ignore_whitespace = ignore_whitespace
 
-    async def _wrap_messages_as_async_iterable(self, messages: List[AnyStr]):
-        for message in messages:
-            yield message
-
     @staticmethod
-    def _convert_args_to_method_types(arg_strings, method):
+    def _convert_args_to_method_types(arg_strings: Sequence[AnyStr], method: Callable):
         args = (
             argtype(arg)
             for arg, argtype in zip(arg_strings, get_type_hints(method).values())
@@ -56,6 +55,87 @@ class MultiCommandInterpreter(Interpreter[AnyStr]):
                 "Request does not match any known command".
         """
         yield cast(AnyStr, b"Request does not match any known command")
+
+    class MatchInfo(NamedTuple):
+        """NamedTuple wrapper for information about a command that matches a message."""
+
+        match_length: int
+        command: Command
+        command_method: Callable
+        command_args: Sequence
+
+    def _get_longest_match_info(
+        self,
+        message: AnyStr,
+        commands: List[Optional[Command]],
+        command_methods: List[Callable],
+    ) -> Optional[MatchInfo]:
+        """Find the longest command that matches the start of the message.
+
+        Loops over all registered commands and attempts to match them to the beginning
+        of the message. Of those that do match, the match that matches the longest
+        portion of the message is chosen. The length of the match, the matched command
+        and corresponding method, as well as the captured arguments fro the match are
+        returned wrapped as a MatchInfo object.
+
+        Args:
+            message (AnyStr): The message being handled by the interpreter.
+            commands (List[Command]): The commands registered in the adapter.
+            command_methods (List[Callable]): The methods corresponding to the commands.
+
+        Returns:
+            Optional[MatchInfo]:
+                Information about the command matching the longest portion of the start
+                of the handled message wrapped in a MatchInfo object. Returns None if
+                no match is found.
+        """
+        match_length = None
+        command_method = None
+        command_args = None
+        match_command = None
+        for command, method in zip(commands, command_methods):
+            if command is None:
+                continue
+            parse_result = command.parse(message)
+            if parse_result is None:
+                continue
+            args, match_start, match_end, _ = parse_result
+            if match_start != 0:
+                continue
+            if match_length is None:
+                match_length = match_end
+            if match_end >= match_length:
+                match_length = match_end
+                command_method = method
+                command_args = args
+                match_command = command
+        if (
+            match_length is not None
+            and match_command is not None
+            and command_method is not None
+            and command_args is not None
+        ):
+            return self.MatchInfo(
+                match_length, match_command, command_method, command_args
+            )
+        return None
+
+    async def _execute_command_from_match(self, match_info: MatchInfo):
+        """Execute a command specified in a MatchInfo object."""
+        args = self._convert_args_to_method_types(
+            match_info.command_args, match_info.command_method
+        )
+        response = await match_info.command_method(*args)
+        interrupt = match_info.command.interrupt
+        return response, interrupt
+
+    def _get_remaining_message(self, message: AnyStr, match_info: MatchInfo) -> AnyStr:
+        """Trim off a matched command from the start of the message and strip."""
+        remaining_message = message[match_info.match_length :]
+        remaining_message = (
+            remaining_message.strip() if self.ignore_whitespace else remaining_message
+        )
+        return remaining_message
 
     async def handle(
         self, adapter: Adapter, message: AnyStr
@@ -86,54 +166,31 @@ class MultiCommandInterpreter(Interpreter[AnyStr]):
             for method in command_methods
         ]
 
-        remaining_message = message
-        if self.ignore_whitespace:
-            remaining_message = remaining_message.strip()
+        remaining_message = message.strip() if self.ignore_whitespace else message
         responses = []
         interrupts = []
         while remaining_message:
 
-            longest_match_length = 0
-            matched_command = None
-            matched_command_method = None
-            matched_command_args = None
+            longest_match_info = self._get_longest_match_info(
+                remaining_message, commands, command_methods
+            )
 
-            for command, method in zip(commands, command_methods):
-                if command is None:
-                    continue
-                parse_result = command.parse(remaining_message)
-                if parse_result is None:
-                    continue
-                args, match_start, match_end, _ = parse_result
-                if args is None:
-                    continue
-                if match_start != 0:
-                    continue
-                if match_end > longest_match_length:
-                    longest_match_length = match_end
-                    matched_command_method = method
-                    matched_command_args = args
-                    matched_command = command
-
-            if matched_command_method is None or matched_command is None:
-                resp = self.unknown_command()
+            if longest_match_info is None:
                 return (
-                    resp,
+                    self.unknown_command(),
                     False,
                 )
 
-            args = self._convert_args_to_method_types(
-                matched_command_args, matched_command_method
+            response, interrupt = await self._execute_command_from_match(
+                longest_match_info
             )
-
-            response = await matched_command_method(*args)
-            interrupt = matched_command.interrupt
             responses.append(response)
             interrupts.append(interrupt)
-            remaining_message = remaining_message[longest_match_length:]
-            if self.ignore_whitespace:
-                remaining_message = remaining_message.strip()
 
-        resp = self._wrap_messages_as_async_iterable(responses)
+            remaining_message = self._get_remaining_message(
+                remaining_message, longest_match_info
+            )
+
+        resp = wrap_messages_as_async_iterable(responses)
         interrupt = any(interrupts)
         return resp, interrupt
