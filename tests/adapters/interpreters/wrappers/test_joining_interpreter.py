@@ -1,3 +1,5 @@
+from typing import AnyStr, AsyncIterable, List
+
 import pytest
 from mock import AsyncMock
 
@@ -5,8 +7,8 @@ from tickit.adapters.interpreters.wrappers import JoiningInterpreter
 
 
 @pytest.mark.asyncio
-async def test_joining_interpreterconcatenates_as_expected():
-    async def multi_resp(msgs):
+async def test_joining_interpreter_concatenates_as_expected():
+    async def multi_resp(msgs: List[AnyStr]) -> AsyncIterable[AnyStr]:
         for msg in msgs:
             yield msg
 
