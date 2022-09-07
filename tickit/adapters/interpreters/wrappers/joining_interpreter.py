@@ -50,8 +50,7 @@ class JoiningInterpreter(Interpreter[AnyStr]):
         """
         response_list = [response async for response in responses]
         response = self.response_delimiter.join(response_list)
-        resp = wrap_as_async_iterable(response)
-        return resp
+        return wrap_as_async_iterable(response)
 
     async def handle(
         self, adapter: Adapter, message: AnyStr
