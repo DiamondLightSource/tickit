@@ -67,8 +67,8 @@ class MultiCommandInterpreter(Interpreter[AnyStr]):
     def _get_longest_match_info(
         self,
         message: AnyStr,
-        commands: List[Optional[Command]],
-        command_methods: List[Callable],
+        commands: Sequence[Optional[Command]],
+        command_methods: Sequence[Callable],
     ) -> Optional[MatchInfo]:
         """Find the longest command that matches the start of the message.
 
@@ -137,6 +137,53 @@ class MultiCommandInterpreter(Interpreter[AnyStr]):
         )
         return remaining_message
 
+    async def _execute_commands_in_message(
+        self, message: AnyStr, command_methods: List[Callable]
+    ) -> Optional[Tuple[List[AnyStr], List[bool]]]:
+        """Execute commands in a message.
+
+        Given a message and a list of registerd command methods, find commands within
+        the message and execute them.
+
+        Args:
+            message (AnyStr): The message commands are to be found within.
+            command_methods (List[Callable]): A list of registered command methods.
+
+        Returns:
+            Optional[tuple[List[AnyStr], List[bool]]]:
+                A tuple containing a list of responses to each executed command and a
+                list of flags indicating whether each executed command raises an
+                interrupt. If no command is found within the message, or the whole
+                message cannot be parsed as a series of commands, return None
+        """
+        commands = [
+            cast(Optional[Command], getattr(method, "__command__", None))
+            for method in command_methods
+        ]
+        responses = []
+        interrupts = []
+
+        while message:
+            longest_match_info = self._get_longest_match_info(
+                message, commands, command_methods
+            )
+
+            if longest_match_info is None:
+                return None
+
+            response, interrupt = await self._execute_command_from_match(
+                longest_match_info
+            )
+
+            if isinstance(response, AsyncIterable):
+                responses.extend([resp async for resp in response])
+            else:
+                responses.append(response)
+            interrupts.append(interrupt)
+
+            message = self._get_remaining_message(message, longest_match_info)
+        return responses, interrupts
+
     async def handle(
         self, adapter: Adapter, message: AnyStr
     ) -> Tuple[AsyncIterable[AnyStr], bool]:
@@ -161,35 +208,12 @@ class MultiCommandInterpreter(Interpreter[AnyStr]):
             func for _, func in getmembers(adapter) if hasattr(func, "__command__")
         ]
 
-        commands = [
-            cast(Optional[Command], getattr(method, "__command__", None))
-            for method in command_methods
-        ]
+        message = message.strip() if self.ignore_whitespace else message
 
-        remaining_message = message.strip() if self.ignore_whitespace else message
-        responses = []
-        interrupts = []
-        while remaining_message:
-
-            longest_match_info = self._get_longest_match_info(
-                remaining_message, commands, command_methods
-            )
-
-            if longest_match_info is None:
-                return (
-                    self.unknown_command(),
-                    False,
-                )
-
-            response, interrupt = await self._execute_command_from_match(
-                longest_match_info
-            )
-            responses.append(response)
-            interrupts.append(interrupt)
-
-            remaining_message = self._get_remaining_message(
-                remaining_message, longest_match_info
-            )
+        result = await self._execute_commands_in_message(message, command_methods)
+        if result is None:
+            return self.unknown_command(), False
+        responses, interrupts = result
 
         resp = wrap_messages_as_async_iterable(responses)
         interrupt = any(interrupts)
