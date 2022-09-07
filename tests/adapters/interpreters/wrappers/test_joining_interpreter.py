@@ -1,6 +1,7 @@
+from typing import AnyStr, AsyncIterable, List
+
 import pytest
 from mock import AsyncMock
-from typing import AnyStr, AsyncIterable, List
 
 from tickit.adapters.interpreters.wrappers import JoiningInterpreter
 
