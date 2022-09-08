@@ -22,6 +22,7 @@ Tutorials for installation, library and commandline usage. New users start here.
     tutorials/creating-a-simulation
     tutorials/creating-a-device
     tutorials/creating-an-adapter
+    tutorials/composing-interpreters
 
 .. rst-class:: columns
 

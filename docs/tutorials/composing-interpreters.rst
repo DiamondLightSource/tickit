@@ -10,7 +10,7 @@ other helper interpreters.
     See the `Creating an Adapter` tutorial for a walk-through of creating a basic
     adapter.
 
-In `Creating and Adapter` we saw how to construct an adapter for a ``Shutter`` device
+In `Creating an Adapter` we saw how to construct an adapter for a ``Shutter`` device
 that could receive commands of the form ``P?``, ``T?``, and ``T=1``. To function correctly,
 these commands had to be sent exactly as specified, one at a time - when talking to a
 simulated device this may not be the case. Rather than worry about more general regex
