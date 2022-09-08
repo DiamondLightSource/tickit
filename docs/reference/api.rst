@@ -82,6 +82,28 @@ API
 
                 ``tickit.adapters.interpreters.command.regex_command``
                 ------------------------------------------------------
+        .. automodule:: tickit.adapters.interpreters.wrappers
+
+            ``tickit.adapters.interpreters.wrappers``
+            ----------------------------------------------
+
+            .. automodule:: tickit.adapters.interprerters.wrappers.beheading_interpreter
+                :members:
+
+                ``tickit.adapters.interpreters.wrappers.beheading_interpreter``
+                ---------------------------------------------------------------
+
+            .. automodule:: tickit.adapters.interprerters.wrappers.joining_interpreter
+                :members:
+
+                ``tickit.adapters.interpreters.wrappers.joining_interpreter``
+                ---------------------------------------------------------------
+
+            .. automodule:: tickit.adapters.interprerters.wrappers.splitting_interpreter
+                :members:
+
+                ``tickit.adapters.interpreters.wrappers.splitting_interpreter``
+                ---------------------------------------------------------------
 
     .. automodule:: tickit.adapters.servers
 
