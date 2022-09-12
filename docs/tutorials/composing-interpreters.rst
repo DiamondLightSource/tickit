@@ -13,15 +13,14 @@ other helper interpreters.
 In `Creating an Adapter` we saw how to construct an adapter for a ``Shutter`` device
 that could receive commands of the form ``P?``, ``T?``, and ``T=1``. To function correctly,
 these commands had to be sent exactly as specified, one at a time - when talking to a
-simulated device this may not be the case. Rather than worry about more general regex
-patterns, interpreter composition can provide a simpler way of dealing with more
-complex or messy messages.
+simulated device this may not be the case. Composing Interpreters are useful if you
+want to do some pre/post processing on all commands before/after they are handled.
 
 Suppose, first of all, that, when communicating with a 'real' shutter device, all
 messages are prepended with a fixed-length header that can be ignored. For example,
-suppose each message is prepended with a header of 2 bytes like ``/x00/x02P?``,
+suppose each message is prepended with a header of 2 bytes like ``\x00\x02P?``,
 ``\x00\x04T=1.0`` etc. To match the shutter's commands against such messages is
-possible with a small modificatiojn of the regex patterns, however, it would be much
+possible with a small modification of the regex patterns, however, it would be much
 neater to cutoff the first two characters of each message before passing it on to the
 ``CommandInterpreter``. This can be achieved by wrapping the ``CommandInterpreter``
 with a ``BeheadingInterpreter`` in the adapter's ``__init__`` as follows:
@@ -119,7 +118,7 @@ So far we have only seen interpreter wrappers altering the recieved message befo
 passing it on to another interpreter. There are also wrappers that alter the response
 received from the wrapped interpreter before it is sent back.
 
-Above, by wrapping the ``ShutterAdapter``'s``CommandInterpreter`` with a
+Above, by wrapping the ``ShutterAdapter``'s ``CommandInterpreter`` with a
 ``SplittingInterpreter`` we were able to execute multiple commands from a single
 message. Each executed command sent its own response, i.e. one message resulted in
 multiple responses. We may instead want each message to have its own response
