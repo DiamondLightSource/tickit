@@ -113,13 +113,6 @@ class CommandInterpreter(Interpreter[AnyStr]):
                 argtype(arg)
                 for arg, argtype in zip(match_groups, get_type_hints(method).values())
             )
-            # can we use signature instead to more cleverly do conversions? i.e. if
-            # type hints aren't available just pass on with no conversion? Otherwise
-            # we can get unhelpful error messages.
-            # Also, should we deal with str/bytes conversions seperately?
-            # Create a mapping function that does conversion rather than argtype(arg)?
-            # It would take args and inspect.Parameters as parameters?
-            # Is type hints enough? - doesn't know about non-hinted vars
             resp = await method(*args)
             if not isinstance(resp, AsyncIterable):
                 resp = CommandInterpreter._wrap(resp)
