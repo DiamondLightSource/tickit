@@ -16,7 +16,7 @@ Changelog      https://github.com/dls-controls/tickit/blob/master/CHANGELOG.rst
 A tickit simulation consists of components and a scheduler.
 
 Components are top level building blocks for a tickit simulation. A typical
-component (a `DeviceSimulation`) hosts a device and any corresponding adapters
+component (a ``DeviceSimulation``) hosts a device and any corresponding adapters
 and provides an interface between those and the scheduler. The scheduler
 co-ordinates the running of the simulation and updating of components.
 
@@ -93,11 +93,11 @@ output of **tcp_contr** is wired to the **input** input of **contr_sink**:
         inputs:
           input: tcp_contr:observed
 
-To run the simulation pass the configuration file to the cli command:
-.. code-block:: bash
+To run the simulation pass the configuration file with the cli command:
+
+.. code-block::
+
     python -m tickit all path/to/config.yaml
-
-
 
 .. |code_ci| image:: https://github.com/dls-controls/tickit/workflows/Code%20CI/badge.svg?branch=master
     :target: https://github.com/dls-controls/tickit/actions?query=workflow%3A%22Code+CI%22
