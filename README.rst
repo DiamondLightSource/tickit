@@ -20,7 +20,7 @@ component (a `DeviceSimulation`) hosts a device and any corresponding adapters
 and provides an interface between those and the scheduler. The scheduler
 co-ordinates the running of the simulation and updating of components.
 
-.. figure:: ../images/tickit-simple-overview.svg
+.. figure:: docs/images/tickit-simple-overview.svg
     :align: center
 
 An adapter is a user implemented class for interactions between a device and
@@ -72,8 +72,11 @@ as an input for another. The wiring this provides is a directed acyclic graph
 of the simulation components and is used by the scheduler to ensure the correct
 flow of updates through the simulation.
 
-.. figure:: ../images/tickit-simple-dag.svg
+.. figure:: docs/images/tickit-simple-dag.svg
     :align: center
+
+A updates first, which causes B to update. C must also update before D can be
+updated.
 
 An following example simulation defines a **RemoteControlled** device named
 **tcp_contr** and a **Sink** device named **contr_sink**. The **observed**
@@ -91,9 +94,9 @@ output of **tcp_contr** is wired to the **input** input of **contr_sink**:
           input: tcp_contr:observed
 
 To run the simulation pass the configuration file to the cli command:
-```
+.. code-block:: bash
     python -m tickit all path/to/config.yaml
-```
+
 
 
 .. |code_ci| image:: https://github.com/dls-controls/tickit/workflows/Code%20CI/badge.svg?branch=master
