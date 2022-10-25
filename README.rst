@@ -13,11 +13,27 @@ Documentation  https://dls-controls.github.io/tickit
 Changelog      https://github.com/dls-controls/tickit/blob/master/CHANGELOG.rst
 ============== ==============================================================
 
-An example device which emits a random value between *0* and *255* whenever
-called and asks to be called again once the simulation has progressed by the
-``callback_period``.  Additionally, extenal control of **RandomTrampoline** is
-afforded by a **RemoteControlledAdapter** which is exposed extenally through 
-a **TCPServer**:
+A tickit simulation consists of components and a scheduler.
+
+Components are top level building blocks for a tickit simulation. A typical
+component (a `DeviceSimulation`) hosts a device and any corresponding adapters
+and provides an interface between those and the scheduler. The scheduler
+co-ordinates the running of the simulation and updating of components.
+
+.. figure:: ../images/tickit-simple-overview.svg
+    :align: center
+
+An adapter is a user implemented class for interactions between a device and
+the "outside world". For example, a TCP client for getting and setting device
+attribute values. A device may have no or many adapters depending on its use
+case.
+
+The following example device emits a random value between *0* and *255* whenever
+it is called and asks to be called again once the simulation has progressed by
+the ``callback_period``. Additionally, extenal control of **RandomTrampoline**
+is afforded by a **RemoteControlledAdapter** which is exposed extenally through
+a **TCPServer**. The component `RandomTrampoline` hosts the device `RandomTrampolineDevice` and
+the adapter `RemoteControlledAdapter` within the `DeviceSimulation`:
 
 .. code-block:: python
 
@@ -49,10 +65,19 @@ a **TCPServer**:
                 SimTime(time + self.callback_period),
             )
 
+Running a simulation requires a yaml file to describe the configurations of the
+components. This describes the names of the components, any inital values and
+how the devices are wired together; with the outputs of one device being taken
+as an input for another. The wiring this provides is a directed acyclic graph
+of the simulation components and is used by the scheduler to ensure the correct
+flow of updates through the simulation.
 
-An example simulation defines a **RemoteControlled** device named **tcp_contr**
-and a **Sink** device named **contr_sink**. The **observed** output of
-**tcp_contr** is wired to the **input** input of **contr_sink**:
+.. figure:: ../images/tickit-simple-dag.svg
+    :align: center
+
+An following example simulation defines a **RemoteControlled** device named
+**tcp_contr** and a **Sink** device named **contr_sink**. The **observed**
+output of **tcp_contr** is wired to the **input** input of **contr_sink**:
 
 .. code-block:: yaml
 
@@ -65,6 +90,10 @@ and a **Sink** device named **contr_sink**. The **observed** output of
         inputs:
           input: tcp_contr:observed
 
+To run the simulation pass the configuration file to the cli command:
+```
+    python -m tickit all path/to/config.yaml
+```
 
 
 .. |code_ci| image:: https://github.com/dls-controls/tickit/workflows/Code%20CI/badge.svg?branch=master
