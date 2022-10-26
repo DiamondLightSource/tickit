@@ -39,7 +39,7 @@ jobs:
       - name: Install Python Dependencies
         run: |
           pip install pipenv build
-          pipenv install --dev --${{ matrix.pipenv }} --python $(python -c 'import sys; print(sys.executable)') && pipenv graph
+          pipenv install --dev --${{ matrix.pipenv }} --python $(python -c 'import sys; print(sys.executable)') --verbose && pipenv graph
 
       - name: Create Sdist and Wheel
         if: matrix.publish
