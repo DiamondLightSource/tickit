@@ -20,8 +20,7 @@ component (a ``DeviceSimulation``) hosts a device and any corresponding adapters
 and provides an interface between those and the scheduler. The scheduler
 co-ordinates the running of the simulation and updating of components.
 
-.. figure:: docs/images/tickit-simple-overview.svg
-    :align: center
+|overview|
 
 An adapter is a user implemented class for interactions between a device and
 the "outside world". For example, a TCP client for getting and setting device
@@ -72,8 +71,7 @@ as an input for another. The wiring this provides is a directed acyclic graph
 of the simulation components and is used by the scheduler to ensure the correct
 flow of updates through the simulation.
 
-.. figure:: docs/images/tickit-simple-dag.svg
-    :align: center
+|dag|
 
 A updates first, which causes B to update. C must also update before D can be
 updated.
@@ -123,4 +121,7 @@ To run the simulation pass the configuration file with the cli command:
     Anything below this line is used when viewing README.rst and will be replaced
     when included in index.rst
 
+.. |overview| image:: https://github.com/dls-controls/tickit/blob/update-docs/docs/images/tickit-simple-overview.svg
+.. |dag| image:: https://github.com/dls-controls/tickit/blob/update-docs/docs/images/tickit-simple-dag.svg
+ 
 See https://dls-controls.github.io/tickit for more detailed documentation.

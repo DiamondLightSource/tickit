@@ -1,6 +1,9 @@
 .. include:: ../README.rst
     :end-before: when included in index.rst
 
+.. |overview| image:: images/tickit-simple-overview.svg
+.. |dag| image:: images/tickit-simple-dag.svg
+ 
 How the documentation is structured
 -----------------------------------
 
