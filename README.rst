@@ -71,8 +71,7 @@ as an input for another. The wiring this provides is a directed acyclic graph
 of the simulation components and is used by the scheduler to ensure the correct
 flow of updates through the simulation.
 
-.. figure:: images/tickit-simple-dag.svg
-    :align: center
+|dag|
 
 A updates first, which causes B to update. C must also update before D can be
 updated.
