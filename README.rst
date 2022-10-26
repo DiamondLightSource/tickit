@@ -83,10 +83,10 @@ output of **tcp_contr** is wired to the **input** input of **contr_sink**:
 .. code-block:: yaml
 
 
-    - examples.devices.remote_controlled.RemoteControlled: {}
+    - examples.devices.remote_controlled.RemoteControlled:
         name: tcp_contr
         inputs: {}
-    - tickit.devices.sink.Sink: {}
+    - tickit.devices.sink.Sink:
         name: contr_sink
         inputs:
           input: tcp_contr:observed
