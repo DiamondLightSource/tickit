@@ -28,7 +28,7 @@ jobs:
       - name: Install Python Dependencies
         run: |
           pip install pipenv
-          pipenv install --dev --deploy --python $(which python) && pipenv graph
+          pipenv install --dev --skip-lock --deploy --python $(which python) && pipenv graph
 
       - name: Build Docs
         run: pipenv run docs
