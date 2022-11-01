@@ -1,37 +1,38 @@
-Run linting using pre-commit
-============================
+Build the docs using sphinx
+===========================
 
-Code linting is handled by black_, flake8_ and isort_ run under pre-commit_.
+You can build the `sphinx`_ based docs from the project directory by running::
 
-Running pre-commit
-------------------
+    $ tox -e docs
 
-You can run the above checks on all files with this command::
+This will build the static docs on the ``docs`` directory, which includes API
+docs that pull in docstrings from the code.
 
-    $ tox -e pre-commit
+.. seealso::
 
-Or you can install a pre-commit hook that will run each time you do a ``git
-commit`` on just the files that have changed::
+    `documentation_standards`
 
-    $ pre-commit install
+The docs will be built into the ``build/html`` directory, and can be opened
+locally with a web browse::
 
-Fixing issues
--------------
+    $ firefox build/html/index.html
 
-If black reports an issue you can tell it to reformat all the files in the
-repository::
+Autobuild
+---------
 
-    $ black .
+You can also run an autobuild process, which will watch your ``docs``
+directory for changes and rebuild whenever it sees changes, reloading any
+browsers watching the pages::
 
-Likewise with isort::
+    $ tox -e docs autobuild
 
-    $ isort .
+You can view the pages at localhost::
 
-If you get any flake8 issues you will have to fix those manually.
+    $ firefox http://localhost:8000
 
-VSCode support
---------------
+If you are making changes to source code too, you can tell it to watch
+changes in this directory too::
 
-The ``.vscode/settings.json`` will run black and isort formatters as well as
-flake8 checking on save. Issues will be highlighted in the editor window.
+    $ tox -e docs autobuild -- --watch src
 
+.. _sphinx: https://www.sphinx-doc.org/
