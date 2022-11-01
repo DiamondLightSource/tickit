@@ -134,9 +134,9 @@ copybutton_prompt_is_regexp = True
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "pydata_sphinx_theme"
+html_theme = "sphinx_rtd_theme_github_versions"
 github_repo = project
-github_user = "DiamondLightSource"
+github_user = "dls-controls"
 
 # Theme options for pydata_sphinx_theme
 html_theme_options = dict(
