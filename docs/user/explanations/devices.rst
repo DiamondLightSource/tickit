@@ -4,7 +4,7 @@ Devices
 Tickit simulations revolve around devices. Devices are user implemented classes
 which behaviours mimic the hardware you wish to simulate.
 
-Any new device created must be of type device, have an `update` method, and must
+Any new device created must be of type device, have an update method, and must
 have Input and Output maps as members. If these are not used they can be left
 empty, but they must be present. This is for the wiring together of multiple
 devices within a simulation. :doc:`Further details on wiring <wiring>`.
