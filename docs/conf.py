@@ -39,10 +39,8 @@ extensions = [
     "sphinx.ext.viewcode",
     # Adds the inheritance-diagram generation directive
     "sphinx.ext.inheritance_diagram",
-    # Add a copy button to each code block
-    "sphinx_copybutton",
-    # For the card element
-    "sphinx_design",
+    # Use this to link to section labels across pages
+    "sphinx.ext.autosectionlabel",
 ]
 
 # If true, Sphinx will warn about all references where the target cannot
@@ -182,5 +180,5 @@ html_show_sphinx = False
 html_show_copyright = False
 
 # Logo
-html_logo = "images/dls-logo.svg"
-html_favicon = "images/dls-favicon.ico"
+html_logo = "images/tickit-logo.svg"
+html_favicon = "images/tickit-logo.ico"
