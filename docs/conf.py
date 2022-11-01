@@ -4,12 +4,16 @@
 # list see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-from pathlib import Path
-from subprocess import check_output
+from sphinx.domains.python import PythonDomain
 
 import tickit
 
 # -- General configuration ------------------------------------------------
+
+# Workaround for NewType as autodata, to be removed when issue is resolved
+# see: https://github.com/sphinx-doc/sphinx/issues/9560
+assert PythonDomain.object_types["data"].roles == ("data", "obj")
+PythonDomain.object_types["data"].roles = ("data", "class", "obj")
 
 # General information about the project.
 project = "tickit"
@@ -21,16 +25,16 @@ release = tickit.__version__
 
 # The short X.Y version.
 if "+" in release:
-    # Not on a tag, use branch name
-    root = Path(__file__).absolute().parent.parent
-    git_branch = check_output("git branch --show-current".split(), cwd=root)
-    version = git_branch.decode().strip()
+    # Not on a tag
+    version = "master"
 else:
     version = release
 
 extensions = [
     # Use this for generating API docs
     "sphinx.ext.autodoc",
+    # Use this to link to section labels across pages
+    "sphinx.ext.autosectionlabel",
     # This can parse google style docstrings
     "sphinx.ext.napoleon",
     # For linking to external sphinx documentation
@@ -39,8 +43,8 @@ extensions = [
     "sphinx.ext.viewcode",
     # Adds the inheritance-diagram generation directive
     "sphinx.ext.inheritance_diagram",
-    # Use this to link to section labels across pages
-    "sphinx.ext.autosectionlabel",
+    # For the card element
+    "sphinx_design",
 ]
 
 # If true, Sphinx will warn about all references where the target cannot
@@ -52,14 +56,6 @@ nitpicky = True
 # domain name if present. Example entries would be ('py:func', 'int') or
 # ('envvar', 'LD_LIBRARY_PATH').
 nitpick_ignore = [
-    ("py:class", "NoneType"),
-    ("py:class", "'str'"),
-    ("py:class", "'float'"),
-    ("py:class", "'int'"),
-    ("py:class", "'bool'"),
-    ("py:class", "'object'"),
-    ("py:class", "'id'"),
-    ("py:class", "typing_extensions.Literal"),
     ("py:class", "ComponentID"),
     ("py:class", "PortID"),
     ("py:class", "State"),
@@ -71,6 +67,14 @@ nitpick_ignore = [
     ("py:class", "asyncio.streams.StreamWriter"),
     ("py:class", "apischema.conversions.conversions.Conversion"),
     ("py:class", "apischema.conversions.conversions.LazyConversion"),
+    ("py:class", "NoneType"),
+    ("py:class", "'str'"),
+    ("py:class", "'float'"),
+    ("py:class", "'int'"),
+    ("py:class", "'bool'"),
+    ("py:class", "'object'"),
+    ("py:class", "'id'"),
+    ("py:class", "typing_extensions.Literal"),
 ]
 
 # Both the class’ and the __init__ method’s docstring are concatenated and
@@ -82,6 +86,9 @@ autodoc_member_order = "bysource"
 
 # Don't inherit docstrings from baseclasses
 autodoc_inherit_docstrings = False
+
+# Add type hints to both signature and description
+autodoc_typehints = "both"
 
 # Output graphviz directive produced images in a scalable format
 graphviz_output_format = "svg"
@@ -120,14 +127,6 @@ rst_epilog = """
 .. _mypy: http://mypy-lang.org/
 .. _pre-commit: https://pre-commit.com/
 """
-
-# Ignore localhost links for periodic check that links in docs are valid
-linkcheck_ignore = [r"http://localhost:\d+/"]
-
-# Set copy-button to ignore python and bash prompts
-# https://sphinx-copybutton.readthedocs.io/en/latest/use.html#using-regexp-prompt-identifiers
-copybutton_prompt_text = r">>> |\.\.\. |\$ |In \[\d*\]: | {2,5}\.\.\.: | {5,8}: "
-copybutton_prompt_is_regexp = True
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -173,11 +172,22 @@ html_context = dict(
     doc_path="docs",
 )
 
+# Options for the sphinx rtd theme, use DLS blue
+html_theme_options = dict(style_nav_header_background="rgb(7, 43, 93)")
+
+# Add any paths that contain custom static files (such as style sheets) here,
+# relative to this directory. They are copied after the builtin static files,
+# so a file named "default.css" will overwrite the builtin "default.css".
+html_static_path = ["_static"]
+
 # If true, "Created using Sphinx" is shown in the HTML footer. Default is True.
 html_show_sphinx = False
 
 # If true, "(C) Copyright ..." is shown in the HTML footer. Default is True.
-html_show_copyright = False
+html_show_copyright = True
+
+# Add some CSS classes for columns and other tweaks in a custom css file
+html_css_files = ["theme_overrides.css"]
 
 # Logo
 html_logo = "images/tickit-logo.svg"
