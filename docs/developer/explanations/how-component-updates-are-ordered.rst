@@ -19,7 +19,7 @@ to the input of *Component B* and the first input of *Component C*, whilst
 the output of *Component B* is wired to the second input of *Component C*
 and the input of *Component D*.
 
-.. figure:: ../images/example-systems.drawio.svg
+.. figure:: ../../images/example-systems.drawio.svg
     :align: center
 
 Determine which components require an update

@@ -7,7 +7,7 @@ complex mutli-device systems.
 A tickit simulation consists of a scheduler and components, all of which
 communicate via a message bus. 
 
-.. figure:: ../images/tickit-overview-full.svg
+.. figure:: ../../images/tickit-overview-full.svg
     :align: center
 
 
@@ -16,7 +16,7 @@ scheduler. This wiring is a map of the unique ids of components in the system to
 the inputs the components take. This provides graphs like the one below for
 update flow through the system.
 
-.. figure:: ../images/tickit-simple-dag.svg
+.. figure:: ../../images/tickit-simple-dag.svg
     :align: center
 
 
