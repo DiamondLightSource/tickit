@@ -97,5 +97,3 @@ There are run forever methods for all the adapters in a system and in the master
 scheduler. These are the basis of the runner tasks. The adapters are waiting for
 incoming messages and the scheduler run forever is running system ticks based on
 updates.
-
-
