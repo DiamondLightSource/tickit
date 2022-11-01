@@ -14,10 +14,10 @@ side-bar.
             :maxdepth: 1
 
             tutorials/installation
-            tutorials/running-a-simulation
             tutorials/creating-a-simulation
-            tutorials/creating-a-device
-            tutorials/creating-an-adapter
+            tutorials/running-a-simulation
+            tutorials/creating-a-simple-device-simulation
+
 
         +++
 
@@ -30,6 +30,9 @@ side-bar.
             :maxdepth: 1
 
             how-to/accomplish-a-task
+            how-to/create-a-device
+            how-to/create-an-adapter
+            
 
         +++
 
