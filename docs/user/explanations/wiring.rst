@@ -10,7 +10,7 @@ wired to the input of another. This ensures devices update in the correct order,
 so that changes in the system propgate in the correct manner. This is structured
 as a directed acyclic graph.
 
-.. figure:: ../images/tickit-simple-dag.svg
+.. figure:: ../../images/tickit-simple-dag.svg
     :align: center
 
 Here we can see that if component 1 updates, then this will cause component 2

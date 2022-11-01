@@ -10,7 +10,7 @@ Device Simulation
 Device simulations are the typical use case of a component. They encapsulate a
 device and any adapters for that device.
 
-.. figure:: ../images/tickit-device-simulation-cpt.svg
+.. figure:: ../../images/tickit-device-simulation-cpt.svg
     :align: center
 
 
@@ -23,7 +23,7 @@ them. However, the scheduler in a system component acts as a slave scheduler
 which is driven by the master scheduler in the top level of the simulation
 it belongs to.
 
-.. figure:: ../images/tickit-system-simulation-cpt.svg
+.. figure:: ../../images/tickit-system-simulation-cpt.svg
     :align: center
 
 System simulations can also contain their own system simulation components
@@ -63,5 +63,5 @@ populate the wiring for the master scheduler. For example:
 The Overall Simulation
 -------------------------------
 
-.. figure:: ../images/tickit-simple-overview-with-system-simulation.svg
+.. figure:: ../../images/tickit-simple-overview-with-system-simulation.svg
     :align: center
