@@ -1,78 +1,64 @@
 User Guide
-----------
+===============
 
-Documentation is split into four categories, accessible from links in the side-bar.
+Documentation is split into four categories, also accessible from links in the
+side-bar.
 
-.. rst-class:: columns
+.. grid:: 2
+    :gutter: 4
 
-Tutorials
-~~~~~~~~~
+    .. grid-item-card:: :material-regular:`directions_run;3em`
 
-Tutorials for installation, library and commandline usage. New users start here.
+        .. toctree::
+            :caption: Tutorials
+            :maxdepth: 1
 
-.. toctree::
-    :caption: Tutorials
-    :hidden:
+            tutorials/installation
+            tutorials/running-a-simulation
+            tutorials/creating-a-simulation
+            tutorials/creating-a-device
+            tutorials/creating-an-adapter
 
-    tutorials/installation
-    tutorials/running-a-simulation
-    tutorials/creating-a-simulation
-    tutorials/creating-a-device
-    tutorials/creating-an-adapter
+        +++
 
-.. rst-class:: columns
+        Tutorials for installation, library and commandline usage. New users start here.
 
-How-to Guides
-~~~~~~~~~~~~~
+    .. grid-item-card:: :material-regular:`task;3em`
 
-Practical step-by-step guides for the more experienced user.
+        .. toctree::
+            :caption: How-to Guides
+            :maxdepth: 1
 
-.. toctree::
-    :caption: How-to Guides
-    :hidden:
+            how-to/accomplish-a-task
 
-    how-to/accomplish-a-task
+        +++
 
-.. rst-class:: columns
+        Practical step-by-step guides for the more experienced user.
 
-Explanations
-~~~~~~~~~~~~
+    .. grid-item-card:: :material-regular:`apartment;3em`
 
-Explanation of how the library works and why it works that way.
+        .. toctree::
+            :caption: Explanations
+            :maxdepth: 1
 
-.. toctree::
-    :caption: Explanations
-    :hidden:
+            explanations/glossary
+            explanations/devices
+            explanations/wiring
+            explanations/components
+        +++
 
-    explanations/glossary
-    explanations/devices
-    explanations/wiring
-    explanations/components
-    
+        Explanation of how the library works and why it works that way.
 
-.. rst-class:: columns
+    .. grid-item-card:: :material-regular:`description;3em`
 
-Reference
-~~~~~~~~~
+        .. toctree::
+            :caption: Reference
+            :maxdepth: 1
 
-Technical reference material, for classes, methods, APIs, commands, and contributing to the project.
+            reference/api
+            Changelog <https://github.com/dls-controls/tickit/blob/master/CHANGELOG.rst>
+            Index <genindex.html#http://>
 
-..
-    Index link below is a hack to make genindex.html a relative link
-    https://stackoverflow.com/a/31820846
+        +++
 
-.. toctree::
-    :caption: Reference
-    :hidden:
-
-    reference/api
-    reference/contributing
-    Changelog <https://github.com/dls-controls/tickit/blob/master/CHANGELOG.rst>
-    Index <genindex.html#http://>
-
-.. rst-class:: endcolumns
-
-About the documentation
-~~~~~~~~~~~~~~~~~~~~~~~
-
-`Why is the documentation structured this way? <https://documentation.divio.com>`_
+        Technical reference material on standards in use.
