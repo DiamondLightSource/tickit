@@ -1,6 +1,14 @@
 Creating an Adapter
 ===================
 
+.. warning::
+    This is somewhat depreciated in favour of using a `ComposedAdapter` which
+    already exists in the tickit library. An example of this being set up can
+    be found in the tutorial for :doc: `creating a simple simulation. <creating-a-simple-device-simulation>`_
+
+    **To do**: Look to alter or remove this content.
+
+
 This tutorial shows how to create a simple `Adapter` for use in the ticket framework.
 This adapter will act as a simple TCP interface to the `Shutter` device which can vary
 the transmission of ``flux`` by changing ``position``. The `Adapter` we create will be
