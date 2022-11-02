@@ -45,10 +45,12 @@ side-bar.
             :caption: Explanations
             :maxdepth: 1
 
-            explanations/glossary
-            explanations/devices
-            explanations/wiring
+            explanations/framework-summary
             explanations/components
+            explanations/devices
+            explanations/adapters
+            explanations/wiring
+            explanations/glossary
         +++
 
         Explanation of how the library works and why it works that way.
