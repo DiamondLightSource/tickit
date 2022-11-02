@@ -32,6 +32,7 @@ side-bar.
             how-to/accomplish-a-task
             how-to/create-a-device
             how-to/create-an-adapter
+            how-to/use-epics-adapter
             
 
         +++
