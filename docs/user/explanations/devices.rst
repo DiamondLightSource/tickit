@@ -7,7 +7,7 @@ which behaviours mimic the hardware you wish to simulate.
 Any new device created must be of type device, have an update method, and must
 have Input and Output maps as members. If these are not used they can be left
 empty, but they must be present. This is for the wiring together of multiple
-devices within a simulation. :doc: `Further details on wiring <wiring>`_
+devices within a simulation. :doc:`Further details on wiring <wiring>`_
 
 The following code is for a `RandomTrampoline`. This device just outputs random
 values and requests to be called back for an update sometime later.
