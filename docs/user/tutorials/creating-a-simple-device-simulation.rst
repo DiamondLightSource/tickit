@@ -408,3 +408,8 @@ Then querying the new `m?`:
 
     DEBUG:tickit.adapters.servers.tcp:Recieved b'm?\r\n' from ('127.0.0.1', 38986)
     DEBUG:tickit.adapters.servers.tcp:Replying with b'LOUNDHELLO'
+
+
+
+.. _ComposedAdapter: <tickit.adapters.composed.ComposedAdapter>
+.. _CommandInterpreter: <tickit.adapters.interpreters.command_interpreter.CommandInterpreter>

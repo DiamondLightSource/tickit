@@ -14,6 +14,9 @@ device and any adapters for that device.
     :align: center
 
 
+(See `DeviceSimulation`.)
+
+
 System Simulation
 -----------------
 
@@ -58,10 +61,17 @@ populate the wiring for the master scheduler. For example:
         inputs:
         sink_1: internal_tickit:output_1
 
-
+(See `SystemSimulationComponent`.)
 
 The Overall Simulation
 -------------------------------
 
+A simulation containing both types of component will look something like this:
+
 .. figure:: ../../images/tickit-simple-overview-with-system-simulation.svg
     :align: center
+
+
+
+.. _DeviceSimulation: <tickit.core.device_simulation.DeviceSimulation>
+.. _SystemSimulationComponent: <tickit.core.system_simulation.SystemSimulationComponent>
