@@ -6,7 +6,7 @@ complex mutli-device systems.
 
 A tickit simulation consists of a scheduler and components, all of which
 communicate via a message bus. The scheduler keeps simulation time running and
-updates the components in the simulation when requested.
+updates the components in the simulation when required.
 
 
 .. figure:: ../../images/tickit-overview-full.svg
@@ -40,12 +40,24 @@ downstream.
 Running a simulation
 --------------------
 
-What does it mean to be running a simulation?
-What causes a device update?
-What does it mean for a device to update?
+When we *run* a simulation, we first initialise all our components, devices,
+adapters and the scheduler. The scheduler runs the system through its inital
+**tick**, updating every device in the system. The scheduler will then run
+time on, waiting for next time it needs to update system components.
 
+When a device is told to update by the scheduler it takes the current values of
+its inputs and runs its update function, returning a device update to the
+scheduler. This tells the scheduler it has finished updating, what its outputs
+are, and if it wants to be called back for another update (and when). If this
+device is wired to another device, the scheduler will then repeat this update
+process with all devices downstream of it until they have all updated. The
+scheduler will then check if it has been asked by any device to call it back at
+a given time. If it has, it will wait until that time then update the device and
+again any downstream of it.
 
-The scheduler runs the simulation time until one of the devices requests an
-update. This can be either due to a device callback or an interupt.
-
-
+Adapters wait to recieve external interaction with the device. When this
+interaction causes something to change on the device this will send an interupt
+to the scheduler to let it know that the device needs updating imidiately. The
+scheduler updates that device and then begins the cycle of updating the rest.
+When it finishes the tick caused by the interupt, the scheduler continues to
+wait until the next update.
