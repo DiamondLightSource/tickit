@@ -50,6 +50,7 @@ side-bar.
             explanations/devices
             explanations/adapters
             explanations/wiring
+            explanations/why-tickit
             explanations/glossary
         +++
 

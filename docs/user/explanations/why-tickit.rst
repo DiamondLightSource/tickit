@@ -7,9 +7,9 @@ such scans, multiple system components are needed to be able to communicate with
 one another and have linked behaviour triggered by events.
 
 Tickit allows this by simulating device level logic, and allows the devices to
-pass values to each other by the means of device Inputs and Outputs. Each device
-takes its inputs off of and puts its outputs on to a message bus. This can be
-done in memory, or over a message brokering service.
+pass values to each other by the means of device Inputs and Outputs. This flow
+of information can be facilitated in memory, or over a message brokering service
+for devices distributed across different processes and even machines.
 
 The tickit framework was inspired by lewis, a cycle drive simulation framework
 by ESS, however differs in key ways to offer different functionality.
@@ -22,4 +22,9 @@ event-based:
     To re-create a cycle driven system a device can be created to request
     infinite callbacks at regular intervals which can then go on to update any
     downstream device.
+
+Bus based communication:
+    Tickit uses message busses as a basis for the communication between its
+    devices. This was chosen in an attempt to simplify communication and to try
+    and produce a less coupled system than is achievable with RPC.
 
