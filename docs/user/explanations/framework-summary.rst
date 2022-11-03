@@ -4,7 +4,7 @@ Framework Summary
 Tickit is an event-based simulation framework allowing for the simulation of
 complex mutli-device systems.
 
-A tickit simulation consists of a scheduler and components, all of which
+A tickit simulation consists of a scheduler and :doc:`components<components>`_, all of which
 communicate via a message bus. The scheduler keeps simulation time running and
 updates the components in the simulation when required.
 
