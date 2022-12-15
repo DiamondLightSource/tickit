@@ -32,9 +32,8 @@ it belongs to.
 System simulations can also contain their own system simulation components
 allowing for the construction of reasonably complex systems.
 
-To configure a system simulation the config.yaml the system simulation components
-and their respective components are nested in the config.yaml in order to
-populate the wiring for the master scheduler. For example:
+System simulations can be nested inside other components in the config so that
+the master scheduler's wiring is correct, for example: 
 
 .. code-block:: yaml
 
