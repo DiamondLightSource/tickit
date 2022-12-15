@@ -35,8 +35,7 @@ An adapter for use on a ZeroMQ data stream.
 
 HTTP adapter
 ------------
-An adapter implementation which delegates the hosting of an http requests to a
-server and sets up the endpoints for said server. 
+An adapter that hosts an HTTP server, e.g. for devices with REST APIs.
 
 
 EPICS adapter
