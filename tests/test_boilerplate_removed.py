@@ -2,70 +2,58 @@
 This file checks that all the example boilerplate text has been removed.
 It can be deleted when all the contained tests pass
 """
-import os
+from importlib.metadata import metadata
+from pathlib import Path
 
-import pytest
-
-
-@pytest.fixture
-def setupcfg():
-    import configparser
-
-    conf = configparser.ConfigParser()
-    conf.read("setup.cfg")
-
-    return conf["metadata"]
+ROOT = Path(__file__).parent.parent
 
 
-# setup.cfg
-def test_module_description(setupcfg):
-    if "One line description of your module" in setupcfg["description"]:
-        raise AssertionError(
-            "Please change description in ./setup.cfg "
-            "to be a one line description of your module"
-        )
+def skeleton_check(check: bool, text: str):
+    if ROOT.name == "python3-pip-skeleton" or str(ROOT) == "/project":
+        # In the skeleton module the check should fail
+        check = not check
+        text = f"Skeleton didn't raise: {text}"
+    if check:
+        raise AssertionError(text)
 
 
-def assert_not_contains_text(path, text, explanation):
-    with open(path, "r") as f:
-        contents = f.read().replace("\n", " ")
-    if text in contents:
-        raise AssertionError(f"Please change ./{path} {explanation}")
+def assert_not_contains_text(path: str, text: str, explanation: str):
+    full_path = ROOT / path
+    if full_path.exists():
+        contents = full_path.read_text().replace("\n", " ")
+        skeleton_check(text in contents, f"Please change ./{path} {explanation}")
 
 
-def assert_not_exists(path, explanation):
-    if os.path.exists(path):
-        raise AssertionError(f"Please delete ./{path} {explanation}")
+# pyproject.toml
+def test_module_summary():
+    summary = metadata("python3-pip-skeleton")["summary"]
+    skeleton_check(
+        "One line description of your module" in summary,
+        "Please change project.description in ./pyproject.toml "
+        "to be a one line description of your module",
+    )
 
 
 # README
-def test_changed_README():
+def test_changed_README_intro():
     assert_not_contains_text(
         "README.rst",
         "This is where you should write a short paragraph",
-        "to include a paragraph on what your module does",
+        "to include an intro on what your module does",
     )
 
 
-# Docs
-@pytest.mark.skip("Docs not yet written")
-def test_docs_ref_api_changed():
+def test_removed_adopt_skeleton():
     assert_not_contains_text(
-        "docs/reference/api.rst",
-        "You can mix verbose text with docstring and signature",
-        "to introduce the API for your module",
+        "README.rst",
+        "This project contains template code only",
+        "remove the note at the start",
     )
 
 
-@pytest.mark.skip("Docs not yet written")
-def test_how_tos_written():
-    assert_not_exists(
-        "docs/how-to/accomplish-a-task.rst", "and write some docs/how-tos"
-    )
-
-
-@pytest.mark.skip("Docs not yet written")
-def test_explanations_written():
-    assert_not_exists(
-        "docs/explanations/why-is-something-so.rst", "and write some docs/explanations"
+def test_changed_README_body():
+    assert_not_contains_text(
+        "README.rst",
+        "This is where you should put some images or code snippets",
+        "to include some features and why people should use it",
     )
