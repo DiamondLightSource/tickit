@@ -43,11 +43,11 @@
     ],
     "mounts": [
         "source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind",
-        "source=${localEnv:HOME}/.inputrc,target=/root/.inputrc,type=bind",
+        "source=${localEnv:HOME}/.inputrc,target=/root/.inputrc,type=bind"
     ],
     // make the workspace folder the same inside and outside of the container
-    "workspaceMount": "source=${localWorkspaceFolder},target=${localWorkspaceFolder},type=bind",
-    "workspaceFolder": "${localWorkspaceFolder}",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace/tickit,type=bind",
+    "workspaceFolder": "/workspace/tickit",
     // After the container is created, install the python project in editable form
     "postCreateCommand": "pip install -e .[dev]"
 }
