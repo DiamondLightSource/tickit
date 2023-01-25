@@ -16,11 +16,11 @@ description = "Event-based device simulation framework"
 dependencies = [
     "aiohttp",
     "aiokafka",
-    "aiozmq==0.9.0",
-    "apischema==0.16.1",
+    "aiozmq",
+    "apischema",
     "immutables",
     "pyyaml",
-    "pyzmq==19.0.2",
+    "pyzmq",
     "softioc",
     "click",
 
