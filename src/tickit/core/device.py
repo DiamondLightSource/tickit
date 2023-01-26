@@ -28,7 +28,8 @@ class Device(Generic[InMap, OutMap]):
     """An interface for types which implement simulated devices."""
 
     def update(self, time: SimTime, inputs: InMap) -> DeviceUpdate[OutMap]:
-        """A method which implements device behaviour according to the time and its inputs.
+        """A method which implements device behaviour according to the time and its
+        inputs.
 
         A method which implements the (typically physics based) changes which occur
         within the device in response to either the progression of time or the

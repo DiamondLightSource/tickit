@@ -140,7 +140,9 @@ class EventRouter:
         pass
 
     def __init__(self, wiring: Union[Wiring, InverseWiring]) -> None:
-        """An EventRouter constructor which stores possibly inverse wiring for use in utilities.
+        """Construct an EventRouter.
+
+        An EventRouter stores possible inverse wiring for use in utilities.
 
         Args:
             wiring (Union[Wiring, InverseWiring]): A wiring or inverse wiring object
@@ -230,7 +232,8 @@ class EventRouter:
         return inverse_tree
 
     def dependants(self, root: ComponentID) -> Set[ComponentID]:
-        """Finds set of all components which are recursively dependant on the root component.
+        """Finds the set of all components which are recursively dependant on the root
+        component.
 
         Args:
             root (ComponentID): The root component.

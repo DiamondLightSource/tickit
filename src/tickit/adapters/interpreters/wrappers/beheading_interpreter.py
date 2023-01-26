@@ -25,7 +25,8 @@ class BeheadingInterpreter(Interpreter[AnyStr]):
     async def handle(
         self, adapter: Adapter, message: AnyStr
     ) -> Tuple[AsyncIterable[AnyStr], bool]:
-        """Removes a header from the start of a message, and passes it on to an interpreter.
+        """Removes a header from the start of a message, and passes it on to an
+        interpreter.
 
         Args:
             adapter (Adapter): The adapter in which the function should be executed

@@ -26,7 +26,7 @@ class StateConsumer(Protocol[C]):
     """
 
     def __init__(self, callback: Callable[[C], Awaitable[None]]) -> None:
-        """A constructor of the consumer, given a callback handle.
+        """Constructor of the consumer, given a callback handle.
 
         Args:
             callback (Callable[[C], Awaitable[None]]): An asynchronous handler function
@@ -35,7 +35,10 @@ class StateConsumer(Protocol[C]):
         pass
 
     async def subscribe(self, topics: Iterable[str]) -> None:
-        """Subscribes the consumer to the given topics, new messages are passed to the callback.
+        """Subscribe the consumer to the given topics.
+
+        Subscribe the consumer to the given topics, new messages are passed to
+        the callback.
 
         Args:
             topics (Iterable[str]): An iterable of topics to subscribe to.
@@ -53,11 +56,11 @@ class StateProducer(Protocol[P]):
     """
 
     def __init__(self) -> None:
-        """A constructor of the producer, given no arguments."""
+        """Constructor of the producer, given no arguments."""
         pass
 
     async def produce(self, topic: str, value: P) -> None:
-        """Produces a value to the provided topic.
+        """Produce a value to the provided topic.
 
         Args:
             topic (str): The topic to which the value should be sent.
@@ -107,7 +110,7 @@ def add(
 
 
 def interfaces(external: bool = False) -> Set[str]:
-    """Gets a set of interface names for which both a StateConsumer and StateProducer exist.
+    """Returns interface names for which both a StateConsumer and StateProducer exist.
 
     Gets a set of interface names for which both a StateConsumer and StateProducer
     exist. The external option may be used to restrict interfaces to those which may be

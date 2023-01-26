@@ -46,7 +46,8 @@ class KafkaStateConsumer(Generic[C]):
                 await self.callback(message.value)
 
     async def subscribe(self, topics: Iterable[str]):
-        """Subscribes the consumer to the given topics, new messages are passed to the callback.
+        """Subscribes the consumer to the given topics, new messages are passed to the
+        callback.
 
         Args:
             topics (Iterable[str]): An iterable of topics to subscribe to.

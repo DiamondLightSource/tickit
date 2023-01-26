@@ -30,7 +30,8 @@ class CryostreamDevice(Device, CryostreamBase):
         self.callback_period: SimTime = SimTime(int(1e9))
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
-        """The update method which changes the output temperature according to set modes.
+        """The update method which changes the output temperature according to set
+        modes.
 
         Returns:
             DeviceUpdate[Outputs]:
@@ -63,7 +64,8 @@ class CryostreamAdapter(ComposedAdapter[bytes]):
         host: str = "localhost",
         port: int = 25565,
     ) -> None:
-        """A CryostreamAdapter constructor which instantiates a TcpServer with host and port.
+        """A CryostreamAdapter constructor which instantiates a TcpServer with host and
+        port.
 
         Args:
             device (Device): The device which this adapter is attached to

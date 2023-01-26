@@ -43,7 +43,8 @@ class ComponentPort:
     @deserializer
     @staticmethod
     def deserialize(data: str) -> "ComponentPort":
-        """An apischema deserialization method which builds a from a string of component:port.
+        """An apischema deserialization method which builds a from a string of
+        component:port.
 
         Returns:
             ComponentPort: The deserialized ComponentPort.

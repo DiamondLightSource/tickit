@@ -39,7 +39,8 @@ class FemtoDevice(Device):
         self.gain = gain
 
     def get_gain(self) -> float:
-        """Returns the current amplified difference between the input and output signals.
+        """Returns the current amplified difference between the input and output
+        signals.
 
         Returns:
             float: the amplified difference between the input and output signals.

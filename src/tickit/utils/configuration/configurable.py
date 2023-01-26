@@ -30,7 +30,8 @@ is_tagged_union: Dict[Type[Any], bool] = DefaultDict(lambda: False)
 
 
 def as_tagged_union(cls: Cls) -> Cls:
-    """A decorator to make a config base class which can deserialize aliased sub-classes.
+    """A decorator to make a config base class which can deserialize aliased
+    sub-classes.
 
     A decorator which makes a config class the root of a tagged union of sub-classes
     allowing for serialization and deserialization of config trees by class alias. The

@@ -29,7 +29,8 @@ class IoBoxDevice(Device):
         self.message = inital_value
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
-        """The update method which produces an output mapping containing the observed value.
+        """The update method which produces an output mapping containing the observed
+        value.
 
         For this device the DeviceUpdate produces no outputs.
 

@@ -22,7 +22,8 @@ LOGGER = logging.getLogger(__name__)
 
 
 class Ticker:
-    """A utility class responsible for sequencing the update of components during a tick.
+    """A utility class responsible for sequencing the update of components during a
+    tick.
 
     A utility class responsible for sequencing the update of components during a tick
     by eagerly updating each component which has had all of its dependencies resolved.
@@ -33,7 +34,8 @@ class Ticker:
         wiring: Union[Wiring, InverseWiring],
         update_component: Callable[[Input], Coroutine[Any, Any, None]],
     ) -> None:
-        """A Ticker constructor which creates an event router and performs initial setup.
+        """A Ticker constructor which creates an event router and performs initial
+        setup.
 
         Args:
             wiring (Union[Wiring, InverseWiring]): A wiring or inverse wiring object

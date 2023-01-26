@@ -48,7 +48,7 @@ class InternalStateServer(metaclass=Singleton):
     _subscribers: DefaultDict[str, Set["InternalStateConsumer"]] = defaultdict(set)
 
     async def push(self, topic: str, message: Message) -> None:
-        """An asynchronous method which propagates a message to subscribers and stores it.
+        """Asynchronous method which propagates a message to subscribers and stores it.
 
         An asynchronous method which propagates the given message to consumers which
         subscribe to the topic and stores the message in the topic -> messages mapping.
@@ -64,7 +64,8 @@ class InternalStateServer(metaclass=Singleton):
             await subscriber.add_message(message)
 
     async def subscribe(self, consumer: "InternalStateConsumer", topics: Iterable[str]):
-        """Subscribes the consumer to the given topics, so it is notified a message is added.
+        """Subscribes the consumer to the given topics, so it is notified a message is
+        added.
 
         An asynchronous method which adds a consumer to the subscriber list of each
         topic in the topics iterable. On subscription, previous messages on the topic
@@ -129,7 +130,8 @@ class InternalStateConsumer(Generic[C]):
         self.callback = callback
 
     async def subscribe(self, topics: Iterable[str]) -> None:
-        """Subscribes the consumer to the given topics, new messages are passed to the callback.
+        """Subscribes the consumer to the given topics, new messages are passed to the
+        callback.
 
         Args:
             topics (Iterable[str]): An iterable of topics to subscribe to.

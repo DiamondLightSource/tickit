@@ -128,7 +128,8 @@ class BaseComponent(Component):
 
     @abstractmethod
     async def on_tick(self, time: SimTime, changes: Changes):
-        """An abstract asynchronous method which implements the core logic of the component.
+        """An abstract asynchronous method which implements the core logic of the
+        component.
 
         Args:
             time (SimTime): The current simulation time (in nanoseconds).

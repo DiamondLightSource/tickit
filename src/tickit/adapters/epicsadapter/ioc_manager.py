@@ -33,7 +33,7 @@ def register_adapter() -> int:
 
 
 def notify_adapter_ready(adapter_id: int) -> None:
-    """Notify the builder that a particular adpater has made all the records it needs to.
+    """Notify the builder that a particular adpater has made all the records it needs.
 
     Once all registered adapters have notified, the IOC will start.
 

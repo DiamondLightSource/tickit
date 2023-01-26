@@ -30,7 +30,8 @@ class SlaveScheduler(BaseScheduler):
         expose: Dict[PortID, ComponentPort],
         raise_interrupt: Callable[[], Awaitable[None]],
     ) -> None:
-        """A slave scheduler constructor which adds wiring and saves values for reference.
+        """A slave scheduler constructor which adds wiring and saves values for
+        reference.
 
         Args:
             wiring (Union[Wiring, InverseWiring]): A wiring or inverse wiring object
@@ -78,7 +79,8 @@ class SlaveScheduler(BaseScheduler):
         return wiring
 
     async def update_component(self, input: Input) -> None:
-        """Sends an input to the corresponding component. Mocks I/O for "external" or "expose".
+        """Sends an input to the corresponding component. Mocks I/O for "external" or
+        "expose".
 
         For real components the input is sent in a message to their input topic, for
         the mock component named "external", external inputs are injected, whilst for
@@ -103,7 +105,8 @@ class SlaveScheduler(BaseScheduler):
     async def on_tick(
         self, time: SimTime, changes: Changes
     ) -> Tuple[Changes, Optional[SimTime]]:
-        """Routes inputs, performs a tick and returns output changes and a callback time.
+        """Routes inputs, performs a tick and returns output changes and a callback
+        time.
 
         An asyhcnronous method which determines which components within the simulation
         require being woken up, sets the input changes for use by the "external" mock
