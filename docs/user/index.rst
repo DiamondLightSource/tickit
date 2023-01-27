@@ -55,7 +55,6 @@ side-bar.
             :maxdepth: 1
 
             reference/api
-            reference/contributing
             ../genindex
 
         +++
