@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Generic, Hashable, Mapping, Optional, TypeVar
 
@@ -24,9 +25,10 @@ class DeviceUpdate(Generic[OutMap]):
 
 
 @as_tagged_union
-class Device(Generic[InMap, OutMap]):
+class Device(ABC, Generic[InMap, OutMap]):
     """An interface for types which implement simulated devices."""
 
+    @abstractmethod
     def update(self, time: SimTime, inputs: InMap) -> DeviceUpdate[OutMap]:
         """A method which implements device behaviour according to the time and its
         inputs.

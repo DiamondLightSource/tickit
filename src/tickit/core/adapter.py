@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 from typing import (
     Any,
     AsyncIterable,
@@ -59,9 +60,10 @@ class Adapter:
 
 
 @as_tagged_union
-class Interpreter(Generic[T]):
+class Interpreter(ABC, Generic[T]):
     """An interface for types which handle messages recieved by an adapter."""
 
+    @abstractmethod
     async def handle(
         self, adapter: Adapter, message: T
     ) -> Tuple[AsyncIterable[T], bool]:
