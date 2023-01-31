@@ -2,12 +2,12 @@ Creating an Adapter
 ===================
 
 This tutorial shows how to create a simple `Adapter` for use in the ticket framework.
-This adapter will act as a simple TCP interface to the `Shutter` device which can vary
+This adapter will act as a simple TCP interface to the Shutter device which can vary
 the transmission of ``flux`` by changing ``position``. The `Adapter` we create will be
 composable, meaning it will comprise of a pre-made `Server` and `Interpreter`.
 
 .. seealso::
-    See the `Creating a Device` tutorial for a walk-through of creating the `Shutter`
+    See the `Creating a Device` tutorial for a walk-through of creating the Shutter
     device.
 
 Adapter Module File
@@ -75,7 +75,7 @@ Adapter Commands
 
 When using the `CommandInterpreter`, commands may be registered by decorating an
 adapter method with a command register. We shall begin by creating a method which
-returns the current position of the `Shutter` and register it as a `RegexCommand` which
+returns the current position of the Shutter and register it as a `RegexCommand` which
 is called by sending ``P?``. Since reading will not alter the device state we shall set
 ``interrupt`` to ``False``. We shall also specify that the byte encoded message should
 be decoded to a string prior to matching using the ``utf-8`` standard.
@@ -94,7 +94,7 @@ be decoded to a string prior to matching using the ``utf-8`` standard.
             return str(self._device.position).encode("utf-8")
 
 We shall add a similar command to read back the current target position of the
-`Shutter` when ``T?`` is recieved.
+Shutter when ``T?`` is recieved.
 
 .. code-block:: python
 
@@ -109,7 +109,7 @@ We shall add a similar command to read back the current target position of the
         async def get_target(self) -> bytes:
             return str(self._device.target_position).encode("utf-8")
 
-Next, we shall add a method which sets a new target position for the `Shutter` when
+Next, we shall add a method which sets a new target position for the Shutter when
 ``T=(\d+\.?\d*)`` is recieved, where ``\d+\.?\d*`` denotes a decimal number and the
 parentheses form the capture group from which the argument is extracted.
 

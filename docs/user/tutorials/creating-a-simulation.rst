@@ -2,7 +2,7 @@ Creating a Simulation
 =====================
 
 This tutorial shows how to create a simulated system consisting of several included
-devices using the tickit framework - specifically a `RandomTrampoline` and a `Sink`.
+devices using the tickit framework - specifically a RandomTrampoline and a `Sink`.
 
 Configuration File
 ------------------
@@ -19,7 +19,7 @@ dataclass associated with them. This defines the device to be used, as well as a
 adapters to allow the device to be externally controlled. At the top level, tickit 
 simulations comprise a list of these components which are denoted in YAML.
 
-In this example our first device shall be a `RandomTrampoline` with a callback_period 
+In this example our first device shall be a RandomTrampoline with a callback_period 
 of :math:`1s` or :math:`10^9n\s` named ``rand_tramp`` with no adapters - denoted 
 in YAML by ``[]`` - and with no mapped inputs - denoted in YAML by ``{}``. As such 
 we may extend our config, as:
@@ -77,6 +77,3 @@ Once run, we expect to see an output akin to:
     Scheduler got Output(source='tramp_sink', time=1000000000, changes=immutables.Map({}), call_in=None)
 
 .. seealso:: `Running a Simulation`
-
-.. _Sink: <tickit.devices.sink.Sink>
-.. _RandomTrampoline:  <examples.devices.trampoline.RandomTrampoline>
