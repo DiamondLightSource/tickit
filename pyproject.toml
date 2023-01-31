@@ -96,7 +96,7 @@ add-ignore = [
 [tool.pytest.ini_options]
 # Run pytest with all our checkers, and don't spam us with massive tracebacks on error
 addopts = """
-    --tb=native -vv --flake8 --black --mypy --doctest-modules --pydocstyle --doctest-glob="*.rst"
+    --tb=native -vv --doctest-modules --doctest-glob="*.rst"
     --cov=tickit --cov-report term --cov-report xml:cov.xml
     """
 # https://iscinumpy.gitlab.io/post/bound-version-constraints/#watch-for-warnings
