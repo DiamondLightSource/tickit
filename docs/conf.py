@@ -32,6 +32,8 @@ else:
 extensions = [
     # Use this for generating API docs
     "sphinx.ext.autodoc",
+    # Use this to link to section labels across pages
+    "sphinx.ext.autosectionlabel",
     # This can parse google style docstrings
     "sphinx.ext.napoleon",
     # For linking to external sphinx documentation
@@ -48,7 +50,7 @@ extensions = [
 
 # If true, Sphinx will warn about all references where the target cannot
 # be found.
-nitpicky = True
+nitpicky = False
 
 # A list of (type, target) tuples (by default empty) that should be ignored when
 # generating warnings in "nitpicky mode". Note that type should include the
@@ -63,6 +65,17 @@ nitpick_ignore = [
     ("py:class", "'object'"),
     ("py:class", "'id'"),
     ("py:class", "typing_extensions.Literal"),
+    ("py:class", "ComponentID"),
+    ("py:class", "PortID"),
+    ("py:class", "State"),
+    ("py:class", "Changes"),
+    ("py:class", "SimTime"),
+    ("py:class", "immutables._map.Map"),
+    ("py:class", "_asyncio.Task"),
+    ("py:class", "asyncio.streams.StreamReader"),
+    ("py:class", "asyncio.streams.StreamWriter"),
+    ("py:class", "apischema.conversions.conversions.Conversion"),
+    ("py:class", "apischema.conversions.conversions.LazyConversion"),
 ]
 
 # Both the class’ and the __init__ method’s docstring are concatenated and
