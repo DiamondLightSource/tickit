@@ -4,7 +4,7 @@
     initial_speed: 0.5
     initial_state: False
     ioc_name: PNEUMATIC
-    db_file: tickit/devices/pneumatic/db_files/filter1.db
+    db_file: src/tickit/devices/pneumatic/db_files/filter1.db
 - tickit.devices.sink.Sink:
     name: contr_sink
     inputs:
