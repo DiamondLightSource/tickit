@@ -56,7 +56,7 @@ dev = [
 ]
 
 [project.scripts]
-python3-pip-skeleton = "tickit.__main__:main"
+tickit = "tickit.cli:main"
 
 [project.urls]
 GitHub = "https://github.com/dls-controls/tickit"
@@ -100,7 +100,10 @@ addopts = """
     --cov=tickit --cov-report term --cov-report xml:cov.xml
     """
 # https://iscinumpy.gitlab.io/post/bound-version-constraints/#watch-for-warnings
-filterwarnings = "error"
+filterwarnings = [
+    "error",
+    "ignore::DeprecationWarning:aiozmq", # Supress warnings about deprecated asyncio syntax in aiozmq
+]
 # Doctest python code in docs, python code in src docstrings, test functions in tests
 testpaths = "docs src tests"
 

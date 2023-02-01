@@ -1,16 +1,5 @@
-from argparse import ArgumentParser
+from tickit.cli import main
 
-from . import __version__
-
-__all__ = ["main"]
-
-
-def main(args=None):
-    parser = ArgumentParser()
-    parser.add_argument("--version", action="version", version=__version__)
-    args = parser.parse_args(args)
-
-
-# test with: python -m python3_pip_skeleton
+# test with: python -m tickit
 if __name__ == "__main__":
     main()

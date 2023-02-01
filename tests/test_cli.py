@@ -15,8 +15,11 @@ from tickit.core.typedefs import ComponentID, ComponentPort, PortID
 
 
 def test_cli_version():
-    cmd = [sys.executable, "-m", "tickit", "--version"]
-    assert subprocess.check_output(cmd).decode().strip() == __version__
+    cmd = ["tickit", "--version"]
+    assert (
+        subprocess.check_output(cmd).decode().strip()
+        == f"tickit, version {__version__}"
+    )
 
 
 @pytest.fixture
@@ -53,7 +56,6 @@ def patch_read_configs() -> Iterable[Mock]:
 def test_cli_set_loggging_level(
     patch_logging: Mock,
 ):
-
     runner: CliRunner = CliRunner()
     result: Result = runner.invoke(main, args=["--log-level", "INFO"])
     assert result.exit_code == 0
@@ -84,7 +86,6 @@ def test_scheduler(
     patch_read_configs: Mock,
     patch_master_scheduler_run_forever_method: Mock,
 ):
-
     runner: CliRunner = CliRunner()
 
     result: Result = runner.invoke(main, args=["scheduler", "path/to/fake_device.yaml"])
@@ -97,7 +98,6 @@ def test_all(
     patch_read_configs: Mock,
     patch_master_scheduler_run_forever_method: Mock,
 ):
-
     runner: CliRunner = CliRunner()
 
     result: Result = runner.invoke(main, args=["all", "path/to/fake_device.yaml"])
