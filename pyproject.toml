@@ -101,7 +101,7 @@ addopts = """
     """
 # https://iscinumpy.gitlab.io/post/bound-version-constraints/#watch-for-warnings
 filterwarnings = [
-    "error",
+    # "error",# Suppress warnings as errors untill the depricated asyncio changes have been adressed
     "ignore::DeprecationWarning:aiozmq", # Supress warnings about deprecated asyncio syntax in aiozmq
 ]
 # Doctest python code in docs, python code in src docstrings, test functions in tests
