@@ -33,4 +33,5 @@ COPY --from=build /venv/ /venv/
 ENV PATH=/venv/bin:$PATH
 
 # change this entrypoint if it is not the same as the repo
-CMD ["python3", "-m", "tickit"]
+ENTRYPOINT ["tickit"]
+CMD ["--version"]
