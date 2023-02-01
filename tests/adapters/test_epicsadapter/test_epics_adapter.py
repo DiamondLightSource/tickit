@@ -128,7 +128,6 @@ def test_epics_adapter_load_records_without_DTYP_fields_method(
     epics_adapter: EpicsAdapter,
     test_params: Dict[str, bytes],
 ):
-
     data = test_params["data"]
     with patch("builtins.open", mock_open(read_data=data)):
         with patch("os.unlink") as mock_unlink:
@@ -136,5 +135,7 @@ def test_epics_adapter_load_records_without_DTYP_fields_method(
             unlink_args = mock_unlink.call_args.args
 
     out_filename = unlink_args[0]
-    written_data = open(out_filename, "rb").read()
+    with open(out_filename, "rb") as file:
+        written_data = file.read()
+
     assert str(written_data).strip() == str(test_params["expected"]).strip()
