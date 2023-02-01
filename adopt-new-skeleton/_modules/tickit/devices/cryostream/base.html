@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.devices.cryostream.base &#8212; tickit 0.1.2.dev106+g96ee0f9 documentation</title>
+    <title>tickit.devices.cryostream.base &#8212; tickit 0.1.2.dev119+g14425c7 documentation</title>
   
   
   
@@ -451,7 +451,6 @@
 <span class="sd">            duration (int): The duration for which the temperature should be held.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">duration</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_plat_duration</span><span class="p">:</span>
-
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Duration set to less than minimum plat duration.&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">duration</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_plat_duration</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Duration set to more than maximum plat duration.&quot;</span><span class="p">)</span>
