@@ -45,6 +45,7 @@ def as_tagged_union(cls: Cls) -> Cls:
     Returns:
         Cls: The modified config base class.
     """
+
     # This will only be used if we want to generate a json schema (which we will)
     def deserialization() -> Conversion:
         annotations: Dict[str, Any] = {}

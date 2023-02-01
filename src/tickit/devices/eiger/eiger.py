@@ -101,7 +101,6 @@ class EigerDevice(Device):
             self._set_state(State.ACQUIRE)
 
             for idx in range(0, self.settings.nimages):
-
                 aquired = Image.create_dummy_image(idx)
 
                 header_json = {

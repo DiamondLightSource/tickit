@@ -1,5 +1,4 @@
 import subprocess
-import sys
 from typing import Iterable
 
 import pytest
