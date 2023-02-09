@@ -14,7 +14,7 @@ The documentation is split into 2 sections:
         :link: user/index
         :link-type: doc
 
-        The User Guide contains documentation on how to install and use python3-pip-skeleton.
+        The User Guide contains documentation on how to install and use tickit.
 
     .. grid-item-card:: :material-regular:`code;4em`
         :link: developer/index
