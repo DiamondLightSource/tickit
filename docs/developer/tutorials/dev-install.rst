@@ -34,7 +34,7 @@ requires python 3.8 or later) or to run in a container under `VSCode
 
         .. code::
 
-            $ vscode python3-pip-skeleton
+            $ vscode tickit
             # Click on 'Reopen in Container' when prompted
             # Open a new terminal
 
