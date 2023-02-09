@@ -25,7 +25,7 @@ requires python 3.8 or later) or to run in a container under `VSCode
 
         .. code::
 
-            $ cd python3-pip-skeleton
+            $ cd tickit
             $ python3 -m venv venv
             $ source venv/bin/activate
             $ pip install -e .[dev]
