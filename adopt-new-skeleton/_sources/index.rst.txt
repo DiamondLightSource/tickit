@@ -20,7 +20,7 @@ The documentation is split into 2 sections:
         :link: developer/index
         :link-type: doc
 
-        The Developer Guide contains documentation on how to develop and contribute changes back to python3-pip-skeleton.
+        The Developer Guide contains documentation on how to develop and contribute changes back to tickit.
 
 .. toctree::
     :hidden:
