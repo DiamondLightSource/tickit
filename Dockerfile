@@ -31,3 +31,7 @@ FROM python:3.10-slim as runtime
 # copy the virtual environment from the build stage and put it in PATH
 COPY --from=build /venv/ /venv/
 ENV PATH=/venv/bin:$PATH
+
+# change this entrypoint if it is not the same as the repo
+ENTRYPOINT ["tickit"]
+CMD ["--version"]
