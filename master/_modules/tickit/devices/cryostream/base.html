@@ -1,95 +1,362 @@
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tickit.devices.cryostream.base &mdash; tickit 0.1.1+45.g13d1e3a documentation</title>
-      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../_static/theme_overrides.css" type="text/css" />
-    <link rel="shortcut icon" href="../../../../_static/tickit-logo.ico"/>
-  <!--[if lt IE 9]>
-    <script src="../../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tickit.devices.cryostream.base &#8212; tickit 0.1.2.dev46+g14d9471 documentation</title>
   
-        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/underscore.js"></script>
-        <script src="../../../../_static/doctools.js"></script>
-    <script src="../../../../_static/js/theme.js"></script>
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../../../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tickit/devices/cryostream/base';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://dls-controls.github.io/tickit/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'master';
+        </script>
+    <link rel="shortcut icon" href="../../../../_static/tickit-logo.ico"/>
     <link rel="index" title="Index" href="../../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../../search.html" /> 
-</head>
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="docsearch:language" content="en">
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
 
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search"  style="background: rgb(7, 43, 93)" >
-            <a href="../../../../index.html" class="icon icon-home"> tickit
-            <img src="../../../../_static/tickit-logo.svg" class="logo" alt="Logo"/>
-          </a>
-              <div class="version">
-                master
-              </div>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/installation.html">Installation Tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/running-a-simulation.html">Running a Simulation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/creating-a-simulation.html">Creating a Simulation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/creating-a-device.html">Creating a Device</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/creating-an-adapter.html">Creating an Adapter</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">How-to Guides</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../how-to/accomplish-a-task.html">How to accomplish a task</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Explanations</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../explanations/glossary.html">Glossary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../explanations/how-component-updates-are-ordered.html">How component updates are ordered</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../reference/api.html">API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../reference/contributing.html">Contributing</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/dls-controls/tickit/blob/master/CHANGELOG.rst">Changelog</a></li>
-<li class="toctree-l1"><a class="reference external" href="genindex.html#http://">Index</a></li>
-</ul>
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
-        </div>
+  
+  <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
+  <label class="overlay overlay-primary" for="__primary"></label>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__secondary" id="__secondary">
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+      
+<form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+  </div>
+
+  
+  <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+      <span class="fa-solid fa-bars"></span>
+  </label>
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../../../../index.html">
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <img src="../../../../_static/tickit-logo.svg" class="logo__image only-light" alt="Logo image">
+    <img src="../../../../_static/tickit-logo.svg" class="logo__image only-dark" alt="Logo image">
+  
+  
+    <p class="title logo__title">tickit</p>
+  
+</a>
+    
+  </div>
+
+  
+  <div class="col-lg-9 navbar-header-items">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../user/index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../developer/index.html">
+                        Developer Guide
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://github.com/dls-controls/tickit/releases">
+                    Release Notes
+                  </a>
+                </li>
+                
+    </ul>
+</nav>
       </div>
-    </nav>
+      
+    </div>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: rgb(7, 43, 93)" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../../index.html">tickit</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../../index.html">Module code</a> &raquo;</li>
-      <li>tickit.devices.cryostream.base</li>
-      <li class="wy-breadcrumbs-aside">
-      </li>
-  </ul>
-  <hr/>
+    <div id="navbar-end">
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+        </div>
+      
+      
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/dls-controls/tickit" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/tickit" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fas fa-cube"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+      </ul>
+      </div>
+      
+      <div class="navbar-end-item">
+        <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-toggle="dropdown">
+        master  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
+      </div>
+      
+    </div>
+  </div>
+
+
+  
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+    </div>
+  
+
+  
+  <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+  </label>
+  
+
+</div>
+  </nav>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../user/index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../developer/index.html">
+                        Developer Guide
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://github.com/dls-controls/tickit/releases">
+                    Release Notes
+                  </a>
+                </li>
+                
+    </ul>
+</nav>
+      </div>
+      
+      </div>
+    
+
+    
+    
+    <div class="sidebar-header-items__end">
+      
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/dls-controls/tickit" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/tickit" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fas fa-cube"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+      </ul>
+      </div>
+      
+      <div class="navbar-end-item">
+        <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-toggle="dropdown">
+        master  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+      </div>
+      
+    </div>
+    
+  </div>
+
+  
+
+  
+  <div class="sidebar-end-items sidebar-primary__section">
+    <div class="sidebar-end-items__item">
+    </div>
+  </div>
+
+  
+  <div id="rtd-footer-container"></div>
+
+      </div>
+      <main id="main-content" class="bd-main">
+        
+        
+        <div class="bd-content">
+          <div class="bd-article-container">
+            
+            <div class="bd-header-article">
+                
+            </div>
+            
+            
+            <article class="bd-article" role="main">
+              
   <h1>Source code for tickit.devices.cryostream.base</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">ctypes</span> <span class="kn">import</span> <span class="n">c_short</span><span class="p">,</span> <span class="n">c_ubyte</span><span class="p">,</span> <span class="n">c_ushort</span>
@@ -101,8 +368,8 @@
 <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="CryostreamBase"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.base.CryostreamBase">[docs]</a><span class="k">class</span> <span class="nc">CryostreamBase</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;A base class for cryostream device logic.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="CryostreamBase"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.devices.cryostream.base.CryostreamBase">[docs]</a><span class="k">class</span> <span class="nc">CryostreamBase</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A base class for cryostream device logic.&quot;&quot;&quot;</span>
 
     <span class="n">min_temp</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8000</span>  <span class="c1"># cK</span>
     <span class="n">max_temp</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">40000</span>  <span class="c1"># ck</span>
@@ -115,7 +382,7 @@
     <span class="n">random_value</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span>  <span class="c1"># for status packet unknown values</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;A CryostreamBase constructor which assigns initial values.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A CryostreamBase constructor which assigns initial values.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">run_mode</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">phase_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">alarm_code</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
@@ -126,8 +393,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_target_temp</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time_at_last_update</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
 
-<div class="viewcode-block" id="CryostreamBase.restart"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.base.CryostreamBase.restart">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">restart</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Stop Cryostream and re-initialise system back to Ready.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="CryostreamBase.restart"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.devices.cryostream.base.CryostreamBase.restart">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">restart</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Stop Cryostream and re-initialise system back to Ready.&quot;&quot;&quot;</span>
         <span class="n">start_target_temp</span> <span class="o">=</span> <span class="mi">10000</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">run_mode</span> <span class="o">=</span> <span class="n">RunModes</span><span class="o">.</span><span class="n">STARTUP</span><span class="o">.</span><span class="n">value</span>
@@ -137,8 +404,8 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">run_mode</span> <span class="o">=</span> <span class="n">RunModes</span><span class="o">.</span><span class="n">STARTUPFAIL</span><span class="o">.</span><span class="n">value</span></div>
 
-<div class="viewcode-block" id="CryostreamBase.ramp"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.base.CryostreamBase.ramp">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">ramp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ramp_rate</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">target_temp</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Change gas temperature to a set value at a controlled rate.</span>
+<div class="viewcode-block" id="CryostreamBase.ramp"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.devices.cryostream.base.CryostreamBase.ramp">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">ramp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ramp_rate</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">target_temp</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Change gas temperature to a set value at a controlled rate.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            ramp_rate (int): The rate at which the temperature should change.</span>
@@ -156,7 +423,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_target_temp</span> <span class="o">=</span> <span class="n">target_temp</span>
 
         <span class="c1"># Todo</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        difference_temp = abs(self.gas_temp - self.target_temp)</span>
 <span class="sd">        if 10 &lt; difference_temp &lt; 25:</span>
 <span class="sd">            self.alarm_code = AlarmCodes.TEMP_WARNING</span>
@@ -177,14 +444,13 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">gas_flow</span> <span class="o">=</span> <span class="mi">5</span></div>
 
-<div class="viewcode-block" id="CryostreamBase.plat"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.base.CryostreamBase.plat">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">plat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">duration</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Maintain the current temperature for a set amount of time.</span>
+<div class="viewcode-block" id="CryostreamBase.plat"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.devices.cryostream.base.CryostreamBase.plat">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">plat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">duration</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Maintain the current temperature for a set amount of time.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            duration (int): The duration for which the temperature should be held.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">duration</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_plat_duration</span><span class="p">:</span>
-
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Duration set to less than minimum plat duration.&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">duration</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_plat_duration</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Duration set to more than maximum plat duration.&quot;</span><span class="p">)</span>
@@ -194,14 +460,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">run_mode</span> <span class="o">=</span> <span class="n">RunModes</span><span class="o">.</span><span class="n">RUN</span><span class="o">.</span><span class="n">value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">phase_id</span> <span class="o">=</span> <span class="n">PhaseIds</span><span class="o">.</span><span class="n">PLAT</span><span class="o">.</span><span class="n">value</span></div>
 
-<div class="viewcode-block" id="CryostreamBase.hold"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.base.CryostreamBase.hold">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">hold</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Maintain the current temperature indefinitely.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="CryostreamBase.hold"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.devices.cryostream.base.CryostreamBase.hold">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">hold</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Maintain the current temperature indefinitely.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">run_mode</span> <span class="o">=</span> <span class="n">RunModes</span><span class="o">.</span><span class="n">RUN</span><span class="o">.</span><span class="n">value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">phase_id</span> <span class="o">=</span> <span class="n">PhaseIds</span><span class="o">.</span><span class="n">HOLD</span><span class="o">.</span><span class="n">value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_target_temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gas_temp</span></div>
 
-<div class="viewcode-block" id="CryostreamBase.cool"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.base.CryostreamBase.cool">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">cool</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_temp</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Make gas temperature decrease to a set value as quickly as possible.</span>
+<div class="viewcode-block" id="CryostreamBase.cool"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.devices.cryostream.base.CryostreamBase.cool">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">cool</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_temp</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Make gas temperature decrease to a set value as quickly as possible.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            target_temp (int): The target temperature.</span>
@@ -211,8 +477,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_target_temp</span> <span class="o">=</span> <span class="n">target_temp</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">ramp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">default_ramp_rate</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_target_temp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CryostreamBase.end"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.base.CryostreamBase.end">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ramp_rate</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Bring the gas temperature to 300 K at ramp rate, then halt and stop.</span>
+<div class="viewcode-block" id="CryostreamBase.end"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.devices.cryostream.base.CryostreamBase.end">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ramp_rate</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Bring the gas temperature to 300 K at ramp rate, then halt and stop.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            ramp_rate (int): The rate at which the temperature should change.</span>
@@ -229,8 +495,8 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">run_mode</span> <span class="o">=</span> <span class="n">RunModes</span><span class="o">.</span><span class="n">SHUTDOWNFAIL</span><span class="o">.</span><span class="n">value</span></div>
 
-<div class="viewcode-block" id="CryostreamBase.purge"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.base.CryostreamBase.purge">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">purge</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Bring the gas temperature to 300 K at max rate, then halt and stop.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="CryostreamBase.purge"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.devices.cryostream.base.CryostreamBase.purge">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">purge</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Bring the gas temperature to 300 K at max rate, then halt and stop.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span>
             <span class="n">RunModes</span><span class="o">.</span><span class="n">SHUTDOWNOK</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
             <span class="n">RunModes</span><span class="o">.</span><span class="n">SHUTDOWNFAIL</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
@@ -244,18 +510,18 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">run_mode</span> <span class="o">=</span> <span class="n">RunModes</span><span class="o">.</span><span class="n">SHUTDOWNFAIL</span><span class="o">.</span><span class="n">value</span></div>
 
-<div class="viewcode-block" id="CryostreamBase.pause"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.base.CryostreamBase.pause">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">pause</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Interrupt and maintain the current gas temperature until resumed.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="CryostreamBase.pause"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.devices.cryostream.base.CryostreamBase.pause">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">pause</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Interrupt and maintain the current gas temperature until resumed.&quot;&quot;&quot;</span>
         <span class="c1"># TODO interrupt other commands from running</span>
         <span class="o">...</span></div>
 
-<div class="viewcode-block" id="CryostreamBase.resume"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.base.CryostreamBase.resume">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">resume</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Resume the previous command.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="CryostreamBase.resume"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.devices.cryostream.base.CryostreamBase.resume">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">resume</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resume the previous command.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">phase_id</span> <span class="o">==</span> <span class="n">PhaseIds</span><span class="o">.</span><span class="n">HOLD</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
             <span class="n">LOGGER</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Cannot return to previous command&quot;</span><span class="p">)</span>  <span class="c1"># TODO keep commands</span></div>
 
-<div class="viewcode-block" id="CryostreamBase.stop"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.base.CryostreamBase.stop">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Gas flow is halted and the system is stopped at the current temperature.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="CryostreamBase.stop"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.devices.cryostream.base.CryostreamBase.stop">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gas flow is halted and the system is stopped at the current temperature.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span>
             <span class="n">RunModes</span><span class="o">.</span><span class="n">SHUTDOWNOK</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
             <span class="n">RunModes</span><span class="o">.</span><span class="n">SHUTDOWNFAIL</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
@@ -264,8 +530,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_target_temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gas_temp</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">run_mode</span> <span class="o">=</span> <span class="n">RunModes</span><span class="o">.</span><span class="n">SHUTDOWNOK</span><span class="o">.</span><span class="n">value</span></div>
 
-<div class="viewcode-block" id="CryostreamBase.turbo"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.base.CryostreamBase.turbo">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">turbo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">turbo_on</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Set turbo mode to use maximum achievable flow.</span>
+<div class="viewcode-block" id="CryostreamBase.turbo"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.devices.cryostream.base.CryostreamBase.turbo">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">turbo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">turbo_on</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set turbo mode to use maximum achievable flow.</span>
 
 <span class="sd">        The system will use 10 l/min gas flow except above 310 K</span>
 <span class="sd">        Above 310 K available heater power limits the maximum achievable</span>
@@ -284,8 +550,8 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">turbo_mode</span> <span class="o">=</span> <span class="mi">0</span></div>
 
-<div class="viewcode-block" id="CryostreamBase.update_temperature"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.base.CryostreamBase.update_temperature">[docs]</a>    <span class="k">def</span> <span class="nf">update_temperature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Update the Cryostream gas temperature according to mode and time.</span>
+<div class="viewcode-block" id="CryostreamBase.update_temperature"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.devices.cryostream.base.CryostreamBase.update_temperature">[docs]</a>    <span class="k">def</span> <span class="nf">update_temperature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the Cryostream gas temperature according to mode and time.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            time (float): The current simulation time (in nanoseconds).</span>
@@ -305,8 +571,8 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gas_temp</span></div>
 
-<div class="viewcode-block" id="CryostreamBase.set_status_format"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.base.CryostreamBase.set_status_format">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">set_status_format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status_format</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Sets the status packet format.</span>
+<div class="viewcode-block" id="CryostreamBase.set_status_format"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.devices.cryostream.base.CryostreamBase.set_status_format">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">set_status_format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status_format</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the status packet format.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            status_format (int): The status packet format, where 0 denotes a standard</span>
@@ -380,8 +646,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">extended_status</span><span class="o">.</span><span class="n">alarm_code</span> <span class="o">=</span> <span class="n">c_ubyte</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alarm_code</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">extended_status</span><span class="o">.</span><span class="n">turbo_mode</span> <span class="o">=</span> <span class="n">c_ubyte</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">turbo_mode</span><span class="p">)</span><span class="o">.</span><span class="n">value</span></div>
 
-<div class="viewcode-block" id="CryostreamBase.get_status"><a class="viewcode-back" href="../../../../reference/api.html#tickit.devices.cryostream.base.CryostreamBase.get_status">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status_format</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Status</span><span class="p">,</span> <span class="n">ExtendedStatus</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Get a Status or ExtendedStatus packet.</span>
+<div class="viewcode-block" id="CryostreamBase.get_status"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.devices.cryostream.base.CryostreamBase.get_status">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status_format</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Status</span><span class="p">,</span> <span class="n">ExtendedStatus</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a Status or ExtendedStatus packet.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            status_format (int): The status packet format, where 0 denotes a standard</span>
@@ -412,57 +678,76 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid status format parameter.&quot;</span><span class="p">)</span></div></div>
 </pre></div>
 
-           </div>
+            </article>
+            
+            
+            
+            <footer class="bd-footer-article">
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+            </footer>
+            
           </div>
-          <footer>
+          
+          
+          
+            <div class="bd-sidebar-secondary bd-toc">
+              
+<div class="toc-item">
+  
+<div id="searchbox"></div>
+</div>
 
-  <hr/>
+<div class="toc-item">
+  
+</div>
 
-  <div role="contentinfo">
-    <p>&#169; Copyright 2021, Diamond Light Source.</p>
-  </div>
+<div class="toc-item">
+  
+</div>
 
-   
-
-</footer>
+            </div>
+          
+          
         </div>
-      </div>
-    </section>
-  </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
-   
-  <div id="other-versions-div" class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions" style="visibility: hidden">
-    <span class="rst-current-version" data-toggle="rst-current-version">
-      <span class="fa fa-book"> Other Versions</span>
-      master
-      <span class="fa fa-caret-down"></span>
-    </span>
-    <div class="rst-other-versions">
-      <dl id="other-versions-dl"/>
+        <footer class="bd-footer-content">
+          <div class="bd-footer-content__inner">
+            
+          </div>
+        </footer>
+        
+      </main>
     </div>
   </div>
-  <script>
-    function addVersion(name) {
-      var dd = document.createElement("dd");
-      var a = document.createElement("a");
-      a.href = "../../../../../" + name;
-      a.innerText = name;
-      dd.appendChild(a);
-      document.getElementById('other-versions-dl').appendChild(dd);
-    }
-    // Get versions.txt and add a version for each line
-    fetch("../../../../../versions.txt").then(response => {
-      if (response.ok) {
-        document.getElementById('other-versions-div').style.visibility = "visible";
-        return response.text().then(text => text.split(/\r?\n/).forEach(addVersion))
-      }
-    });
-  </script>
 
+  
+    
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
 
-</body>
+  <footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    <p class="theme-version">
+    Built with the
+    <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">
+        PyData Sphinx Theme
+    </a>
+    0.12.0.
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+  </footer>
+  </body>
 </html>
