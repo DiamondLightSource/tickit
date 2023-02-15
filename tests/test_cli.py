@@ -1,3 +1,4 @@
+import subprocess
 from typing import Iterable
 
 import pytest
@@ -5,10 +6,19 @@ from click.testing import CliRunner, Result
 from mock import Mock, patch
 from mock.mock import create_autospec
 
+from tickit import __version__
 from tickit.cli import main
 from tickit.core.components.component import ComponentConfig
 from tickit.core.management.schedulers.master import MasterScheduler
 from tickit.core.typedefs import ComponentID, ComponentPort, PortID
+
+
+def test_cli_version():
+    cmd = ["tickit", "--version"]
+    assert (
+        subprocess.check_output(cmd).decode().strip()
+        == f"tickit, version {__version__}"
+    )
 
 
 @pytest.fixture
@@ -42,8 +52,9 @@ def patch_read_configs() -> Iterable[Mock]:
         yield mock
 
 
-def test_cli_set_loggging_level(patch_logging):
-
+def test_cli_set_loggging_level(
+    patch_logging: Mock,
+):
     runner: CliRunner = CliRunner()
     result: Result = runner.invoke(main, args=["--log-level", "INFO"])
     assert result.exit_code == 0
@@ -51,8 +62,8 @@ def test_cli_set_loggging_level(patch_logging):
 
 
 def test_component_command(
-    patch_run_all_forever,
-    patch_read_configs,
+    patch_run_all_forever: Mock,
+    patch_read_configs: Mock,
 ):
     runner: CliRunner = CliRunner()
 
@@ -74,7 +85,6 @@ def test_scheduler(
     patch_read_configs: Mock,
     patch_master_scheduler_run_forever_method: Mock,
 ):
-
     runner: CliRunner = CliRunner()
 
     result: Result = runner.invoke(main, args=["scheduler", "path/to/fake_device.yaml"])
@@ -83,8 +93,10 @@ def test_scheduler(
     patch_master_scheduler_run_forever_method.assert_awaited_once()
 
 
-def test_all(patch_read_configs, patch_master_scheduler_run_forever_method):
-
+def test_all(
+    patch_read_configs: Mock,
+    patch_master_scheduler_run_forever_method: Mock,
+):
     runner: CliRunner = CliRunner()
 
     result: Result = runner.invoke(main, args=["all", "path/to/fake_device.yaml"])

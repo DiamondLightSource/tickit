@@ -65,7 +65,6 @@ async def test_TcpServer_run_forever_method(
     handler: Callable[[bytes], Awaitable[AsyncIterable[Optional[bytes]]]],
     patch_start_server: Mock,
 ):
-
     mock_start_server = patch_start_server
     mock_start_server.return_value = AsyncMock()
 

@@ -36,7 +36,6 @@ async def test_eiger_disarm(eiger: EigerDevice):
 
 @pytest.mark.asyncio
 async def test_eiger_trigger_ints_and_ready(eiger: EigerDevice):
-
     eiger._set_state(State.READY)
     eiger.settings.trigger_mode = "ints"
 
@@ -48,7 +47,6 @@ async def test_eiger_trigger_ints_and_ready(eiger: EigerDevice):
 
 @pytest.mark.asyncio
 async def test_eiger_trigger_not_ints_and_ready(eiger: EigerDevice):
-
     eiger._set_state(State.READY)
 
     message = await eiger.trigger()
@@ -62,7 +60,6 @@ async def test_eiger_trigger_not_ints_and_ready(eiger: EigerDevice):
 
 @pytest.mark.asyncio
 async def test_eiger_trigger_not_ints_and_not_ready(eiger: EigerDevice):
-
     eiger._set_state(State.IDLE)
 
     message = await eiger.trigger()
@@ -93,7 +90,6 @@ def test_eiger_get_state(eiger: EigerDevice):
 
 
 def test_eiger_set_state(eiger: EigerDevice):
-
     eiger._set_state(State.IDLE)
 
     assert State.IDLE.value == eiger.get_state()["value"]

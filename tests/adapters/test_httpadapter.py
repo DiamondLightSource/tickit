@@ -24,7 +24,6 @@ def mock_raise_interrupt():
 
 
 class MockAdapter(HTTPAdapter):
-
     device: Device
 
     @HTTPEndpoint.get("/mock_endpoint")
@@ -64,7 +63,6 @@ async def test_http_adapter_run_forever_method(
 
 @pytest.mark.asyncio
 async def test_http_adapter_endpoints():
-
     adapter = MockAdapter()
 
     resp = await list(adapter.endpoints())[0].handler(None)

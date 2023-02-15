@@ -63,7 +63,6 @@ def mock_request():
 @pytest.mark.asyncio
 @pytest.mark.parametrize("tickit_task", ["examples/configs/eiger.yaml"], indirect=True)
 async def test_eiger_system(tickit_task):
-
     commands = {
         "initialize": {"sequence_id": 1},
         "disarm": {"sequence_id": 3},
