@@ -16,7 +16,7 @@ dependencies = [
     "aiohttp",
     "aiokafka",
     "aiozmq",
-    "apischema==0.16.1",
+    "apischema==0.18.0",
     "immutables",
     "pyyaml",
     "pyzmq",
