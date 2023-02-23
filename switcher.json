@@ -42,5 +42,9 @@
   {
     "version": "adopt-new-skeleton",
     "url": "https://dls-controls.github.io/tickit/adopt-new-skeleton/"
+  },
+  {
+    "version": "move-devices",
+    "url": "https://dls-controls.github.io/tickit/move-devices/"
   }
 ]
