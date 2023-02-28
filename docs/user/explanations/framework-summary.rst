@@ -37,8 +37,8 @@ ticker updates that component then propogates the update to any component
 downstream.
 
 
-Running a simulation
---------------------
+Running a tickit simulation
+---------------------------
 
 When we *run* a simulation, we first initialise all our components, devices,
 adapters and the scheduler. The scheduler runs the system through its inital
