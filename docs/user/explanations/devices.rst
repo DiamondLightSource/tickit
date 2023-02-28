@@ -4,12 +4,12 @@ Devices
 Tickit simulations revolve around devices. Devices are user implemented classes
 which behaviours mimic the hardware you wish to simulate.
 
-Any new device created must extend ``Device``, have an update method, and must
+Any new device created must extend `Device`, have an update method, and must
 have Input and Output maps as members. If these are not used they can be left
 empty, but they must be present. This is for the wiring together of multiple
-devices within a simulation. :doc:`Further details on wiring <wiring>`_
+devices within a simulation. :doc:`Further details on wiring.<wiring>`
 
-The following code is for a `RandomTrampoline`. This device just outputs random
+The following code is for a ``RandomTrampoline``. This device just outputs random
 values and requests to be called back for an update sometime later.
 
 .. code-block:: python
@@ -42,8 +42,5 @@ values and requests to be called back for an update sometime later.
                 SimTime(time + self.callback_period),
             )
 
-For a more involved device look at the `ShutterDevice`. It acts to attenuate the
+For a more involved device look at the ``ShutterDevice``. It acts to attenuate the
 flux of any incoming value.
-
-.. _RandomTrampoline:  <examples.devices.trampoline.RandomTrampoline>
-.. _ShutterDevice: <examples.devices.shutter.ShutterDevice>
