@@ -1,6 +1,9 @@
 Creating a Device
 =================
 
+.. warning::
+    Under review.
+
 This tutorial shows how to create a simple `Device` for use in the tickit framework.
 This device will act as a simple shutter which can vary the transmission of ``flux`` by
 changing ``position``.
@@ -9,7 +12,7 @@ Device Module File
 ------------------
 
 We shall begin by creating a new python module named ``my_shutter.py``, and open it
-with our preferred editor. This file will be used to store the Shutter class which
+with our preferred editor. This file will be used to store the `Shutter` class which
 will determine the operation of our device.
 
 Device Class
@@ -115,7 +118,7 @@ knows how to instantiate that Device. This will be defined in the same file as t
 device, and defines any default initial configuration values. As well as this, we
 overwrite the magic method `__call__()`, which returns a `DeviceSimulation` object.
 This object takes the component name, as well as it's device. We will return to this
-if the device requires any adapters to control it externally (see `Creating an Adapter`).
+if the device requires any adapters to control it externally (see :doc:`Creating an Adapter<create-an-adapter>`).
 
 .. code-block:: python
 
@@ -165,7 +168,7 @@ per our implementation, and a `Sink` named sink which will recieve the resulting
         flux: shutter:flux
 
 .. seealso::
-    See the `Creating a Simulation` tutorial for a walk-through of creating simulation
+    See the :doc:`Creating a Simulation<../tutorials/creating-a-simulation>` tutorial for a walk-through of creating simulation
     configurations.
 
 Finally, we likely wish to run the simulation, this may be performed by running the
@@ -211,5 +214,5 @@ Once run, we expect to see an output akin to:
     Scheduler got Output(source='sink', time=300000000, changes=immutables.Map({}), call_in=None)
 
 .. seealso::
-    See the `Running a Simulation` tutorial for a walk-through of running a simulation
+    See the :doc:`Running a Simulation<../tutorials/running-a-simulation>` tutorial for a walk-through of running a simulation
     in a single or across multiple processes.
