@@ -118,7 +118,7 @@ knows how to instantiate that Device. This will be defined in the same file as t
 device, and defines any default initial configuration values. As well as this, we
 overwrite the magic method `__call__()`, which returns a `DeviceSimulation` object.
 This object takes the component name, as well as it's device. We will return to this
-if the device requires any adapters to control it externally (see :doc:`Creating an Adapter<create-an-adapter>`).
+if the device requires any adapters to control it externally.
 
 .. code-block:: python
 
