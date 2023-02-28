@@ -40,8 +40,12 @@ side-bar.
             :caption: Explanations
             :maxdepth: 1
 
+            explanations/framework-summary
+            explanations/components
+            explanations/devices
+            explanations/adapters
+            explanations/wiring
             explanations/glossary
-            explanations/how-component-updates-are-ordered
 
         +++
 
