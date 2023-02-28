@@ -28,6 +28,7 @@ side-bar.
             :maxdepth: 1
 
             how-to/create-a-device
+            how-to/simulate-a-single-simple-device
             how-to/use-epics-adapter
 
         +++
