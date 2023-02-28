@@ -1,8 +1,0 @@
-- tickit.devices.cryostream.Cryostream:
-    name: cryo
-    inputs: {}
-- tickit.devices.sink.Sink:
-   name: contr_sink
-   inputs:
-     input: cryo:temperature
-
