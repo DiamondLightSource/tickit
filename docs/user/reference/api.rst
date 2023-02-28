@@ -113,7 +113,8 @@ This is the internal API reference for tickit
             .. autoclass:: tickit.core.management.ticker.Ticker
                 :members:
                 
-                .. seealso:: `How component updates are ordered`
+                .. seealso:: 
+                    :doc:`How component updates are ordered<../../developer/explanations/how-component-updates-are-ordered>`
     
 
     .. automodule:: tickit.core.state_interfaces
@@ -153,7 +154,7 @@ This is the internal API reference for tickit
         .. automodule:: tickit.adapters.interpreters.command
 
             ``tickit.adapters.interpreters.command``
-            ----------------------------------------------
+            ----------------------------------------
 
             .. automodule:: tickit.adapters.interpreters.command.command_interpreter
                 :members:
@@ -167,6 +168,43 @@ This is the internal API reference for tickit
                 ``tickit.adapters.interpreters.command.regex_command``
                 ------------------------------------------------------
 
+
+        .. automodule:: tickit.adapters.interpreters.endpoints
+
+            ``tickit.adapters.interpreters.endpoints``
+            ------------------------------------------
+
+            .. automodule:: tickit.adapters.interpreters.endpoints.http_endpoint
+                :members:
+
+                ``tickit.adapters.interpreters.endpoints.http_endpoint``
+                --------------------------------------------------------
+
+        
+        .. automodule:: tickit.adapters.interpreters.wrappers
+
+            ``tickit.adapters.interpreters.wrappers``
+            -----------------------------------------
+
+            .. automodule:: tickit.adapters.interpreters.wrappers.beheading_interpreter
+                :members:
+
+                ``tickit.adapters.interpreters.wrappers.beheading_interpreter``
+                ---------------------------------------------------------------
+
+            .. automodule:: tickit.adapters.interpreters.wrappers.joining_interpreter
+                :members:
+
+                ``tickit.adapters.interpreters.wrappers.joining_interpreter``
+                -------------------------------------------------------------
+            
+            .. automodule:: tickit.adapters.interpreters.wrappers.splitting_interpreter
+                :members:
+
+                ``tickit.adapters.interpreters.wrappers.splitting_interpreter``
+                ---------------------------------------------------------------
+
+
     .. automodule:: tickit.adapters.servers
 
         ``tickit.adapters.servers``
@@ -178,17 +216,39 @@ This is the internal API reference for tickit
             ``tickit.adapters.servers.tcp``
             -------------------------------
 
+
     .. automodule:: tickit.adapters.composed
         :members:
         
         ``tickit.adapters.composed``
         ----------------------------
-    
-    .. automodule:: tickit.adapters.epicsadapter
+
+
+    .. automodule:: tickit.adapters.httpadapter
         :members:
+        
+        ``tickit.adapters.httpadapter``
+        -------------------------------
+
+
+    .. automodule:: tickit.adapters.zmqadapter
+        :members:
+        
+        ``tickit.adapters.zmqadapter``
+        ------------------------------
+
+
+    .. automodule:: tickit.adapters.epicsadapter
 
         ``tickit.adapters.epicsadapter``
         --------------------------------
+
+        .. automodule:: tickit.adapters.epicsadapter.adapter
+            :members:
+
+            ``tickit.adapters.epicsadapter.adapter``
+            ----------------------------------------
+
 
 
 .. automodule:: tickit.devices
@@ -207,6 +267,7 @@ This is the internal API reference for tickit
 
         ``tickit.devices.source``
         -----------------------------
+
 
 
 .. automodule:: tickit.utils
