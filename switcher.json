@@ -40,6 +40,10 @@
     "url": "https://dls-controls.github.io/tickit/0.1/"
   },
   {
+    "version": "106_update_dockerignore",
+    "url": "https://dls-controls.github.io/tickit/106_update_dockerignore/"
+  },
+  {
     "version": "move-devices",
     "url": "https://dls-controls.github.io/tickit/move-devices/"
   }
