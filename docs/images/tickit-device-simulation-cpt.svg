@@ -1,0 +1,16 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 347.06818181818176 170" width="347.06818181818176" height="170">
+  <!-- svg-source:excalidraw -->
+  
+  <defs>
+    <style>
+      @font-face {
+        font-family: "Virgil";
+        src: url("https://excalidraw.com/Virgil.woff2");
+      }
+      @font-face {
+        font-family: "Cascadia";
+        src: url("https://excalidraw.com/Cascadia.woff2");
+      }
+    </style>
+  </defs>
+  <rect x="0" y="0" width="347.06818181818176" height="170" fill="#ffffff"></rect><g stroke-linecap="round" transform="translate(21.96590909090901 57.625) rotate(0 88.5 43.21022727272728)"><path d="M0 0 C56.45 0, 112.89 0, 177 0 M0 0 C57.41 0, 114.81 0, 177 0 M177 0 C177 29.67, 177 59.35, 177 86.42 M177 0 C177 29.65, 177 59.3, 177 86.42 M177 86.42 C113.52 86.42, 50.04 86.42, 0 86.42 M177 86.42 C140.13 86.42, 103.26 86.42, 0 86.42 M0 86.42 C0 55.9, 0 25.39, 0 0 M0 86.42 C0 65.34, 0 44.27, 0 0" stroke="#000000" stroke-width="1" fill="none"></path></g><g transform="translate(78.96590909090901 89.33522727272725) rotate(0 31.5 11.5)"><text x="31.5" y="18" font-family="Helvetica, Segoe UI Emoji" font-size="20px" fill="#000000" text-anchor="middle" style="white-space: pre;" direction="ltr">Device</text></g><g stroke-linecap="round" transform="translate(198.7954545454545 73.57954545454544) rotate(0 63.81818181818181 25.926136363636374)"><path d="M0 0 L127.64 0 L127.64 51.85 L0 51.85" stroke="none" stroke-width="0" fill="#ced4da"></path><path d="M0 0 C38.11 0, 76.22 0, 127.64 0 M0 0 C30.71 0, 61.43 0, 127.64 0 M127.64 0 C127.64 10.4, 127.64 20.8, 127.64 51.85 M127.64 0 C127.64 19.68, 127.64 39.37, 127.64 51.85 M127.64 51.85 C96.33 51.85, 65.02 51.85, 0 51.85 M127.64 51.85 C98.4 51.85, 69.16 51.85, 0 51.85 M0 51.85 C0 36.62, 0 21.39, 0 0 M0 51.85 C0 40.58, 0 29.32, 0 0" stroke="#000000" stroke-width="1" fill="none"></path></g><g transform="translate(226.61363636363637 88.00568181818181) rotate(0 36 11.5)"><text x="36" y="18" font-family="Helvetica, Segoe UI Emoji" font-size="20px" fill="#000000" text-anchor="middle" style="white-space: pre;" direction="ltr">Adapter</text></g><g stroke-linecap="round" transform="translate(10 43) rotate(0 163.53409090909088 58.5)"><path d="M0 0 C69.68 0, 139.35 0, 327.07 0 M0 0 C82.22 0, 164.43 0, 327.07 0 M327.07 0 C327.07 42.49, 327.07 84.99, 327.07 117 M327.07 0 C327.07 41.22, 327.07 82.45, 327.07 117 M327.07 117 C236 117, 144.93 117, 0 117 M327.07 117 C235.68 117, 144.29 117, 0 117 M0 117 C0 91.04, 0 65.08, 0 0 M0 117 C0 87.44, 0 57.88, 0 0" stroke="#000000" stroke-width="1" fill="none"></path></g><g stroke-linecap="round" transform="translate(10 10) rotate(0 147 16.5)"><path d="M0 0 C67.26 0, 134.53 0, 294 0 M0 0 C79.45 0, 158.89 0, 294 0 M294 0 C294 10.39, 294 20.78, 294 33 M294 0 C294 12.87, 294 25.74, 294 33 M294 33 C206.1 33, 118.2 33, 0 33 M294 33 C193.37 33, 92.75 33, 0 33 M0 33 C0 23.77, 0 14.54, 0 0 M0 33 C0 21.17, 0 9.34, 0 0" stroke="#000000" stroke-width="1" fill="none"></path></g><g transform="translate(14.5 15) rotate(0 142 11.5)"><text x="142" y="18" font-family="Helvetica, Segoe UI Emoji" font-size="20px" fill="#000000" text-anchor="middle" style="white-space: pre;" direction="ltr">Component (Device Simulation)</text></g></svg>
