@@ -208,57 +208,6 @@ This is the internal API reference for tickit
         ``tickit.devices.source``
         -----------------------------
 
-    .. automodule:: tickit.devices.cryostream
-
-    ``tickit.devices.cryostream``
-    -----------------------------
-
-        .. automodule:: tickit.devices.cryostream.base
-            :members:
-            
-            ``tickit.devices.cryostream.base``
-            ----------------------------------
-        
-        .. automodule:: tickit.devices.cryostream.cryostream
-            :members:
-
-            ``tickit.devices.cryostream.cryostream``
-            ----------------------------------------
-        
-        .. automodule:: tickit.devices.cryostream.status
-            :members:
-
-            ``tickit.devices.cryostream.status``
-            ------------------------------------
-
-        .. automodule:: tickit.devices.cryostream.states   
-            :members:
-
-            ``tickit.device.cryostream.states``
-            -----------------------------------
-        
-    .. automodule:: tickit.devices.femto
-
-    ``tickit.devices.femto``
-    ------------------------
-
-        .. automodule:: tickit.devices.femto.femto
-            :members:
-        
-            ``tickit.devices.femto.femto``
-            ------------------------------
-
-    .. automodule:: tickit.devices.pneumatic
-    
-    ``tickit.devices.pneumatic``
-    ----------------------------
-
-        .. automodule:: tickit.devices.pneumatic.pneumatic
-            :members:
-        
-            ``tickit.devices.pneumatic.pneumatic``
-            --------------------------------------
-
 
 .. automodule:: tickit.utils
 
