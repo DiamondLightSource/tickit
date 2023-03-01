@@ -42,5 +42,7 @@ values and requests to be called back for an update sometime later.
                 SimTime(time + self.callback_period),
             )
 
-For a more involved device look at the ``ShutterDevice``. It acts to attenuate the
-flux of any incoming value.
+
+Logic can be implemented into the device via device methods. For an example of
+this look at the ``ShutterDevice``. It acts to attenuate the flux of any incoming
+value.
