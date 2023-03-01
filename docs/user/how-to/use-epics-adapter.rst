@@ -14,7 +14,7 @@ If you have multiple devices in your simulation that require an epics adapter
 this is possible, a large singleton IOC is created as a composite IOC of all the
 individual ones.
 
-Making an EPICS adapter
+Using an EPICS adapter
 -----------------------
 
 When you create an IOC you often will have a db file, depicting the PVs that
