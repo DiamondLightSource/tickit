@@ -21,8 +21,16 @@ the hosting of an external messaging protocol to a server and message handling
 to an interpreter.
 
 Tickit currently includes one server implementation, a TCP server, and one
-interpreter, the command interpreter. The command interpreter is a generic
-interpreter which uses regex to identify commands from incoming messages.
+interpreter, the command interpreter. 
+
+The command interpreter is a generic interpreter which identifies commands from
+incoming messages. Commands are defined via decoration of adapter methods and
+the only such command type currently is a `RegexCommand`. This matches incoming
+messages to regex patterns and processes the command approprately. 
+
+Tickit also includes three interpreter wrappers for the command interpreter.
+These wrap the command interpreter to allow for more complex message handling
+and can be used with the composed adapter in the same way.
 
 Users may implement their own servers and interpreters and then use the composed
 adapter to utilise them for the device.
