@@ -1,114 +1,110 @@
 Creating a Device
 =================
 
-.. warning::
-    Under review.
-
-This tutorial shows how to create a simple `Device` for use in the tickit framework.
-This device will act as a simple shutter which can vary the transmission of ``flux`` by
-changing ``position``.
-
-Device Module File
-------------------
-
-We shall begin by creating a new python module named ``my_shutter.py``, and open it
-with our preferred editor. This file will be used to store the ``Shutter`` class which
-will determine the operation of our device.
+This tutorial shows how to create a simple amplifier `Device` for use in the tickit
+framework. This device will act as a simple amplifier which can multiply the signal
+recieved.
 
 Device Class
 ------------
 
-We shall begin by defining the Shutter class which inherits `Device` - by
-doing so a confiuration dataclass will automatically be created for the device,
-allowing for easy YAML configuration.
+We shall begin by defining the amplifier class, which inherits `Device`.
 
 .. code-block:: python
 
     from tickit.core.device import Device
 
 
-    class ShutterDevice(Device):
+    class AmplifierDevice(Device):
 
-Device Constructor and Configuration
-------------------------------------
 
-Next, we shall create the ``__init__`` method, allowing for the device to be
-instantiated. We will pass two arguments to this method; a required argument,
-``default_position``, which will specify the ``target_position`` of the shutter in the
-absence of any other instruction; and an optional argument, ``initial_position``,
-which when specified will set the initial ``position`` of the shutter, if unspecified
-the initial ``position`` will be random.
+As stated in :doc:`devices<../explanations/devices>`, a new device must have an
+update methods, and must have ``Input`` and ``Output`` maps as members. As such
+we shall put in the following boilerplate.
 
 .. code-block:: python
 
-    from random import random
-    from typing import Optional
-
-    from tickit.core.device import Device
-
-
-    class ShutterDevice(Device):
-        def __init__(
-            self, default_position: float, initial_position: Optional[float] = None
-        ) -> None:
-            self.target_position = default_position
-            self.position = initial_position if initial_position else random()
-
-.. note::
-    Arguments to the ``__init__`` method may be specified in the simulation config file
-    if the device inherits `Device`.
-
-Device Logic
-------------
-
-The core logic of the device will be implemented in the ``update`` method which
-recieves the arguments ``time`` - the current simulation time in nanoseconds - and
-``inputs`` - a mapping of input ports to their value - and returns an `DeviceUpdate`
-which consists of ``outputs`` - a mapping of output ports and their value - and
-``call_at`` - the time at which the device should next be updated.
-
-.. code-block:: python
-
-    from random import random
-    from typing import Optional
     from typing_extensions import TypedDict
 
     from tickit.core.device import Device, DeviceUpdate
     from tickit.core.typedefs import SimTime
 
 
-    class ShutterDevice(Device):
-        Inputs = TypedDict("Inputs", {"flux": float})
-        Outputs = TypedDict("Outputs", {"flux": float})
+    class AmplifierDevice(Device):
 
-        def __init__(
-            self, default_position: float, initial_position: Optional[float] = None
-        ) -> None:
-            self.target_position = default_position
-            self.position = initial_position if initial_position else random()
-            self.rate = 2e-10
-            self.last_time: Optional[SimTime] = None
+    Inputs: TypedDict = TypedDict("Inputs", {})
+    Outputs: TypedDict = TypedDict("Outputs", {})
 
-        @staticmethod
-        def move(position: float, target: float, rate: float, period: SimTime) -> float:
-            if position < target:
-                position = min(position + rate * period, target)
-            elif position > target:
-                position = max(position - rate * period, target)
-            return position
+    def __init__(self) -> None:
+
+    def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
+
+        return DeviceUpdate(self.Outputs(), None)
+
+
+Device Constructor and Configuration
+------------------------------------
+
+Next, we shall populate the ``__init__`` method, allowing for the device to be
+instantiated. For this amplifier we want an amplification of 2, so we assign that
+here.
+
+.. code-block:: python
+
+    from typing_extensions import TypedDict
+
+    from tickit.core.device import Device, DeviceUpdate
+    from tickit.core.typedefs import SimTime
+
+
+    class AmplifierDevice(Device):
+
+    Inputs: TypedDict = TypedDict("Inputs", {})
+    Outputs: TypedDict = TypedDict("Outputs", {})
+
+    def __init__(self, initial_amplification: int = 2) -> None:
+            self.amplification = initial_amplification
+
+    def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
+
+        return DeviceUpdate(self.Outputs(), None)
+
+
+Device Logic
+------------
+
+In order to have a signal to amplifier we will make the following small system
+where the amplifier recieves a signal from a `source` and outputs it to a `sink`.
+The `sink` and `source` are already available in ``tickit.devices``.
+
+.. figure:: ../../images/tickit-create-device-amplifier.svg
+    :align: center
+
+The core logic of the device will be implemented in the ``update`` method, which
+recieves the simulation time and any Inputs into the device. We want to recieve
+an input signal from the source, amplify it, and output it to our sink. As such
+we define our inputs and outputs in the maps, and the line of logic in the ``update``.
+
+.. code-block:: python
+
+    from typing_extensions import TypedDict
+
+    from tickit.core.device import Device, DeviceUpdate
+    from tickit.core.typedefs import SimTime
+
+
+    class AmplifierDevice(Device):
+
+        Inputs: TypedDict = TypedDict("Inputs", {"initial_signal":float})
+        Outputs: TypedDict = TypedDict("Outputs", {"amplified_signal":float})
+
+        def __init__(self, initial_amplification: int = 2) -> None:
+            self.amplification = initial_amplification
 
         def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
-            if self.last_time:
-                self.position = Shutter.move(
-                    self.position,
-                    self.target_position,
-                    self.rate,
-                    SimTime(time - self.last_time),
-                )
-            self.last_time = time
-            call_at = None if self.position == self.target_position else SimTime(time + int(1e8))
-            output_flux = inputs["flux"] * self.position
-            return DeviceUpdate(Shutter.Outputs(flux=output_flux), call_at)
+            amplified_value = inputs["initial_signal"] * self.amplification
+            return DeviceUpdate(self.Outputs(amplified_signal=amplified_value), None)
+
 
 Creating a ComponentConfig
 --------------------------
@@ -122,21 +118,21 @@ if the device requires any adapters to control it externally.
 
 .. code-block:: python
 
+    from dataclasses import dataclass
+
     from tickit.core.components.component import Component, ComponentConfig
     from tickit.core.components.device_simulation import DeviceSimulation
 
 
     @dataclass
-    class Shutter(ComponentConfig):
-        default_position: float
-        initial_position: Optional[float] = None
+    class Amplifier(ComponentConfig):
+        initial_amplification: int
 
         def __call__(self) -> Component:
             return DeviceSimulation(
                 name=self.name,
-                device=ShutterDevice(
-                    default_position=self.default_position,
-                    initial_position=self.initial_position,
+                device=AmplifierDevice(
+                    initial_amplification=self.initial_amplification,
                 ),
             )
 
@@ -144,74 +140,59 @@ if the device requires any adapters to control it externally.
 Using the Device
 ----------------
 
-In order to use the device we must first create a simulation configuration file, we
-shall create one named ``my_shutter_simulation.yaml``, and open it with our preferred
-editor. This file will be used to set up a simulation consisting of a `Source` named
-source which will produce a constant flux, the shutter which will act on the flux as
-per our implementation, and a `Sink` named sink which will recieve the resulting flux.
+In order to use the device we must first create a simulation configuration yaml
+file. This file will be used to set up our simulation and will consist of: a 
+`Source`, named source, which will produce a constant input signal; our amplifier;
+and a `Sink`, named sink, which will recieve the amplified signal.
 
 .. code-block:: yaml
 
     - tickit.devices.source.Source:
         name: source
         inputs: {}
-        value: 42.0
-    - examples.devices.shutter.Shutter:
-        name: shutter
+        value: 10.0
+    - amp.Amplifier:
+        name: amp
         inputs:
-          flux: source:value
-        default_position: 0.2
-        initial_position: 0.24
+        initial_signal: source:value
+        initial_amplification: 2
     - tickit.devices.sink.Sink:
         name: sink
         inputs:
-        flux: shutter:flux
+        input: amp:amplified_signal
+
+
+Where in ``amp.Amplifier`` ``amp`` is the name of the ``.py`` file the amplifier
+is written in, and Amplifier is the name of the `ComponentConfig` for the amplifier.
 
 .. seealso::
     See the :doc:`Creating a Simulation<../tutorials/creating-a-simulation>` tutorial for a walk-through of creating simulation
     configurations.
 
-Finally, we likely wish to run the simulation, this may be performed by running the
-following command:
+
+Finally, to run the simulation:
 
 .. code-block:: bash
 
-    python -m tickit all my_shutter_simulation.yaml
+    python -m tickit all amp_conf.yaml
 
 Once run, we expect to see an output akin to:
 
 .. code-block:: bash
 
-    Doing tick @ 0
-    source got Input(target='source', time=0, changes=immutables.Map({}))
-    Sourced 42.0
-    Scheduler got Output(source='source', time=0, changes=immutables.Map({'value': 42.0}), call_in=None)
-    shutter got Input(target='shutter', time=0, changes=immutables.Map({'flux': 42.0}))
-    Scheduler got Output(source='shutter', time=0, changes=immutables.Map({'flux': 10.08}), call_in=100000000)
-    Scheduling Wakeup(component='shutter', when=100000000)
-    sink got Input(target='sink', time=0, changes=immutables.Map({'flux': 10.08}))
-    Sunk {'flux': 10.08}
-    Scheduler got Output(source='sink', time=0, changes=immutables.Map({}), call_in=None)
-    Doing tick @ 100000000
-    shutter got Input(target='shutter', time=100000000, changes=immutables.Map({}))
-    Scheduler got Output(source='shutter', time=100000000, changes=immutables.Map({}), call_in=100000000)
-    Scheduling Wakeup(component='shutter', when=200000000)
-    sink got Input(target='sink', time=100000000, changes=immutables.Map({}))
-    Sunk {'flux': 10.08}
-    Scheduler got Output(source='sink', time=100000000, changes=immutables.Map({}), call_in=None)
-    Doing tick @ 200000000
-    shutter got Input(target='shutter', time=200000000, changes=immutables.Map({}))
-    Scheduler got Output(source='shutter', time=200000000, changes=immutables.Map({'flux': 9.24}), call_in=100000000)
-    Scheduling Wakeup(component='shutter', when=300000000)
-    sink got Input(target='sink', time=200000000, changes=immutables.Map({'flux': 9.24}))
-    Sunk {'flux': 9.24}
-    Scheduler got Output(source='sink', time=200000000, changes=immutables.Map({}), call_in=None)
-    Doing tick @ 300000000
-    shutter got Input(target='shutter', time=300000000, changes=immutables.Map({}))
-    Scheduler got Output(source='shutter', time=300000000, changes=immutables.Map({'flux': 8.4}), call_in=None)
-    sink got Input(target='sink', time=300000000, changes=immutables.Map({'flux': 8.4}))
-    Sunk {'flux': 8.4}
-    Scheduler got Output(source='sink', time=300000000, changes=immutables.Map({}), call_in=None)
+    DEBUG:asyncio:Using selector: EpollSelector
+    DEBUG:tickit.core.management.ticker:Doing tick @ 0
+    DEBUG:tickit.core.components.component:source got Input(target='source', time=0, changes=immutables.Map({}))
+    DEBUG:tickit.devices.source:Sourced 10.0
+    DEBUG:tickit.core.management.schedulers.base:Scheduler got Output(source='source', time=0, changes=immutables.Map({'value': 10.0}), call_at=None)
+    DEBUG:tickit.core.components.component:amp got Input(target='amp', time=0, changes=immutables.Map({'initial_signal': 10.0}))
+    DEBUG:tickit.core.management.schedulers.base:Scheduler got Output(source='amp', time=0, changes=immutables.Map({'amplified_signal': 20.0}), call_at=None)
+    DEBUG:tickit.core.components.component:sink got Input(target='sink', time=0, changes=immutables.Map({'input': 20.0}))
+    DEBUG:tickit.devices.sink:Sunk {'input': 20.0}
+    DEBUG:tickit.core.management.schedulers.base:Scheduler got Output(source='sink', time=0, changes=immutables.Map({}), call_at=None)
+
+
+We can see that we input a signal of 10, and it is amplified to a signal of 20.
 
 .. seealso::
     See the :doc:`Running a Simulation<../tutorials/running-a-simulation>` tutorial for a walk-through of running a simulation
