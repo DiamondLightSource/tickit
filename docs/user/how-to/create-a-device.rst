@@ -19,8 +19,8 @@ We shall begin by defining the amplifier class, which inherits `Device`.
 
 
 As stated in :doc:`devices<../explanations/devices>`, a new device must have an
-update methods, and must have ``Input`` and ``Output`` maps as members. As such
-we shall put in the following boilerplate.
+update method which returns a device update, and must have ``Input`` and ``Output``
+maps as members. As such we shall put in the following boilerplate.
 
 .. code-block:: python
 
@@ -62,7 +62,7 @@ here.
     Inputs: TypedDict = TypedDict("Inputs", {})
     Outputs: TypedDict = TypedDict("Outputs", {})
 
-    def __init__(self, initial_amplification: int = 2) -> None:
+    def __init__(self, initial_amplification: float = 2) -> None:
             self.amplification = initial_amplification
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
@@ -98,7 +98,7 @@ we define our inputs and outputs in the maps, and the line of logic in the ``upd
         Inputs: TypedDict = TypedDict("Inputs", {"initial_signal":float})
         Outputs: TypedDict = TypedDict("Outputs", {"amplified_signal":float})
 
-        def __init__(self, initial_amplification: int = 2) -> None:
+        def __init__(self, initial_amplification: float = 2.0) -> None:
             self.amplification = initial_amplification
 
         def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
@@ -126,7 +126,7 @@ if the device requires any adapters to control it externally.
 
     @dataclass
     class Amplifier(ComponentConfig):
-        initial_amplification: int
+        initial_amplification: float
 
         def __call__(self) -> Component:
             return DeviceSimulation(
@@ -155,7 +155,7 @@ and a `Sink`, named sink, which will recieve the amplified signal.
         name: amp
         inputs:
         initial_signal: source:value
-        initial_amplification: 2
+        initial_amplification: 2.0
     - tickit.devices.sink.Sink:
         name: sink
         inputs:
