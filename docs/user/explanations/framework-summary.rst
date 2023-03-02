@@ -15,15 +15,21 @@ updates the components in the simulation when required.
 
 Components
 ^^^^^^^^^^
-Components are typically comprised of :doc:`devices<devices>` and :doc:`adapters<adapters>`. Devices are created
+Components in tickit are the fundamental blocks of the simulation.
+
+They are typically comprised of :doc:`devices<devices>` and :doc:`adapters<adapters>`. Devices are created
 as required to provide the necessary simulated the behaviour, and adapters are
 interfaces between devices and any external input. Adapters allow us to
 influence the device from outside the simulation, such as using a TCP client to
 alter a parameter on a device.
 
+Using the example Shutter_ to demonstrate. The ``ShutterDevice`` contains the
+behaviour, the ``ShutterAdapter`` enables a TCP interface with the shutter, but
+the actual ``Shutter`` is the component which encpsulates both.
+
 Scheduler
 ^^^^^^^^^
-The scheduler orchestrates the running of the simulation. It is what is *run* in
+The scheduler orchestrates the running of the simulation. It is what is **run** in
 a simulation and primarily encapsulates the ticker.
 
 The scheduler is instantiated with :doc:`wiring<wiring>` from the config
@@ -61,3 +67,6 @@ interupt is sent to the scheduler to let it know that the device needs updating
 immediately. The scheduler updates that device and then begins the cycle of
 updating the rest. When it finishes the tick caused by the interupt, the scheduler
 continues to wait until the next update.
+
+
+.. _Shutter: https://github.com/dls-controls/tickit/blob/master/examples/devices/shutter.py
