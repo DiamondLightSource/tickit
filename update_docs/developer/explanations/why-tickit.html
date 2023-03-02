@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Why was tickit created? &#8212; tickit 0.2.1.dev27+gacb3aad documentation</title>
+    <title>Why was tickit created? &#8212; tickit 0.2.1.dev28+g96730d2 documentation</title>
   
   
   
@@ -475,27 +475,27 @@ of information can be facilitated in memory, or over a message brokering service
 for devices distributed across different processes or machines.</p>
 <p>The tickit framework was inspired by lewis, a cycle driven simulation framework
 by ESS, however differs in key ways to offer different functionality.</p>
-<p>multi-device:</p>
-<blockquote>
-<div><p>Lewis only supports running a single device simulation in isolation. Tickit
+<section id="multi-device">
+<h2>multi-device<a class="headerlink" href="#multi-device" title="Permalink to this heading">#</a></h2>
+<p>Lewis only supports running a single device simulation in isolation. Tickit
 is designed to allow users to model complex interactions between multiple
 devices.</p>
-</div></blockquote>
-<p>event-based:</p>
-<blockquote>
-<div><p>Being event based each device in the system only updates when relevent. A
+</section>
+<section id="event-based">
+<h2>event-based<a class="headerlink" href="#event-based" title="Permalink to this heading">#</a></h2>
+<p>Being event based each device in the system only updates when relevent. A
 device update can be triggered by interrupts caused by changes from other
 linked devices or adapters, or by a devices own scheduled callbacks.</p>
 <p>To re-create a cycle driven system a device can be created to request
 infinite callbacks at regular intervals which can then go on to update any
 downstream device.</p>
-</div></blockquote>
-<p>Bus based communication:</p>
-<blockquote>
-<div><p>Tickit uses message busses as a basis for the communication between its
+</section>
+<section id="bus-based-communication">
+<h2>Bus based communication<a class="headerlink" href="#bus-based-communication" title="Permalink to this heading">#</a></h2>
+<p>Tickit uses message busses as a basis for the communication between its
 devices. This was chosen in an attempt to simplify communication and to try
 and produce a less coupled system than is achievable with RPC.</p>
-</div></blockquote>
+</section>
 </section>
 
 
@@ -532,6 +532,18 @@ and produce a less coupled system than is achievable with RPC.</p>
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-device">multi-device</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#event-based">event-based</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bus-based-communication">Bus based communication</a></li>
+</ul>
+  </nav></div>
 
   <div class="sidebar-secondary-item">
   
