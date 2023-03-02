@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Framework Summary &#8212; tickit 0.2.1.dev25+gd4135a6 documentation</title>
+    <title>Framework Summary &#8212; tickit 0.2.1.dev27+gacb3aad documentation</title>
   
   
   
@@ -471,15 +471,19 @@ updates the components in the simulation when required.</p>
 <img alt="../../_images/tickit-overview-full.svg" src="../../_images/tickit-overview-full.svg" /></figure>
 <section id="components">
 <h2>Components<a class="headerlink" href="#components" title="Permalink to this heading">#</a></h2>
-<p>Components are typically comprised of <a class="reference internal" href="devices.html"><span class="doc">devices</span></a> and <a class="reference internal" href="adapters.html"><span class="doc">adapters</span></a>. Devices are created
+<p>Components in tickit are the fundamental blocks of the simulation.</p>
+<p>They are typically comprised of <a class="reference internal" href="devices.html"><span class="doc">devices</span></a> and <a class="reference internal" href="adapters.html"><span class="doc">adapters</span></a>. Devices are created
 as required to provide the necessary simulated the behaviour, and adapters are
 interfaces between devices and any external input. Adapters allow us to
 influence the device from outside the simulation, such as using a TCP client to
 alter a parameter on a device.</p>
+<p>Using the example <a class="reference external" href="https://github.com/dls-controls/tickit/blob/master/examples/devices/shutter.py">Shutter</a> to demonstrate. The <code class="docutils literal notranslate"><span class="pre">ShutterDevice</span></code> contains the
+behaviour, the <code class="docutils literal notranslate"><span class="pre">ShutterAdapter</span></code> enables a TCP interface with the shutter, but
+the actual <code class="docutils literal notranslate"><span class="pre">Shutter</span></code> is the component which encpsulates both.</p>
 </section>
 <section id="scheduler">
 <h2>Scheduler<a class="headerlink" href="#scheduler" title="Permalink to this heading">#</a></h2>
-<p>The scheduler orchestrates the running of the simulation. It is what is <em>run</em> in
+<p>The scheduler orchestrates the running of the simulation. It is what is <strong>run</strong> in
 a simulation and primarily encapsulates the ticker.</p>
 <p>The scheduler is instantiated with <a class="reference internal" href="wiring.html"><span class="doc">wiring</span></a> from the config
 file used to start up the simulation. See tutorial <a class="reference internal" href="../tutorials/creating-a-simulation.html"><span class="doc">creating a simulation.</span></a>
