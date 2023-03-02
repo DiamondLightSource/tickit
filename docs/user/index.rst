@@ -16,6 +16,8 @@ side-bar.
             tutorials/installation
             tutorials/running-a-simulation
             tutorials/creating-a-simulation
+            tutorials/create-a-device
+            tutorials/use-composed-adapter
 
         +++
 
@@ -27,9 +29,8 @@ side-bar.
             :caption: How-to Guides
             :maxdepth: 1
 
-            how-to/create-a-device
-            how-to/simulate-a-single-simple-device
             how-to/use-epics-adapter
+            how-to/use-command-wrappers
 
         +++
 

@@ -197,3 +197,10 @@ We can see that we input a signal of 10, and it is amplified to a signal of 20.
 .. seealso::
     See the :doc:`Running a Simulation<../tutorials/running-a-simulation>` tutorial for a walk-through of running a simulation
     in a single or across multiple processes.
+
+
+Interact with the device
+------------------------
+
+Now we have a device it is likely we want to interact with it. This can be achieved
+externally using adapters. A guide on how to do this can be found :doc:`here.<use-composed-adapter>`
