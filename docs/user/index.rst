@@ -29,6 +29,7 @@ side-bar.
             :caption: How-to Guides
             :maxdepth: 1
 
+            how-to/simulate-a-single-simple-device
             how-to/use-epics-adapter
             how-to/use-command-wrappers
 
