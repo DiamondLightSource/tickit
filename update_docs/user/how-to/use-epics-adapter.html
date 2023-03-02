@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Create a Device with an EPICS Interface &#8212; tickit 0.2.1.dev15+ge3244c1 documentation</title>
+    <title>Create a Device with an EPICS Interface &#8212; tickit 0.2.1.dev25+gd4135a6 documentation</title>
   
   
   
@@ -55,8 +55,8 @@
     <link rel="shortcut icon" href="../../_static/tickit-logo.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Framework Summary" href="../explanations/framework-summary.html" />
-    <link rel="prev" title="Simulate a Single Simple Device" href="simulate-a-single-simple-device.html" />
+    <link rel="next" title="Use Command Interpreter Wrappers" href="use-command-wrappers.html" />
+    <link rel="prev" title="Using an Adapter" href="../tutorials/use-composed-adapter.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -382,12 +382,13 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/running-a-simulation.html">Running a Simulation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/creating-a-simulation.html">Creating a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/create-a-device.html">Creating a Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/use-composed-adapter.html">Using an Adapter</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">How-to Guides</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="create-a-device.html">Creating a Device</a></li>
-<li class="toctree-l1"><a class="reference internal" href="simulate-a-single-simple-device.html">Simulate a Single Simple Device</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Create a Device with an EPICS Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="use-command-wrappers.html">Use Command Interpreter Wrappers</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Explanations</span></p>
 <ul class="nav bd-sidenav">
@@ -472,8 +473,8 @@ PV’s on this IOC can be accessed with the normal methods, eg <code class="docu
 <p>If you have multiple devices in your simulation that require an epics adapter
 this is possible, a large singleton IOC is created as a composite IOC of all the
 individual ones.</p>
-<section id="making-an-epics-adapter">
-<h2>Making an EPICS adapter<a class="headerlink" href="#making-an-epics-adapter" title="Permalink to this heading">#</a></h2>
+<section id="using-an-epics-adapter">
+<h2>Using an EPICS adapter<a class="headerlink" href="#using-an-epics-adapter" title="Permalink to this heading">#</a></h2>
 <p>When you create an IOC you often will have a db file, depicting the PVs that
 should be present on it. The epics adapter allows for loading of these PVs from
 the DB file so that you do not have to populate them by hand. This file is
@@ -485,7 +486,7 @@ component:</p>
 
     <span class="n">initial_gain</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.5</span>
     <span class="n">initial_current</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="n">db_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;tickit/devices/femto/record.db&quot;</span>
+    <span class="n">db_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;path/to/record.db&quot;</span>
     <span class="n">ioc_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;FEMTO&quot;</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Component</span><span class="p">:</span>  <span class="c1"># noqa: D102</span>
@@ -589,20 +590,20 @@ its gain and current read via the IOC.</p>
                   <!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="simulate-a-single-simple-device.html"
+       href="../tutorials/use-composed-adapter.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Simulate a Single Simple Device</p>
+        <p class="prev-next-title">Using an Adapter</p>
       </div>
     </a>
     <a class="right-next"
-       href="../explanations/framework-summary.html"
+       href="use-command-wrappers.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Framework Summary</p>
+        <p class="prev-next-title">Use Command Interpreter Wrappers</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -621,7 +622,7 @@ its gain and current read via the IOC.</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#making-an-epics-adapter">Making an EPICS adapter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-an-epics-adapter">Using an EPICS adapter</a></li>
 </ul>
   </nav></div>
 

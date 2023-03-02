@@ -14,7 +14,7 @@ If you have multiple devices in your simulation that require an epics adapter
 this is possible, a large singleton IOC is created as a composite IOC of all the
 individual ones.
 
-Making an EPICS adapter
+Using an EPICS adapter
 -----------------------
 
 When you create an IOC you often will have a db file, depicting the PVs that
@@ -31,7 +31,7 @@ component:
 
         initial_gain: float = 2.5
         initial_current: float = 0.0
-        db_file: str = "tickit/devices/femto/record.db"
+        db_file: str = "path/to/record.db"
         ioc_name: str = "FEMTO"
 
         def __call__(self) -> Component:  # noqa: D102

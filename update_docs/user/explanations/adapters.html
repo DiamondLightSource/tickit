@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Adapters &#8212; tickit 0.2.1.dev15+ge3244c1 documentation</title>
+    <title>Adapters &#8212; tickit 0.2.1.dev25+gd4135a6 documentation</title>
   
   
   
@@ -382,12 +382,13 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/running-a-simulation.html">Running a Simulation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/creating-a-simulation.html">Creating a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/create-a-device.html">Creating a Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/use-composed-adapter.html">Using an Adapter</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">How-to Guides</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../how-to/create-a-device.html">Creating a Device</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../how-to/simulate-a-single-simple-device.html">Simulate a Single Simple Device</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../how-to/use-epics-adapter.html">Create a Device with an EPICS Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../how-to/use-command-wrappers.html">Use Command Interpreter Wrappers</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Explanations</span></p>
 <ul class="current nav bd-sidenav">
@@ -479,8 +480,14 @@ adapters simultaneously.</p>
 the hosting of an external messaging protocol to a server and message handling
 to an interpreter.</p>
 <p>Tickit currently includes one server implementation, a TCP server, and one
-interpreter, the command interpreter. The command interpreter is a generic
-interpreter which uses regex to identify commands from incoming messages.</p>
+interpreter, the command interpreter.</p>
+<p>The command interpreter is a generic interpreter which identifies commands from
+incoming messages. Commands are defined via decoration of adapter methods and
+the only such command type currently is a <a class="reference internal" href="../reference/api.html#tickit.adapters.interpreters.command.regex_command.RegexCommand" title="tickit.adapters.interpreters.command.regex_command.RegexCommand"><code class="xref any py py-class docutils literal notranslate"><span class="pre">RegexCommand</span></code></a>. This matches incoming
+messages to regex patterns and processes the command approprately.</p>
+<p>Tickit also includes three interpreter wrappers for the command interpreter.
+These wrap the command interpreter to allow for more complex message handling
+and can be used with the composed adapter in the same way.</p>
 <p>Users may implement their own servers and interpreters and then use the composed
 adapter to utilise them for the device.</p>
 </section>

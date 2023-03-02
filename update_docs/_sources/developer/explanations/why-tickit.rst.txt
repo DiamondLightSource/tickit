@@ -14,7 +14,15 @@ for devices distributed across different processes or machines.
 The tickit framework was inspired by lewis, a cycle driven simulation framework
 by ESS, however differs in key ways to offer different functionality.
 
+
+multi-device:
+
+    Lewis only supports running a single device simulation in isolation. Tickit
+    is designed to allow users to model complex interactions between multiple
+    devices.
+
 event-based:
+
     Being event based each device in the system only updates when relevent. A
     device update can be triggered by interrupts caused by changes from other
     linked devices or adapters, or by a devices own scheduled callbacks.
@@ -24,6 +32,7 @@ event-based:
     downstream device.
 
 Bus based communication:
+
     Tickit uses message busses as a basis for the communication between its
     devices. This was chosen in an attempt to simplify communication and to try
     and produce a less coupled system than is achievable with RPC.

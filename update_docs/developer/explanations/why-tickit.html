@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Why was tickit created? &#8212; tickit 0.2.1.dev15+ge3244c1 documentation</title>
+    <title>Why was tickit created? &#8212; tickit 0.2.1.dev25+gd4135a6 documentation</title>
   
   
   
@@ -475,19 +475,27 @@ of information can be facilitated in memory, or over a message brokering service
 for devices distributed across different processes or machines.</p>
 <p>The tickit framework was inspired by lewis, a cycle driven simulation framework
 by ESS, however differs in key ways to offer different functionality.</p>
-<dl>
-<dt>event-based:</dt><dd><p>Being event based each device in the system only updates when relevent. A
+<p>multi-device:</p>
+<blockquote>
+<div><p>Lewis only supports running a single device simulation in isolation. Tickit
+is designed to allow users to model complex interactions between multiple
+devices.</p>
+</div></blockquote>
+<p>event-based:</p>
+<blockquote>
+<div><p>Being event based each device in the system only updates when relevent. A
 device update can be triggered by interrupts caused by changes from other
 linked devices or adapters, or by a devices own scheduled callbacks.</p>
 <p>To re-create a cycle driven system a device can be created to request
 infinite callbacks at regular intervals which can then go on to update any
 downstream device.</p>
-</dd>
-<dt>Bus based communication:</dt><dd><p>Tickit uses message busses as a basis for the communication between its
+</div></blockquote>
+<p>Bus based communication:</p>
+<blockquote>
+<div><p>Tickit uses message busses as a basis for the communication between its
 devices. This was chosen in an attempt to simplify communication and to try
 and produce a less coupled system than is achievable with RPC.</p>
-</dd>
-</dl>
+</div></blockquote>
 </section>
 
 

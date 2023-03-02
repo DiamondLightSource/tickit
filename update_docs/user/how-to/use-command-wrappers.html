@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Pinning Requirements &#8212; tickit 0.2.1.dev25+gd4135a6 documentation</title>
+    <title>Use Command Interpreter Wrappers &#8212; tickit 0.2.1.dev25+gd4135a6 documentation</title>
   
   
   
@@ -47,7 +47,7 @@
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
     <script src="../../_static/design-tabs.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'developer/how-to/pin-requirements';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user/how-to/use-command-wrappers';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://dls-controls.github.io/tickit/switcher.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'update_docs';
@@ -55,8 +55,8 @@
     <link rel="shortcut icon" href="../../_static/tickit-logo.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Container Local Build and Test" href="test-container.html" />
-    <link rel="prev" title="Make a release" href="make-release.html" />
+    <link rel="next" title="Framework Summary" href="../explanations/framework-summary.html" />
+    <link rel="prev" title="Create a Device with an EPICS Interface" href="use-epics-adapter.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -146,15 +146,15 @@
   </p>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../user/index.html">
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
                         User Guide
                       </a>
                     </li>
                 
 
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="../index.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../developer/index.html">
                         Developer Guide
                       </a>
                     </li>
@@ -286,15 +286,15 @@ document.write(`
   </p>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../user/index.html">
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
                         User Guide
                       </a>
                     </li>
                 
 
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="../index.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../developer/index.html">
                         Developer Guide
                       </a>
                     </li>
@@ -379,33 +379,30 @@ document.write(`
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/dev-install.html">Developer install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/running-a-simulation.html">Running a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/creating-a-simulation.html">Creating a Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/create-a-device.html">Creating a Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/use-composed-adapter.html">Using an Adapter</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">How-to Guides</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="contribute.html">Contributing to the project</a></li>
-<li class="toctree-l1"><a class="reference internal" href="build-docs.html">Build the docs using sphinx</a></li>
-<li class="toctree-l1"><a class="reference internal" href="run-tests.html">Run the tests using pytest</a></li>
-<li class="toctree-l1"><a class="reference internal" href="static-analysis.html">Run static analysis using mypy</a></li>
-<li class="toctree-l1"><a class="reference internal" href="lint.html">Run linting using pre-commit</a></li>
-<li class="toctree-l1"><a class="reference internal" href="update-tools.html">Update the tools</a></li>
-<li class="toctree-l1"><a class="reference internal" href="make-release.html">Make a release</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Pinning Requirements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="test-container.html">Container Local Build and Test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="use-epics-adapter.html">Create a Device with an EPICS Interface</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Use Command Interpreter Wrappers</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Explanations</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../explanations/framework-details.html">Framework Details</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../explanations/how-component-updates-are-ordered.html">How component updates are ordered</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../explanations/why-tickit.html">Why was tickit created?</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../explanations/decisions.html">Architectural Decision Records</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../explanations/decisions/0001-record-architecture-decisions.html">1. Record architecture decisions</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../explanations/framework-summary.html">Framework Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanations/components.html">Simulation Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanations/devices.html">Devices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanations/adapters.html">Adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanations/wiring.html">Wiring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanations/glossary.html">Glossary</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../reference/standards.html">Standards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../genindex.html">Index</a></li>
 </ul>
 </div>
 </nav></div>
@@ -444,9 +441,9 @@ document.write(`
       </a>
     </li>
     
-    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Developer Guide</a></li>
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">User Guide</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">Pinning Requirements</li>
+    <li class="breadcrumb-item active" aria-current="page">Use Command Interpreter Wrappers</li>
   </ul>
 </nav>
 </div>
@@ -463,64 +460,144 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="pinning-requirements">
-<h1>Pinning Requirements<a class="headerlink" href="#pinning-requirements" title="Permalink to this heading">#</a></h1>
-<section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
-<p>By design this project only defines dependencies in one place, i.e. in
-the <code class="docutils literal notranslate"><span class="pre">requires</span></code> table in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>.</p>
-<p>In the <code class="docutils literal notranslate"><span class="pre">requires</span></code> table it is possible to pin versions of some dependencies
-as needed. For library projects it is best to leave pinning to a minimum so
-that your library can be used by the widest range of applications.</p>
-<p>When CI builds the project it will use the latest compatible set of
-dependencies available (after applying your pins and any dependencies’ pins).</p>
-<p>This approach means that there is a possibility that a future build may
-break because an updated release of a dependency has made a breaking change.</p>
-<p>The correct way to fix such an issue is to work out the minimum pinning in
-<code class="docutils literal notranslate"><span class="pre">requires</span></code> that will resolve the problem. However this can be quite hard to
-do and may be time consuming when simply trying to release a minor update.</p>
-<p>For this reason we provide a mechanism for locking all dependencies to
-the same version as a previous successful release. This is a quick fix that
-should guarantee a successful CI build.</p>
+  <section id="use-command-interpreter-wrappers">
+<h1>Use Command Interpreter Wrappers<a class="headerlink" href="#use-command-interpreter-wrappers" title="Permalink to this heading">#</a></h1>
+<p>In <a class="reference internal" href="../tutorials/use-composed-adapter.html#using-an-adapter"><span class="std std-ref">Using an Adapter</span></a> we saw how to use a composed adapter with the amplifier
+device so that it could receive commands of the form <code class="docutils literal notranslate"><span class="pre">A?</span></code> and <code class="docutils literal notranslate"><span class="pre">A=4.4</span></code> to get
+and set values to the device. These commands had to be sent exactly as specified
+and individually. However, when talking to a simulated device this may not be the
+case. Our simulated device may recieve more complex messages and as a result our
+command interprerter needs to be able to handle them.</p>
+<p>This can be achieved by wrapping the <a class="reference internal" href="../reference/api.html#tickit.adapters.interpreters.command.command_interpreter.CommandInterpreter" title="tickit.adapters.interpreters.command.command_interpreter.CommandInterpreter"><code class="xref any py py-class docutils literal notranslate"><span class="pre">CommandInterpreter</span></code></a> in other helper interpreters.
+This allows us to do some pre/post processing on all commands before/after they
+are handled.</p>
+<p>There are three such wrappers:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#beheading-interpreter">Beheading Interpreter</a></p></li>
+<li><p><a class="reference internal" href="#splitting-interpreter">Splitting Interpreter</a></p></li>
+<li><p><a class="reference internal" href="#joining-interpreter">Joining Interpreter</a></p></li>
+</ol>
+<p>The use of such wrappers will be demonstrated with the example <a class="reference external" href="https://github.com/dls-controls/tickit/blob/master/examples/devices/shutter.py">Shutter</a> device.</p>
+<section id="beheading-interpreter">
+<h2>Beheading Interpreter<a class="headerlink" href="#beheading-interpreter" title="Permalink to this heading">#</a></h2>
+<p>Suppose that when communicating with a real shutter device, all messages are
+prepended with a fixed-length header that can be ignored. For example each message
+being prepended with a header of 2 bytes: <code class="docutils literal notranslate"><span class="pre">\x00\x02P?</span></code>, <code class="docutils literal notranslate"><span class="pre">\x00\x04T=1.0</span></code> etc.</p>
+<p>Our simulated device needs to handle messages of the same form.</p>
+<p>We could use regex pattern matching to avoid this header but in some cases this is
+not desirable. In such cases we can cutoff the first two characters of each message
+before passing it on to the <code class="docutils literal notranslate"><span class="pre">CommandInterpreter</span></code> by wrapping the <code class="docutils literal notranslate"><span class="pre">CommandInterpreter</span></code>
+with a <code class="docutils literal notranslate"><span class="pre">BeheadingInterpreter</span></code> in the adapter’s <code class="docutils literal notranslate"><span class="pre">__init__</span></code> as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Awaitable</span><span class="p">,</span> <span class="n">Callable</span>
+<span class="kn">from</span> <span class="nn">tickit.adapters.interpreters.command</span> <span class="kn">import</span> <span class="n">CommandInterpreter</span>
+<span class="kn">from</span> <span class="nn">tickit.adapters.interpreters.wrappers</span> <span class="kn">import</span> <span class="n">BeheadingInterpreter</span>
+<span class="kn">from</span> <span class="nn">tickit.adapters.servers.tcp</span> <span class="kn">import</span> <span class="n">TcpServer</span>
+<span class="kn">from</span> <span class="nn">tickit.core.adapter</span> <span class="kn">import</span> <span class="n">Adapter</span>
+<span class="k">class</span> <span class="nc">ShutterAdapter</span><span class="p">(</span><span class="n">Adapter</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">device</span><span class="p">:</span> <span class="n">Shutter</span><span class="p">,</span>
+        <span class="n">raise_interrupt</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">Awaitable</span><span class="p">[</span><span class="kc">None</span><span class="p">]],</span>
+        <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>
+        <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">25565</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">device</span><span class="p">,</span>
+            <span class="n">raise_interrupt</span><span class="p">,</span>
+            <span class="n">TcpServer</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">ByteFormat</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;%b</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">)),</span>
+            <span class="n">BeheadingInterpreter</span><span class="p">(</span><span class="n">CommandInterpreter</span><span class="p">(),</span> <span class="n">header_size</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+<p>With the rest of the adapter unchanged. The adapter will then correctly interpret
+commands in messages with the header attached:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="se">\x</span><span class="m">00</span><span class="se">\x</span>02P?
+<span class="m">2</span>.0
+</pre></div>
+</div>
 </section>
-<section id="finding-the-lock-files">
-<h2>Finding the lock files<a class="headerlink" href="#finding-the-lock-files" title="Permalink to this heading">#</a></h2>
-<p>Every release of the project will have a set of requirements files published
-as release assets.</p>
-<p>For example take a look at the release page for python3-pip-skeleton-cli here:
-<a class="github reference external" href="https://github.com/DiamondLightSource/python3-pip-skeleton-cli/releases/tag/3.3.0">DiamondLightSource/python3-pip-skeleton-cli</a></p>
-<p>There is a list of requirements*.txt files showing as assets on the release.</p>
-<p>There is one file for each time the CI installed the project into a virtual
-environment. There are multiple of these as the CI creates a number of
-different environments.</p>
-<p>The files are created using <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">freeze</span></code> and will contain a full list
-of the dependencies and sub-dependencies with pinned versions.</p>
-<p>You can download any of these files by clicking on them. It is best to use
-the one that ran with the lowest Python version as this is more likely to
-be compatible with all the versions of Python in the test matrix.
-i.e. <code class="docutils literal notranslate"><span class="pre">requirements-test-ubuntu-latest-3.8.txt</span></code> in this example.</p>
+<section id="splitting-interpreter">
+<h2>Splitting Interpreter<a class="headerlink" href="#splitting-interpreter" title="Permalink to this heading">#</a></h2>
+<p>Now suppose that we would like to be able to send multiple commands in a single
+message, separated by some delimiter. For example, though <code class="docutils literal notranslate"><span class="pre">P?</span></code> and <code class="docutils literal notranslate"><span class="pre">T?</span></code> are
+interpreted as commands by the <code class="docutils literal notranslate"><span class="pre">ShutterAdapter</span></code>, <code class="docutils literal notranslate"><span class="pre">P?</span> <span class="pre">T?</span></code> is not:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>P?
+<span class="m">0</span>.2
+T?
+<span class="m">0</span>.2
+P?<span class="w"> </span>T?
+Request<span class="w"> </span>does<span class="w"> </span>not<span class="w"> </span>match<span class="w"> </span>any<span class="w"> </span>known<span class="w"> </span><span class="nb">command</span>
+</pre></div>
+</div>
+<p>This is the usecase of <code class="docutils literal notranslate"><span class="pre">SplittingInterpreter</span></code>. This splits a message into multiple
+sub-messages and then passes them on to another interprerter that it wraps. Wrapping
+the adapter’s <code class="docutils literal notranslate"><span class="pre">CommandInterprerter</span></code> as</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">SplittingInterpreter</span><span class="p">(</span><span class="n">CommandInterpreter</span><span class="p">(),</span> <span class="n">delimiter</span><span class="o">=</span><span class="sa">b</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>with the rest of the adapter unchanged, allows for interpreting commands separated by
+a space:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>P?
+<span class="m">0</span>.2
+T?
+<span class="m">0</span>.2
+P?<span class="w"> </span>T?
+<span class="m">0</span>.2
+<span class="m">0</span>.2
+</pre></div>
+</div>
+<p>A wrapped adapter can be wrapped by another adapter wrapper. Combining the two above
+examples as</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">BeheadingInterpreter</span><span class="p">(</span>
+    <span class="n">SplittingInterpreter</span><span class="p">(</span>
+        <span class="n">CommandInterpreter</span><span class="p">(),</span> <span class="n">delimiter</span><span class="o">=</span><span class="sa">b</span><span class="s2">&quot; &quot;</span>
+    <span class="p">),</span>
+    <span class="n">header_size</span><span class="o">=</span><span class="mi">2</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>allows for the adapter to deal with messages with a fixed-length header containing
+multiple commands separated by a space:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="se">\x</span><span class="m">00</span><span class="se">\x</span>02P?
+<span class="m">0</span>.2
+<span class="se">\x</span><span class="m">00</span><span class="se">\x</span>05P?<span class="w"> </span>T?
+<span class="m">0</span>.2
+<span class="m">0</span>.2
+</pre></div>
+</div>
+<p>So far we have only seen interpreter wrappers altering the recieved message before
+passing it on to another interpreter. There are also wrappers that alter the response
+received from the wrapped interpreter before it is sent back.</p>
 </section>
-<section id="applying-the-lock-file">
-<h2>Applying the lock file<a class="headerlink" href="#applying-the-lock-file" title="Permalink to this heading">#</a></h2>
-<p>To apply a lockfile:</p>
-<ul class="simple">
-<li><p>copy the requirements file you have downloaded to the root of your
-repository</p></li>
-<li><p>rename it to requirements.txt</p></li>
-<li><p>commit it into the repo</p></li>
-<li><p>push the changes</p></li>
-</ul>
-<p>The CI looks for a requirements.txt in the root and will pass it to pip
-when installing each of the test environments. pip will then install exactly
-the same set of packages as the previous release.</p>
-</section>
-<section id="removing-dependency-locking-from-ci">
-<h2>Removing dependency locking from CI<a class="headerlink" href="#removing-dependency-locking-from-ci" title="Permalink to this heading">#</a></h2>
-<p>Once the reasons for locking the build have been resolved it is a good idea
-to go back to an unlocked build. This is because you get an early indication
-of any incoming problems.</p>
-<p>To restore unlocked builds in CI simply remove requirements.txt from the root
-of the repo and push.</p>
+<section id="joining-interpreter">
+<h2>Joining Interpreter<a class="headerlink" href="#joining-interpreter" title="Permalink to this heading">#</a></h2>
+<p>Above, by wrapping the <code class="docutils literal notranslate"><span class="pre">ShutterAdapter</span></code>’s <code class="docutils literal notranslate"><span class="pre">CommandInterpreter</span></code> with a
+<code class="docutils literal notranslate"><span class="pre">SplittingInterpreter</span></code> we were able to execute multiple commands from a single
+message. Each executed command sent its own response, i.e. one message resulted in
+multiple responses. We may instead want each message to have its own response
+containing multiple command responses. This is the usecase for <code class="docutils literal notranslate"><span class="pre">JoiningInterpreter</span></code>.
+Wrapping the <code class="docutils literal notranslate"><span class="pre">SplittingInterpreter</span></code> with this will join each of the responses into a
+single message.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">JoiningInterpreter</span><span class="p">(</span>
+    <span class="n">BeheadingInterpreter</span><span class="p">(</span>
+        <span class="n">SplittingInterpreter</span><span class="p">(</span>
+            <span class="n">CommandInterpreter</span><span class="p">(),</span> <span class="n">delimiter</span><span class="o">=</span><span class="sa">b</span><span class="s2">&quot; &quot;</span>
+        <span class="p">),</span>
+        <span class="n">header_size</span><span class="o">=</span><span class="mi">2</span>
+    <span class="p">),</span>
+    <span class="n">response_delimiter</span><span class="o">=</span><span class="sa">b</span><span class="s2">&quot; &quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Results in</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>P?
+<span class="m">0</span>.2
+T?
+<span class="m">0</span>.2
+P?<span class="w"> </span>T?
+<span class="m">0</span>.2<span class="w"> </span><span class="m">0</span>.2
+</pre></div>
+</div>
 </section>
 </section>
 
@@ -533,20 +610,20 @@ of the repo and push.</p>
                   <!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="make-release.html"
+       href="use-epics-adapter.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Make a release</p>
+        <p class="prev-next-title">Create a Device with an EPICS Interface</p>
       </div>
     </a>
     <a class="right-next"
-       href="test-container.html"
+       href="../explanations/framework-summary.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Container Local Build and Test</p>
+        <p class="prev-next-title">Framework Summary</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -565,17 +642,16 @@ of the repo and push.</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-the-lock-files">Finding the lock files</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-the-lock-file">Applying the lock file</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#removing-dependency-locking-from-ci">Removing dependency locking from CI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#beheading-interpreter">Beheading Interpreter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#splitting-interpreter">Splitting Interpreter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#joining-interpreter">Joining Interpreter</a></li>
 </ul>
   </nav></div>
 
   <div class="sidebar-secondary-item">
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/dls-controls/tickit/edit/update_docs/docs/developer/how-to/pin-requirements.rst">
+    <a href="https://github.com/dls-controls/tickit/edit/update_docs/docs/user/how-to/use-command-wrappers.rst">
       <i class="fa-solid fa-pencil"></i>
       
       
@@ -589,7 +665,7 @@ of the repo and push.</p>
 
   <div class="sidebar-secondary-item">
   <div class="tocsection sourcelink">
-    <a href="../../_sources/developer/how-to/pin-requirements.rst.txt">
+    <a href="../../_sources/user/how-to/use-command-wrappers.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>
