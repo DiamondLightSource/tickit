@@ -16,8 +16,8 @@ side-bar.
             tutorials/installation
             tutorials/running-a-simulation
             tutorials/creating-a-simulation
-            tutorials/creating-a-device
-            tutorials/creating-an-adapter
+            tutorials/create-a-device
+            tutorials/use-composed-adapter
 
         +++
 
@@ -29,7 +29,8 @@ side-bar.
             :caption: How-to Guides
             :maxdepth: 1
 
-            how-to/accomplish-a-task
+            how-to/use-epics-adapter
+            how-to/use-command-wrappers
 
         +++
 
@@ -41,8 +42,12 @@ side-bar.
             :caption: Explanations
             :maxdepth: 1
 
+            explanations/framework-summary
+            explanations/components
+            explanations/devices
+            explanations/adapters
+            explanations/wiring
             explanations/glossary
-            explanations/how-component-updates-are-ordered
 
         +++
 

@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Creating a Simulation &#8212; tickit 0.2.1.dev4+g381c14d documentation</title>
+    <title>Creating a Simulation &#8212; tickit 0.2.1.dev5+ge4d50c8 documentation</title>
   
   
   
@@ -56,7 +56,7 @@
     <link rel="shortcut icon" href="../../_static/tickit-logo.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Creating a Device" href="creating-a-device.html" />
+    <link rel="next" title="Creating a Device" href="create-a-device.html" />
     <link rel="prev" title="Running a Simulation" href="running-a-simulation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -383,17 +383,22 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="running-a-simulation.html">Running a Simulation</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Creating a Simulation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="creating-a-device.html">Creating a Device</a></li>
-<li class="toctree-l1"><a class="reference internal" href="creating-an-adapter.html">Creating an Adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create-a-device.html">Creating a Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="use-composed-adapter.html">Using an Adapter</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">How-to Guides</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../how-to/accomplish-a-task.html">How to accomplish a task</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../how-to/use-epics-adapter.html">Create a Device with an EPICS Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../how-to/use-command-wrappers.html">Use Command Interpreter Wrappers</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Explanations</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../explanations/framework-summary.html">Framework Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanations/components.html">Simulation Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanations/devices.html">Devices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanations/adapters.html">Adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanations/wiring.html">Wiring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../explanations/glossary.html">Glossary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../explanations/how-component-updates-are-ordered.html">How component updates are ordered</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
@@ -459,7 +464,7 @@ document.write(`
   <section id="creating-a-simulation">
 <h1>Creating a Simulation<a class="headerlink" href="#creating-a-simulation" title="Permalink to this heading">#</a></h1>
 <p>This tutorial shows how to create a simulated system consisting of several included
-devices using the tickit framework - specifically a RandomTrampoline and a <a class="reference internal" href="../reference/api.html#tickit.devices.sink.Sink" title="tickit.devices.sink.Sink"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Sink</span></code></a>.</p>
+devices using the tickit framework - specifically a <code class="docutils literal notranslate"><span class="pre">RandomTrampoline</span></code> and a <a class="reference internal" href="../reference/api.html#tickit.devices.sink.Sink" title="tickit.devices.sink.Sink"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Sink</span></code></a>.</p>
 <section id="configuration-file">
 <h2>Configuration File<a class="headerlink" href="#configuration-file" title="Permalink to this heading">#</a></h2>
 <p>We shall begin by creating a new YAML file named <code class="docutils literal notranslate"><span class="pre">my_simulation.yaml</span></code>, and open it
@@ -472,7 +477,7 @@ and wire them together.</p>
 dataclass associated with them. This defines the device to be used, as well as any
 adapters to allow the device to be externally controlled. At the top level, tickit
 simulations comprise a list of these components which are denoted in YAML.</p>
-<p>In this example our first device shall be a RandomTrampoline with a callback_period
+<p>In this example our first device shall be a <code class="docutils literal notranslate"><span class="pre">RandomTrampoline</span></code> with a callback_period
 of <span class="math notranslate nohighlight">\(1s\)</span> or <span class="math notranslate nohighlight">\(10^9n\s\)</span> named <code class="docutils literal notranslate"><span class="pre">rand_tramp</span></code> with no adapters - denoted
 in YAML by <code class="docutils literal notranslate"><span class="pre">[]</span></code> - and with no mapped inputs - denoted in YAML by <code class="docutils literal notranslate"><span class="pre">{}</span></code>. As such
 we may extend our config, as:</p>
@@ -523,7 +528,7 @@ Scheduler<span class="w"> </span>got<span class="w"> </span>Output<span class="o
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference internal" href="running-a-simulation.html#running-a-simulation"><span class="std std-ref">Running a Simulation</span></a></p>
+<p><a class="reference internal" href="running-a-simulation.html"><span class="doc">Running a Simulation</span></a></p>
 </div>
 </section>
 </section>
@@ -546,7 +551,7 @@ Scheduler<span class="w"> </span>got<span class="w"> </span>Output<span class="o
       </div>
     </a>
     <a class="right-next"
-       href="creating-a-device.html"
+       href="create-a-device.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
@@ -621,7 +626,7 @@ Scheduler<span class="w"> </span>got<span class="w"> </span>Output<span class="o
     <div class="footer-items__end">
       
         <div class="footer-item"><p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.1.
 </p></div>
       
     </div>

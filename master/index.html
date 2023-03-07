@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>tickit &#8212; tickit 0.2.1.dev4+g381c14d documentation</title>
+    <title>tickit &#8212; tickit 0.2.1.dev5+ge4d50c8 documentation</title>
   
   
   
@@ -407,55 +407,77 @@ orchestration of complex multi-device simulations.</p>
 <tr class="row-odd"><td><p>Documentation</p></td>
 <td><p><a class="reference external" href="https://dls-controls.github.io/tickit">https://dls-controls.github.io/tickit</a></p></td>
 </tr>
-<tr class="row-even"><td><p>Changelog</p></td>
-<td><p><a class="github reference external" href="https://github.com/dls-controls/tickit/blob/master/CHANGELOG.rst">dls-controls/tickit</a></p></td>
+<tr class="row-even"><td><p>Releases</p></td>
+<td><p><a class="github reference external" href="https://github.com/dls-controls/tickit-devices/releases">dls-controls/tickit-devices</a></p></td>
 </tr>
 </tbody>
 </table>
-<p>An example device which emits a random value between <em>0</em> and <em>255</em> whenever
-called and asks to be called again once the simulation has progressed by the
-<code class="docutils literal notranslate"><span class="pre">callback_period</span></code>.  Additionally, extenal control of <strong>RandomTrampoline</strong> is
-afforded by a <strong>RemoteControlledAdapter</strong> which is exposed extenally through
-a <strong>TCPServer</strong>:</p>
+<p>An example simulation consits of a simple counter and a sink. The counter
+increments up a given value and then passes this value to a sink.</p>
+<p>A simulation is defined using a yaml file, in which the graphing of the required
+components is denoted. This file defines a <strong>Counter</strong> device named <strong>counter</strong> and
+a <strong>Sink</strong> device named <strong>counter_sink</strong>. The output <strong>_value</strong> of <strong>counter</strong> is wired
+to the input of <strong>counter_sink</strong>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">examples.devices.counter.Counter</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">counter</span>
+<span class="w">    </span><span class="nt">inputs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">tickit.devices.sink.Sink</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">counter_sink</span>
+<span class="w">    </span><span class="nt">inputs</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">input</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">counter:_value</span>
+</pre></div>
+</div>
+<p>This file is executed to run the simultation.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>tickit<span class="w"> </span>all<span class="w"> </span>examples/configs/counter.yaml
+</pre></div>
+</div>
+<p>The simulation will output logs depicting the incerementing of the counter:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>DEBUG:examples.devices.counter:Counter<span class="w"> </span>initialized<span class="w"> </span>with<span class="w"> </span><span class="nv">value</span><span class="w"> </span><span class="o">=</span>&gt;<span class="w"> </span><span class="m">0</span>
+DEBUG:asyncio:Using<span class="w"> </span>selector:<span class="w"> </span>EpollSelector
+DEBUG:tickit.core.management.ticker:Doing<span class="w"> </span>tick<span class="w"> </span>@<span class="w"> </span><span class="m">0</span>
+DEBUG:tickit.core.components.component:counter<span class="w"> </span>got<span class="w"> </span>Input<span class="o">(</span><span class="nv">target</span><span class="o">=</span><span class="s1">&#39;counter&#39;</span>,<span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">0</span>,<span class="w"> </span><span class="nv">changes</span><span class="o">=</span>immutables.Map<span class="o">({}))</span>
+DEBUG:examples.devices.counter:Counter<span class="w"> </span>incremented<span class="w"> </span>to<span class="w"> </span><span class="m">1</span>
+DEBUG:tickit.core.management.schedulers.base:Scheduler<span class="w"> </span>got<span class="w"> </span>Output<span class="o">(</span><span class="nv">source</span><span class="o">=</span><span class="s1">&#39;counter&#39;</span>,<span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">0</span>,<span class="w"> </span><span class="nv">changes</span><span class="o">=</span>immutables.Map<span class="o">({</span><span class="s1">&#39;value&#39;</span>:<span class="w"> </span><span class="m">1</span><span class="o">})</span>,<span class="w"> </span><span class="nv">call_at</span><span class="o">=</span><span class="m">1000000000</span><span class="o">)</span>
+DEBUG:tickit.core.management.schedulers.base:Scheduling<span class="w"> </span>counter<span class="w"> </span><span class="k">for</span><span class="w"> </span>wakeup<span class="w"> </span>at<span class="w"> </span><span class="m">1000000000</span>
+DEBUG:tickit.core.components.component:counter_sink<span class="w"> </span>got<span class="w"> </span>Input<span class="o">(</span><span class="nv">target</span><span class="o">=</span><span class="s1">&#39;counter_sink&#39;</span>,<span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">0</span>,<span class="w"> </span><span class="nv">changes</span><span class="o">=</span>immutables.Map<span class="o">({}))</span>
+DEBUG:tickit.devices.sink:Sunk<span class="w"> </span><span class="o">{}</span>
+DEBUG:tickit.core.management.schedulers.base:Scheduler<span class="w"> </span>got<span class="w"> </span>Output<span class="o">(</span><span class="nv">source</span><span class="o">=</span><span class="s1">&#39;counter_sink&#39;</span>,<span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">0</span>,<span class="w"> </span><span class="nv">changes</span><span class="o">=</span>immutables.Map<span class="o">({})</span>,<span class="w"> </span><span class="nv">call_at</span><span class="o">=</span>None<span class="o">)</span>
+DEBUG:tickit.core.management.ticker:Doing<span class="w"> </span>tick<span class="w"> </span>@<span class="w"> </span><span class="m">1000000000</span>
+DEBUG:tickit.core.components.component:counter<span class="w"> </span>got<span class="w"> </span>Input<span class="o">(</span><span class="nv">target</span><span class="o">=</span><span class="s1">&#39;counter&#39;</span>,<span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">1000000000</span>,<span class="w"> </span><span class="nv">changes</span><span class="o">=</span>immutables.Map<span class="o">({}))</span>
+DEBUG:examples.devices.counter:Counter<span class="w"> </span>incremented<span class="w"> </span>to<span class="w"> </span><span class="m">2</span>
+DEBUG:tickit.core.management.schedulers.base:Scheduler<span class="w"> </span>got<span class="w"> </span>Output<span class="o">(</span><span class="nv">source</span><span class="o">=</span><span class="s1">&#39;counter&#39;</span>,<span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">1000000000</span>,<span class="w"> </span><span class="nv">changes</span><span class="o">=</span>immutables.Map<span class="o">({</span><span class="s1">&#39;value&#39;</span>:<span class="w"> </span><span class="m">2</span><span class="o">})</span>,<span class="w"> </span><span class="nv">call_at</span><span class="o">=</span><span class="m">2000000000</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>The counting device is defined as below. It increments a given value and logs as
+it increments.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">RandomTrampoline</span><span class="p">(</span><span class="n">ComponentConfig</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">Counter</span><span class="p">(</span><span class="n">ComponentConfig</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Simple counting device.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Component</span><span class="p">:</span>  <span class="c1"># noqa: D102</span>
         <span class="k">return</span> <span class="n">DeviceSimulation</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="n">device</span><span class="o">=</span><span class="n">RandomTrampolineDevice</span><span class="p">(),</span>
-            <span class="n">adapters</span><span class="o">=</span><span class="p">[</span><span class="n">RemoteControlledAdapter</span><span class="p">(</span><span class="n">server</span><span class="o">=</span><span class="n">TcpServer</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">&quot;%b</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">))])</span>
+            <span class="n">device</span><span class="o">=</span><span class="n">CounterDevice</span><span class="p">(),</span>
+            <span class="p">)</span>
 
-
-<span class="k">class</span> <span class="nc">RandomTrampolineDevice</span><span class="p">(</span><span class="n">Device</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">CounterDevice</span><span class="p">(</span><span class="n">Device</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A simple device which increments a value.&quot;&quot;&quot;</span>
 
     <span class="n">Inputs</span><span class="p">:</span> <span class="n">TypedDict</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Inputs&quot;</span><span class="p">,</span> <span class="p">{})</span>
-    <span class="n">Outputs</span><span class="p">:</span> <span class="n">TypedDict</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Outputs&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">})</span>
+    <span class="n">Outputs</span><span class="p">:</span> <span class="n">TypedDict</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Outputs&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span><span class="nb">int</span><span class="p">})</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback_period</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1e9</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_value</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">callback_period</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1e9</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">initial_value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">callback_period</span> <span class="o">=</span> <span class="n">SimTime</span><span class="p">(</span><span class="n">callback_period</span><span class="p">)</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Counter initialized with value =&gt; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">SimTime</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">Inputs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeviceUpdate</span><span class="p">[</span><span class="n">Outputs</span><span class="p">]:</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-            <span class="s2">&quot;Boing! (delta: </span><span class="si">{}</span><span class="s2">, inputs: </span><span class="si">{}</span><span class="s2">, output: </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
-        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Counter incremented to </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_value</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">DeviceUpdate</span><span class="p">(</span>
-            <span class="n">RandomTrampoline</span><span class="o">.</span><span class="n">Outputs</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">),</span>
+            <span class="n">CounterDevice</span><span class="o">.</span><span class="n">Outputs</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_value</span><span class="p">),</span>
             <span class="n">SimTime</span><span class="p">(</span><span class="n">time</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback_period</span><span class="p">),</span>
         <span class="p">)</span>
-</pre></div>
-</div>
-<p>An example simulation defines a <strong>RemoteControlled</strong> device named <strong>tcp_contr</strong>
-and a <strong>Sink</strong> device named <strong>contr_sink</strong>. The <strong>observed</strong> output of
-<strong>tcp_contr</strong> is wired to the <strong>input</strong> input of <strong>contr_sink</strong>:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">examples.devices.remote_controlled.RemoteControlled</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tcp_contr</span>
-<span class="w">    </span><span class="nt">inputs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">tickit.devices.sink.Sink</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">contr_sink</span>
-<span class="w">    </span><span class="nt">inputs</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">input</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tcp_contr:observed</span>
 </pre></div>
 </div>
 <section id="how-the-documentation-is-structured">
@@ -533,7 +555,7 @@ and a <strong>Sink</strong> device named <strong>contr_sink</strong>. The <stron
     <div class="footer-items__end">
       
         <div class="footer-item"><p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.1.
 </p></div>
       
     </div>

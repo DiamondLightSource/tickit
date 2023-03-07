@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>User Guide &#8212; tickit 0.2.1.dev4+g381c14d documentation</title>
+    <title>User Guide &#8212; tickit 0.2.1.dev5+ge4d50c8 documentation</title>
   
   
   
@@ -382,17 +382,22 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="tutorials/installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/running-a-simulation.html">Running a Simulation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/creating-a-simulation.html">Creating a Simulation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/creating-a-device.html">Creating a Device</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/creating-an-adapter.html">Creating an Adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/create-a-device.html">Creating a Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/use-composed-adapter.html">Using an Adapter</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">How-to Guides</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="how-to/accomplish-a-task.html">How to accomplish a task</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-to/use-epics-adapter.html">Create a Device with an EPICS Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-to/use-command-wrappers.html">Use Command Interpreter Wrappers</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Explanations</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="explanations/framework-summary.html">Framework Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="explanations/components.html">Simulation Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="explanations/devices.html">Devices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="explanations/adapters.html">Adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="explanations/wiring.html">Wiring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="explanations/glossary.html">Glossary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="explanations/how-component-updates-are-ordered.html">How component updates are ordered</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
@@ -469,8 +474,8 @@ side-bar.</p>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/running-a-simulation.html">Running a Simulation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/creating-a-simulation.html">Creating a Simulation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/creating-a-device.html">Creating a Device</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/creating-an-adapter.html">Creating an Adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/create-a-device.html">Creating a Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/use-composed-adapter.html">Using an Adapter</a></li>
 </ul>
 </div>
 </div>
@@ -487,7 +492,8 @@ side-bar.</p>
 <div class="toctree-wrapper compound">
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">How-to Guides</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="how-to/accomplish-a-task.html">How to accomplish a task</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-to/use-epics-adapter.html">Create a Device with an EPICS Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-to/use-command-wrappers.html">Use Command Interpreter Wrappers</a></li>
 </ul>
 </div>
 </div>
@@ -504,8 +510,12 @@ side-bar.</p>
 <div class="toctree-wrapper compound">
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Explanations</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="explanations/framework-summary.html">Framework Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="explanations/components.html">Simulation Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="explanations/devices.html">Devices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="explanations/adapters.html">Adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="explanations/wiring.html">Wiring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="explanations/glossary.html">Glossary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="explanations/how-component-updates-are-ordered.html">How component updates are ordered</a></li>
 </ul>
 </div>
 </div>
@@ -617,7 +627,7 @@ side-bar.</p>
     <div class="footer-items__end">
       
         <div class="footer-item"><p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.1.
 </p></div>
       
     </div>

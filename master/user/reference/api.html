@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>API &#8212; tickit 0.2.1.dev4+g381c14d documentation</title>
+    <title>API &#8212; tickit 0.2.1.dev5+ge4d50c8 documentation</title>
   
   
   
@@ -56,7 +56,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="API Index" href="../../genindex.html" />
-    <link rel="prev" title="How component updates are ordered" href="../explanations/how-component-updates-are-ordered.html" />
+    <link rel="prev" title="Glossary" href="../explanations/glossary.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -382,17 +382,22 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/running-a-simulation.html">Running a Simulation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/creating-a-simulation.html">Creating a Simulation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/creating-a-device.html">Creating a Device</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/creating-an-adapter.html">Creating an Adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/create-a-device.html">Creating a Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/use-composed-adapter.html">Using an Adapter</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">How-to Guides</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../how-to/accomplish-a-task.html">How to accomplish a task</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../how-to/use-epics-adapter.html">Create a Device with an EPICS Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../how-to/use-command-wrappers.html">Use Command Interpreter Wrappers</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Explanations</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../explanations/framework-summary.html">Framework Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanations/components.html">Simulation Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanations/devices.html">Devices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanations/adapters.html">Adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanations/wiring.html">Wiring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../explanations/glossary.html">Glossary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../explanations/how-component-updates-are-ordered.html">How component updates are ordered</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current nav bd-sidenav">
@@ -1595,7 +1600,7 @@ the ticker.</p></li>
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference internal" href="../explanations/how-component-updates-are-ordered.html#how-component-updates-are-ordered"><span class="std std-ref">How component updates are ordered</span></a></p>
+<p><a class="reference internal" href="../../developer/explanations/how-component-updates-are-ordered.html"><span class="doc">How component updates are ordered</span></a></p>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="tickit.core.management.ticker.Ticker.schedule_possible_updates">
@@ -2190,6 +2195,227 @@ otherwise the method returns None.</p>
 
 </section>
 </section>
+<span class="target" id="module-tickit.adapters.interpreters.endpoints"></span><section id="module-tickit.adapters.interpreters.endpoints.http_endpoint">
+<span id="tickit-adapters-interpreters-endpoints"></span><h5><code class="docutils literal notranslate"><span class="pre">tickit.adapters.interpreters.endpoints</span></code><a class="headerlink" href="#module-tickit.adapters.interpreters.endpoints.http_endpoint" title="Permalink to this heading">#</a></h5>
+<section id="tickit-adapters-interpreters-endpoints-http-endpoint">
+<h6><code class="docutils literal notranslate"><span class="pre">tickit.adapters.interpreters.endpoints.http_endpoint</span></code><a class="headerlink" href="#tickit-adapters-interpreters-endpoints-http-endpoint" title="Permalink to this heading">#</a></h6>
+<dl class="py class">
+<dt class="sig sig-object py" id="tickit.adapters.interpreters.endpoints.http_endpoint.HTTPEndpoint">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.adapters.interpreters.endpoints.http_endpoint.</span></span><span class="sig-name descname"><span class="pre">HTTPEndpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_json</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interrupt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/adapters/interpreters/endpoints/http_endpoint.html#HTTPEndpoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.interpreters.endpoints.http_endpoint.HTTPEndpoint" title="Permalink to this definition">#</a></dt>
+<dd><p>A decorator to register a device adapter method as a HTTP Endpoint.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The URL that will point to a specific endpoint.</p></li>
+<li><p><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The method to use when using this endpoint.</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The name of the route.</p></li>
+<li><p><strong>include_json</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – A flag to indicate whether the route should include json.</p></li>
+<li><p><strong>interrupt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – A flag indicating whether calling of the method should
+raise an adapter interrupt. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A decorator which registers the adapter method as an endpoint.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Callable</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tickit.adapters.interpreters.endpoints.http_endpoint.HTTPEndpoint.define">
+<span class="sig-name descname"><span class="pre">define</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.11)"><span class="pre">Callable</span></a><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Request</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Awaitable" title="(in Python v3.11)"><span class="pre">Awaitable</span></a><span class="p"><span class="pre">[</span></span><span class="pre">StreamResponse</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">RouteDef</span></span></span><a class="reference internal" href="../../_modules/tickit/adapters/interpreters/endpoints/http_endpoint.html#HTTPEndpoint.define"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.interpreters.endpoints.http_endpoint.HTTPEndpoint.define" title="Permalink to this definition">#</a></dt>
+<dd><p>Performs the construction of the endpoint RouteDef for the HTTP Server.</p>
+<dl class="simple">
+<dt>A method which performs the construction of the route definition of the method,</dt><dd><p>URL and handler function for the endpoint, to then return to the HTTP Server.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<em>Callable</em>) – The handler funcion to be attached to the route</p></li>
+<li><p><strong>endpoint.</strong> (<em>definition for the</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The route definition for the endpoint.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>RouteDef</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tickit.adapters.interpreters.endpoints.http_endpoint.HTTPEndpoint.get">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_json</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interrupt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tickit.adapters.interpreters.endpoints.http_endpoint.HTTPEndpoint" title="tickit.adapters.interpreters.endpoints.http_endpoint.HTTPEndpoint"><span class="pre">HTTPEndpoint</span></a></span></span><a class="reference internal" href="../../_modules/tickit/adapters/interpreters/endpoints/http_endpoint.html#HTTPEndpoint.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.interpreters.endpoints.http_endpoint.HTTPEndpoint.get" title="Permalink to this definition">#</a></dt>
+<dd><p>Method for the HTTPEndpoint that sets the request method to “GET”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The class of HTTPEndpoint with the “GET” request method.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>cls</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tickit.adapters.interpreters.endpoints.http_endpoint.HTTPEndpoint.put">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">put</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_json</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interrupt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tickit.adapters.interpreters.endpoints.http_endpoint.HTTPEndpoint" title="tickit.adapters.interpreters.endpoints.http_endpoint.HTTPEndpoint"><span class="pre">HTTPEndpoint</span></a></span></span><a class="reference internal" href="../../_modules/tickit/adapters/interpreters/endpoints/http_endpoint.html#HTTPEndpoint.put"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.interpreters.endpoints.http_endpoint.HTTPEndpoint.put" title="Permalink to this definition">#</a></dt>
+<dd><p>Method for the HTTPEndpoint that sets the request method to “PUT”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The class of HTTPEndpoint with the “PUT” request method.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>cls</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+<span class="target" id="module-tickit.adapters.interpreters.wrappers"></span><section id="module-tickit.adapters.interpreters.wrappers.beheading_interpreter">
+<span id="tickit-adapters-interpreters-wrappers"></span><h5><code class="docutils literal notranslate"><span class="pre">tickit.adapters.interpreters.wrappers</span></code><a class="headerlink" href="#module-tickit.adapters.interpreters.wrappers.beheading_interpreter" title="Permalink to this heading">#</a></h5>
+<section id="tickit-adapters-interpreters-wrappers-beheading-interpreter">
+<h6><code class="docutils literal notranslate"><span class="pre">tickit.adapters.interpreters.wrappers.beheading_interpreter</span></code><a class="headerlink" href="#tickit-adapters-interpreters-wrappers-beheading-interpreter" title="Permalink to this heading">#</a></h6>
+<dl class="py class">
+<dt class="sig sig-object py" id="tickit.adapters.interpreters.wrappers.beheading_interpreter.BeheadingInterpreter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.adapters.interpreters.wrappers.beheading_interpreter.</span></span><span class="sig-name descname"><span class="pre">BeheadingInterpreter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interpreter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.adapter.Interpreter" title="tickit.core.adapter.Interpreter"><span class="pre">Interpreter</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">header_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/adapters/interpreters/wrappers/beheading_interpreter.html#BeheadingInterpreter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.interpreters.wrappers.beheading_interpreter.BeheadingInterpreter" title="Permalink to this definition">#</a></dt>
+<dd><p>A wrapper for an interpreter which strips a header from a message.</p>
+<p>An interpreter wrapper that takes a message, strips off a header of a fixed size
+and passes the stripped message on to the wrapped interpreter</p>
+<p>A wrapper for an interpreter which strips a header from a message.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>interpreter</strong> (<a class="reference internal" href="#tickit.core.adapter.Interpreter" title="tickit.core.adapter.Interpreter"><em>Interpreter</em></a>) – The interpreter the message is passed on to
+after the header is stripped.</p></li>
+<li><p><strong>header_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – The number of characters in the header.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tickit.adapters.interpreters.wrappers.beheading_interpreter.BeheadingInterpreter.handle">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.adapter.Adapter" title="tickit.core.adapter.Adapter"><span class="pre">Adapter</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AnyStr</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.11)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.AsyncIterable" title="(in Python v3.11)"><span class="pre">AsyncIterable</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/tickit/adapters/interpreters/wrappers/beheading_interpreter.html#BeheadingInterpreter.handle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.interpreters.wrappers.beheading_interpreter.BeheadingInterpreter.handle" title="Permalink to this definition">#</a></dt>
+<dd><p>Removes a header from the start of a message, and passes it on to an
+interpreter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>adapter</strong> (<a class="reference internal" href="#tickit.core.adapter.Adapter" title="tickit.core.adapter.Adapter"><em>Adapter</em></a>) – The adapter in which the function should be executed</p></li>
+<li><p><strong>message</strong> – (AnyStr): The handled message, of which the header is removed.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple of the asynchronous iterable of reply messages and a flag
+indicating whether an interrupt should be raised by the adapter.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[AsyncIterable[Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)">bytes</a>]], <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<span class="target" id="module-tickit.adapters.interpreters.wrappers.joining_interpreter"></span><section id="tickit-adapters-interpreters-wrappers-joining-interpreter">
+<h6><code class="docutils literal notranslate"><span class="pre">tickit.adapters.interpreters.wrappers.joining_interpreter</span></code><a class="headerlink" href="#tickit-adapters-interpreters-wrappers-joining-interpreter" title="Permalink to this heading">#</a></h6>
+<dl class="py class">
+<dt class="sig sig-object py" id="tickit.adapters.interpreters.wrappers.joining_interpreter.JoiningInterpreter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.adapters.interpreters.wrappers.joining_interpreter.</span></span><span class="sig-name descname"><span class="pre">JoiningInterpreter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interpreter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.adapter.Interpreter" title="tickit.core.adapter.Interpreter"><span class="pre">Interpreter</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_delimiter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AnyStr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/adapters/interpreters/wrappers/joining_interpreter.html#JoiningInterpreter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.interpreters.wrappers.joining_interpreter.JoiningInterpreter" title="Permalink to this definition">#</a></dt>
+<dd><p>A wrapper for an interpreter that combines responses.</p>
+<p>An interpreter wrapper class that takes the wrapped interpreter’s response(s) to a
+message and combines them into a single response.</p>
+<p>A decorator for an interpreter that combines multiple responses into one.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>interpreter</strong> (<a class="reference internal" href="#tickit.core.adapter.Interpreter" title="tickit.core.adapter.Interpreter"><em>Interpreter</em></a>) – The interpreter responding to a message.</p></li>
+<li><p><strong>response_delimiter</strong> (<em>AnyStr</em>) – The delimiter separating the responses to the
+individual responses when they are combined into a single response
+message.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tickit.adapters.interpreters.wrappers.joining_interpreter.JoiningInterpreter.handle">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.adapter.Adapter" title="tickit.core.adapter.Adapter"><span class="pre">Adapter</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AnyStr</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.11)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.AsyncIterable" title="(in Python v3.11)"><span class="pre">AsyncIterable</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/tickit/adapters/interpreters/wrappers/joining_interpreter.html#JoiningInterpreter.handle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.interpreters.wrappers.joining_interpreter.JoiningInterpreter.handle" title="Permalink to this definition">#</a></dt>
+<dd><p>Merges the responses from an interpreter into a single message.</p>
+<dl class="simple">
+<dt>Individual responses to the message are combined into a single response and</dt><dd><p>returned.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>adapter</strong> (<a class="reference internal" href="#tickit.core.adapter.Adapter" title="tickit.core.adapter.Adapter"><em>Adapter</em></a>) – The adapter in which the function should be executed.</p></li>
+<li><p><strong>message</strong> – (AnyStr): The message to be handled.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple of the asynchronous iterable of a single reply message and a
+flag indicating whether an interrupt should be raised by the adapter.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[AsyncIterable[Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)">bytes</a>]], <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<span class="target" id="module-tickit.adapters.interpreters.wrappers.splitting_interpreter"></span><section id="tickit-adapters-interpreters-wrappers-splitting-interpreter">
+<h6><code class="docutils literal notranslate"><span class="pre">tickit.adapters.interpreters.wrappers.splitting_interpreter</span></code><a class="headerlink" href="#tickit-adapters-interpreters-wrappers-splitting-interpreter" title="Permalink to this heading">#</a></h6>
+<dl class="py class">
+<dt class="sig sig-object py" id="tickit.adapters.interpreters.wrappers.splitting_interpreter.SplittingInterpreter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.adapters.interpreters.wrappers.splitting_interpreter.</span></span><span class="sig-name descname"><span class="pre">SplittingInterpreter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interpreter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.adapter.Interpreter" title="tickit.core.adapter.Interpreter"><span class="pre">Interpreter</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">message_delimiter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AnyStr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/adapters/interpreters/wrappers/splitting_interpreter.html#SplittingInterpreter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.interpreters.wrappers.splitting_interpreter.SplittingInterpreter" title="Permalink to this definition">#</a></dt>
+<dd><p>A wrapper for an interpreter that splits a single message into multiple.</p>
+<p>An interpreter wrapper class that takes a message, splits it according to a given
+delimiter, and passes on the resulting sub-messages individually on to the
+wrapped interpreter.</p>
+<p>A decorator for an interpreter that splits a message into multiple
+sub-messages.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>interpreter</strong> (<a class="reference internal" href="#tickit.core.adapter.Interpreter" title="tickit.core.adapter.Interpreter"><em>Interpreter</em></a>) – The interpreter messages are passed on to.</p></li>
+<li><p><strong>message_delimiter</strong> (<em>AnyStr</em>) – The delimiter by which the message is split up.
+Can be a regex pattern. Must be of the same type as the message.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tickit.adapters.interpreters.wrappers.splitting_interpreter.SplittingInterpreter.handle">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.adapter.Adapter" title="tickit.core.adapter.Adapter"><span class="pre">Adapter</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AnyStr</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.11)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.AsyncIterable" title="(in Python v3.11)"><span class="pre">AsyncIterable</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/tickit/adapters/interpreters/wrappers/splitting_interpreter.html#SplittingInterpreter.handle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.interpreters.wrappers.splitting_interpreter.SplittingInterpreter.handle" title="Permalink to this definition">#</a></dt>
+<dd><p>Splits a message and passes the resulting sub-messages on to an interpreter.</p>
+<p>Splits a given message and passes the resulting sub-messages on to an
+interpreter. The responses to the individual sub-messages are then returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>adapter</strong> (<a class="reference internal" href="#tickit.core.adapter.Adapter" title="tickit.core.adapter.Adapter"><em>Adapter</em></a>) – The adapter in which the function should be executed</p></li>
+<li><p><strong>message</strong> – (AnyStr): The message to be split up and handled.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple of the asynchronous iterable of reply messages and a flag
+indicating whether an interrupt should be raised by the adapter.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[AsyncIterable[Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)">bytes</a>]], <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
 </section>
 <span class="target" id="module-tickit.adapters.servers"></span><section id="module-tickit.adapters.servers.tcp">
 <span id="tickit-adapters-servers"></span><h4><code class="docutils literal notranslate"><span class="pre">tickit.adapters.servers</span></code><a class="headerlink" href="#module-tickit.adapters.servers.tcp" title="Permalink to this heading">#</a></h4>
@@ -2293,11 +2519,108 @@ requested.</p>
 </dd></dl>
 
 </section>
-<span class="target" id="module-tickit.adapters.epicsadapter"></span><section id="tickit-adapters-epicsadapter">
-<h4><code class="docutils literal notranslate"><span class="pre">tickit.adapters.epicsadapter</span></code><a class="headerlink" href="#tickit-adapters-epicsadapter" title="Permalink to this heading">#</a></h4>
+<span class="target" id="module-tickit.adapters.httpadapter"></span><section id="tickit-adapters-httpadapter">
+<h4><code class="docutils literal notranslate"><span class="pre">tickit.adapters.httpadapter</span></code><a class="headerlink" href="#tickit-adapters-httpadapter" title="Permalink to this heading">#</a></h4>
 <dl class="py class">
-<dt class="sig sig-object py" id="tickit.adapters.epicsadapter.EpicsAdapter">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.adapters.epicsadapter.</span></span><span class="sig-name descname"><span class="pre">EpicsAdapter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ioc_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/adapters/epicsadapter/adapter.html#EpicsAdapter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.EpicsAdapter" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tickit.adapters.httpadapter.HTTPAdapter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.adapters.httpadapter.</span></span><span class="sig-name descname"><span class="pre">HTTPAdapter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'localhost'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8080</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/adapters/httpadapter.html#HTTPAdapter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.httpadapter.HTTPAdapter" title="Permalink to this definition">#</a></dt>
+<dd><p>An adapter implementation which delegates to a server and sets up endpoints.</p>
+<p>An adapter implementation which delegates the hosting of an http requests to a
+server and sets up the endpoints for said server.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tickit.adapters.httpadapter.HTTPAdapter.run_forever">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run_forever</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.device.Device" title="tickit.core.device.Device"><span class="pre">Device</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">raise_interrupt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.adapter.RaiseInterrupt" title="tickit.core.adapter.RaiseInterrupt"><span class="pre">RaiseInterrupt</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/adapters/httpadapter.html#HTTPAdapter.run_forever"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.httpadapter.HTTPAdapter.run_forever" title="Permalink to this definition">#</a></dt>
+<dd><p>Runs the server continously.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tickit.adapters.httpadapter.HTTPAdapter.endpoints">
+<span class="sig-name descname"><span class="pre">endpoints</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterable" title="(in Python v3.11)"><span class="pre">Iterable</span></a><span class="p"><span class="pre">[</span></span><span class="pre">RouteDef</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/tickit/adapters/httpadapter.html#HTTPAdapter.endpoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.httpadapter.HTTPAdapter.endpoints" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns list of endpoints.</p>
+<p>Fetches the defined HTTP endpoints in the device adapter, parses them and
+then yields them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The list of defined endpoints</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Iterable[<a class="reference internal" href="#tickit.adapters.interpreters.endpoints.http_endpoint.HTTPEndpoint" title="tickit.adapters.interpreters.endpoints.http_endpoint.HTTPEndpoint">HTTPEndpoint</a>]</p>
+</dd>
+<dt class="field-odd">Yields<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Iterator[Iterable[HTTPEndpoint]]</em> – The iterator of the defined endpoints</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<span class="target" id="module-tickit.adapters.zmqadapter"></span><section id="tickit-adapters-zmqadapter">
+<h4><code class="docutils literal notranslate"><span class="pre">tickit.adapters.zmqadapter</span></code><a class="headerlink" href="#tickit-adapters-zmqadapter" title="Permalink to this heading">#</a></h4>
+<dl class="py class">
+<dt class="sig sig-object py" id="tickit.adapters.zmqadapter.ZeroMQAdapter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.adapters.zmqadapter.</span></span><span class="sig-name descname"><span class="pre">ZeroMQAdapter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zmq_host</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'127.0.0.1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zmq_port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5555</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">running</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/adapters/zmqadapter.html#ZeroMQAdapter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.zmqadapter.ZeroMQAdapter" title="Permalink to this definition">#</a></dt>
+<dd><p>An adapter for a ZeroMQ data stream.</p>
+<p>Initialize with default values.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tickit.adapters.zmqadapter.ZeroMQAdapter.start_stream">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">start_stream</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/adapters/zmqadapter.html#ZeroMQAdapter.start_stream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.zmqadapter.ZeroMQAdapter.start_stream" title="Permalink to this definition">#</a></dt>
+<dd><p>Start the ZeroMQ stream.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tickit.adapters.zmqadapter.ZeroMQAdapter.close_stream">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">close_stream</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/adapters/zmqadapter.html#ZeroMQAdapter.close_stream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.zmqadapter.ZeroMQAdapter.close_stream" title="Permalink to this definition">#</a></dt>
+<dd><p>Close the ZeroMQ stream.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tickit.adapters.zmqadapter.ZeroMQAdapter.send_message">
+<span class="sig-name descname"><span class="pre">send_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/adapters/zmqadapter.html#ZeroMQAdapter.send_message"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.zmqadapter.ZeroMQAdapter.send_message" title="Permalink to this definition">#</a></dt>
+<dd><p>Send a message down the ZeroMQ stream.</p>
+<p>Sets up an asyncio task to put the message on the message queue, before
+being processed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The message to send down the ZeroMQ stream.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tickit.adapters.zmqadapter.ZeroMQAdapter.run_forever">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run_forever</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.device.Device" title="tickit.core.device.Device"><span class="pre">Device</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">raise_interrupt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.adapter.RaiseInterrupt" title="tickit.core.adapter.RaiseInterrupt"><span class="pre">RaiseInterrupt</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/adapters/zmqadapter.html#ZeroMQAdapter.run_forever"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.zmqadapter.ZeroMQAdapter.run_forever" title="Permalink to this definition">#</a></dt>
+<dd><p>Runs the ZeroMQ adapter continuously.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tickit.adapters.zmqadapter.ZeroMQAdapter.check_if_running">
+<span class="sig-name descname"><span class="pre">check_if_running</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/adapters/zmqadapter.html#ZeroMQAdapter.check_if_running"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.zmqadapter.ZeroMQAdapter.check_if_running" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the running state of the adapter.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<span class="target" id="module-tickit.adapters.epicsadapter"></span><section id="module-tickit.adapters.epicsadapter.adapter">
+<span id="tickit-adapters-epicsadapter"></span><h4><code class="docutils literal notranslate"><span class="pre">tickit.adapters.epicsadapter</span></code><a class="headerlink" href="#module-tickit.adapters.epicsadapter.adapter" title="Permalink to this heading">#</a></h4>
+<section id="tickit-adapters-epicsadapter-adapter">
+<h5><code class="docutils literal notranslate"><span class="pre">tickit.adapters.epicsadapter.adapter</span></code><a class="headerlink" href="#tickit-adapters-epicsadapter-adapter" title="Permalink to this heading">#</a></h5>
+<dl class="py class">
+<dt class="sig sig-object py" id="tickit.adapters.epicsadapter.adapter.InputRecord">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.adapters.epicsadapter.adapter.</span></span><span class="sig-name descname"><span class="pre">InputRecord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.11)"><span class="pre">Callable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">get</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.11)"><span class="pre">Callable</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/adapters/epicsadapter/adapter.html#InputRecord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.adapter.InputRecord" title="Permalink to this definition">#</a></dt>
+<dd><p>A data container representing an EPICS input record.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tickit.adapters.epicsadapter.adapter.OutputRecord">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.adapters.epicsadapter.adapter.</span></span><span class="sig-name descname"><span class="pre">OutputRecord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/adapters/epicsadapter/adapter.html#OutputRecord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.adapter.OutputRecord" title="Permalink to this definition">#</a></dt>
+<dd><p>A data container representing an EPICS output record.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tickit.adapters.epicsadapter.adapter.EpicsAdapter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.adapters.epicsadapter.adapter.</span></span><span class="sig-name descname"><span class="pre">EpicsAdapter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ioc_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/adapters/epicsadapter/adapter.html#EpicsAdapter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.adapter.EpicsAdapter" title="Permalink to this definition">#</a></dt>
 <dd><p>An adapter implementation which acts as an EPICS IOC.</p>
 <p>An EpicsAdapter constructor which stores the db_file path and the IOC name.</p>
 <dl class="field-list simple">
@@ -2309,13 +2632,13 @@ requested.</p>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="tickit.adapters.epicsadapter.EpicsAdapter.link_input_on_interrupt">
-<span class="sig-name descname"><span class="pre">link_input_on_interrupt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.adapters.epicsadapter.InputRecord" title="tickit.adapters.epicsadapter.adapter.InputRecord"><span class="pre">InputRecord</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">getter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.11)"><span class="pre">Callable</span></a><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/adapters/epicsadapter/adapter.html#EpicsAdapter.link_input_on_interrupt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.EpicsAdapter.link_input_on_interrupt" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tickit.adapters.epicsadapter.adapter.EpicsAdapter.link_input_on_interrupt">
+<span class="sig-name descname"><span class="pre">link_input_on_interrupt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.adapters.epicsadapter.adapter.InputRecord" title="tickit.adapters.epicsadapter.adapter.InputRecord"><span class="pre">InputRecord</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">getter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.11)"><span class="pre">Callable</span></a><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/adapters/epicsadapter/adapter.html#EpicsAdapter.link_input_on_interrupt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.adapter.EpicsAdapter.link_input_on_interrupt" title="Permalink to this definition">#</a></dt>
 <dd><p>Adds a record and a getter to the mapping of interrupting records.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>record</strong> (<a class="reference internal" href="#tickit.adapters.epicsadapter.InputRecord" title="tickit.adapters.epicsadapter.InputRecord"><em>InputRecord</em></a>) – The record to be added.</p></li>
+<li><p><strong>record</strong> (<a class="reference internal" href="#tickit.adapters.epicsadapter.adapter.InputRecord" title="tickit.adapters.epicsadapter.adapter.InputRecord"><em>InputRecord</em></a>) – The record to be added.</p></li>
 <li><p><strong>getter</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>Any</em><em>]</em>) – The getter handle.</p></li>
 </ul>
 </dd>
@@ -2323,43 +2646,32 @@ requested.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="tickit.adapters.epicsadapter.EpicsAdapter.after_update">
-<span class="sig-name descname"><span class="pre">after_update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/adapters/epicsadapter/adapter.html#EpicsAdapter.after_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.EpicsAdapter.after_update" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tickit.adapters.epicsadapter.adapter.EpicsAdapter.after_update">
+<span class="sig-name descname"><span class="pre">after_update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/adapters/epicsadapter/adapter.html#EpicsAdapter.after_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.adapter.EpicsAdapter.after_update" title="Permalink to this definition">#</a></dt>
 <dd><p>Updates IOC records immediately following a device update.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="tickit.adapters.epicsadapter.EpicsAdapter.on_db_load">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">on_db_load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/adapters/epicsadapter/adapter.html#EpicsAdapter.on_db_load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.EpicsAdapter.on_db_load" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tickit.adapters.epicsadapter.adapter.EpicsAdapter.on_db_load">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">on_db_load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/adapters/epicsadapter/adapter.html#EpicsAdapter.on_db_load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.adapter.EpicsAdapter.on_db_load" title="Permalink to this definition">#</a></dt>
 <dd><p>Customises records that have been loaded in to suit the simulation.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="tickit.adapters.epicsadapter.EpicsAdapter.load_records_without_DTYP_fields">
-<span class="sig-name descname"><span class="pre">load_records_without_DTYP_fields</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/adapters/epicsadapter/adapter.html#EpicsAdapter.load_records_without_DTYP_fields"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.EpicsAdapter.load_records_without_DTYP_fields" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tickit.adapters.epicsadapter.adapter.EpicsAdapter.load_records_without_DTYP_fields">
+<span class="sig-name descname"><span class="pre">load_records_without_DTYP_fields</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/adapters/epicsadapter/adapter.html#EpicsAdapter.load_records_without_DTYP_fields"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.adapter.EpicsAdapter.load_records_without_DTYP_fields" title="Permalink to this definition">#</a></dt>
 <dd><p>Loads the records without DTYP fields.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="tickit.adapters.epicsadapter.EpicsAdapter.run_forever">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run_forever</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.device.Device" title="tickit.core.device.Device"><span class="pre">Device</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">raise_interrupt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.adapter.RaiseInterrupt" title="tickit.core.adapter.RaiseInterrupt"><span class="pre">RaiseInterrupt</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/adapters/epicsadapter/adapter.html#EpicsAdapter.run_forever"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.EpicsAdapter.run_forever" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tickit.adapters.epicsadapter.adapter.EpicsAdapter.run_forever">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run_forever</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.device.Device" title="tickit.core.device.Device"><span class="pre">Device</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">raise_interrupt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.adapter.RaiseInterrupt" title="tickit.core.adapter.RaiseInterrupt"><span class="pre">RaiseInterrupt</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/adapters/epicsadapter/adapter.html#EpicsAdapter.run_forever"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.adapter.EpicsAdapter.run_forever" title="Permalink to this definition">#</a></dt>
 <dd><p>Runs the server continously.</p>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="tickit.adapters.epicsadapter.InputRecord">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.adapters.epicsadapter.</span></span><span class="sig-name descname"><span class="pre">InputRecord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.11)"><span class="pre">Callable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">get</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.11)"><span class="pre">Callable</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/adapters/epicsadapter/adapter.html#InputRecord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.InputRecord" title="Permalink to this definition">#</a></dt>
-<dd><p>A data container representing an EPICS input record.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="tickit.adapters.epicsadapter.OutputRecord">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.adapters.epicsadapter.</span></span><span class="sig-name descname"><span class="pre">OutputRecord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/adapters/epicsadapter/adapter.html#OutputRecord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.OutputRecord" title="Permalink to this definition">#</a></dt>
-<dd><p>A data container representing an EPICS output record.</p>
-</dd></dl>
-
+</section>
 </section>
 </section>
 <span class="target" id="module-tickit.devices"></span><section id="module-tickit.devices.sink">
@@ -2678,12 +2990,12 @@ required.</p>
                   <!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../explanations/how-component-updates-are-ordered.html"
+       href="../explanations/glossary.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">How component updates are ordered</p>
+        <p class="prev-next-title">Glossary</p>
       </div>
     </a>
     <a class="right-next"
@@ -2965,6 +3277,42 @@ required.</p>
 </li>
 </ul>
 </li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tickit.adapters.interpreters.endpoints.http_endpoint"><code class="docutils literal notranslate"><span class="pre">tickit.adapters.interpreters.endpoints</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit-adapters-interpreters-endpoints-http-endpoint"><code class="docutils literal notranslate"><span class="pre">tickit.adapters.interpreters.endpoints.http_endpoint</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h7 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.interpreters.endpoints.http_endpoint.HTTPEndpoint"><code class="docutils literal notranslate"><span class="pre">HTTPEndpoint</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h8 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.interpreters.endpoints.http_endpoint.HTTPEndpoint.define"><code class="docutils literal notranslate"><span class="pre">HTTPEndpoint.define()</span></code></a></li>
+<li class="toc-h8 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.interpreters.endpoints.http_endpoint.HTTPEndpoint.get"><code class="docutils literal notranslate"><span class="pre">HTTPEndpoint.get()</span></code></a></li>
+<li class="toc-h8 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.interpreters.endpoints.http_endpoint.HTTPEndpoint.put"><code class="docutils literal notranslate"><span class="pre">HTTPEndpoint.put()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tickit.adapters.interpreters.wrappers.beheading_interpreter"><code class="docutils literal notranslate"><span class="pre">tickit.adapters.interpreters.wrappers</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit-adapters-interpreters-wrappers-beheading-interpreter"><code class="docutils literal notranslate"><span class="pre">tickit.adapters.interpreters.wrappers.beheading_interpreter</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h7 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.interpreters.wrappers.beheading_interpreter.BeheadingInterpreter"><code class="docutils literal notranslate"><span class="pre">BeheadingInterpreter</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h8 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.interpreters.wrappers.beheading_interpreter.BeheadingInterpreter.handle"><code class="docutils literal notranslate"><span class="pre">BeheadingInterpreter.handle()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit-adapters-interpreters-wrappers-joining-interpreter"><code class="docutils literal notranslate"><span class="pre">tickit.adapters.interpreters.wrappers.joining_interpreter</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h7 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.interpreters.wrappers.joining_interpreter.JoiningInterpreter"><code class="docutils literal notranslate"><span class="pre">JoiningInterpreter</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h8 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.interpreters.wrappers.joining_interpreter.JoiningInterpreter.handle"><code class="docutils literal notranslate"><span class="pre">JoiningInterpreter.handle()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit-adapters-interpreters-wrappers-splitting-interpreter"><code class="docutils literal notranslate"><span class="pre">tickit.adapters.interpreters.wrappers.splitting_interpreter</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h7 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.interpreters.wrappers.splitting_interpreter.SplittingInterpreter"><code class="docutils literal notranslate"><span class="pre">SplittingInterpreter</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h8 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.interpreters.wrappers.splitting_interpreter.SplittingInterpreter.handle"><code class="docutils literal notranslate"><span class="pre">SplittingInterpreter.handle()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tickit.adapters.servers.tcp"><code class="docutils literal notranslate"><span class="pre">tickit.adapters.servers</span></code></a><ul class="nav section-nav flex-column">
@@ -2987,17 +3335,39 @@ required.</p>
 </li>
 </ul>
 </li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit-adapters-epicsadapter"><code class="docutils literal notranslate"><span class="pre">tickit.adapters.epicsadapter</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.epicsadapter.EpicsAdapter"><code class="docutils literal notranslate"><span class="pre">EpicsAdapter</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.epicsadapter.EpicsAdapter.link_input_on_interrupt"><code class="docutils literal notranslate"><span class="pre">EpicsAdapter.link_input_on_interrupt()</span></code></a></li>
-<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.epicsadapter.EpicsAdapter.after_update"><code class="docutils literal notranslate"><span class="pre">EpicsAdapter.after_update()</span></code></a></li>
-<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.epicsadapter.EpicsAdapter.on_db_load"><code class="docutils literal notranslate"><span class="pre">EpicsAdapter.on_db_load()</span></code></a></li>
-<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.epicsadapter.EpicsAdapter.load_records_without_DTYP_fields"><code class="docutils literal notranslate"><span class="pre">EpicsAdapter.load_records_without_DTYP_fields()</span></code></a></li>
-<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.epicsadapter.EpicsAdapter.run_forever"><code class="docutils literal notranslate"><span class="pre">EpicsAdapter.run_forever()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit-adapters-httpadapter"><code class="docutils literal notranslate"><span class="pre">tickit.adapters.httpadapter</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.httpadapter.HTTPAdapter"><code class="docutils literal notranslate"><span class="pre">HTTPAdapter</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.httpadapter.HTTPAdapter.run_forever"><code class="docutils literal notranslate"><span class="pre">HTTPAdapter.run_forever()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.httpadapter.HTTPAdapter.endpoints"><code class="docutils literal notranslate"><span class="pre">HTTPAdapter.endpoints()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.epicsadapter.InputRecord"><code class="docutils literal notranslate"><span class="pre">InputRecord</span></code></a></li>
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.epicsadapter.OutputRecord"><code class="docutils literal notranslate"><span class="pre">OutputRecord</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit-adapters-zmqadapter"><code class="docutils literal notranslate"><span class="pre">tickit.adapters.zmqadapter</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.zmqadapter.ZeroMQAdapter"><code class="docutils literal notranslate"><span class="pre">ZeroMQAdapter</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.zmqadapter.ZeroMQAdapter.start_stream"><code class="docutils literal notranslate"><span class="pre">ZeroMQAdapter.start_stream()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.zmqadapter.ZeroMQAdapter.close_stream"><code class="docutils literal notranslate"><span class="pre">ZeroMQAdapter.close_stream()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.zmqadapter.ZeroMQAdapter.send_message"><code class="docutils literal notranslate"><span class="pre">ZeroMQAdapter.send_message()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.zmqadapter.ZeroMQAdapter.run_forever"><code class="docutils literal notranslate"><span class="pre">ZeroMQAdapter.run_forever()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.zmqadapter.ZeroMQAdapter.check_if_running"><code class="docutils literal notranslate"><span class="pre">ZeroMQAdapter.check_if_running()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tickit.adapters.epicsadapter.adapter"><code class="docutils literal notranslate"><span class="pre">tickit.adapters.epicsadapter</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit-adapters-epicsadapter-adapter"><code class="docutils literal notranslate"><span class="pre">tickit.adapters.epicsadapter.adapter</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.epicsadapter.adapter.InputRecord"><code class="docutils literal notranslate"><span class="pre">InputRecord</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.epicsadapter.adapter.OutputRecord"><code class="docutils literal notranslate"><span class="pre">OutputRecord</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.epicsadapter.adapter.EpicsAdapter"><code class="docutils literal notranslate"><span class="pre">EpicsAdapter</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h7 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.epicsadapter.adapter.EpicsAdapter.link_input_on_interrupt"><code class="docutils literal notranslate"><span class="pre">EpicsAdapter.link_input_on_interrupt()</span></code></a></li>
+<li class="toc-h7 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.epicsadapter.adapter.EpicsAdapter.after_update"><code class="docutils literal notranslate"><span class="pre">EpicsAdapter.after_update()</span></code></a></li>
+<li class="toc-h7 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.epicsadapter.adapter.EpicsAdapter.on_db_load"><code class="docutils literal notranslate"><span class="pre">EpicsAdapter.on_db_load()</span></code></a></li>
+<li class="toc-h7 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.epicsadapter.adapter.EpicsAdapter.load_records_without_DTYP_fields"><code class="docutils literal notranslate"><span class="pre">EpicsAdapter.load_records_without_DTYP_fields()</span></code></a></li>
+<li class="toc-h7 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.epicsadapter.adapter.EpicsAdapter.run_forever"><code class="docutils literal notranslate"><span class="pre">EpicsAdapter.run_forever()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -3115,7 +3485,7 @@ required.</p>
     <div class="footer-items__end">
       
         <div class="footer-item"><p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.1.
 </p></div>
       
     </div>

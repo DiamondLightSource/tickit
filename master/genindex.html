@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Index &#8212; tickit 0.2.1.dev4+g381c14d documentation</title>
+    <title>Index &#8212; tickit 0.2.1.dev5+ge4d50c8 documentation</title>
   
   
   
@@ -375,17 +375,22 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="user/tutorials/installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user/tutorials/running-a-simulation.html">Running a Simulation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user/tutorials/creating-a-simulation.html">Creating a Simulation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="user/tutorials/creating-a-device.html">Creating a Device</a></li>
-<li class="toctree-l1"><a class="reference internal" href="user/tutorials/creating-an-adapter.html">Creating an Adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/tutorials/create-a-device.html">Creating a Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/tutorials/use-composed-adapter.html">Using an Adapter</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">How-to Guides</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="user/how-to/accomplish-a-task.html">How to accomplish a task</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/how-to/use-epics-adapter.html">Create a Device with an EPICS Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/how-to/use-command-wrappers.html">Use Command Interpreter Wrappers</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Explanations</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="user/explanations/framework-summary.html">Framework Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/explanations/components.html">Simulation Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/explanations/devices.html">Devices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/explanations/adapters.html">Adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/explanations/wiring.html">Wiring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user/explanations/glossary.html">Glossary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="user/explanations/how-component-updates-are-ordered.html">How component updates are ordered</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current nav bd-sidenav">
@@ -433,6 +438,7 @@ document.write(`
  | <a href="#G"><strong>G</strong></a>
  | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
+ | <a href="#J"><strong>J</strong></a>
  | <a href="#K"><strong>K</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
@@ -444,6 +450,7 @@ document.write(`
  | <a href="#U"><strong>U</strong></a>
  | <a href="#V"><strong>V</strong></a>
  | <a href="#W"><strong>W</strong></a>
+ | <a href="#Z"><strong>Z</strong></a>
  
 </div>
 <h2 id="_">_</h2>
@@ -477,7 +484,7 @@ document.write(`
         <li><a href="user/reference/api.html#tickit.core.management.schedulers.master.MasterScheduler.add_wakeup">(tickit.core.management.schedulers.master.MasterScheduler method)</a>
 </li>
       </ul></li>
-      <li><a href="user/reference/api.html#tickit.adapters.epicsadapter.EpicsAdapter.after_update">after_update() (tickit.adapters.epicsadapter.EpicsAdapter method)</a>
+      <li><a href="user/reference/api.html#tickit.adapters.epicsadapter.adapter.EpicsAdapter.after_update">after_update() (tickit.adapters.epicsadapter.adapter.EpicsAdapter method)</a>
 
       <ul>
         <li><a href="user/reference/api.html#tickit.core.adapter.Adapter.after_update">(tickit.core.adapter.Adapter method)</a>
@@ -493,9 +500,11 @@ document.write(`
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="user/reference/api.html#tickit.core.components.component.BaseComponent">BaseComponent (class in tickit.core.components.component)</a>
 </li>
+      <li><a href="user/reference/api.html#tickit.core.management.schedulers.base.BaseScheduler">BaseScheduler (class in tickit.core.management.schedulers.base)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="user/reference/api.html#tickit.core.management.schedulers.base.BaseScheduler">BaseScheduler (class in tickit.core.management.schedulers.base)</a>
+      <li><a href="user/reference/api.html#tickit.adapters.interpreters.wrappers.beheading_interpreter.BeheadingInterpreter">BeheadingInterpreter (class in tickit.adapters.interpreters.wrappers.beheading_interpreter)</a>
 </li>
       <li><a href="user/reference/api.html#tickit.utils.byte_format.ByteFormat">ByteFormat (class in tickit.utils.byte_format)</a>
 </li>
@@ -517,20 +526,24 @@ document.write(`
 </li>
       <li><a href="user/reference/api.html#tickit.core.typedefs.Changes">Changes (in module tickit.core.typedefs)</a>
 </li>
+      <li><a href="user/reference/api.html#tickit.adapters.zmqadapter.ZeroMQAdapter.check_if_running">check_if_running() (tickit.adapters.zmqadapter.ZeroMQAdapter method)</a>
+</li>
+      <li><a href="user/reference/api.html#tickit.adapters.zmqadapter.ZeroMQAdapter.close_stream">close_stream() (tickit.adapters.zmqadapter.ZeroMQAdapter method)</a>
+</li>
       <li><a href="user/reference/api.html#tickit.utils.configuration.configurable.Cls">Cls (in module tickit.utils.configuration.configurable)</a>
 </li>
       <li><a href="user/reference/api.html#tickit.adapters.interpreters.command.command_interpreter.Command">Command (class in tickit.adapters.interpreters.command.command_interpreter)</a>
 </li>
       <li><a href="user/reference/api.html#tickit.adapters.interpreters.command.command_interpreter.CommandInterpreter">CommandInterpreter (class in tickit.adapters.interpreters.command.command_interpreter)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="user/explanations/glossary.html#term-Component"><strong>Component</strong></a>
 
       <ul>
         <li><a href="user/reference/api.html#tickit.core.components.component.Component">(class in tickit.core.components.component)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="user/reference/api.html#tickit.core.management.event_router.EventRouter.component_tree">component_tree (tickit.core.management.event_router.EventRouter property)</a>
 </li>
       <li><a href="user/reference/api.html#tickit.core.components.component.ComponentConfig">ComponentConfig (class in tickit.core.components.component)</a>
@@ -561,6 +574,8 @@ document.write(`
 </li>
       <li><a href="user/reference/api.html#tickit.core.management.event_router.Default_Wiring_Struct">Default_Wiring_Struct (in module tickit.core.management.event_router)</a>
 </li>
+      <li><a href="user/reference/api.html#tickit.adapters.interpreters.endpoints.http_endpoint.HTTPEndpoint.define">define() (tickit.adapters.interpreters.endpoints.http_endpoint.HTTPEndpoint method)</a>
+</li>
       <li><a href="user/reference/api.html#tickit.core.management.event_router.EventRouter.dependants">dependants() (tickit.core.management.event_router.EventRouter method)</a>
 </li>
       <li><a href="user/reference/api.html#tickit.core.typedefs.ComponentPort.deserialize">deserialize() (tickit.core.typedefs.ComponentPort static method)</a>
@@ -589,7 +604,9 @@ document.write(`
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="user/reference/api.html#tickit.adapters.epicsadapter.EpicsAdapter">EpicsAdapter (class in tickit.adapters.epicsadapter)</a>
+      <li><a href="user/reference/api.html#tickit.adapters.httpadapter.HTTPAdapter.endpoints">endpoints() (tickit.adapters.httpadapter.HTTPAdapter method)</a>
+</li>
+      <li><a href="user/reference/api.html#tickit.adapters.epicsadapter.adapter.EpicsAdapter">EpicsAdapter (class in tickit.adapters.epicsadapter.adapter)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -617,10 +634,12 @@ document.write(`
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="user/reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.get_first_wakeups">get_first_wakeups() (tickit.core.management.schedulers.base.BaseScheduler method)</a>
+      <li><a href="user/reference/api.html#tickit.adapters.interpreters.endpoints.http_endpoint.HTTPEndpoint.get">get() (tickit.adapters.interpreters.endpoints.http_endpoint.HTTPEndpoint class method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="user/reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.get_first_wakeups">get_first_wakeups() (tickit.core.management.schedulers.base.BaseScheduler method)</a>
+</li>
       <li><a href="user/reference/api.html#tickit.core.state_interfaces.state_interface.get_interface">get_interface() (in module tickit.core.state_interfaces.state_interface)</a>
 </li>
   </ul></td>
@@ -632,6 +651,12 @@ document.write(`
       <li><a href="user/reference/api.html#tickit.adapters.interpreters.command.command_interpreter.CommandInterpreter.handle">handle() (tickit.adapters.interpreters.command.command_interpreter.CommandInterpreter method)</a>
 
       <ul>
+        <li><a href="user/reference/api.html#tickit.adapters.interpreters.wrappers.beheading_interpreter.BeheadingInterpreter.handle">(tickit.adapters.interpreters.wrappers.beheading_interpreter.BeheadingInterpreter method)</a>
+</li>
+        <li><a href="user/reference/api.html#tickit.adapters.interpreters.wrappers.joining_interpreter.JoiningInterpreter.handle">(tickit.adapters.interpreters.wrappers.joining_interpreter.JoiningInterpreter method)</a>
+</li>
+        <li><a href="user/reference/api.html#tickit.adapters.interpreters.wrappers.splitting_interpreter.SplittingInterpreter.handle">(tickit.adapters.interpreters.wrappers.splitting_interpreter.SplittingInterpreter method)</a>
+</li>
         <li><a href="user/reference/api.html#tickit.core.adapter.Interpreter.handle">(tickit.core.adapter.Interpreter method)</a>
 </li>
       </ul></li>
@@ -645,6 +670,10 @@ document.write(`
         <li><a href="user/reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.handle_message">(tickit.core.management.schedulers.base.BaseScheduler method)</a>
 </li>
       </ul></li>
+      <li><a href="user/reference/api.html#tickit.adapters.httpadapter.HTTPAdapter">HTTPAdapter (class in tickit.adapters.httpadapter)</a>
+</li>
+      <li><a href="user/reference/api.html#tickit.adapters.interpreters.endpoints.http_endpoint.HTTPEndpoint">HTTPEndpoint (class in tickit.adapters.interpreters.endpoints.http_endpoint)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -661,7 +690,7 @@ document.write(`
 </li>
       <li><a href="user/reference/api.html#tickit.utils.topic_naming.input_topic">input_topic() (in module tickit.utils.topic_naming)</a>
 </li>
-      <li><a href="user/reference/api.html#tickit.adapters.epicsadapter.InputRecord">InputRecord (class in tickit.adapters.epicsadapter)</a>
+      <li><a href="user/reference/api.html#tickit.adapters.epicsadapter.adapter.InputRecord">InputRecord (class in tickit.adapters.epicsadapter.adapter)</a>
 </li>
       <li><a href="user/reference/api.html#tickit.core.state_interfaces.state_interface.interfaces">interfaces() (in module tickit.core.state_interfaces.state_interface)</a>
 </li>
@@ -694,6 +723,14 @@ document.write(`
   </ul></td>
 </tr></table>
 
+<h2 id="J">J</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="user/reference/api.html#tickit.adapters.interpreters.wrappers.joining_interpreter.JoiningInterpreter">JoiningInterpreter (class in tickit.adapters.interpreters.wrappers.joining_interpreter)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="K">K</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -709,11 +746,11 @@ document.write(`
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="user/reference/api.html#tickit.adapters.epicsadapter.EpicsAdapter.link_input_on_interrupt">link_input_on_interrupt() (tickit.adapters.epicsadapter.EpicsAdapter method)</a>
+      <li><a href="user/reference/api.html#tickit.adapters.epicsadapter.adapter.EpicsAdapter.link_input_on_interrupt">link_input_on_interrupt() (tickit.adapters.epicsadapter.adapter.EpicsAdapter method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="user/reference/api.html#tickit.adapters.epicsadapter.EpicsAdapter.load_records_without_DTYP_fields">load_records_without_DTYP_fields() (tickit.adapters.epicsadapter.EpicsAdapter method)</a>
+      <li><a href="user/reference/api.html#tickit.adapters.epicsadapter.adapter.EpicsAdapter.load_records_without_DTYP_fields">load_records_without_DTYP_fields() (tickit.adapters.epicsadapter.adapter.EpicsAdapter method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -739,6 +776,10 @@ document.write(`
 </li>
         <li><a href="user/reference/api.html#module-tickit.adapters.epicsadapter">tickit.adapters.epicsadapter</a>
 </li>
+        <li><a href="user/reference/api.html#module-tickit.adapters.epicsadapter.adapter">tickit.adapters.epicsadapter.adapter</a>
+</li>
+        <li><a href="user/reference/api.html#module-tickit.adapters.httpadapter">tickit.adapters.httpadapter</a>
+</li>
         <li><a href="user/reference/api.html#module-tickit.adapters.interpreters">tickit.adapters.interpreters</a>
 </li>
         <li><a href="user/reference/api.html#module-tickit.adapters.interpreters.command">tickit.adapters.interpreters.command</a>
@@ -747,9 +788,23 @@ document.write(`
 </li>
         <li><a href="user/reference/api.html#module-tickit.adapters.interpreters.command.regex_command">tickit.adapters.interpreters.command.regex_command</a>
 </li>
+        <li><a href="user/reference/api.html#module-tickit.adapters.interpreters.endpoints">tickit.adapters.interpreters.endpoints</a>
+</li>
+        <li><a href="user/reference/api.html#module-tickit.adapters.interpreters.endpoints.http_endpoint">tickit.adapters.interpreters.endpoints.http_endpoint</a>
+</li>
+        <li><a href="user/reference/api.html#module-tickit.adapters.interpreters.wrappers">tickit.adapters.interpreters.wrappers</a>
+</li>
+        <li><a href="user/reference/api.html#module-tickit.adapters.interpreters.wrappers.beheading_interpreter">tickit.adapters.interpreters.wrappers.beheading_interpreter</a>
+</li>
+        <li><a href="user/reference/api.html#module-tickit.adapters.interpreters.wrappers.joining_interpreter">tickit.adapters.interpreters.wrappers.joining_interpreter</a>
+</li>
+        <li><a href="user/reference/api.html#module-tickit.adapters.interpreters.wrappers.splitting_interpreter">tickit.adapters.interpreters.wrappers.splitting_interpreter</a>
+</li>
         <li><a href="user/reference/api.html#module-tickit.adapters.servers">tickit.adapters.servers</a>
 </li>
         <li><a href="user/reference/api.html#module-tickit.adapters.servers.tcp">tickit.adapters.servers.tcp</a>
+</li>
+        <li><a href="user/reference/api.html#module-tickit.adapters.zmqadapter">tickit.adapters.zmqadapter</a>
 </li>
         <li><a href="user/reference/api.html#module-tickit.core">tickit.core</a>
 </li>
@@ -820,7 +875,7 @@ document.write(`
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="user/reference/api.html#tickit.adapters.composed.ComposedAdapter.on_connect">on_connect() (tickit.adapters.composed.ComposedAdapter method)</a>
 </li>
-      <li><a href="user/reference/api.html#tickit.adapters.epicsadapter.EpicsAdapter.on_db_load">on_db_load() (tickit.adapters.epicsadapter.EpicsAdapter method)</a>
+      <li><a href="user/reference/api.html#tickit.adapters.epicsadapter.adapter.EpicsAdapter.on_db_load">on_db_load() (tickit.adapters.epicsadapter.adapter.EpicsAdapter method)</a>
 </li>
       <li><a href="user/reference/api.html#tickit.core.components.component.BaseComponent.on_tick">on_tick() (tickit.core.components.component.BaseComponent method)</a>
 
@@ -846,7 +901,7 @@ document.write(`
 </li>
       <li><a href="user/reference/api.html#tickit.utils.topic_naming.output_topic">output_topic() (in module tickit.utils.topic_naming)</a>
 </li>
-      <li><a href="user/reference/api.html#tickit.adapters.epicsadapter.OutputRecord">OutputRecord (class in tickit.adapters.epicsadapter)</a>
+      <li><a href="user/reference/api.html#tickit.adapters.epicsadapter.adapter.OutputRecord">OutputRecord (class in tickit.adapters.epicsadapter.adapter)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -868,10 +923,10 @@ document.write(`
         <li><a href="user/reference/api.html#tickit.adapters.interpreters.command.regex_command.RegexCommand.parse">(tickit.adapters.interpreters.command.regex_command.RegexCommand method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="user/reference/api.html#tickit.core.typedefs.PortID">PortID (in module tickit.core.typedefs)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="user/reference/api.html#tickit.core.state_interfaces.internal.InternalStateProducer.produce">produce() (tickit.core.state_interfaces.internal.InternalStateProducer method)</a>
 
       <ul>
@@ -883,6 +938,8 @@ document.write(`
       <li><a href="user/reference/api.html#tickit.core.management.ticker.Ticker.propagate">propagate() (tickit.core.management.ticker.Ticker method)</a>
 </li>
       <li><a href="user/reference/api.html#tickit.core.state_interfaces.internal.InternalStateServer.push">push() (tickit.core.state_interfaces.internal.InternalStateServer method)</a>
+</li>
+      <li><a href="user/reference/api.html#tickit.adapters.interpreters.endpoints.http_endpoint.HTTPEndpoint.put">put() (tickit.adapters.interpreters.endpoints.http_endpoint.HTTPEndpoint class method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -911,9 +968,13 @@ document.write(`
       <li><a href="user/reference/api.html#tickit.adapters.composed.ComposedAdapter.run_forever">run_forever() (tickit.adapters.composed.ComposedAdapter method)</a>
 
       <ul>
-        <li><a href="user/reference/api.html#tickit.adapters.epicsadapter.EpicsAdapter.run_forever">(tickit.adapters.epicsadapter.EpicsAdapter method)</a>
+        <li><a href="user/reference/api.html#tickit.adapters.epicsadapter.adapter.EpicsAdapter.run_forever">(tickit.adapters.epicsadapter.adapter.EpicsAdapter method)</a>
+</li>
+        <li><a href="user/reference/api.html#tickit.adapters.httpadapter.HTTPAdapter.run_forever">(tickit.adapters.httpadapter.HTTPAdapter method)</a>
 </li>
         <li><a href="user/reference/api.html#tickit.adapters.servers.tcp.TcpServer.run_forever">(tickit.adapters.servers.tcp.TcpServer method)</a>
+</li>
+        <li><a href="user/reference/api.html#tickit.adapters.zmqadapter.ZeroMQAdapter.run_forever">(tickit.adapters.zmqadapter.ZeroMQAdapter method)</a>
 </li>
         <li><a href="user/reference/api.html#tickit.core.adapter.Adapter.run_forever">(tickit.core.adapter.Adapter method)</a>
 </li>
@@ -951,6 +1012,8 @@ document.write(`
       <li><a href="user/reference/api.html#tickit.core.management.ticker.Ticker.schedule_possible_updates">schedule_possible_updates() (tickit.core.management.ticker.Ticker method)</a>
 </li>
       <li><a href="user/explanations/glossary.html#term-Scheduler"><strong>Scheduler</strong></a>
+</li>
+      <li><a href="user/reference/api.html#tickit.adapters.zmqadapter.ZeroMQAdapter.send_message">send_message() (tickit.adapters.zmqadapter.ZeroMQAdapter method)</a>
 </li>
       <li><a href="user/reference/api.html#tickit.core.typedefs.ComponentPort.serialize">serialize() (tickit.core.typedefs.ComponentPort method)</a>
 
@@ -991,6 +1054,10 @@ document.write(`
       <li><a href="user/reference/api.html#tickit.devices.source.SourceDevice.Inputs">SourceDevice.Inputs (class in tickit.devices.source)</a>
 </li>
       <li><a href="user/reference/api.html#tickit.devices.source.SourceDevice.Outputs">SourceDevice.Outputs (class in tickit.devices.source)</a>
+</li>
+      <li><a href="user/reference/api.html#tickit.adapters.interpreters.wrappers.splitting_interpreter.SplittingInterpreter">SplittingInterpreter (class in tickit.adapters.interpreters.wrappers.splitting_interpreter)</a>
+</li>
+      <li><a href="user/reference/api.html#tickit.adapters.zmqadapter.ZeroMQAdapter.start_stream">start_stream() (tickit.adapters.zmqadapter.ZeroMQAdapter method)</a>
 </li>
       <li><a href="user/reference/api.html#tickit.core.typedefs.State">State (in module tickit.core.typedefs)</a>
 </li>
@@ -1067,6 +1134,20 @@ document.write(`
 </li>
       </ul></li>
       <li>
+    tickit.adapters.epicsadapter.adapter
+
+      <ul>
+        <li><a href="user/reference/api.html#module-tickit.adapters.epicsadapter.adapter">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.adapters.httpadapter
+
+      <ul>
+        <li><a href="user/reference/api.html#module-tickit.adapters.httpadapter">module</a>
+</li>
+      </ul></li>
+      <li>
     tickit.adapters.interpreters
 
       <ul>
@@ -1095,6 +1176,48 @@ document.write(`
 </li>
       </ul></li>
       <li>
+    tickit.adapters.interpreters.endpoints
+
+      <ul>
+        <li><a href="user/reference/api.html#module-tickit.adapters.interpreters.endpoints">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.adapters.interpreters.endpoints.http_endpoint
+
+      <ul>
+        <li><a href="user/reference/api.html#module-tickit.adapters.interpreters.endpoints.http_endpoint">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.adapters.interpreters.wrappers
+
+      <ul>
+        <li><a href="user/reference/api.html#module-tickit.adapters.interpreters.wrappers">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.adapters.interpreters.wrappers.beheading_interpreter
+
+      <ul>
+        <li><a href="user/reference/api.html#module-tickit.adapters.interpreters.wrappers.beheading_interpreter">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.adapters.interpreters.wrappers.joining_interpreter
+
+      <ul>
+        <li><a href="user/reference/api.html#module-tickit.adapters.interpreters.wrappers.joining_interpreter">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.adapters.interpreters.wrappers.splitting_interpreter
+
+      <ul>
+        <li><a href="user/reference/api.html#module-tickit.adapters.interpreters.wrappers.splitting_interpreter">module</a>
+</li>
+      </ul></li>
+      <li>
     tickit.adapters.servers
 
       <ul>
@@ -1106,6 +1229,13 @@ document.write(`
 
       <ul>
         <li><a href="user/reference/api.html#module-tickit.adapters.servers.tcp">module</a>
+</li>
+      </ul></li>
+      <li>
+    tickit.adapters.zmqadapter
+
+      <ul>
+        <li><a href="user/reference/api.html#module-tickit.adapters.zmqadapter">module</a>
 </li>
       </ul></li>
       <li>
@@ -1136,6 +1266,8 @@ document.write(`
         <li><a href="user/reference/api.html#module-tickit.core.components.component">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     tickit.core.components.device_simulation
 
@@ -1171,8 +1303,6 @@ document.write(`
         <li><a href="user/reference/api.html#module-tickit.core.management.event_router">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     tickit.core.management.schedulers
 
@@ -1375,6 +1505,14 @@ document.write(`
   </ul></td>
 </tr></table>
 
+<h2 id="Z">Z</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="user/reference/api.html#tickit.adapters.zmqadapter.ZeroMQAdapter">ZeroMQAdapter (class in tickit.adapters.zmqadapter)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 
 
                 </article>
@@ -1412,7 +1550,7 @@ document.write(`
     <div class="footer-items__end">
       
         <div class="footer-item"><p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.1.
 </p></div>
       
     </div>
