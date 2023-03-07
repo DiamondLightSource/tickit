@@ -40,7 +40,8 @@ Glossary
         A ticker sequences the update of components during a tick to ensure
         that all wired component interactions are captured faithfully.
 
-        .. seealso:: `How component updates are ordered`
+        .. seealso::  
+            :doc:`How component updates are ordered<../../developer/explanations/how-component-updates-are-ordered>`
 
     Scheduler
         A scheduler oversees and orchestrates the running of a simulation, and

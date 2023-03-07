@@ -45,6 +45,9 @@ side-bar.
             :caption: Explanations
             :maxdepth: 1
 
+            explanations/framework-details
+            explanations/how-component-updates-are-ordered
+            explanations/why-tickit
             explanations/decisions
 
         +++

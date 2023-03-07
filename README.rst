@@ -10,62 +10,88 @@ orchestration of complex multi-device simulations.
 PyPI           ``pip install tickit``
 Source code    https://github.com/dls-controls/tickit
 Documentation  https://dls-controls.github.io/tickit
-Changelog      https://github.com/dls-controls/tickit/blob/master/CHANGELOG.rst
+Releases       https://github.com/dls-controls/tickit-devices/releases
 ============== ==============================================================
 
-An example device which emits a random value between *0* and *255* whenever
-called and asks to be called again once the simulation has progressed by the
-``callback_period``.  Additionally, extenal control of **RandomTrampoline** is
-afforded by a **RemoteControlledAdapter** which is exposed extenally through 
-a **TCPServer**:
+An example simulation consits of a simple counter and a sink. The counter
+increments up a given value and then passes this value to a sink.
+
+A simulation is defined using a yaml file, in which the graphing of the required
+components is denoted. This file defines a **Counter** device named **counter** and
+a **Sink** device named **counter_sink**. The output **_value** of **counter** is wired
+to the input of **counter_sink**.
+
+.. code-block:: yaml
+
+    - examples.devices.counter.Counter:
+        name: counter  
+        inputs: {}
+    - tickit.devices.sink.Sink:
+        name: counter_sink
+        inputs:
+          input: counter:_value
+
+
+This file is executed to run the simultation.
+
+.. code-block:: bash
+
+    python -m tickit all examples/configs/counter.yaml
+
+
+The simulation will output logs depicting the incerementing of the counter:
+
+.. code-block:: bash
+
+    DEBUG:examples.devices.counter:Counter initialized with value => 0
+    DEBUG:asyncio:Using selector: EpollSelector
+    DEBUG:tickit.core.management.ticker:Doing tick @ 0
+    DEBUG:tickit.core.components.component:counter got Input(target='counter', time=0, changes=immutables.Map({}))
+    DEBUG:examples.devices.counter:Counter incremented to 1
+    DEBUG:tickit.core.management.schedulers.base:Scheduler got Output(source='counter', time=0, changes=immutables.Map({'value': 1}), call_at=1000000000)
+    DEBUG:tickit.core.management.schedulers.base:Scheduling counter for wakeup at 1000000000
+    DEBUG:tickit.core.components.component:counter_sink got Input(target='counter_sink', time=0, changes=immutables.Map({}))
+    DEBUG:tickit.devices.sink:Sunk {}
+    DEBUG:tickit.core.management.schedulers.base:Scheduler got Output(source='counter_sink', time=0, changes=immutables.Map({}), call_at=None) 
+    DEBUG:tickit.core.management.ticker:Doing tick @ 1000000000
+    DEBUG:tickit.core.components.component:counter got Input(target='counter', time=1000000000, changes=immutables.Map({}))
+    DEBUG:examples.devices.counter:Counter incremented to 2
+    DEBUG:tickit.core.management.schedulers.base:Scheduler got Output(source='counter', time=1000000000, changes=immutables.Map({'value': 2}), call_at=2000000000)
+
+
+The counting device is defined as below. It increments a given value and logs as
+it increments.
 
 .. code-block:: python
 
     @dataclass
-    class RandomTrampoline(ComponentConfig):
+    class Counter(ComponentConfig):
+        """Simple counting device."""
 
         def __call__(self) -> Component:  # noqa: D102
             return DeviceSimulation(
                 name=self.name,
-                device=RandomTrampolineDevice(),
-                adapters=[RemoteControlledAdapter(server=TcpServer(format="%b\r\n"))])
+                device=CounterDevice(),
+                )
 
-
-    class RandomTrampolineDevice(Device):
+    class CounterDevice(Device):
+        """A simple device which increments a value."""
 
         Inputs: TypedDict = TypedDict("Inputs", {})
-        Outputs: TypedDict = TypedDict("Outputs", {"output": int})
+        Outputs: TypedDict = TypedDict("Outputs", {"value":int})
 
-        def __init__(self, callback_period: int = int(1e9)) -> None:
+        def __init__(self, initial_value: int = 0, callback_period: int = int(1e9)) -> None:
+            self._value = initial_value
             self.callback_period = SimTime(callback_period)
+            LOGGER.debug(f"Counter initialized with value => {self._value}")
 
         def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
-            output = randint(0, 255)
-            LOGGER.debug(
-                "Boing! (delta: {}, inputs: {}, output: {})".format(time, inputs, output)
-            )
+            self._value = self._value + 1
+            LOGGER.debug("Counter incremented to {}".format(self._value))
             return DeviceUpdate(
-                RandomTrampoline.Outputs(output=output),
+                CounterDevice.Outputs(value=self._value),
                 SimTime(time + self.callback_period),
             )
-
-
-An example simulation defines a **RemoteControlled** device named **tcp_contr**
-and a **Sink** device named **contr_sink**. The **observed** output of
-**tcp_contr** is wired to the **input** input of **contr_sink**:
-
-.. code-block:: yaml
-
-
-    - examples.devices.remote_controlled.RemoteControlled: {}
-        name: tcp_contr
-        inputs: {}
-    - tickit.devices.sink.Sink: {}
-        name: contr_sink
-        inputs:
-          input: tcp_contr:observed
-
-
 
 .. |code_ci| image:: https://github.com/dls-controls/tickit/workflows/Code%20CI/badge.svg?branch=master
     :target: https://github.com/dls-controls/tickit/actions?query=workflow%3A%22Code+CI%22
