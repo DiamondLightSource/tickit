@@ -40,10 +40,6 @@
     "url": "https://dls-controls.github.io/tickit/0.1/"
   },
   {
-    "version": "109_fix_pytest_warnings",
-    "url": "https://dls-controls.github.io/tickit/109_fix_pytest_warnings/"
-  },
-  {
     "version": "add_amp",
     "url": "https://dls-controls.github.io/tickit/add_amp/"
   }
