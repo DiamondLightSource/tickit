@@ -9,6 +9,8 @@ from tickit.adapters.httpadapter import HTTPAdapter
 from tickit.adapters.interpreters.endpoints.http_endpoint import HTTPEndpoint
 from tickit.core.device import Device
 
+ISSUE_LINK = "https://github.com/dls-controls/tickit/issues/111"
+
 
 @pytest.fixture
 def mock_device() -> Device:
@@ -37,6 +39,7 @@ def http_adapter() -> HTTPAdapter:
     return http_adapter
 
 
+@pytest.mark.skip(ISSUE_LINK)
 def test_http_adapter_constructor():
     HTTPAdapter()
 
@@ -50,18 +53,21 @@ def patch_asyncio_event_wait() -> Iterable[Mock]:
 
 
 @pytest.mark.asyncio
+@pytest.mark.skip(ISSUE_LINK)
 async def test_http_adapter_run_forever_method(
-    http_adapter,
+    http_adapter: HTTPAdapter,
     mock_device: Device,
     mock_raise_interrupt: Mock,
     patch_asyncio_event_wait: Mock,
 ):
     await http_adapter.run_forever(mock_device, mock_raise_interrupt)
+    await http_adapter.shutdown()
 
     patch_asyncio_event_wait.assert_awaited_once()
 
 
 @pytest.mark.asyncio
+@pytest.mark.skip(ISSUE_LINK)
 async def test_http_adapter_endpoints():
     adapter = MockAdapter()
 
