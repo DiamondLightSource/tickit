@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.utils.configuration.loading &#8212; tickit 0.2.1.dev5+ge4d50c8 documentation</title>
+    <title>tickit.utils.configuration.loading &#8212; tickit 0.2.1.dev7+g628ae9d documentation</title>
   
   
   
@@ -468,7 +468,8 @@ document.write(`
 <span class="sd">    Returns:</span>
 <span class="sd">        List[Component]: A list of component configuration objects.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">yaml_struct</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">config_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">),</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">Loader</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">config_file</span><span class="p">:</span>
+        <span class="n">yaml_struct</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">config_file</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">Loader</span><span class="p">)</span>
     <span class="n">configs</span> <span class="o">=</span> <span class="n">deserialize</span><span class="p">(</span>
         <span class="n">List</span><span class="p">[</span><span class="n">ComponentConfig</span><span class="p">],</span>
         <span class="n">yaml_struct</span><span class="p">,</span>
