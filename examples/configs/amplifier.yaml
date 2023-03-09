@@ -1,0 +1,13 @@
+- tickit.devices.source.Source:
+    name: source
+    inputs: {}
+    value: 10.0
+- examples.devices.amplifier.Amplifier:
+    name: amp
+    inputs:
+      initial_signal: source:value
+    initial_amplification: 2
+- tickit.devices.sink.Sink:
+    name: sink
+    inputs:
+      input: amp:amplified_signal
