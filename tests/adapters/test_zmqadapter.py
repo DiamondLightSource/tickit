@@ -52,6 +52,7 @@ async def test_zeromq_adapter_start_stream(zeromq_adapter: ZeroMQAdapter):
     assert isinstance(zeromq_adapter._dealer, aiozmq.stream.ZmqStream)
 
     await zeromq_adapter.close_stream()
+    assert zeromq_adapter.running is False
 
 
 @pytest.mark.asyncio
@@ -61,6 +62,7 @@ async def test_zeromq_adapter_close_stream(zeromq_adapter: ZeroMQAdapter):
     await zeromq_adapter.close_stream()
     await asyncio.sleep(0.1)
 
+    assert zeromq_adapter.running is False
     assert None is zeromq_adapter._router._transport
     assert None is zeromq_adapter._dealer._transport
 
@@ -93,6 +95,9 @@ async def test_zeromq_adapter_run_forever_method(
 
     zeromq_adapter._process_message_queue.assert_called_once()
 
+    await zeromq_adapter.close_stream()
+    assert zeromq_adapter.running is False
+
 
 @pytest.mark.asyncio
 async def test_zeromq_adapter_check_if_running(zeromq_adapter):
@@ -113,6 +118,8 @@ async def test_zeromq_adapter_process_message_queue(zeromq_adapter):
 async def test_zeromq_adapter_process_message(zeromq_adapter):
     mock_message = "test"
 
+    zeromq_adapter._dealer.write = Mock()
+    zeromq_adapter._router.write = Mock()
     zeromq_adapter._dealer.read.return_value = ("Data", "test")
     zeromq_adapter._router.read.return_value = ("Data", "test")
 
@@ -133,3 +140,6 @@ async def test_zeromq_adapter_process_message_no_message(zeromq_adapter, caplog)
         await zeromq_adapter._process_message(mock_message)
 
     assert len(caplog.records) == 1
+
+    zeromq_adapter._dealer.read.assert_not_awaited()
+    zeromq_adapter._router.read.assert_not_awaited()

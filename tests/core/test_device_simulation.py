@@ -1,5 +1,5 @@
 import asyncio
-from typing import Iterable
+from typing import AsyncGenerator, Iterable
 
 import pytest
 from immutables import Map
@@ -44,11 +44,11 @@ def patch_asyncio_wait() -> Iterable[Mock]:
 
 
 @pytest.fixture
-def patch_run_all() -> Iterable[Mock]:
+async def patch_run_all() -> AsyncGenerator[Mock, None]:
     with patch(
         "tickit.core.components.device_simulation.run_all", autospec=True
     ) as mock:
-        mock.return_value = asyncio.create_task(asyncio.sleep(0))
+        mock.return_value = [asyncio.create_task(asyncio.sleep(0))]
         yield mock
 
 

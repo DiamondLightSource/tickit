@@ -47,7 +47,8 @@ def read_configs(config_path) -> List[ComponentConfig]:
     Returns:
         List[Component]: A list of component configuration objects.
     """
-    yaml_struct = yaml.load(open(config_path, "r"), Loader=yaml.Loader)
+    with open(config_path, "r") as config_file:
+        yaml_struct = yaml.load(config_file, Loader=yaml.Loader)
     configs = deserialize(
         List[ComponentConfig],
         yaml_struct,

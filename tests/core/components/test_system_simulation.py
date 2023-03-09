@@ -1,5 +1,5 @@
 import asyncio
-from typing import Any, Awaitable, Callable, Iterable
+from typing import AsyncGenerator, Iterable
 
 import pytest
 from immutables import Map
@@ -23,16 +23,16 @@ from tickit.core.typedefs import (
 from tickit.utils.topic_naming import output_topic
 
 
-class MockStateConsumer:
-    @staticmethod
-    def __call__(callback: Callable[[Any], Awaitable[None]]) -> None:
-        return create_autospec(StateConsumer)
+@pytest.fixture
+def mock_state_producer_type() -> Mock:
+    mock: Mock = create_autospec(StateProducer, instance=False)
+    mock.return_value = create_autospec(StateProducer, instance=True)
+    return mock
 
 
-class MockStateProducer:
-    @staticmethod
-    def __call__():
-        return create_autospec(StateProducer)
+@pytest.fixture
+def mock_state_consumer_type() -> Mock:
+    return create_autospec(StateConsumer, instance=False)
 
 
 @pytest.fixture
@@ -75,18 +75,19 @@ def patch_asyncio() -> Iterable[Mock]:
 
 
 @pytest.fixture
-def patch_run_all() -> Iterable[Mock]:
+async def patch_run_all() -> AsyncGenerator[Mock, None]:
     with patch(
         "tickit.core.components.system_simulation.run_all", autospec=True
     ) as mock:
-        mock.return_value = [asyncio.sleep(0)]
+        mock.return_value = [asyncio.create_task(asyncio.sleep(0))]
         yield mock
 
 
 @pytest.mark.asyncio
 async def test_system_simulation_methods(
     system_simulation: SystemSimulationComponent,
-    patch_run_all: Mock,
+    mock_state_producer_type: Mock,
+    mock_state_consumer_type: Mock,
 ):
     """Test the 'run_forever' and 'on_tick' methods.
 
@@ -95,7 +96,7 @@ async def test_system_simulation_methods(
     interfaces of the system simulation are awaited once with the correct parameters.
     """
     await system_simulation.run_forever(
-        MockStateConsumer(), MockStateProducer()  # type: ignore
+        mock_state_consumer_type, mock_state_producer_type  # type: ignore
     )
 
     system_simulation.state_consumer.subscribe.assert_awaited_once()  # type: ignore
