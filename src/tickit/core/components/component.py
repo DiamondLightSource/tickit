@@ -1,4 +1,6 @@
+import asyncio
 import logging
+import traceback
 from abc import abstractmethod
 from dataclasses import dataclass
 from typing import Dict, Optional, Type, Union
@@ -6,6 +8,7 @@ from typing import Dict, Optional, Type, Union
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import (
     Changes,
+    ComponentException,
     ComponentID,
     ComponentPort,
     Input,
@@ -37,11 +40,11 @@ class Component:
     async def run_forever(
         self, state_consumer: Type[StateConsumer], state_producer: Type[StateProducer]
     ) -> None:
-        """An asynchronous method allowing indefinite running of core logic."""
+        """Asynchronous method allowing indefinite running of core logic."""
 
     @abstractmethod
     async def on_tick(self, time: SimTime, changes: Changes):
-        """An asynchronous method called whenever the component is to be updated.
+        """Asynchronous method called whenever the component is to be updated.
 
         Args:
             time (SimTime): The current simulation time (in nanoseconds).
@@ -72,16 +75,25 @@ class BaseComponent(Component):
     """A base class for compnents, implementing state interface related methods."""
 
     state_consumer: StateConsumer[Input]
-    state_producer: StateProducer[Union[Interrupt, Output]]
+    state_producer: StateProducer[Union[Interrupt, Output, ComponentException]]
 
     async def handle_input(self, input: Input):
-        """Calls on_tick when an input is recieved.
+        """Call on_tick when an input is recieved.
 
         Args:
             input (Input): An immutable data container for Component inputs.
         """
         LOGGER.debug("{} got {}".format(self.name, input))
-        await self.on_tick(input.time, input.changes)
+        try:
+            await asyncio.gather(
+                self.on_tick(input.time, input.changes), return_exceptions=False
+            )
+        except Exception as err:
+            LOGGER.debug("Exception occured in {} component".format(self.name))
+            await self.state_producer.produce(
+                output_topic(self.name),
+                ComponentException(self.name, err, traceback.format_exc()),
+            )
 
     async def output(
         self,
@@ -89,7 +101,7 @@ class BaseComponent(Component):
         changes: Changes,
         call_at: Optional[SimTime],
     ) -> None:
-        """Constructs and sends an Output message to the component output topic.
+        """Construct and sends an Output message to the component output topic.
 
         An asynchronous method which constructs an Output message tagged with the
         component name and sends it to the output topic of this component.
@@ -106,7 +118,7 @@ class BaseComponent(Component):
         )
 
     async def raise_interrupt(self) -> None:
-        """Sends an Interrupt message to the component output topic.
+        """Send an Interrupt message to the component output topic.
 
         An asynchronous method whicb constructs an Interrupt message tagged with the
         component name and sends it to the output topic of this component.
@@ -116,11 +128,11 @@ class BaseComponent(Component):
     async def run_forever(
         self, state_consumer: Type[StateConsumer], state_producer: Type[StateProducer]
     ) -> None:
-        """Creates and configures a state consumer and state producer.
+        """Create and configures a state consumer and state producer.
 
         An asynchronous method which creates a state consumer which is subscribed to
         the input topic of the component and calls back to handle_input, and a state
-        producer to produce Interrupt or Output messages.
+        producer to produce Interrupt, Output or ComponentException messages.
         """
         self.state_consumer = state_consumer(self.handle_input)
         await self.state_consumer.subscribe([input_topic(self.name)])

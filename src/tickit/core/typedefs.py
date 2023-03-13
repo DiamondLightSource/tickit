@@ -102,3 +102,16 @@ class Interrupt:
     """
 
     source: ComponentID
+
+
+@dataclass(frozen=True)
+class ComponentException:
+    """An immutable data container for raising Component exceptions.
+
+    Args:
+        component: The Component which raised an exception.
+    """
+
+    source: ComponentID
+    error: Exception
+    traceback: str

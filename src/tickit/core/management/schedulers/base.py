@@ -1,11 +1,19 @@
 import logging
+import sys
 from abc import abstractmethod
 from typing import Dict, Optional, Set, Tuple, Type, Union
 
 from tickit.core.management.event_router import InverseWiring, Wiring
 from tickit.core.management.ticker import Ticker
 from tickit.core.state_interfaces import StateConsumer, StateProducer
-from tickit.core.typedefs import ComponentID, Input, Interrupt, Output, SimTime
+from tickit.core.typedefs import (
+    ComponentException,
+    ComponentID,
+    Input,
+    Interrupt,
+    Output,
+    SimTime,
+)
 from tickit.utils.topic_naming import input_topic, output_topic
 
 LOGGER = logging.getLogger(__name__)
@@ -54,16 +62,19 @@ class BaseScheduler:
         """
         await self.state_producer.produce(input_topic(input.target), input)
 
-    async def handle_message(self, message: Union[Interrupt, Output]) -> None:
-        """A callback to handle interrupts or outputs produced by the state consumer.
+    async def handle_message(
+        self, message: Union[Interrupt, Output, ComponentException]
+    ) -> None:
+        """A callback to handle interrupts, outputs or exceptions produced by the state
+        consumer.
 
-        An asynchronous callback which handles interrupt and output messages produced by
-        the state consumer; For Outputs, changes are propagated and wakeups scheduled
-        if required, whilst handling of interrupts is deferred.
+        An asynchronous callback which handles interrupt, Output and ComponentException
+        messages produced by the state consumer; For Outputs, changes are propagated
+        and wakeups scheduled if required. For interrupts handling is deferred.
 
         Args:
-            message (Union[Interrupt, Output]): An Interrupt or Output produced by the
-                state consumer.
+            message (Union[Interrupt, Output, ComponentException]): An Interrupt,
+            Output or ComponentException produced by the state consumer.
         """
         LOGGER.debug("Scheduler got {}".format(message))
         if isinstance(message, Output):
@@ -72,6 +83,8 @@ class BaseScheduler:
                 self.add_wakeup(message.source, message.call_at)
         if isinstance(message, Interrupt):
             await self.schedule_interrupt(message.source)
+        if isinstance(message, ComponentException):
+            self.handle_component_exception(message)
 
     async def setup(self) -> None:
         """Instantiates and configures the ticker and state interfaces.
@@ -119,3 +132,7 @@ class BaseScheduler:
             component for component, when in self.wakeups.items() if when == first
         }
         return components, first
+
+    def handle_component_exception(self, message: ComponentException) -> None:
+        """If a component fails to update, bail."""
+        sys.exit(-1)
