@@ -1,5 +1,6 @@
 import asyncio
-from dataclasses import dataclass
+import logging
+from dataclasses import dataclass, field
 from typing import Dict, List, Type
 
 from tickit.core.components.component import BaseComponent, Component, ComponentConfig
@@ -8,6 +9,8 @@ from tickit.core.management.schedulers.slave import SlaveScheduler
 from tickit.core.runner import run_all
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import Changes, ComponentID, ComponentPort, PortID, SimTime
+
+LOGGER = logging.getLogger(__name__)
 
 
 @dataclass
@@ -28,6 +31,9 @@ class SystemSimulationComponent(BaseComponent):
     #: corresponding output of an internal component.
     expose: Dict[PortID, ComponentPort]
 
+    # a list of all child tasks
+    _tasks: List[asyncio.Task] = field(default_factory=list)
+
     async def run_forever(
         self, state_consumer: Type[StateConsumer], state_producer: Type[StateProducer]
     ) -> None:
@@ -46,12 +52,12 @@ class SystemSimulationComponent(BaseComponent):
             self.expose,
             self.raise_interrupt,
         )
-        tasks = run_all(
+        self._tasks = run_all(
             component().run_forever(state_consumer, state_producer)
             for component in self.components
         ) + run_all([self.scheduler.run_forever()])
         await super().run_forever(state_consumer, state_producer)
-        await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
+        await asyncio.wait(self._tasks, return_when=asyncio.FIRST_COMPLETED)
 
     async def on_tick(self, time: SimTime, changes: Changes) -> None:
         """Delegates core behaviour to the slave scheduler.
@@ -67,6 +73,13 @@ class SystemSimulationComponent(BaseComponent):
         """
         output_changes, call_in = await self.scheduler.on_tick(time, changes)
         await self.output(time, output_changes, call_in)
+
+    async def stop_component(self) -> None:
+        """Cancel all pending tasks associated with the System Simulation component."""
+        LOGGER.debug("Stopping {}".format(self.name))
+        for task in self._tasks:
+            task.cancel()
+            await task
 
 
 @dataclass
