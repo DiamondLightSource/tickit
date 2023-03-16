@@ -1,4 +1,5 @@
 import asyncio
+import logging
 from dataclasses import dataclass, field
 from typing import Awaitable, Callable, Dict, Hashable, List, Mapping, Type, cast
 
@@ -12,6 +13,9 @@ from tickit.core.state_interfaces import StateConsumer, StateProducer
 from tickit.core.typedefs import Changes, ComponentID, SimTime, State
 
 InterruptHandler = Callable[[], Awaitable[None]]
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 @dataclass
@@ -28,18 +32,20 @@ class DeviceSimulation(BaseComponent):
     adapters: List[Adapter] = field(default_factory=list)
     last_outputs: State = field(init=False, default_factory=lambda: State({}))
     device_inputs: Dict[str, Hashable] = field(init=False, default_factory=dict)
+    _tasks: List[asyncio.Task] = field(default_factory=list)
 
     async def run_forever(
         self, state_consumer: Type[StateConsumer], state_producer: Type[StateProducer]
     ) -> None:
-        """Sets up state interfaces, runs adapters and blocks until any complete."""
-        tasks = run_all(
+        """Set up state interfaces, run adapters and blocks until any complete."""
+        self._tasks = run_all(
             adapter.run_forever(self.device, self.raise_interrupt)
             for adapter in self.adapters
         )
+
         await super().run_forever(state_consumer, state_producer)
-        if tasks:
-            await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
+        if self._tasks:
+            await asyncio.wait(self._tasks, return_when=asyncio.FIRST_COMPLETED)
 
     async def on_tick(self, time: SimTime, changes: Changes) -> None:
         """Delegates core behaviour to the device and calls adapter on_update.
@@ -74,3 +80,10 @@ class DeviceSimulation(BaseComponent):
         )
         self.last_outputs = device_update.outputs
         await self.output(time, out_changes, device_update.call_at)
+
+    async def stop_component(self) -> None:
+        """Cancel pending tasks associated with the component."""
+        LOGGER.debug("Stopping {}".format(self.name))
+        for task in self._tasks:
+            task.cancel()
+            await task

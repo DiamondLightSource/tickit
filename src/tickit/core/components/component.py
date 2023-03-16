@@ -16,6 +16,7 @@ from tickit.core.typedefs import (
     Output,
     PortID,
     SimTime,
+    StopComponent,
 )
 from tickit.utils.configuration.configurable import as_tagged_union
 from tickit.utils.topic_naming import input_topic, output_topic
@@ -74,26 +75,29 @@ class ComponentConfig:
 class BaseComponent(Component):
     """A base class for compnents, implementing state interface related methods."""
 
-    state_consumer: StateConsumer[Input]
+    state_consumer: StateConsumer[Union[Input, StopComponent]]
     state_producer: StateProducer[Union[Interrupt, Output, ComponentException]]
 
-    async def handle_input(self, input: Input):
+    async def handle_input(self, message: Union[Input, StopComponent]):
         """Call on_tick when an input is recieved.
 
         Args:
             input (Input): An immutable data container for Component inputs.
         """
-        LOGGER.debug("{} got {}".format(self.name, input))
-        try:
-            await asyncio.gather(
-                self.on_tick(input.time, input.changes), return_exceptions=False
-            )
-        except Exception as err:
-            LOGGER.debug("Exception occured in {} component".format(self.name))
-            await self.state_producer.produce(
-                output_topic(self.name),
-                ComponentException(self.name, err, traceback.format_exc()),
-            )
+        if isinstance(message, Input):
+            LOGGER.debug("{} got {}".format(self.name, message))
+            try:
+                await asyncio.gather(
+                    self.on_tick(message.time, message.changes), return_exceptions=False
+                )
+            except Exception as err:
+                LOGGER.debug("Exception occured in {} component".format(self.name))
+                await self.state_producer.produce(
+                    output_topic(self.name),
+                    ComponentException(self.name, err, traceback.format_exc()),
+                )
+        if isinstance(message, StopComponent):
+            await self.stop_component()
 
     async def output(
         self,
@@ -148,4 +152,9 @@ class BaseComponent(Component):
             changes (Changes): A mapping of changed component inputs and their new
                 values.
         """
+        raise NotImplementedError
+
+    @abstractmethod
+    async def stop_component(self) -> None:
+        """Abstract asynchronous method which cancels the running component tasks."""
         raise NotImplementedError

@@ -1,5 +1,5 @@
+import asyncio
 import logging
-import sys
 from abc import abstractmethod
 from typing import Dict, Optional, Set, Tuple, Type, Union
 
@@ -13,6 +13,7 @@ from tickit.core.typedefs import (
     Interrupt,
     Output,
     SimTime,
+    StopComponent,
 )
 from tickit.utils.topic_naming import input_topic, output_topic
 
@@ -84,7 +85,7 @@ class BaseScheduler:
         if isinstance(message, Interrupt):
             await self.schedule_interrupt(message.source)
         if isinstance(message, ComponentException):
-            self.handle_component_exception(message)
+            await self.handle_component_exception(message)
 
     async def setup(self) -> None:
         """Instantiates and configures the ticker and state interfaces.
@@ -95,12 +96,14 @@ class BaseScheduler:
         """
         self.ticker = Ticker(self._wiring, self.update_component)
         self.state_consumer: StateConsumer[
-            Union[Interrupt, Output]
+            Union[Interrupt, Output, ComponentException]
         ] = self._state_consumer_cls(self.handle_message)
         await self.state_consumer.subscribe(
             {output_topic(component) for component in self.ticker.components}
         )
-        self.state_producer: StateProducer[Input] = self._state_producer_cls()
+        self.state_producer: StateProducer[
+            Union[Input, StopComponent]
+        ] = self._state_producer_cls()
 
     def add_wakeup(self, component: ComponentID, when: SimTime) -> None:
         """Adds a wakeup to the mapping.
@@ -133,6 +136,21 @@ class BaseScheduler:
         }
         return components, first
 
-    def handle_component_exception(self, message: ComponentException) -> None:
-        """If a component fails to update, bail."""
-        sys.exit(-1)
+    async def handle_component_exception(self, message: ComponentException) -> None:
+        """Handle exceptions raised from componenets by shutting down the simulation.
+
+        If a component produces an exception, the scheduler will produce a message to
+        all components in the simulation to cause them to cancel any running component
+        tasks. After which the scheduler shuts its self down.
+
+        """
+        await asyncio.wait(
+            {
+                self.state_producer.produce(input_topic(component), StopComponent())
+                for component in self.ticker.components
+            },
+            return_when=asyncio.tasks.ALL_COMPLETED,
+        )
+        # Make a _shutdown event in scheduler that the run_forever can base its
+        # while loop on. Flip that flag now to close that run_forever.
+        raise SystemExit

@@ -76,6 +76,13 @@ class Input:
     changes: Changes
 
 
+@dataclass(frozen=True, init=True)
+class StopComponent:
+    """An immutable data container for a Component shutdown flag."""
+
+    flag: bool = True
+
+
 @dataclass(frozen=True)
 class Output:
     """An immutable data container for Component outputs.
