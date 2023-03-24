@@ -8,7 +8,15 @@ from tickit.core.management.event_router import InverseWiring
 from tickit.core.management.schedulers.slave import SlaveScheduler
 from tickit.core.runner import run_all
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
-from tickit.core.typedefs import Changes, ComponentID, ComponentPort, PortID, SimTime
+from tickit.core.typedefs import (
+    Changes,
+    ComponentException,
+    ComponentID,
+    ComponentPort,
+    PortID,
+    SimTime,
+)
+from tickit.utils.topic_naming import output_topic
 
 LOGGER = logging.getLogger(__name__)
 
@@ -71,7 +79,20 @@ class SystemSimulationComponent(BaseComponent):
             changes (Changes): A mapping of changed component inputs and their new
                 values.
         """
-        output_changes, call_in = await self.scheduler.on_tick(time, changes)
+        error_state = asyncio.create_task(self.scheduler.error.wait())
+        on_tick_task = asyncio.create_task(self.scheduler.on_tick(time, changes))
+
+        done, _ = await asyncio.wait(
+            [on_tick_task, error_state],
+            return_when=asyncio.tasks.FIRST_COMPLETED,
+        )
+        if error_state in done:
+            await self.state_producer.produce(
+                output_topic(self.name),
+                ComponentException(self.name, Exception(), "nested error"),
+            )
+
+        output_changes, call_in = on_tick_task.result()
         await self.output(time, output_changes, call_in)
 
     async def stop_component(self) -> None:

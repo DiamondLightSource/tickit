@@ -102,7 +102,7 @@ class BaseScheduler:
             {output_topic(component) for component in self.ticker.components}
         )
         self.state_producer: StateProducer[
-            Union[Input, StopComponent]
+            Union[Input, StopComponent, ComponentException]
         ] = self._state_producer_cls()
 
     def add_wakeup(self, component: ComponentID, when: SimTime) -> None:
@@ -151,6 +151,3 @@ class BaseScheduler:
             },
             return_when=asyncio.tasks.ALL_COMPLETED,
         )
-        # Make a _shutdown event in scheduler that the run_forever can base its
-        # while loop on. Flip that flag now to close that run_forever.
-        raise SystemExit
