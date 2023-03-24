@@ -1,4 +1,3 @@
-import asyncio
 import logging
 from typing import Awaitable, Callable, Dict, Optional, Set, Tuple, Type, Union
 
@@ -9,7 +8,6 @@ from tickit.core.management.schedulers.base import BaseScheduler
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import (
     Changes,
-    ComponentException,
     ComponentID,
     ComponentPort,
     Input,
@@ -52,8 +50,6 @@ class SlaveScheduler(BaseScheduler):
 
         self.raise_interrupt = raise_interrupt
         self.interrupts: Set[ComponentID] = set()
-
-        self.error: asyncio.Event = asyncio.Event()
 
     @staticmethod
     def add_exposing_wiring(
@@ -164,15 +160,3 @@ class SlaveScheduler(BaseScheduler):
         LOGGER.debug("Adding {} to interrupts".format(source))
         self.interrupts.add(source)
         await self.raise_interrupt()
-
-    async def handle_component_exception(self, message: ComponentException) -> None:
-        """Handle exceptions raised from componenets by shutting down the simulation.
-
-        If a component produces an exception, the scheduler will produce a message to
-        all components in the simulation to cause them to cancel any running component
-        tasks. After which the scheduler sets the scheduler error event, propogating
-        the error to the Master scheduler.
-
-        """
-        await super().handle_component_exception(message)
-        self.error.set()

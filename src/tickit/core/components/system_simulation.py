@@ -90,10 +90,11 @@ class SystemSimulationComponent(BaseComponent):
             await self.state_producer.produce(
                 output_topic(self.name),
                 ComponentException(self.name, Exception(), "nested error"),
-            )
+            )  # make the message better
 
-        output_changes, call_in = on_tick_task.result()
-        await self.output(time, output_changes, call_in)
+        elif on_tick_task in done:
+            output_changes, call_in = on_tick_task.result()
+            await self.output(time, output_changes, call_in)
 
     async def stop_component(self) -> None:
         """Cancel all pending tasks associated with the System Simulation component."""

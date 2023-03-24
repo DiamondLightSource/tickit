@@ -44,6 +44,8 @@ class BaseScheduler:
         self._state_producer_cls = state_producer
         self.wakeups: Dict[ComponentID, SimTime] = dict()
 
+        self.error: asyncio.Event = asyncio.Event()
+
     @abstractmethod
     async def schedule_interrupt(self, source: ComponentID) -> None:
         """An abstract asynchronous method which should schedule an interrupt
@@ -151,3 +153,4 @@ class BaseScheduler:
             },
             return_when=asyncio.tasks.ALL_COMPLETED,
         )
+        self.error.set()
