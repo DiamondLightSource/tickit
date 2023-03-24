@@ -22,8 +22,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 class Ticker:
-    """A utility class responsible for sequencing the update of components during a
-    tick.
+    """Utility class responsible for sequencing the update of components during a tick.
 
     A utility class responsible for sequencing the update of components during a tick
     by eagerly updating each component which has had all of its dependencies resolved.
@@ -34,8 +33,7 @@ class Ticker:
         wiring: Union[Wiring, InverseWiring],
         update_component: Callable[[Input], Coroutine[Any, Any, None]],
     ) -> None:
-        """A Ticker constructor which creates an event router and performs initial
-        setup.
+        """Ticker constructor which creates an event router and performs initial setup.
 
         Args:
             wiring (Union[Wiring, InverseWiring]): A wiring or inverse wiring object
@@ -53,7 +51,7 @@ class Ticker:
     async def __call__(
         self, time: SimTime, update_components: Set[ComponentID]
     ) -> None:
-        """Performs a tick which updates the provided components and their dependants.
+        """Perform a tick which updates the provided components and their dependants.
 
         An asynchronous method which performs a tick by setting up the initial state of
         the system during the tick - including determining dependant components,
@@ -72,7 +70,7 @@ class Ticker:
         self.finished.clear()
 
     async def _start_tick(self, time: SimTime, update_components: Set[ComponentID]):
-        """Sets up the ticker to perform a tick.
+        """Set up the ticker to perform a tick.
 
         An asynchronous method which sets up the ticker to perform a tick by updating
         time, reseting accumulators and finding the set of components which require
@@ -97,7 +95,7 @@ class Ticker:
         }
 
     async def schedule_possible_updates(self) -> None:
-        """Updates components with resolved dependencies.
+        """Update components with resolved dependencies.
 
         An asynchronous method which schedules updates for components with resolved
         dependencies, as determined by the intersection of the components first order
