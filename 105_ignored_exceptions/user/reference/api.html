@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>API &#8212; tickit 0.2.1.dev11+g51a9c2e documentation</title>
+    <title>API &#8212; tickit 0.2.1.dev14+g1ae3b2e documentation</title>
   
   
   
@@ -1230,6 +1230,15 @@ world time which has passed, adjusted by the simulation speed.</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="tickit.core.management.schedulers.master.MasterScheduler.handle_component_exception">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_component_exception</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.typedefs.ComponentException" title="tickit.core.typedefs.ComponentException"><span class="pre">ComponentException</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/core/management/schedulers/master.html#MasterScheduler.handle_component_exception"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.management.schedulers.master.MasterScheduler.handle_component_exception" title="Permalink to this definition">#</a></dt>
+<dd><p>Handle exceptions raised from componenets by shutting down the simulation.</p>
+<p>If a component produces an exception, the scheduler will produce a message to
+all components in the simulation to cause them to cancel any running component
+tasks. After which the scheduler shuts its self down.</p>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -1627,12 +1636,10 @@ output changes according to the wiring.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="tickit.core.management.ticker.Ticker">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.core.management.ticker.</span></span><span class="sig-name descname"><span class="pre">Ticker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wiring</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#tickit.core.management.event_router.Wiring" title="tickit.core.management.event_router.Wiring"><span class="pre">Wiring</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#tickit.core.management.event_router.InverseWiring" title="tickit.core.management.event_router.InverseWiring"><span class="pre">InverseWiring</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_component</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.11)"><span class="pre">Callable</span></a><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#tickit.core.typedefs.Input" title="tickit.core.typedefs.Input"><span class="pre">Input</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Coroutine" title="(in Python v3.11)"><span class="pre">Coroutine</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/core/management/ticker.html#Ticker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.management.ticker.Ticker" title="Permalink to this definition">#</a></dt>
-<dd><p>A utility class responsible for sequencing the update of components during a
-tick.</p>
+<dd><p>Utility class responsible for sequencing the update of components during a tick.</p>
 <p>A utility class responsible for sequencing the update of components during a tick
 by eagerly updating each component which has had all of its dependencies resolved.</p>
-<p>A Ticker constructor which creates an event router and performs initial
-setup.</p>
+<p>Ticker constructor which creates an event router and performs initial setup.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -1652,7 +1659,7 @@ the ticker.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="tickit.core.management.ticker.Ticker.schedule_possible_updates">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">schedule_possible_updates</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/core/management/ticker.html#Ticker.schedule_possible_updates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.management.ticker.Ticker.schedule_possible_updates" title="Permalink to this definition">#</a></dt>
-<dd><p>Updates components with resolved dependencies.</p>
+<dd><p>Update components with resolved dependencies.</p>
 <p>An asynchronous method which schedules updates for components with resolved
 dependencies, as determined by the intersection of the components first order
 dependencies and the set of componets which still require an update.</p>
@@ -3187,6 +3194,7 @@ required.</p>
 <li class="toc-h8 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.management.schedulers.master.MasterScheduler.run_forever"><code class="docutils literal notranslate"><span class="pre">MasterScheduler.run_forever()</span></code></a></li>
 <li class="toc-h8 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.management.schedulers.master.MasterScheduler.schedule_interrupt"><code class="docutils literal notranslate"><span class="pre">MasterScheduler.schedule_interrupt()</span></code></a></li>
 <li class="toc-h8 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.management.schedulers.master.MasterScheduler.sleep_time"><code class="docutils literal notranslate"><span class="pre">MasterScheduler.sleep_time()</span></code></a></li>
+<li class="toc-h8 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.management.schedulers.master.MasterScheduler.handle_component_exception"><code class="docutils literal notranslate"><span class="pre">MasterScheduler.handle_component_exception()</span></code></a></li>
 </ul>
 </li>
 </ul>

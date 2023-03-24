@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.management.ticker &#8212; tickit 0.2.1.dev11+g51a9c2e documentation</title>
+    <title>tickit.core.management.ticker &#8212; tickit 0.2.1.dev14+g1ae3b2e documentation</title>
   
   
   
@@ -443,8 +443,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="Ticker"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.management.ticker.Ticker">[docs]</a><span class="k">class</span> <span class="nc">Ticker</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A utility class responsible for sequencing the update of components during a</span>
-<span class="sd">    tick.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Utility class responsible for sequencing the update of components during a tick.</span>
 
 <span class="sd">    A utility class responsible for sequencing the update of components during a tick</span>
 <span class="sd">    by eagerly updating each component which has had all of its dependencies resolved.</span>
@@ -455,8 +454,7 @@ document.write(`
         <span class="n">wiring</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Wiring</span><span class="p">,</span> <span class="n">InverseWiring</span><span class="p">],</span>
         <span class="n">update_component</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Input</span><span class="p">],</span> <span class="n">Coroutine</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="kc">None</span><span class="p">]],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;A Ticker constructor which creates an event router and performs initial</span>
-<span class="sd">        setup.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Ticker constructor which creates an event router and performs initial setup.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            wiring (Union[Wiring, InverseWiring]): A wiring or inverse wiring object</span>
@@ -474,7 +472,7 @@ document.write(`
     <span class="k">async</span> <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">SimTime</span><span class="p">,</span> <span class="n">update_components</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs a tick which updates the provided components and their dependants.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform a tick which updates the provided components and their dependants.</span>
 
 <span class="sd">        An asynchronous method which performs a tick by setting up the initial state of</span>
 <span class="sd">        the system during the tick - including determining dependant components,</span>
@@ -493,7 +491,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">finished</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">_start_tick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">SimTime</span><span class="p">,</span> <span class="n">update_components</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">]):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets up the ticker to perform a tick.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set up the ticker to perform a tick.</span>
 
 <span class="sd">        An asynchronous method which sets up the ticker to perform a tick by updating</span>
 <span class="sd">        time, reseting accumulators and finding the set of components which require</span>
@@ -518,7 +516,7 @@ document.write(`
         <span class="p">}</span>
 
 <div class="viewcode-block" id="Ticker.schedule_possible_updates"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.management.ticker.Ticker.schedule_possible_updates">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">schedule_possible_updates</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Updates components with resolved dependencies.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update components with resolved dependencies.</span>
 
 <span class="sd">        An asynchronous method which schedules updates for components with resolved</span>
 <span class="sd">        dependencies, as determined by the intersection of the components first order</span>
