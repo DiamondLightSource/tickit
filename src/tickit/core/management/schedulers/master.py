@@ -69,7 +69,7 @@ class MasterScheduler(BaseScheduler):
         """
         await self.setup()
         await self._do_initial_tick()
-        while self.error.is_set() is not True:
+        while not self.error.is_set():
             await self._do_tick()
         LOGGER.debug("Stopping Master Scheduler")
 
