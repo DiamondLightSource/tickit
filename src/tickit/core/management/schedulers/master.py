@@ -6,7 +6,7 @@ from typing import Type, Union
 from tickit.core.management.event_router import InverseWiring, Wiring
 from tickit.core.management.schedulers.base import BaseScheduler
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
-from tickit.core.typedefs import ComponentException, ComponentID, SimTime
+from tickit.core.typedefs import ComponentID, SimTime
 
 LOGGER = logging.getLogger(__name__)
 
@@ -136,7 +136,7 @@ class MasterScheduler(BaseScheduler):
             - (time_ns() - self.last_time)
         ) / 1e9
 
-    async def handle_component_exception(self, message: ComponentException) -> None:
+    async def handle_component_exception(self) -> None:
         """Handle exceptions raised from componenets by shutting down the simulation.
 
         If a component produces an exception, the scheduler will produce a message to
@@ -144,7 +144,7 @@ class MasterScheduler(BaseScheduler):
         tasks. After which the scheduler shuts its self down.
 
         """
-        await super().handle_component_exception(message)
+        await super().handle_component_exception()
         # Might need to check order of 'self.ticker.finished.set()' and
         # ' self.error.set()' when running with an error
         # that is not in "do inital tick"

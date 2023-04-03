@@ -84,10 +84,10 @@ class BaseScheduler:
             await self.ticker.propagate(message)
             if message.call_at is not None:
                 self.add_wakeup(message.source, message.call_at)
-        if isinstance(message, Interrupt):
+        elif isinstance(message, Interrupt):
             await self.schedule_interrupt(message.source)
-        if isinstance(message, ComponentException):
-            await self.handle_component_exception(message)
+        elif isinstance(message, ComponentException):
+            await self.handle_component_exception()
 
     async def setup(self) -> None:
         """Instantiates and configures the ticker and state interfaces.
@@ -138,7 +138,7 @@ class BaseScheduler:
         }
         return components, first
 
-    async def handle_component_exception(self, message: ComponentException) -> None:
+    async def handle_component_exception(self) -> None:
         """Handle exceptions raised from componenets by shutting down the simulation.
 
         If a component produces an exception, the scheduler will produce a message to
