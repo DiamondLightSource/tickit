@@ -82,8 +82,12 @@ class DeviceSimulation(BaseComponent):
         await self.output(time, out_changes, device_update.call_at)
 
     async def stop_component(self) -> None:
-        """Cancel pending tasks associated with the component."""
+        """Cancel all pending tasks associated with the device component.
+
+        Cancels long running adapter tasks associated with the component.
+        """
         LOGGER.debug("Stopping {}".format(self.name))
-        for task in self._tasks:
-            task.cancel()
-            await task
+        if self._tasks:
+            for task in self._tasks:
+                task.cancel()
+            await asyncio.wait(self._tasks)

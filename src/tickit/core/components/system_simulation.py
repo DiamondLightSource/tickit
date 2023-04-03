@@ -97,11 +97,15 @@ class SystemSimulationComponent(BaseComponent):
             await self.output(time, output_changes, call_in)
 
     async def stop_component(self) -> None:
-        """Cancel all pending tasks associated with the System Simulation component."""
+        """Cancel all pending tasks associated with the System Simulation component.
+
+        Cancels long running adapter tasks associated with the component.
+        """
         LOGGER.debug("Stopping {}".format(self.name))
-        for task in self._tasks:
-            task.cancel()
-            await task
+        if self._tasks:
+            for task in self._tasks:
+                task.cancel()
+            await asyncio.wait(self._tasks)
 
 
 @dataclass
