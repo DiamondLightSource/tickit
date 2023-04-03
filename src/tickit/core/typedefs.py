@@ -78,9 +78,9 @@ class Input:
 
 @dataclass(frozen=True, init=True)
 class StopComponent:
-    """An immutable data container for a Component shutdown flag."""
+    """An immutable dataclass to register Component shutdown."""
 
-    flag: bool = True
+    ...
 
 
 @dataclass(frozen=True)
