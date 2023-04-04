@@ -45,6 +45,7 @@ def patch_scheduler() -> Iterable[Mock]:
 
         mock.return_value = AsyncMock()
         dummy_output = (Changes(Map({PortID("84"): 84})), 3)
+        mock.return_value.error = asyncio.Event()
         mock.return_value.on_tick = AsyncMock(spec=on_tick, return_value=dummy_output)
         mock.return_value.setup
         yield mock
