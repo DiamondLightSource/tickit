@@ -8,6 +8,7 @@ from tickit.core.management.schedulers.base import BaseScheduler
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import (
     Changes,
+    ComponentException,
     ComponentID,
     ComponentPort,
     Input,
@@ -50,6 +51,7 @@ class SlaveScheduler(BaseScheduler):
 
         self.raise_interrupt = raise_interrupt
         self.interrupts: Set[ComponentID] = set()
+        self.component_error: ComponentException
 
     @staticmethod
     def add_exposing_wiring(
@@ -160,3 +162,16 @@ class SlaveScheduler(BaseScheduler):
         LOGGER.debug("Adding {} to interrupts".format(source))
         self.interrupts.add(source)
         await self.raise_interrupt()
+
+    async def handle_component_exception(self, message: ComponentException) -> None:
+        """Handle exceptions raised from componenets by shutting down the simulation.
+
+        If a component inside a system simulation produces an exception, the slave
+        scheduler will produce a message to all components it contains to cause them
+        to cancel any running component tasks (adapter tasks). Afterwards the scheduler
+        stores the ComponentException message, allowing its associated system simulation
+        component to propogate the exception to the master scheduler.
+
+        """
+        await super().handle_component_exception(message)
+        self.component_error = message
