@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.management.schedulers.master &#8212; tickit 0.2.1.dev21+gdde8d8b documentation</title>
+    <title>tickit.core.management.schedulers.master &#8212; tickit 0.2.1.dev22+g2ff8b64 documentation</title>
   
   
   
@@ -427,7 +427,7 @@ document.write(`
 <span class="kn">from</span> <span class="nn">tickit.core.management.event_router</span> <span class="kn">import</span> <span class="n">InverseWiring</span><span class="p">,</span> <span class="n">Wiring</span>
 <span class="kn">from</span> <span class="nn">tickit.core.management.schedulers.base</span> <span class="kn">import</span> <span class="n">BaseScheduler</span>
 <span class="kn">from</span> <span class="nn">tickit.core.state_interfaces.state_interface</span> <span class="kn">import</span> <span class="n">StateConsumer</span><span class="p">,</span> <span class="n">StateProducer</span>
-<span class="kn">from</span> <span class="nn">tickit.core.typedefs</span> <span class="kn">import</span> <span class="n">ComponentID</span><span class="p">,</span> <span class="n">SimTime</span>
+<span class="kn">from</span> <span class="nn">tickit.core.typedefs</span> <span class="kn">import</span> <span class="n">ComponentException</span><span class="p">,</span> <span class="n">ComponentID</span><span class="p">,</span> <span class="n">SimTime</span>
 
 <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -557,7 +557,7 @@ document.write(`
             <span class="o">-</span> <span class="p">(</span><span class="n">time_ns</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_time</span><span class="p">)</span>
         <span class="p">)</span> <span class="o">/</span> <span class="mf">1e9</span></div>
 
-<div class="viewcode-block" id="MasterScheduler.handle_component_exception"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.master.MasterScheduler.handle_component_exception">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_component_exception</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="MasterScheduler.handle_component_exception"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.master.MasterScheduler.handle_component_exception">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_component_exception</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">ComponentException</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle exceptions raised from componenets by shutting down the simulation.</span>
 
 <span class="sd">        If a component produces an exception, the scheduler will produce a message to</span>
@@ -565,7 +565,7 @@ document.write(`
 <span class="sd">        tasks. After which the scheduler shuts its self down.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">handle_component_exception</span><span class="p">()</span>
+        <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">handle_component_exception</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
         <span class="c1"># Might need to check order of &#39;self.ticker.finished.set()&#39; and</span>
         <span class="c1"># &#39; self.error.set()&#39; when running with an error</span>
         <span class="c1"># that is not in &quot;do inital tick&quot;</span>

@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>API &#8212; tickit 0.2.1.dev21+gdde8d8b documentation</title>
+    <title>API &#8212; tickit 0.2.1.dev22+g2ff8b64 documentation</title>
   
   
   
@@ -1135,7 +1135,7 @@ are scheduled.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tickit.core.management.schedulers.base.BaseScheduler.handle_component_exception">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_component_exception</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/core/management/schedulers/base.html#BaseScheduler.handle_component_exception"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.management.schedulers.base.BaseScheduler.handle_component_exception" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_component_exception</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.typedefs.ComponentException" title="tickit.core.typedefs.ComponentException"><span class="pre">ComponentException</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/core/management/schedulers/base.html#BaseScheduler.handle_component_exception"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.management.schedulers.base.BaseScheduler.handle_component_exception" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle exceptions raised from componenets by shutting down the simulation.</p>
 <p>If a component produces an exception, the scheduler will produce a message to
 all components in the simulation to cause them to cancel any running component
@@ -1234,7 +1234,7 @@ world time which has passed, adjusted by the simulation speed.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tickit.core.management.schedulers.master.MasterScheduler.handle_component_exception">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_component_exception</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/core/management/schedulers/master.html#MasterScheduler.handle_component_exception"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.management.schedulers.master.MasterScheduler.handle_component_exception" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_component_exception</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.typedefs.ComponentException" title="tickit.core.typedefs.ComponentException"><span class="pre">ComponentException</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/core/management/schedulers/master.html#MasterScheduler.handle_component_exception"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.management.schedulers.master.MasterScheduler.handle_component_exception" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle exceptions raised from componenets by shutting down the simulation.</p>
 <p>If a component produces an exception, the scheduler will produce a message to
 all components in the simulation to cause them to cancel any running component
@@ -1356,6 +1356,17 @@ a set of queued interrupts and raising the interrupt to the master scheduler.</p
 <dd class="field-odd"><p><strong>source</strong> (<em>ComponentID</em>) – The source component of the interrupt.</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tickit.core.management.schedulers.slave.SlaveScheduler.handle_component_exception">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_component_exception</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.typedefs.ComponentException" title="tickit.core.typedefs.ComponentException"><span class="pre">ComponentException</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/core/management/schedulers/slave.html#SlaveScheduler.handle_component_exception"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.management.schedulers.slave.SlaveScheduler.handle_component_exception" title="Permalink to this definition">#</a></dt>
+<dd><p>Handle exceptions raised from componenets by shutting down the simulation.</p>
+<p>If a component inside a system simulation produces an exception, the slave
+scheduler will produce a message to all components it contains to cause them
+to cancel any running component tasks (adapter tasks). Afterwards the scheduler
+stores the ComponentException message, allowing its associated system simulation
+component to propogate the exception to the master scheduler.</p>
 </dd></dl>
 
 </dd></dl>
@@ -3214,6 +3225,7 @@ required.</p>
 <li class="toc-h8 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.management.schedulers.slave.SlaveScheduler.on_tick"><code class="docutils literal notranslate"><span class="pre">SlaveScheduler.on_tick()</span></code></a></li>
 <li class="toc-h8 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.management.schedulers.slave.SlaveScheduler.run_forever"><code class="docutils literal notranslate"><span class="pre">SlaveScheduler.run_forever()</span></code></a></li>
 <li class="toc-h8 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.management.schedulers.slave.SlaveScheduler.schedule_interrupt"><code class="docutils literal notranslate"><span class="pre">SlaveScheduler.schedule_interrupt()</span></code></a></li>
+<li class="toc-h8 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.management.schedulers.slave.SlaveScheduler.handle_component_exception"><code class="docutils literal notranslate"><span class="pre">SlaveScheduler.handle_component_exception()</span></code></a></li>
 </ul>
 </li>
 </ul>
