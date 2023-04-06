@@ -79,7 +79,7 @@ class BaseScheduler:
             message (Union[Interrupt, Output, ComponentException]): An Interrupt,
             Output or ComponentException produced by the state consumer.
         """
-        LOGGER.debug("Scheduler got {}".format(message))
+        LOGGER.debug("Scheduler ({}) got {}".format(type(self).__name__, message))
         if isinstance(message, Output):
             await self.ticker.propagate(message)
             if message.call_at is not None:
@@ -148,7 +148,9 @@ class BaseScheduler:
         """
         await asyncio.wait(
             {
-                self.state_producer.produce(input_topic(component), StopComponent())
+                asyncio.create_task(
+                    self.state_producer.produce(input_topic(component), StopComponent())
+                )
                 for component in self.ticker.components
             },
             return_when=asyncio.tasks.ALL_COMPLETED,
