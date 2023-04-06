@@ -10,13 +10,16 @@ from tickit.core.management.schedulers.base import BaseScheduler
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import (
     Changes,
+    ComponentException,
     ComponentID,
     Input,
     Interrupt,
     Output,
     PortID,
     SimTime,
+    StopComponent,
 )
+from tickit.utils.topic_naming import input_topic
 
 
 @pytest.fixture
@@ -43,6 +46,7 @@ def mock_state_producer_type() -> Mock:
 @pytest.fixture
 def patch_ticker() -> Iterable[Mock]:
     with patch("tickit.core.management.schedulers.base.Ticker", autospec=True) as mock:
+        mock.return_value.components = ["test_component"]
         yield mock
 
 
@@ -93,6 +97,20 @@ async def test_base_scheduler_handle_interrupt_message(base_scheduler: BaseSched
     message = Interrupt(ComponentID("foo"))
     await base_scheduler.handle_message(message)
     base_scheduler.schedule_interrupt.assert_called_once()  # type: ignore
+
+
+@pytest.mark.asyncio
+async def test_base_scheduler_handle_exception_message(base_scheduler: BaseScheduler):
+    message = ComponentException(
+        ComponentID("Test"), Exception("Test exception"), "test exception traceback"
+    )
+    await base_scheduler.handle_message(message)
+
+    base_scheduler.state_producer.produce.assert_awaited_once_with(
+        input_topic("test_component"),
+        StopComponent(),
+    )
+    assert base_scheduler.error.is_set()
 
 
 def test_base_scheduler_get_first_wakeups_method(base_scheduler: BaseScheduler):
