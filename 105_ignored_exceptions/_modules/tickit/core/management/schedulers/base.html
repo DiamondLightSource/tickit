@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.management.schedulers.base &#8212; tickit 0.2.1.dev22+g2ff8b64 documentation</title>
+    <title>tickit.core.management.schedulers.base &#8212; tickit 0.2.1.dev34+g21795a9 documentation</title>
   
   
   
@@ -500,7 +500,7 @@ document.write(`
 <span class="sd">            message (Union[Interrupt, Output, ComponentException]): An Interrupt,</span>
 <span class="sd">            Output or ComponentException produced by the state consumer.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Scheduler got </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">message</span><span class="p">))</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Scheduler (</span><span class="si">{}</span><span class="s2">) got </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">message</span><span class="p">))</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">Output</span><span class="p">):</span>
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">ticker</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">message</span><span class="o">.</span><span class="n">call_at</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -569,7 +569,9 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span>
             <span class="p">{</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">state_producer</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">input_topic</span><span class="p">(</span><span class="n">component</span><span class="p">),</span> <span class="n">StopComponent</span><span class="p">())</span>
+                <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">state_producer</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">input_topic</span><span class="p">(</span><span class="n">component</span><span class="p">),</span> <span class="n">StopComponent</span><span class="p">())</span>
+                <span class="p">)</span>
                 <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ticker</span><span class="o">.</span><span class="n">components</span>
             <span class="p">},</span>
             <span class="n">return_when</span><span class="o">=</span><span class="n">asyncio</span><span class="o">.</span><span class="n">tasks</span><span class="o">.</span><span class="n">ALL_COMPLETED</span><span class="p">,</span>

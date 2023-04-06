@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.components.component &#8212; tickit 0.2.1.dev22+g2ff8b64 documentation</title>
+    <title>tickit.core.components.component &#8212; tickit 0.2.1.dev34+g21795a9 documentation</title>
   
   
   
@@ -512,7 +512,8 @@ document.write(`
                     <span class="bp">self</span><span class="o">.</span><span class="n">on_tick</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">message</span><span class="o">.</span><span class="n">changes</span><span class="p">),</span> <span class="n">return_exceptions</span><span class="o">=</span><span class="kc">False</span>
                 <span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-                <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Exception occured in </span><span class="si">{}</span><span class="s2"> component&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+                <span class="n">LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Exception occured in </span><span class="si">{}</span><span class="s2"> component&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+                <span class="n">LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">())</span>
                 <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">state_producer</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span>
                     <span class="n">output_topic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
                     <span class="n">ComponentException</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()),</span>
