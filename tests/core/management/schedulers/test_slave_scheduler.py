@@ -1,7 +1,7 @@
+import asyncio
 from typing import Dict, Iterable
 
 import pytest
-import asyncio
 from immutables import Map
 from mock import AsyncMock, Mock, create_autospec, patch
 

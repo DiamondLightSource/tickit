@@ -1,5 +1,5 @@
-from typing import Awaitable, Iterable, Set
 import asyncio
+from typing import Awaitable, Iterable, Set
 
 import pytest
 import pytest_asyncio

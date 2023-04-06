@@ -106,8 +106,8 @@ async def test_base_scheduler_handle_exception_message(base_scheduler: BaseSched
     )
     await base_scheduler.handle_message(message)
 
-    base_scheduler.state_producer.produce.assert_awaited_once_with(
-        input_topic("test_component"),
+    base_scheduler.state_producer.produce.assert_awaited_once_with(  # type: ignore
+        input_topic(ComponentID("test_component")),
         StopComponent(),
     )
     assert base_scheduler.error.is_set()

@@ -14,7 +14,6 @@ from tickit.core.components.system_simulation import (
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import (
     Changes,
-    ComponentException,
     ComponentID,
     ComponentPort,
     Input,
@@ -119,7 +118,7 @@ async def test_system_simulation_methods(
 
 @pytest.mark.asyncio
 async def test_system_simulation_handles_exception_in_handle_input(
-    system_simulation: Component,
+    system_simulation: SystemSimulationComponent,
     mock_state_producer_type: Mock,
     mock_state_consumer_type: Mock,
 ):
@@ -136,12 +135,12 @@ async def test_system_simulation_handles_exception_in_handle_input(
         Input(ComponentID("Test"), SimTime(42), Changes(Map()))
     )
     system_simulation.on_tick.assert_awaited_once_with(SimTime(42), Changes(Map()))
-    system_simulation.state_producer.produce.assert_awaited_once()
+    system_simulation.state_producer.produce.assert_awaited_once()  # type: ignore
 
 
 @pytest.mark.asyncio
 async def test_system_simulation_stops_when_told(
-    system_simulation: Component,
+    system_simulation: SystemSimulationComponent,
     mock_state_producer_type: Mock,
     mock_state_consumer_type: Mock,
 ):

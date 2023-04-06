@@ -3,10 +3,9 @@ from typing import AsyncGenerator, Iterable
 
 import pytest
 from immutables import Map
-from mock import Mock, create_autospec, patch, AsyncMock
+from mock import AsyncMock, Mock, create_autospec, patch
 
 from tickit.core.adapter import Adapter
-from tickit.core.components.component import Component
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import (
@@ -113,7 +112,7 @@ async def test_device_simulation_run_forever_method(
 
 @pytest.mark.asyncio
 async def test_device_simulation_handles_exception_in_handle_input(
-    device_simulation: Component,
+    device_simulation: DeviceSimulation,
     mock_state_producer_type: Mock,
     mock_state_consumer_type: Mock,
 ):
@@ -130,12 +129,12 @@ async def test_device_simulation_handles_exception_in_handle_input(
         Input(ComponentID("Test"), SimTime(42), Changes(Map()))
     )
     device_simulation.on_tick.assert_awaited_once_with(SimTime(42), Changes(Map()))
-    device_simulation.state_producer.produce.assert_awaited_once()
+    device_simulation.state_producer.produce.assert_awaited_once()  # type: ignore
 
 
 @pytest.mark.asyncio
 async def test_device_simulation_stops_when_told(
-    device_simulation: Component,
+    device_simulation: DeviceSimulation,
     mock_state_producer_type: Mock,
     mock_state_consumer_type: Mock,
 ):
