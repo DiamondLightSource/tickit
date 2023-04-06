@@ -39,7 +39,10 @@ def patch_ticker() -> Iterable[Mock]:
 
 @pytest_asyncio.fixture
 async def master_scheduler(
-    mock_wiring, mock_state_consumer, mock_state_producer, patch_ticker
+    mock_wiring,
+    mock_state_consumer,
+    mock_state_producer,
+    patch_ticker,
 ) -> MasterScheduler:
     master_scheduler = MasterScheduler(
         mock_wiring, mock_state_consumer, mock_state_producer
