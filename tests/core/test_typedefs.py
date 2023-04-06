@@ -29,7 +29,7 @@ def test_input_has_changes():
     assert Changes == Input.__annotations__["changes"]
 
 
-def test_StopComponent_is_dataclass():
+def test_stop_component_is_dataclass():
     assert is_dataclass(StopComponent)
 
 
@@ -53,25 +53,25 @@ def test_output_has_call_in():
     assert Optional[SimTime] == Output.__annotations__["call_at"]
 
 
-def test_Interrupt_is_dataclass():
+def test_interrupt_is_dataclass():
     assert is_dataclass(Interrupt)
 
 
-def test_Interrupt_has_source():
+def test_interrupt_has_source():
     assert ComponentID == Interrupt.__annotations__["source"]
 
 
-def test_ComponentException_is_dataclass():
+def test_component_exception_is_dataclass():
     assert is_dataclass(ComponentException)
 
 
-def test_ComponentException_has_source():
+def test_component_exception_has_source():
     assert ComponentID == ComponentException.__annotations__["source"]
 
 
-def test_ComponentException_has_error():
+def test_component_exception_has_error():
     assert Exception == ComponentException.__annotations__["error"]
 
 
-def test_ComponentException_has_traceback():
+def test_component_exception_has_traceback():
     assert str == ComponentException.__annotations__["traceback"]
