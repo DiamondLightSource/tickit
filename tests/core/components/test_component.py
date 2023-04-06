@@ -11,7 +11,15 @@ from tickit.core.state_interfaces.internal import (
     InternalStateProducer,
 )
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
-from tickit.core.typedefs import Changes, ComponentID, Input, Interrupt, Output, SimTime
+from tickit.core.typedefs import (
+    Changes,
+    ComponentID,
+    Input,
+    Interrupt,
+    Output,
+    SimTime,
+    ComponentException,
+)
 from tickit.utils.topic_naming import input_topic, output_topic
 
 
