@@ -1,4 +1,5 @@
 from typing import Awaitable, Iterable, Set
+import asyncio
 
 import pytest
 import pytest_asyncio
@@ -8,7 +9,7 @@ from tickit.core.management.event_router import Wiring
 from tickit.core.management.schedulers.master import MasterScheduler
 from tickit.core.management.ticker import Ticker
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
-from tickit.core.typedefs import ComponentID, SimTime
+from tickit.core.typedefs import ComponentException, ComponentID, SimTime
 
 
 @pytest.fixture
@@ -30,7 +31,9 @@ def mock_state_producer() -> Mock:
 def patch_ticker() -> Iterable[Mock]:
     with patch("tickit.core.management.schedulers.base.Ticker", autospec=True) as mock:
         mock.return_value = AsyncMock(spec=Ticker)
+        mock.return_value.components = ["test"]
         mock.return_value.time = SimTime(41)
+        mock.return_value.finished = asyncio.Event()
         yield mock
 
 
@@ -181,3 +184,14 @@ async def test_schedule_interrupt_succeeds_with_queued_wakeup(
         "me first": master_scheduler.ticker.time,
         "bar": 42,
     }
+
+
+@pytest.mark.asyncio
+async def test_master_scheduler_handle_exception_message(
+    master_scheduler: MasterScheduler,
+):
+    message = ComponentException(
+        ComponentID("Test"), Exception("Test exception"), "test exception traceback"
+    )
+    await master_scheduler.handle_message(message)
+    assert master_scheduler.error.is_set()
