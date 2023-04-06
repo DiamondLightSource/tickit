@@ -3,12 +3,21 @@ from typing import AsyncGenerator, Iterable
 
 import pytest
 from immutables import Map
-from mock import Mock, create_autospec, patch
+from mock import Mock, create_autospec, patch, AsyncMock
 
 from tickit.core.adapter import Adapter
+from tickit.core.components.component import Component
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
-from tickit.core.typedefs import Changes, ComponentID, Output, PortID, SimTime
+from tickit.core.typedefs import (
+    Changes,
+    ComponentID,
+    Input,
+    Output,
+    PortID,
+    SimTime,
+    StopComponent,
+)
 from tickit.devices.source import SourceDevice
 
 
@@ -100,3 +109,39 @@ async def test_device_simulation_run_forever_method(
             call_at=None,
         ),
     )
+
+
+@pytest.mark.asyncio
+async def test_device_simulation_handles_exception_in_handle_input(
+    device_simulation: Component,
+    mock_state_producer_type: Mock,
+    mock_state_consumer_type: Mock,
+):
+    await device_simulation.run_forever(
+        mock_state_consumer_type, mock_state_producer_type  # type: ignore
+    )
+
+    def raise_error(time, changes):
+        raise RuntimeError("Test exception")
+
+    device_simulation.on_tick = AsyncMock()  # type: ignore
+    device_simulation.on_tick.side_effect = raise_error
+    await device_simulation.handle_input(
+        Input(ComponentID("Test"), SimTime(42), Changes(Map()))
+    )
+    device_simulation.on_tick.assert_awaited_once_with(SimTime(42), Changes(Map()))
+    device_simulation.state_producer.produce.assert_awaited_once()
+
+
+@pytest.mark.asyncio
+async def test_device_simulation_stops_when_told(
+    device_simulation: Component,
+    mock_state_producer_type: Mock,
+    mock_state_consumer_type: Mock,
+):
+    await device_simulation.run_forever(
+        mock_state_consumer_type, mock_state_producer_type  # type: ignore
+    )
+
+    await device_simulation.handle_input(StopComponent())
+    assert all(map(lambda task: task.done(), device_simulation._tasks))
