@@ -14,11 +14,14 @@ from tickit.core.components.system_simulation import (
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import (
     Changes,
+    ComponentException,
     ComponentID,
     ComponentPort,
+    Input,
     Output,
     PortID,
     SimTime,
+    StopComponent,
 )
 from tickit.utils.topic_naming import output_topic
 
@@ -112,3 +115,39 @@ async def test_system_simulation_methods(
         output_topic(system_simulation.name),
         Output(system_simulation.name, time, expected_changes, expected_call_back),
     )
+
+
+@pytest.mark.asyncio
+async def test_system_simulation_handles_exception_in_handle_input(
+    system_simulation: Component,
+    mock_state_producer_type: Mock,
+    mock_state_consumer_type: Mock,
+):
+    await system_simulation.run_forever(
+        mock_state_consumer_type, mock_state_producer_type  # type: ignore
+    )
+
+    def raise_error(time, changes):
+        raise RuntimeError("Test exception")
+
+    system_simulation.on_tick = AsyncMock()  # type: ignore
+    system_simulation.on_tick.side_effect = raise_error
+    await system_simulation.handle_input(
+        Input(ComponentID("Test"), SimTime(42), Changes(Map()))
+    )
+    system_simulation.on_tick.assert_awaited_once_with(SimTime(42), Changes(Map()))
+    system_simulation.state_producer.produce.assert_awaited_once()
+
+
+@pytest.mark.asyncio
+async def test_system_simulation_stops_when_told(
+    system_simulation: Component,
+    mock_state_producer_type: Mock,
+    mock_state_consumer_type: Mock,
+):
+    await system_simulation.run_forever(
+        mock_state_consumer_type, mock_state_producer_type  # type: ignore
+    )
+
+    await system_simulation.handle_input(StopComponent())
+    assert all(map(lambda task: task.done(), system_simulation._tasks))
