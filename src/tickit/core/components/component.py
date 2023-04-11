@@ -91,8 +91,7 @@ class BaseComponent(Component):
                     self.on_tick(message.time, message.changes), return_exceptions=False
                 )
             except Exception as err:
-                LOGGER.error("Exception occured in {} component".format(self.name))
-                LOGGER.error(traceback.format_exc())
+                LOGGER.exception(f"Exception occured in {self.name} component.")
                 await self.state_producer.produce(
                     output_topic(self.name),
                     ComponentException(self.name, err, traceback.format_exc()),
