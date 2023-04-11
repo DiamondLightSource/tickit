@@ -44,7 +44,7 @@ class BaseScheduler:
         self._state_producer_cls = state_producer
         self.wakeups: Dict[ComponentID, SimTime] = dict()
 
-        self.error: asyncio.Event = asyncio.Event()
+        self.error = asyncio.Event()
 
     @abstractmethod
     async def schedule_interrupt(self, source: ComponentID) -> None:
@@ -71,13 +71,13 @@ class BaseScheduler:
         """A callback to handle interrupts, outputs or exceptions produced by the state
         consumer.
 
-        An asynchronous callback which handles interrupt, Output and ComponentException
+        An asynchronous callback which handles Interrupt, Output and ComponentException
         messages produced by the state consumer; For Outputs, changes are propagated
         and wakeups scheduled if required. For interrupts handling is deferred.
 
         Args:
             message (Union[Interrupt, Output, ComponentException]): An Interrupt,
-            Output or ComponentException produced by the state consumer.
+                Output or ComponentException produced by the state consumer.
         """
         LOGGER.debug("Scheduler ({}) got {}".format(type(self).__name__, message))
         if isinstance(message, Output):
