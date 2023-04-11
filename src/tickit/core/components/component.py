@@ -82,7 +82,7 @@ class BaseComponent(Component):
         """Call on_tick when an input is recieved.
 
         Args:
-            message (ComponentRecievedMessage): An immutable data container for any
+            message (Union[Input, StopComponent])): An immutable data container for any
                 message a component recieves.
         """
         if isinstance(message, Input):
