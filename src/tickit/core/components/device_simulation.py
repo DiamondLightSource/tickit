@@ -45,7 +45,7 @@ class DeviceSimulation(BaseComponent):
 
         await super().run_forever(state_consumer, state_producer)
         if self._tasks:
-            await asyncio.wait(self._tasks, return_when=asyncio.FIRST_COMPLETED)
+            await asyncio.wait(self._tasks)
 
     async def on_tick(self, time: SimTime, changes: Changes) -> None:
         """Delegates core behaviour to the device and calls adapter on_update.
@@ -87,7 +87,5 @@ class DeviceSimulation(BaseComponent):
         Cancels long running adapter tasks associated with the component.
         """
         LOGGER.debug("Stopping {}".format(self.name))
-        if self._tasks:
-            for task in self._tasks:
-                task.cancel()
-            await asyncio.wait(self._tasks)
+        for task in self._tasks:
+            task.cancel()

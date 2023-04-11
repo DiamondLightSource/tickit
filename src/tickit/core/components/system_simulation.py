@@ -32,7 +32,6 @@ class SystemSimulationComponent(BaseComponent):
     #: corresponding output of an internal component.
     expose: Dict[PortID, ComponentPort]
 
-    # a list of all child tasks
     _tasks: List[asyncio.Task] = field(default_factory=list)
 
     async def run_forever(
@@ -58,7 +57,8 @@ class SystemSimulationComponent(BaseComponent):
             for component in self.components
         ) + run_all([self.scheduler.run_forever()])
         await super().run_forever(state_consumer, state_producer)
-        await asyncio.wait(self._tasks, return_when=asyncio.FIRST_COMPLETED)
+        if self._tasks:
+            await asyncio.wait(self._tasks)
 
     async def on_tick(self, time: SimTime, changes: Changes) -> None:
         """Delegates core behaviour to the slave scheduler.
@@ -85,7 +85,7 @@ class SystemSimulationComponent(BaseComponent):
                 self.scheduler.component_error,
             )
 
-        elif on_tick_task in done:
+        else:
             output_changes, call_in = on_tick_task.result()
             await self.output(time, output_changes, call_in)
 
@@ -95,10 +95,8 @@ class SystemSimulationComponent(BaseComponent):
         Cancels long running adapter tasks associated with the component.
         """
         LOGGER.debug("Stopping {}".format(self.name))
-        if self._tasks:
-            for task in self._tasks:
-                task.cancel()
-            await asyncio.wait(self._tasks)
+        for task in self._tasks:
+            task.cancel()
 
 
 @dataclass

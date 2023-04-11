@@ -90,9 +90,7 @@ async def test_device_simulation_run_forever_method(
         await device_simulation.run_forever(
             mock_state_consumer_type, mock_state_producer_type
         )
-        patch_asyncio_wait.assert_awaited_once_with(
-            mock_all.return_value, return_when=asyncio.FIRST_COMPLETED
-        )
+        patch_asyncio_wait.assert_awaited_once_with(mock_all.return_value)
 
     changes = Changes(Map({PortID("foo"): 43}))
     await device_simulation.on_tick(SimTime(1), changes)
