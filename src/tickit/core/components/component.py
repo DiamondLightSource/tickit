@@ -82,10 +82,11 @@ class BaseComponent(Component):
         """Call on_tick when an input is recieved.
 
         Args:
-            input (Input): An immutable data container for Component inputs.
+            message (ComponentRecievedMessage): An immutable data container for any
+                message a component recieves.
         """
         if isinstance(message, Input):
-            LOGGER.debug("{} got {}".format(self.name, message))
+            LOGGER.debug(f"{self.name} got {message}")
             try:
                 await asyncio.gather(
                     self.on_tick(message.time, message.changes), return_exceptions=False
@@ -105,7 +106,7 @@ class BaseComponent(Component):
         changes: Changes,
         call_at: Optional[SimTime],
     ) -> None:
-        """Construct and sends an Output message to the component output topic.
+        """Construct and send an Output message to the component output topic.
 
         An asynchronous method which constructs an Output message tagged with the
         component name and sends it to the output topic of this component.
