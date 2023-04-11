@@ -72,11 +72,11 @@ class SystemSimulationComponent(BaseComponent):
             changes (Changes): A mapping of changed component inputs and their new
                 values.
         """
-        on_tick_task = asyncio.create_task(self.scheduler.on_tick(time, changes))
+        on_tick = asyncio.create_task(self.scheduler.on_tick(time, changes))
         error_state = asyncio.create_task(self.scheduler.error.wait())
 
         done, _ = await asyncio.wait(
-            [on_tick_task, error_state],
+            [on_tick, error_state],
             return_when=asyncio.tasks.FIRST_COMPLETED,
         )
         if error_state in done:
@@ -86,7 +86,7 @@ class SystemSimulationComponent(BaseComponent):
             )
 
         else:
-            output_changes, call_in = on_tick_task.result()
+            output_changes, call_in = on_tick.result()
             await self.output(time, output_changes, call_in)
 
     async def stop_component(self) -> None:
