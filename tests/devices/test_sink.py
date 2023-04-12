@@ -30,4 +30,4 @@ def test_sink_update_method(sink: SinkDevice, caplog):
     record: logging.LogRecord = caplog.records[0]
 
     assert record.levelname == "DEBUG"
-    assert record.message == "Sunk {}".format(inputs)
+    assert record.message == f"Sunk {inputs}"
