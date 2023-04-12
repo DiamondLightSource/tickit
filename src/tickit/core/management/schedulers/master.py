@@ -1,11 +1,14 @@
 import asyncio
+import logging
 from time import time_ns
 from typing import Type, Union
 
 from tickit.core.management.event_router import InverseWiring, Wiring
 from tickit.core.management.schedulers.base import BaseScheduler
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
-from tickit.core.typedefs import ComponentID, SimTime
+from tickit.core.typedefs import ComponentException, ComponentID, SimTime
+
+LOGGER = logging.getLogger(__name__)
 
 
 class MasterScheduler(BaseScheduler):
@@ -66,8 +69,9 @@ class MasterScheduler(BaseScheduler):
         """
         await self.setup()
         await self._do_initial_tick()
-        while True:
+        while not self.error.is_set():
             await self._do_tick()
+        LOGGER.debug("Stopping Master Scheduler")
 
     async def _do_initial_tick(self):
         """Performs the initial tick of the system."""
@@ -131,3 +135,14 @@ class MasterScheduler(BaseScheduler):
             (when - self.ticker.time) / self.simulation_speed
             - (time_ns() - self.last_time)
         ) / 1e9
+
+    async def handle_component_exception(self, message: ComponentException) -> None:
+        """Handle exceptions raised from componenets by shutting down the simulation.
+
+        If a component produces an exception, the scheduler will produce a message to
+        all components in the simulation to cause them to cancel any running component
+        tasks. After which the scheduler shuts its self down.
+
+        """
+        await super().handle_component_exception(message)
+        self.ticker.finished.set()

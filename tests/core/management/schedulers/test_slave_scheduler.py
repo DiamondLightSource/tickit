@@ -1,3 +1,4 @@
+import asyncio
 from typing import Dict, Iterable
 
 import pytest
@@ -10,6 +11,7 @@ from tickit.core.management.ticker import Ticker
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import (
     Changes,
+    ComponentException,
     ComponentID,
     ComponentPort,
     Input,
@@ -49,7 +51,9 @@ def mock_raise_interrupt() -> Mock:
 def patch_ticker() -> Iterable[Mock]:
     with patch("tickit.core.management.schedulers.base.Ticker", autospec=True) as mock:
         mock.return_value = AsyncMock(spec=Ticker)
+        mock.return_value.components = ["test"]
         mock.return_value.time = SimTime(41)
+        mock.return_value.finished = asyncio.Event()
         yield mock
 
 
@@ -60,7 +64,12 @@ def expose() -> Dict[PortID, ComponentPort]:
 
 @pytest.fixture
 def slave_scheduler(
-    mock_wiring, mock_state_consumer, mock_state_producer, expose, mock_raise_interrupt
+    mock_wiring,
+    mock_state_consumer,
+    mock_state_producer,
+    expose,
+    mock_raise_interrupt,
+    patch_ticker,
 ) -> SlaveScheduler:
     return SlaveScheduler(
         mock_wiring,
@@ -199,3 +208,16 @@ async def test_slave_scheduler_schedule_interrupt_method(
     interrupt = ComponentID("interrupt")
     await slave_scheduler.schedule_interrupt(interrupt)
     assert interrupt in slave_scheduler.interrupts
+
+
+@pytest.mark.asyncio
+async def test_slave_scheduler_handle_exception_message(
+    slave_scheduler: SlaveScheduler,
+):
+    await slave_scheduler.setup()
+    message = ComponentException(
+        ComponentID("Test"), Exception("Test exception"), "test exception traceback"
+    )
+    await slave_scheduler.handle_message(message)
+    assert slave_scheduler.error.is_set()
+    assert slave_scheduler.component_error == message

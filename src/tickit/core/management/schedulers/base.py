@@ -1,3 +1,4 @@
+import asyncio
 import logging
 from abc import abstractmethod
 from typing import Dict, Optional, Set, Tuple, Type, Union
@@ -5,7 +6,15 @@ from typing import Dict, Optional, Set, Tuple, Type, Union
 from tickit.core.management.event_router import InverseWiring, Wiring
 from tickit.core.management.ticker import Ticker
 from tickit.core.state_interfaces import StateConsumer, StateProducer
-from tickit.core.typedefs import ComponentID, Input, Interrupt, Output, SimTime
+from tickit.core.typedefs import (
+    ComponentException,
+    ComponentID,
+    Input,
+    Interrupt,
+    Output,
+    SimTime,
+    StopComponent,
+)
 from tickit.utils.topic_naming import input_topic, output_topic
 
 LOGGER = logging.getLogger(__name__)
@@ -35,6 +44,8 @@ class BaseScheduler:
         self._state_producer_cls = state_producer
         self.wakeups: Dict[ComponentID, SimTime] = dict()
 
+        self.error = asyncio.Event()
+
     @abstractmethod
     async def schedule_interrupt(self, source: ComponentID) -> None:
         """An abstract asynchronous method which should schedule an interrupt
@@ -54,24 +65,30 @@ class BaseScheduler:
         """
         await self.state_producer.produce(input_topic(input.target), input)
 
-    async def handle_message(self, message: Union[Interrupt, Output]) -> None:
-        """A callback to handle interrupts or outputs produced by the state consumer.
+    async def handle_message(
+        self, message: Union[Interrupt, Output, ComponentException]
+    ) -> None:
+        """Handle messages recieved by the state consumer.
 
-        An asynchronous callback which handles interrupt and output messages produced by
-        the state consumer; For Outputs, changes are propagated and wakeups scheduled
-        if required, whilst handling of interrupts is deferred.
+        An asynchronous callback which handles Interrupt, Output and ComponentException
+        messages recieved by the state consumer. For Outputs, changes are propagated
+        and wakeups scheduled if required. For interrupts handling is deferred. For
+        exceptions, a StopComponent message is produced to each component in the system
+        to facilitate shut down.
 
         Args:
-            message (Union[Interrupt, Output]): An Interrupt or Output produced by the
-                state consumer.
+            message (Union[Interrupt, Output, ComponentException]): An Interrupt,
+                Output or ComponentException recieved by the state consumer.
         """
-        LOGGER.debug("Scheduler got {}".format(message))
+        LOGGER.debug("Scheduler ({}) got {}".format(type(self).__name__, message))
         if isinstance(message, Output):
             await self.ticker.propagate(message)
             if message.call_at is not None:
                 self.add_wakeup(message.source, message.call_at)
-        if isinstance(message, Interrupt):
+        elif isinstance(message, Interrupt):
             await self.schedule_interrupt(message.source)
+        elif isinstance(message, ComponentException):
+            await self.handle_component_exception(message)
 
     async def setup(self) -> None:
         """Instantiates and configures the ticker and state interfaces.
@@ -82,12 +99,14 @@ class BaseScheduler:
         """
         self.ticker = Ticker(self._wiring, self.update_component)
         self.state_consumer: StateConsumer[
-            Union[Interrupt, Output]
+            Union[Interrupt, Output, ComponentException]
         ] = self._state_consumer_cls(self.handle_message)
         await self.state_consumer.subscribe(
             {output_topic(component) for component in self.ticker.components}
         )
-        self.state_producer: StateProducer[Input] = self._state_producer_cls()
+        self.state_producer: StateProducer[
+            Union[Input, StopComponent, ComponentException]
+        ] = self._state_producer_cls()
 
     def add_wakeup(self, component: ComponentID, when: SimTime) -> None:
         """Adds a wakeup to the mapping.
@@ -119,3 +138,22 @@ class BaseScheduler:
             component for component, when in self.wakeups.items() if when == first
         }
         return components, first
+
+    async def handle_component_exception(self, message: ComponentException) -> None:
+        """Handle exceptions raised from componenets by shutting down the simulation.
+
+        If a component produces an exception, the scheduler will produce a message to
+        all components in the simulation to cause them to cancel any running component
+        tasks. After which the scheduler shuts its self down.
+
+        """
+        await asyncio.wait(
+            {
+                asyncio.create_task(
+                    self.state_producer.produce(input_topic(component), StopComponent())
+                )
+                for component in self.ticker.components
+            },
+            return_when=asyncio.tasks.ALL_COMPLETED,
+        )
+        self.error.set()

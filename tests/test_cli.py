@@ -52,7 +52,7 @@ def patch_read_configs() -> Iterable[Mock]:
         yield mock
 
 
-def test_cli_set_loggging_level(
+def test_cli_set_logging_level(
     patch_logging: Mock,
 ):
     runner: CliRunner = CliRunner()
@@ -64,6 +64,7 @@ def test_cli_set_loggging_level(
 def test_component_command(
     patch_run_all_forever: Mock,
     patch_read_configs: Mock,
+    event_loop,
 ):
     runner: CliRunner = CliRunner()
 
@@ -84,6 +85,7 @@ def patch_master_scheduler_run_forever_method() -> Iterable[Mock]:
 def test_scheduler(
     patch_read_configs: Mock,
     patch_master_scheduler_run_forever_method: Mock,
+    event_loop,
 ):
     runner: CliRunner = CliRunner()
 
@@ -96,6 +98,7 @@ def test_scheduler(
 def test_all(
     patch_read_configs: Mock,
     patch_master_scheduler_run_forever_method: Mock,
+    event_loop,
 ):
     runner: CliRunner = CliRunner()
 

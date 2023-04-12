@@ -76,6 +76,13 @@ class Input:
     changes: Changes
 
 
+@dataclass(frozen=True, init=True)
+class StopComponent:
+    """An immutable dataclass to register Component shutdown."""
+
+    ...
+
+
 @dataclass(frozen=True)
 class Output:
     """An immutable data container for Component outputs.
@@ -102,3 +109,16 @@ class Interrupt:
     """
 
     source: ComponentID
+
+
+@dataclass(frozen=True)
+class ComponentException:
+    """An immutable data container for raising Component exceptions.
+
+    Args:
+        component: The Component which raised an exception.
+    """
+
+    source: ComponentID
+    error: Exception
+    traceback: str
