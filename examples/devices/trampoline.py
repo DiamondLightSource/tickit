@@ -44,7 +44,7 @@ class TrampolineDevice(Device):
                 The produced update event which never contains any changes, and
                 requests a callback after the configured callback period.
         """
-        LOGGER.debug("Boing! ({}, {})".format(time, inputs))
+        LOGGER.debug(f"Boing! ({time}, {inputs})")
         return DeviceUpdate(
             TrampolineDevice.Outputs(), SimTime(time + self.callback_period)
         )
@@ -84,9 +84,7 @@ class RandomTrampolineDevice(Device):
                 and requests a callback after the configured callback period.
         """
         output = randint(0, 255)
-        LOGGER.debug(
-            "Boing! (delta: {}, inputs: {}, output: {})".format(time, inputs, output)
-        )
+        LOGGER.debug(f"Boing! (delta: {time}, inputs: {inputs}, output: {output})")
         return DeviceUpdate(
             RandomTrampolineDevice.Outputs(output=output),
             SimTime(time + self.callback_period),
