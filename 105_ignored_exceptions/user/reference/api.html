@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>API &#8212; tickit 0.2.1.dev34+g21795a9 documentation</title>
+    <title>API &#8212; tickit 0.2.1.dev42+gccd7786 documentation</title>
   
   
   
@@ -844,7 +844,8 @@ subclasses to facilitate automatic deserialization.</p>
 <dd><p>Call on_tick when an input is recieved.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>input</strong> (<a class="reference internal" href="#tickit.core.typedefs.Input" title="tickit.core.typedefs.Input"><em>Input</em></a>) – An immutable data container for Component inputs.</p>
+<dd class="field-odd"><p><strong>message</strong> (<em>Union</em><em>[</em><a class="reference internal" href="#tickit.core.typedefs.Input" title="tickit.core.typedefs.Input"><em>Input</em></a><em>, </em><a class="reference internal" href="#tickit.core.typedefs.StopComponent" title="tickit.core.typedefs.StopComponent"><em>StopComponent</em></a><em>]</em><em>)</em>) – An immutable data container for any
+message a component recieves.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -852,7 +853,7 @@ subclasses to facilitate automatic deserialization.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tickit.core.components.component.BaseComponent.output">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SimTime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">changes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Changes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">call_at</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><span class="pre">SimTime</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/core/components/component.html#BaseComponent.output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.components.component.BaseComponent.output" title="Permalink to this definition">#</a></dt>
-<dd><p>Construct and sends an Output message to the component output topic.</p>
+<dd><p>Construct and send an Output message to the component output topic.</p>
 <p>An asynchronous method which constructs an Output message tagged with the
 component name and sends it to the output topic of this component.</p>
 <dl class="field-list simple">
@@ -1072,17 +1073,16 @@ component.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tickit.core.management.schedulers.base.BaseScheduler.handle_message">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#tickit.core.typedefs.Interrupt" title="tickit.core.typedefs.Interrupt"><span class="pre">Interrupt</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#tickit.core.typedefs.Output" title="tickit.core.typedefs.Output"><span class="pre">Output</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#tickit.core.typedefs.ComponentException" title="tickit.core.typedefs.ComponentException"><span class="pre">ComponentException</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/core/management/schedulers/base.html#BaseScheduler.handle_message"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.management.schedulers.base.BaseScheduler.handle_message" title="Permalink to this definition">#</a></dt>
-<dd><p>A callback to handle interrupts, outputs or exceptions produced by the state
-consumer.</p>
-<p>An asynchronous callback which handles interrupt, Output and ComponentException
-messages produced by the state consumer; For Outputs, changes are propagated
-and wakeups scheduled if required. For interrupts handling is deferred.</p>
+<dd><p>Handle messages recieved by the state consumer.</p>
+<p>An asynchronous callback which handles Interrupt, Output and ComponentException
+messages recieved by the state consumer. For Outputs, changes are propagated
+and wakeups scheduled if required. For interrupts handling is deferred. For
+exceptions, a StopComponent message is produced to each component in the system
+to facilitate shut down.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>message</strong> (<em>Union</em><em>[</em><a class="reference internal" href="#tickit.core.typedefs.Interrupt" title="tickit.core.typedefs.Interrupt"><em>Interrupt</em></a><em>, </em><a class="reference internal" href="#tickit.core.typedefs.Output" title="tickit.core.typedefs.Output"><em>Output</em></a><em>, </em><a class="reference internal" href="#tickit.core.typedefs.ComponentException" title="tickit.core.typedefs.ComponentException"><em>ComponentException</em></a><em>]</em>) – An Interrupt,</p></li>
-<li><p><strong>consumer.</strong> (<a class="reference internal" href="#tickit.core.typedefs.Output" title="tickit.core.typedefs.Output"><em>Output</em></a><em> or </em><em>ComponentException produced by the state</em>) – </p></li>
-</ul>
+<dd class="field-odd"><p><strong>message</strong> (<em>Union</em><em>[</em><a class="reference internal" href="#tickit.core.typedefs.Interrupt" title="tickit.core.typedefs.Interrupt"><em>Interrupt</em></a><em>, </em><a class="reference internal" href="#tickit.core.typedefs.Output" title="tickit.core.typedefs.Output"><em>Output</em></a><em>, </em><a class="reference internal" href="#tickit.core.typedefs.ComponentException" title="tickit.core.typedefs.ComponentException"><em>ComponentException</em></a><em>]</em>) – An Interrupt,
+Output or ComponentException recieved by the state consumer.</p>
 </dd>
 </dl>
 </dd></dl>
