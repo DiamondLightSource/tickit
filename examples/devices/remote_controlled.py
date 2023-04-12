@@ -47,8 +47,7 @@ class RemoteControlledDevice(Device):
         self.hidden = initial_hidden
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
-        """The update method which produces an output mapping containing the observed
-        value.
+        """Produces an output mapping containing the observed value.
 
         Args:
             time (SimTime): The current simulation time (in nanoseconds).
@@ -86,8 +85,7 @@ class RemoteControlledAdapter(ComposedAdapter[bytes]):
         )
 
     async def on_connect(self) -> AsyncIterable[Optional[bytes]]:
-        """An on_connect method which continiously sends the unobserved value to the
-        client.
+        """Continiously sends the unobserved value to the client.
 
         Returns:
             AsyncIterable[bytes]:
