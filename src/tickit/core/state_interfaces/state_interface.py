@@ -100,9 +100,7 @@ def add(
             consumers[name] = (interface, external)
         else:
             warn(
-                RuntimeWarning(
-                    "{} is not {} or {}".format(interface, StateConsumer, StateProducer)
-                )
+                RuntimeWarning(f"{interface} is not {StateConsumer} or {StateProducer}")
             )
         return interface
 
