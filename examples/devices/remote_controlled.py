@@ -95,7 +95,7 @@ class RemoteControlledAdapter(ComposedAdapter[bytes]):
         """
         while True:
             await asyncio.sleep(5.0)
-            yield "U is {}".format(self.device.unobserved).encode("utf-8")
+            yield f"U is {self.device.unobserved}".encode("utf-8")
 
     @RegexCommand(b"\x01")
     async def get_observed_bytes(self) -> bytes:
@@ -139,7 +139,7 @@ class RemoteControlledAdapter(ComposedAdapter[bytes]):
             bytes: The utf-8 encoded value of observed.
         """
         self.device.observed = value
-        return "Observed set to {}".format(self.device.observed).encode("utf-8")
+        return f"Observed set to {self.device.observed}".encode("utf-8")
 
     @RegexCommand(b"\x02")
     async def get_unobserved_bytes(self) -> bytes:
@@ -183,7 +183,7 @@ class RemoteControlledAdapter(ComposedAdapter[bytes]):
             bytes: The utf-8 encoded value of unobserved.
         """
         self.device.unobserved = value
-        return "Unobserved set to {}".format(self.device.unobserved).encode("utf-8")
+        return f"Unobserved set to {self.device.unobserved}".encode("utf-8")
 
     @RegexCommand(chr(0x1F95A), format="utf-8")
     async def misc(self) -> bytes:
@@ -222,7 +222,7 @@ class RemoteControlledAdapter(ComposedAdapter[bytes]):
         """
         for i in range(1, int(n)):
             await asyncio.sleep(1.0)
-            yield "Observed is {}".format(self.device.observed).encode("utf-8")
+            yield f"Observed is {self.device.observed}".encode("utf-8")
 
 
 @dataclass
