@@ -19,8 +19,7 @@ class SinkDevice(Device):
     Outputs: TypedDict = TypedDict("Outputs", {})
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
-        """The update method which logs the inputs at debug level and produces no
-        outputs.
+        """The update method which logs the inputs and produces no outputs.
 
         Args:
             time (SimTime): The current simulation time (in nanoseconds).
