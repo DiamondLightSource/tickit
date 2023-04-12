@@ -30,8 +30,7 @@ is_tagged_union: Dict[Type[Any], bool] = DefaultDict(lambda: False)
 
 
 def as_tagged_union(cls: Cls) -> Cls:
-    """A decorator to make a config base class which can deserialize aliased
-    sub-classes.
+    """A decorator to make a config base class that can deserialize aliased sub-classes.
 
     A decorator which makes a config class the root of a tagged union of sub-classes
     allowing for serialization and deserialization of config trees by class alias. The
@@ -46,8 +45,9 @@ def as_tagged_union(cls: Cls) -> Cls:
         Cls: The modified config base class.
     """
 
-    # This will only be used if we want to generate a json schema (which we will)
-    def deserialization() -> Conversion:
+    def deserialization() -> (
+        Conversion
+    ):  # This will only be used if we want to generate a json schema (which we will)
         annotations: Dict[str, Any] = {}
         deserialization_namespace: Dict[str, Any] = {"__annotations__": annotations}
         for sub in rec_subclasses(cls):
