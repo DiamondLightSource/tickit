@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.state_interfaces.state_interface &#8212; tickit 0.2.2.dev14+g9107a4b documentation</title>
+    <title>tickit.core.state_interfaces.state_interface &#8212; tickit 0.2.2.dev19+g254cdc3 documentation</title>
   
   
   
@@ -521,9 +521,7 @@ document.write(`
             <span class="n">consumers</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">interface</span><span class="p">,</span> <span class="n">external</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">warn</span><span class="p">(</span>
-                <span class="ne">RuntimeWarning</span><span class="p">(</span>
-                    <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> is not </span><span class="si">{}</span><span class="s2"> or </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">interface</span><span class="p">,</span> <span class="n">StateConsumer</span><span class="p">,</span> <span class="n">StateProducer</span><span class="p">)</span>
-                <span class="p">)</span>
+                <span class="ne">RuntimeWarning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">interface</span><span class="si">}</span><span class="s2"> is not </span><span class="si">{</span><span class="n">StateConsumer</span><span class="si">}</span><span class="s2"> or </span><span class="si">{</span><span class="n">StateProducer</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">interface</span>
 
