@@ -18,8 +18,7 @@ class SplittingInterpreter(Interpreter[AnyStr]):
         interpreter: Interpreter[AnyStr],
         message_delimiter: AnyStr,
     ) -> None:
-        """A decorator for an interpreter that splits a message into multiple
-        sub-messages.
+        """An interpreter decorator that splits a message into multiple sub-messages.
 
         Args:
             interpreter (Interpreter): The interpreter messages are passed on to.
