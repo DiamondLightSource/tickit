@@ -22,7 +22,7 @@ def run_all(awaitables: Iterable[Awaitable[None]]) -> List[asyncio.Task]:
         except Exception as e:
             # These are prints rather than logging because we just want the
             # result going directly to stdout.
-            print("Task exception: {}".format(e))
+            print(f"Task exception: {e}")
             print(traceback.format_exc())
 
     return [
