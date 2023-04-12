@@ -80,7 +80,7 @@ class BaseScheduler:
             message (Union[Interrupt, Output, ComponentException]): An Interrupt,
                 Output or ComponentException recieved by the state consumer.
         """
-        LOGGER.debug("Scheduler ({}) got {}".format(type(self).__name__, message))
+        LOGGER.debug(f"Scheduler ({type(self).__name__}) got {message}")
         if isinstance(message, Output):
             await self.ticker.propagate(message)
             if message.call_at is not None:
@@ -115,7 +115,7 @@ class BaseScheduler:
             component (ComponentID): The component which should be updated.
             when (SimTime): The simulation time at which the update should occur.
         """
-        LOGGER.debug("Scheduling {} for wakeup at {}".format(component, when))
+        LOGGER.debug(f"Scheduling {component} for wakeup at {when}")
         self.wakeups[component] = when
 
     def get_first_wakeups(self) -> Tuple[Set[ComponentID], Optional[SimTime]]:
