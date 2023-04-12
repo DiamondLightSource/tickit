@@ -60,7 +60,7 @@ class EpicsAdapter(Adapter):
         for record, getter in self.interrupt_records.items():
             current_value = getter()
             record.set(current_value)
-            print("Record {} updated to : {}".format(record.name, current_value))
+            print(f"Record {record.name} updated to : {current_value}")
 
     @abstractmethod
     def on_db_load(self) -> None:
