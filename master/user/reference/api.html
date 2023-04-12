@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>API &#8212; tickit 0.2.1.dev8+g7732a10 documentation</title>
+    <title>API &#8212; tickit 0.2.1.dev9+gf1c3012 documentation</title>
   
   
   
@@ -19,12 +19,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
   
-  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
@@ -35,8 +35,8 @@
     <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
@@ -747,6 +747,12 @@ component:port.</p>
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="tickit.core.typedefs.StopComponent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.core.typedefs.</span></span><span class="sig-name descname"><span class="pre">StopComponent</span></span><a class="reference internal" href="../../_modules/tickit/core/typedefs.html#StopComponent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.typedefs.StopComponent" title="Permalink to this definition">#</a></dt>
+<dd><p>An immutable dataclass to register Component shutdown.</p>
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="tickit.core.typedefs.Output">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.core.typedefs.</span></span><span class="sig-name descname"><span class="pre">Output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ComponentID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SimTime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">changes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Changes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">call_at</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><span class="pre">SimTime</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/core/typedefs.html#Output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.typedefs.Output" title="Permalink to this definition">#</a></dt>
 <dd><p>An immutable data container for Component outputs.</p>
@@ -773,6 +779,17 @@ component:port.</p>
 </dl>
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="tickit.core.typedefs.ComponentException">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.core.typedefs.</span></span><span class="sig-name descname"><span class="pre">ComponentException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ComponentID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.11)"><span class="pre">Exception</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">traceback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/core/typedefs.html#ComponentException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.typedefs.ComponentException" title="Permalink to this definition">#</a></dt>
+<dd><p>An immutable data container for raising Component exceptions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>component</strong> – The Component which raised an exception.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 <span class="target" id="module-tickit.core.components"></span><section id="module-tickit.core.components.component">
 <span id="tickit-core-components"></span><h4><code class="docutils literal notranslate"><span class="pre">tickit.core.components</span></code><a class="headerlink" href="#module-tickit.core.components.component" title="Permalink to this heading">#</a></h4>
@@ -789,13 +806,13 @@ SystemSimulation which hosts a SlaveScheduler and internal Components).</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tickit.core.components.component.Component.run_forever">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run_forever</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state_consumer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Type" title="(in Python v3.11)"><span class="pre">Type</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#tickit.core.state_interfaces.state_interface.StateConsumer" title="tickit.core.state_interfaces.state_interface.StateConsumer"><span class="pre">StateConsumer</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state_producer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Type" title="(in Python v3.11)"><span class="pre">Type</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#tickit.core.state_interfaces.state_interface.StateProducer" title="tickit.core.state_interfaces.state_interface.StateProducer"><span class="pre">StateProducer</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/core/components/component.html#Component.run_forever"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.components.component.Component.run_forever" title="Permalink to this definition">#</a></dt>
-<dd><p>An asynchronous method allowing indefinite running of core logic.</p>
+<dd><p>Asynchronous method allowing indefinite running of core logic.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tickit.core.components.component.Component.on_tick">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">on_tick</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SimTime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">changes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Changes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/core/components/component.html#Component.on_tick"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.components.component.Component.on_tick" title="Permalink to this definition">#</a></dt>
-<dd><p>An asynchronous method called whenever the component is to be updated.</p>
+<dd><p>Asynchronous method called whenever the component is to be updated.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -823,11 +840,12 @@ subclasses to facilitate automatic deserialization.</p>
 <dd><p>A base class for compnents, implementing state interface related methods.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tickit.core.components.component.BaseComponent.handle_input">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.typedefs.Input" title="tickit.core.typedefs.Input"><span class="pre">Input</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/core/components/component.html#BaseComponent.handle_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.components.component.BaseComponent.handle_input" title="Permalink to this definition">#</a></dt>
-<dd><p>Calls on_tick when an input is recieved.</p>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#tickit.core.typedefs.Input" title="tickit.core.typedefs.Input"><span class="pre">Input</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#tickit.core.typedefs.StopComponent" title="tickit.core.typedefs.StopComponent"><span class="pre">StopComponent</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/core/components/component.html#BaseComponent.handle_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.components.component.BaseComponent.handle_input" title="Permalink to this definition">#</a></dt>
+<dd><p>Call on_tick when an input is recieved.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>input</strong> (<a class="reference internal" href="#tickit.core.typedefs.Input" title="tickit.core.typedefs.Input"><em>Input</em></a>) – An immutable data container for Component inputs.</p>
+<dd class="field-odd"><p><strong>message</strong> (<em>Union</em><em>[</em><a class="reference internal" href="#tickit.core.typedefs.Input" title="tickit.core.typedefs.Input"><em>Input</em></a><em>, </em><a class="reference internal" href="#tickit.core.typedefs.StopComponent" title="tickit.core.typedefs.StopComponent"><em>StopComponent</em></a><em>]</em><em>)</em>) – An immutable data container for any
+message a component recieves.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -835,7 +853,7 @@ subclasses to facilitate automatic deserialization.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tickit.core.components.component.BaseComponent.output">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SimTime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">changes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Changes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">call_at</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><span class="pre">SimTime</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/core/components/component.html#BaseComponent.output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.components.component.BaseComponent.output" title="Permalink to this definition">#</a></dt>
-<dd><p>Constructs and sends an Output message to the component output topic.</p>
+<dd><p>Construct and send an Output message to the component output topic.</p>
 <p>An asynchronous method which constructs an Output message tagged with the
 component name and sends it to the output topic of this component.</p>
 <dl class="field-list simple">
@@ -854,7 +872,7 @@ requests to be awoken.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="tickit.core.components.component.BaseComponent.raise_interrupt">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">raise_interrupt</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/core/components/component.html#BaseComponent.raise_interrupt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.components.component.BaseComponent.raise_interrupt" title="Permalink to this definition">#</a></dt>
-<dd><p>Sends an Interrupt message to the component output topic.</p>
+<dd><p>Send an Interrupt message to the component output topic.</p>
 <p>An asynchronous method whicb constructs an Interrupt message tagged with the
 component name and sends it to the output topic of this component.</p>
 </dd></dl>
@@ -862,10 +880,10 @@ component name and sends it to the output topic of this component.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tickit.core.components.component.BaseComponent.run_forever">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run_forever</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state_consumer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Type" title="(in Python v3.11)"><span class="pre">Type</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#tickit.core.state_interfaces.state_interface.StateConsumer" title="tickit.core.state_interfaces.state_interface.StateConsumer"><span class="pre">StateConsumer</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state_producer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Type" title="(in Python v3.11)"><span class="pre">Type</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#tickit.core.state_interfaces.state_interface.StateProducer" title="tickit.core.state_interfaces.state_interface.StateProducer"><span class="pre">StateProducer</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/core/components/component.html#BaseComponent.run_forever"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.components.component.BaseComponent.run_forever" title="Permalink to this definition">#</a></dt>
-<dd><p>Creates and configures a state consumer and state producer.</p>
+<dd><p>Create and configures a state consumer and state producer.</p>
 <p>An asynchronous method which creates a state consumer which is subscribed to
 the input topic of the component and calls back to handle_input, and a state
-producer to produce Interrupt or Output messages.</p>
+producer to produce Interrupt, Output or ComponentException messages.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -884,6 +902,12 @@ values.</p></li>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="tickit.core.components.component.BaseComponent.stop_component">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stop_component</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/core/components/component.html#BaseComponent.stop_component"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.components.component.BaseComponent.stop_component" title="Permalink to this definition">#</a></dt>
+<dd><p>Abstract asynchronous method which cancels the running component tasks.</p>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -891,7 +915,7 @@ values.</p></li>
 <h5><code class="docutils literal notranslate"><span class="pre">tickit.core.components.device_simulation</span></code><a class="headerlink" href="#tickit-core-components-device-simulation" title="Permalink to this heading">#</a></h5>
 <dl class="py class">
 <dt class="sig sig-object py" id="tickit.core.components.device_simulation.DeviceSimulation">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.core.components.device_simulation.</span></span><span class="sig-name descname"><span class="pre">DeviceSimulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name:</span> <span class="pre">~tickit.core.typedefs.ComponentID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device:</span> <span class="pre">~tickit.core.device.Device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adapters:</span> <span class="pre">~typing.List[~tickit.core.adapter.Adapter]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/core/components/device_simulation.html#DeviceSimulation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.components.device_simulation.DeviceSimulation" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.core.components.device_simulation.</span></span><span class="sig-name descname"><span class="pre">DeviceSimulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name:</span> <span class="pre">~tickit.core.typedefs.ComponentID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device:</span> <span class="pre">~tickit.core.device.Device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adapters:</span> <span class="pre">~typing.List[~tickit.core.adapter.Adapter]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_tasks:</span> <span class="pre">~typing.List[~_asyncio.Task]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/core/components/device_simulation.html#DeviceSimulation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.components.device_simulation.DeviceSimulation" title="Permalink to this definition">#</a></dt>
 <dd><p>A component containing a device and the corresponding adapters.</p>
 <p>A component which thinly wraps a device and the corresponding adapters, this
 component delegates core behaviour to the update method of the device, whilst
@@ -899,7 +923,7 @@ allowing adapters to raise interrupts.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tickit.core.components.device_simulation.DeviceSimulation.run_forever">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run_forever</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state_consumer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Type" title="(in Python v3.11)"><span class="pre">Type</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#tickit.core.state_interfaces.state_interface.StateConsumer" title="tickit.core.state_interfaces.state_interface.StateConsumer"><span class="pre">StateConsumer</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state_producer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Type" title="(in Python v3.11)"><span class="pre">Type</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#tickit.core.state_interfaces.state_interface.StateProducer" title="tickit.core.state_interfaces.state_interface.StateProducer"><span class="pre">StateProducer</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/core/components/device_simulation.html#DeviceSimulation.run_forever"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.components.device_simulation.DeviceSimulation.run_forever" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets up state interfaces, runs adapters and blocks until any complete.</p>
+<dd><p>Set up state interfaces, run adapters and blocks until any complete.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -921,6 +945,13 @@ values.</p></li>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="tickit.core.components.device_simulation.DeviceSimulation.stop_component">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stop_component</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/core/components/device_simulation.html#DeviceSimulation.stop_component"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.components.device_simulation.DeviceSimulation.stop_component" title="Permalink to this definition">#</a></dt>
+<dd><p>Cancel all pending tasks associated with the device component.</p>
+<p>Cancels long running adapter tasks associated with the component.</p>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -928,7 +959,7 @@ values.</p></li>
 <h5><code class="docutils literal notranslate"><span class="pre">tickit.core.components.system_simulation</span></code><a class="headerlink" href="#tickit-core-components-system-simulation" title="Permalink to this heading">#</a></h5>
 <dl class="py class">
 <dt class="sig sig-object py" id="tickit.core.components.system_simulation.SystemSimulationComponent">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.core.components.system_simulation.</span></span><span class="sig-name descname"><span class="pre">SystemSimulationComponent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ComponentID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">components</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#tickit.core.components.component.ComponentConfig" title="tickit.core.components.component.ComponentConfig"><span class="pre">ComponentConfig</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.11)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><span class="pre">PortID</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#tickit.core.typedefs.ComponentPort" title="tickit.core.typedefs.ComponentPort"><span class="pre">ComponentPort</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/core/components/system_simulation.html#SystemSimulationComponent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.components.system_simulation.SystemSimulationComponent" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.core.components.system_simulation.</span></span><span class="sig-name descname"><span class="pre">SystemSimulationComponent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name:</span> <span class="pre">~tickit.core.typedefs.ComponentID,</span> <span class="pre">components:</span> <span class="pre">~typing.List[~tickit.core.components.component.ComponentConfig],</span> <span class="pre">expose:</span> <span class="pre">~typing.Dict[~tickit.core.typedefs.PortID,</span> <span class="pre">~tickit.core.typedefs.ComponentPort],</span> <span class="pre">_tasks:</span> <span class="pre">~typing.List[~_asyncio.Task]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/core/components/system_simulation.html#SystemSimulationComponent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.components.system_simulation.SystemSimulationComponent" title="Permalink to this definition">#</a></dt>
 <dd><p>A component containing a slave scheduler and several components.</p>
 <p>A component which acts as a nested tickit simulation by wrapping a slave scheduler
 and a set of internal components, this component delegates core behaviour to the
@@ -973,6 +1004,13 @@ values.</p></li>
 </ul>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tickit.core.components.system_simulation.SystemSimulationComponent.stop_component">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stop_component</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/core/components/system_simulation.html#SystemSimulationComponent.stop_component"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.components.system_simulation.SystemSimulationComponent.stop_component" title="Permalink to this definition">#</a></dt>
+<dd><p>Cancel all pending tasks associated with the System Simulation component.</p>
+<p>Cancels long running adapter tasks associated with the component.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1034,15 +1072,17 @@ component.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tickit.core.management.schedulers.base.BaseScheduler.handle_message">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#tickit.core.typedefs.Interrupt" title="tickit.core.typedefs.Interrupt"><span class="pre">Interrupt</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#tickit.core.typedefs.Output" title="tickit.core.typedefs.Output"><span class="pre">Output</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/core/management/schedulers/base.html#BaseScheduler.handle_message"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.management.schedulers.base.BaseScheduler.handle_message" title="Permalink to this definition">#</a></dt>
-<dd><p>A callback to handle interrupts or outputs produced by the state consumer.</p>
-<p>An asynchronous callback which handles interrupt and output messages produced by
-the state consumer; For Outputs, changes are propagated and wakeups scheduled
-if required, whilst handling of interrupts is deferred.</p>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#tickit.core.typedefs.Interrupt" title="tickit.core.typedefs.Interrupt"><span class="pre">Interrupt</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#tickit.core.typedefs.Output" title="tickit.core.typedefs.Output"><span class="pre">Output</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#tickit.core.typedefs.ComponentException" title="tickit.core.typedefs.ComponentException"><span class="pre">ComponentException</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/core/management/schedulers/base.html#BaseScheduler.handle_message"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.management.schedulers.base.BaseScheduler.handle_message" title="Permalink to this definition">#</a></dt>
+<dd><p>Handle messages recieved by the state consumer.</p>
+<p>An asynchronous callback which handles Interrupt, Output and ComponentException
+messages recieved by the state consumer. For Outputs, changes are propagated
+and wakeups scheduled if required. For interrupts handling is deferred. For
+exceptions, a StopComponent message is produced to each component in the system
+to facilitate shut down.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>message</strong> (<em>Union</em><em>[</em><a class="reference internal" href="#tickit.core.typedefs.Interrupt" title="tickit.core.typedefs.Interrupt"><em>Interrupt</em></a><em>, </em><a class="reference internal" href="#tickit.core.typedefs.Output" title="tickit.core.typedefs.Output"><em>Output</em></a><em>]</em>) – An Interrupt or Output produced by the
-state consumer.</p>
+<dd class="field-odd"><p><strong>message</strong> (<em>Union</em><em>[</em><a class="reference internal" href="#tickit.core.typedefs.Interrupt" title="tickit.core.typedefs.Interrupt"><em>Interrupt</em></a><em>, </em><a class="reference internal" href="#tickit.core.typedefs.Output" title="tickit.core.typedefs.Output"><em>Output</em></a><em>, </em><a class="reference internal" href="#tickit.core.typedefs.ComponentException" title="tickit.core.typedefs.ComponentException"><em>ComponentException</em></a><em>]</em>) – An Interrupt,
+Output or ComponentException recieved by the state consumer.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1091,6 +1131,15 @@ are scheduled.</p>
 <dd class="field-even"><p>Tuple[Set[ComponentID], Optional[SimTime]]</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tickit.core.management.schedulers.base.BaseScheduler.handle_component_exception">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_component_exception</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.typedefs.ComponentException" title="tickit.core.typedefs.ComponentException"><span class="pre">ComponentException</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/core/management/schedulers/base.html#BaseScheduler.handle_component_exception"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.management.schedulers.base.BaseScheduler.handle_component_exception" title="Permalink to this definition">#</a></dt>
+<dd><p>Handle exceptions raised from componenets by shutting down the simulation.</p>
+<p>If a component produces an exception, the scheduler will produce a message to
+all components in the simulation to cause them to cancel any running component
+tasks. After which the scheduler shuts its self down.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1181,6 +1230,15 @@ world time which has passed, adjusted by the simulation speed.</p>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a></p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tickit.core.management.schedulers.master.MasterScheduler.handle_component_exception">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_component_exception</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.typedefs.ComponentException" title="tickit.core.typedefs.ComponentException"><span class="pre">ComponentException</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/core/management/schedulers/master.html#MasterScheduler.handle_component_exception"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.management.schedulers.master.MasterScheduler.handle_component_exception" title="Permalink to this definition">#</a></dt>
+<dd><p>Handle exceptions raised from componenets by shutting down the simulation.</p>
+<p>If a component produces an exception, the scheduler will produce a message to
+all components in the simulation to cause them to cancel any running component
+tasks. After which the scheduler shuts its self down.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1298,6 +1356,17 @@ a set of queued interrupts and raising the interrupt to the master scheduler.</p
 <dd class="field-odd"><p><strong>source</strong> (<em>ComponentID</em>) – The source component of the interrupt.</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tickit.core.management.schedulers.slave.SlaveScheduler.handle_component_exception">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_component_exception</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.typedefs.ComponentException" title="tickit.core.typedefs.ComponentException"><span class="pre">ComponentException</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/core/management/schedulers/slave.html#SlaveScheduler.handle_component_exception"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.management.schedulers.slave.SlaveScheduler.handle_component_exception" title="Permalink to this definition">#</a></dt>
+<dd><p>Handle exceptions raised from componenets by shutting down the simulation.</p>
+<p>If a component inside a system simulation produces an exception, the slave
+scheduler will produce a message to all components it contains to cause them
+to cancel any running component tasks (adapter tasks). Afterwards the scheduler
+stores the ComponentException message, allowing its associated system simulation
+component to propogate the exception to the master scheduler.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1580,12 +1649,10 @@ output changes according to the wiring.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="tickit.core.management.ticker.Ticker">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.core.management.ticker.</span></span><span class="sig-name descname"><span class="pre">Ticker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wiring</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#tickit.core.management.event_router.Wiring" title="tickit.core.management.event_router.Wiring"><span class="pre">Wiring</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#tickit.core.management.event_router.InverseWiring" title="tickit.core.management.event_router.InverseWiring"><span class="pre">InverseWiring</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_component</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.11)"><span class="pre">Callable</span></a><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#tickit.core.typedefs.Input" title="tickit.core.typedefs.Input"><span class="pre">Input</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Coroutine" title="(in Python v3.11)"><span class="pre">Coroutine</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/core/management/ticker.html#Ticker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.management.ticker.Ticker" title="Permalink to this definition">#</a></dt>
-<dd><p>A utility class responsible for sequencing the update of components during a
-tick.</p>
+<dd><p>Utility class responsible for sequencing the update of components during a tick.</p>
 <p>A utility class responsible for sequencing the update of components during a tick
 by eagerly updating each component which has had all of its dependencies resolved.</p>
-<p>A Ticker constructor which creates an event router and performs initial
-setup.</p>
+<p>Ticker constructor which creates an event router and performs initial setup.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -1605,7 +1672,7 @@ the ticker.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="tickit.core.management.ticker.Ticker.schedule_possible_updates">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">schedule_possible_updates</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/core/management/ticker.html#Ticker.schedule_possible_updates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.management.ticker.Ticker.schedule_possible_updates" title="Permalink to this definition">#</a></dt>
-<dd><p>Updates components with resolved dependencies.</p>
+<dd><p>Update components with resolved dependencies.</p>
 <p>An asynchronous method which schedules updates for components with resolved
 dependencies, as determined by the intersection of the components first order
 dependencies and the set of componets which still require an update.</p>
@@ -2987,7 +3054,10 @@ required.</p>
               
               
                 <footer class="bd-footer-article">
-                  <!-- Previous / next buttons -->
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
        href="../explanations/glossary.html"
@@ -3007,7 +3077,10 @@ required.</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
+</div></div>
+  
 </div>
+
                 </footer>
               
             </div>
@@ -3070,8 +3143,10 @@ required.</p>
 </ul>
 </li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.typedefs.Input"><code class="docutils literal notranslate"><span class="pre">Input</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.typedefs.StopComponent"><code class="docutils literal notranslate"><span class="pre">StopComponent</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.typedefs.Output"><code class="docutils literal notranslate"><span class="pre">Output</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.typedefs.Interrupt"><code class="docutils literal notranslate"><span class="pre">Interrupt</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.typedefs.ComponentException"><code class="docutils literal notranslate"><span class="pre">ComponentException</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tickit.core.components.component"><code class="docutils literal notranslate"><span class="pre">tickit.core.components</span></code></a><ul class="nav section-nav flex-column">
@@ -3088,6 +3163,7 @@ required.</p>
 <li class="toc-h7 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.components.component.BaseComponent.raise_interrupt"><code class="docutils literal notranslate"><span class="pre">BaseComponent.raise_interrupt()</span></code></a></li>
 <li class="toc-h7 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.components.component.BaseComponent.run_forever"><code class="docutils literal notranslate"><span class="pre">BaseComponent.run_forever()</span></code></a></li>
 <li class="toc-h7 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.components.component.BaseComponent.on_tick"><code class="docutils literal notranslate"><span class="pre">BaseComponent.on_tick()</span></code></a></li>
+<li class="toc-h7 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.components.component.BaseComponent.stop_component"><code class="docutils literal notranslate"><span class="pre">BaseComponent.stop_component()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -3096,6 +3172,7 @@ required.</p>
 <li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.components.device_simulation.DeviceSimulation"><code class="docutils literal notranslate"><span class="pre">DeviceSimulation</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h7 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.components.device_simulation.DeviceSimulation.run_forever"><code class="docutils literal notranslate"><span class="pre">DeviceSimulation.run_forever()</span></code></a></li>
 <li class="toc-h7 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.components.device_simulation.DeviceSimulation.on_tick"><code class="docutils literal notranslate"><span class="pre">DeviceSimulation.on_tick()</span></code></a></li>
+<li class="toc-h7 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.components.device_simulation.DeviceSimulation.stop_component"><code class="docutils literal notranslate"><span class="pre">DeviceSimulation.stop_component()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -3106,6 +3183,7 @@ required.</p>
 <li class="toc-h7 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.components.system_simulation.SystemSimulationComponent.expose"><code class="docutils literal notranslate"><span class="pre">SystemSimulationComponent.expose</span></code></a></li>
 <li class="toc-h7 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.components.system_simulation.SystemSimulationComponent.run_forever"><code class="docutils literal notranslate"><span class="pre">SystemSimulationComponent.run_forever()</span></code></a></li>
 <li class="toc-h7 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.components.system_simulation.SystemSimulationComponent.on_tick"><code class="docutils literal notranslate"><span class="pre">SystemSimulationComponent.on_tick()</span></code></a></li>
+<li class="toc-h7 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.components.system_simulation.SystemSimulationComponent.stop_component"><code class="docutils literal notranslate"><span class="pre">SystemSimulationComponent.stop_component()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.components.system_simulation.SystemSimulation"><code class="docutils literal notranslate"><span class="pre">SystemSimulation</span></code></a></li>
@@ -3123,6 +3201,7 @@ required.</p>
 <li class="toc-h8 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.management.schedulers.base.BaseScheduler.setup"><code class="docutils literal notranslate"><span class="pre">BaseScheduler.setup()</span></code></a></li>
 <li class="toc-h8 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.management.schedulers.base.BaseScheduler.add_wakeup"><code class="docutils literal notranslate"><span class="pre">BaseScheduler.add_wakeup()</span></code></a></li>
 <li class="toc-h8 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.management.schedulers.base.BaseScheduler.get_first_wakeups"><code class="docutils literal notranslate"><span class="pre">BaseScheduler.get_first_wakeups()</span></code></a></li>
+<li class="toc-h8 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.management.schedulers.base.BaseScheduler.handle_component_exception"><code class="docutils literal notranslate"><span class="pre">BaseScheduler.handle_component_exception()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -3134,6 +3213,7 @@ required.</p>
 <li class="toc-h8 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.management.schedulers.master.MasterScheduler.run_forever"><code class="docutils literal notranslate"><span class="pre">MasterScheduler.run_forever()</span></code></a></li>
 <li class="toc-h8 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.management.schedulers.master.MasterScheduler.schedule_interrupt"><code class="docutils literal notranslate"><span class="pre">MasterScheduler.schedule_interrupt()</span></code></a></li>
 <li class="toc-h8 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.management.schedulers.master.MasterScheduler.sleep_time"><code class="docutils literal notranslate"><span class="pre">MasterScheduler.sleep_time()</span></code></a></li>
+<li class="toc-h8 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.management.schedulers.master.MasterScheduler.handle_component_exception"><code class="docutils literal notranslate"><span class="pre">MasterScheduler.handle_component_exception()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -3145,6 +3225,7 @@ required.</p>
 <li class="toc-h8 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.management.schedulers.slave.SlaveScheduler.on_tick"><code class="docutils literal notranslate"><span class="pre">SlaveScheduler.on_tick()</span></code></a></li>
 <li class="toc-h8 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.management.schedulers.slave.SlaveScheduler.run_forever"><code class="docutils literal notranslate"><span class="pre">SlaveScheduler.run_forever()</span></code></a></li>
 <li class="toc-h8 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.management.schedulers.slave.SlaveScheduler.schedule_interrupt"><code class="docutils literal notranslate"><span class="pre">SlaveScheduler.schedule_interrupt()</span></code></a></li>
+<li class="toc-h8 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.management.schedulers.slave.SlaveScheduler.handle_component_exception"><code class="docutils literal notranslate"><span class="pre">SlaveScheduler.handle_component_exception()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -3467,7 +3548,7 @@ required.</p>
             
           </div>
           <footer class="bd-footer-content">
-            <div class="bd-footer-content__inner"></div>
+            
           </footer>
         
       </main>
@@ -3475,8 +3556,8 @@ required.</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -3485,7 +3566,7 @@ required.</p>
     <div class="footer-items__end">
       
         <div class="footer-item"><p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.1.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
 </p></div>
       
     </div>

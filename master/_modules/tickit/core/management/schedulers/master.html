@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.management.schedulers.master &#8212; tickit 0.2.1.dev8+g7732a10 documentation</title>
+    <title>tickit.core.management.schedulers.master &#8212; tickit 0.2.1.dev9+gf1c3012 documentation</title>
   
   
   
@@ -18,12 +18,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../../../_static/styles/theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
-<link href="../../../../../_static/styles/bootstrap.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
-<link href="../../../../../_static/styles/pydata-sphinx-theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+  <link href="../../../../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
   
-  <link href="../../../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+  <link href="../../../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
@@ -34,8 +34,8 @@
     <link rel="stylesheet" type="text/css" href="../../../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../../../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d" />
-<link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d" />
+  <link rel="preload" as="script" href="../../../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
     <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
     <script src="../../../../../_static/jquery.js"></script>
@@ -420,13 +420,16 @@ document.write(`
                   
   <h1>Source code for tickit.core.management.schedulers.master</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time_ns</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">from</span> <span class="nn">tickit.core.management.event_router</span> <span class="kn">import</span> <span class="n">InverseWiring</span><span class="p">,</span> <span class="n">Wiring</span>
 <span class="kn">from</span> <span class="nn">tickit.core.management.schedulers.base</span> <span class="kn">import</span> <span class="n">BaseScheduler</span>
 <span class="kn">from</span> <span class="nn">tickit.core.state_interfaces.state_interface</span> <span class="kn">import</span> <span class="n">StateConsumer</span><span class="p">,</span> <span class="n">StateProducer</span>
-<span class="kn">from</span> <span class="nn">tickit.core.typedefs</span> <span class="kn">import</span> <span class="n">ComponentID</span><span class="p">,</span> <span class="n">SimTime</span>
+<span class="kn">from</span> <span class="nn">tickit.core.typedefs</span> <span class="kn">import</span> <span class="n">ComponentException</span><span class="p">,</span> <span class="n">ComponentID</span><span class="p">,</span> <span class="n">SimTime</span>
+
+<span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="MasterScheduler"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.master.MasterScheduler">[docs]</a><span class="k">class</span> <span class="nc">MasterScheduler</span><span class="p">(</span><span class="n">BaseScheduler</span><span class="p">):</span>
@@ -487,8 +490,9 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_initial_tick</span><span class="p">()</span>
-        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_tick</span><span class="p">()</span></div>
+        <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_tick</span><span class="p">()</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Stopping Master Scheduler&quot;</span><span class="p">)</span></div>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">_do_initial_tick</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs the initial tick of the system.&quot;&quot;&quot;</span>
@@ -551,7 +555,18 @@ document.write(`
         <span class="k">return</span> <span class="p">(</span>
             <span class="p">(</span><span class="n">when</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ticker</span><span class="o">.</span><span class="n">time</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulation_speed</span>
             <span class="o">-</span> <span class="p">(</span><span class="n">time_ns</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_time</span><span class="p">)</span>
-        <span class="p">)</span> <span class="o">/</span> <span class="mf">1e9</span></div></div>
+        <span class="p">)</span> <span class="o">/</span> <span class="mf">1e9</span></div>
+
+<div class="viewcode-block" id="MasterScheduler.handle_component_exception"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.master.MasterScheduler.handle_component_exception">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_component_exception</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">ComponentException</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle exceptions raised from componenets by shutting down the simulation.</span>
+
+<span class="sd">        If a component produces an exception, the scheduler will produce a message to</span>
+<span class="sd">        all components in the simulation to cause them to cancel any running component</span>
+<span class="sd">        tasks. After which the scheduler shuts its self down.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">handle_component_exception</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ticker</span><span class="o">.</span><span class="n">finished</span><span class="o">.</span><span class="n">set</span><span class="p">()</span></div></div>
 </pre></div>
 
                 </article>
@@ -559,9 +574,15 @@ document.write(`
               
               
                 <footer class="bd-footer-article">
-                  <!-- Previous / next buttons -->
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
+</div></div>
+  
 </div>
+
                 </footer>
               
             </div>
@@ -571,7 +592,7 @@ document.write(`
             
           </div>
           <footer class="bd-footer-content">
-            <div class="bd-footer-content__inner"></div>
+            
           </footer>
         
       </main>
@@ -579,8 +600,8 @@ document.write(`
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../../../../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d"></script>
-<script src="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d"></script>
+  <script src="../../../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -589,7 +610,7 @@ document.write(`
     <div class="footer-items__end">
       
         <div class="footer-item"><p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.1.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
 </p></div>
       
     </div>
