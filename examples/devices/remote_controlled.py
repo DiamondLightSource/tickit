@@ -201,7 +201,7 @@ class RemoteControlledAdapter(ComposedAdapter[bytes]):
         Args:
             value (float): The new value of hidden.
         """
-        LOGGER.info("Hidden set to {}".format(self.device.hidden))
+        LOGGER.info(f"Hidden set to {self.device.hidden}")
 
     @RegexCommand(r"H", format="utf-8")
     async def get_hidden(self) -> None:
