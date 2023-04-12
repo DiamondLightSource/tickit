@@ -64,8 +64,7 @@ class InternalStateServer(metaclass=Singleton):
             await subscriber.add_message(message)
 
     async def subscribe(self, consumer: "InternalStateConsumer", topics: Iterable[str]):
-        """Subscribes the consumer to the given topics, so it is notified a message is
-        added.
+        """Subscribes the consumer to the given topics.
 
         An asynchronous method which adds a consumer to the subscriber list of each
         topic in the topics iterable. On subscription, previous messages on the topic
@@ -130,7 +129,9 @@ class InternalStateConsumer(Generic[C]):
         self.callback = callback
 
     async def subscribe(self, topics: Iterable[str]) -> None:
-        """Subscribes the consumer to the given topics, new messages are passed to the
+        """Subscribes the consumer to the given topics.
+
+        Subscribes the consumer to the given topics, new messages are passed to the
         callback.
 
         Args:
