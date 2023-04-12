@@ -33,7 +33,9 @@ class ComponentPort:
 
     @serializer
     def serialize(self) -> str:
-        """An apischema serialization method which returns a string of component:port.
+        """Returns a string of component:port.
+
+        An apischema serialization method which returns a string of component:port.
 
         Returns:
             str: The serialized ComponentPort, in format component:port.
@@ -43,8 +45,10 @@ class ComponentPort:
     @deserializer
     @staticmethod
     def deserialize(data: str) -> "ComponentPort":
-        """An apischema deserialization method which builds a from a string of
-        component:port.
+        """Builds a ComponentPort from a string of component:port.
+
+        An apischema deserialization method which builds a ComponentPort from a string
+        of component:port.
 
         Returns:
             ComponentPort: The deserialized ComponentPort.
