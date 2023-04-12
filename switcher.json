@@ -50,5 +50,9 @@
   {
     "version": "logging_fstrings",
     "url": "https://dls-controls.github.io/tickit/logging_fstrings/"
+  },
+  {
+    "version": "update_docstrings",
+    "url": "https://dls-controls.github.io/tickit/update_docstrings/"
   }
 ]
