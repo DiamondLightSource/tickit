@@ -31,7 +31,7 @@ class SinkDevice(Device):
                 The produced update event which never contains any changes, and never
                 requests a callback.
         """
-        LOGGER.debug("Sunk {}".format({k: v for k, v in inputs.items()}))
+        LOGGER.debug(f"Sunk { {k: v for k, v in inputs.items()} }")
         return DeviceUpdate(SinkDevice.Outputs(), None)
 
 
