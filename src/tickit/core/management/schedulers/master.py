@@ -145,7 +145,4 @@ class MasterScheduler(BaseScheduler):
 
         """
         await super().handle_component_exception(message)
-        # Might need to check order of 'self.ticker.finished.set()' and
-        # ' self.error.set()' when running with an error
-        # that is not in "do inital tick"
         self.ticker.finished.set()
