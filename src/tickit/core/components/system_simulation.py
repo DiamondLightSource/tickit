@@ -37,8 +37,7 @@ class SystemSimulationComponent(BaseComponent):
     async def run_forever(
         self, state_consumer: Type[StateConsumer], state_producer: Type[StateProducer]
     ) -> None:
-        """Sets up state interfaces, the scheduler, and components and blocks until any
-        complete.
+        """Sets up state interfaces, the scheduler, and components to run continuously.
 
         An asynchronous method starts the run_forever method of each component, runs
         the scheduler, and sets up externally facing state interfaces. The method
