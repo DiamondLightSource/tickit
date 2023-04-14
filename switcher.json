@@ -48,6 +48,10 @@
     "url": "https://dls-controls.github.io/tickit/105_ignored_exceptions/"
   },
   {
+    "version": "96_isolated_components",
+    "url": "https://dls-controls.github.io/tickit/96_isolated_components/"
+  },
+  {
     "version": "logging_fstrings",
     "url": "https://dls-controls.github.io/tickit/logging_fstrings/"
   },
