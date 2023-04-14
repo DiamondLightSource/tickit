@@ -121,7 +121,9 @@ class InverseWiring(Default_InverseWiring_Struct):
         Returns:
             InverseWiring: A mapping of component input ports to component output ports.
         """
-        return cls({config.name: config.inputs for config in configs})
+        wiring = cls({config.name: config.inputs for config in configs})
+        print(wiring)
+        return wiring
 
 
 class EventRouter:
@@ -169,7 +171,14 @@ class EventRouter:
         Returns:
             Set[ComponentID]: A set of all components in the wiring.
         """
-        return set.union(self.input_components, self.output_components)
+        if self.input_components and self.output_components:
+            return set.union(
+                self.input_components,
+                self.output_components,
+                self.isolated_components,
+            )
+        else:
+            return set(self.isolated_components)
 
     @cached_property
     def output_components(self) -> Set[ComponentID]:
@@ -193,6 +202,15 @@ class EventRouter:
             for port in out.values()
             for dev, _ in port
         )
+
+    @cached_property
+    def isolated_components(self) -> Set[ComponentID]:
+        """A cached set of components without inputs or outputs.
+
+        Returns:
+            Set[ComponentID]: A set of components which are isolated
+        """
+        return {component for component, port in self.wiring.items()}
 
     @cached_property
     def component_tree(self) -> Dict[ComponentID, Set[ComponentID]]:
