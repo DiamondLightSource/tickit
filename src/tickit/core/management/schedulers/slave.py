@@ -159,7 +159,7 @@ class SlaveScheduler(BaseScheduler):
         Args:
             source (ComponentID): The source component of the interrupt.
         """
-        LOGGER.debug("Adding {} to interrupts".format(source))
+        LOGGER.debug(f"Adding {source} to interrupts")
         self.interrupts.add(source)
         await self.raise_interrupt()
 

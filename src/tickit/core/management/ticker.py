@@ -84,7 +84,7 @@ class Ticker:
         """
         self.time = time
         self.roots = update_components
-        LOGGER.debug("Doing tick @ {}".format(self.time))
+        LOGGER.debug(f"Doing tick @ {self.time}")
         self.inputs: DefaultDict[ComponentID, Dict[PortID, Hashable]] = defaultdict(
             dict
         )

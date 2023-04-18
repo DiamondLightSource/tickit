@@ -39,7 +39,7 @@ class SourceDevice(Device):
                 The produced update event which contains the pre-configured value, and
                 never requests a callback.
         """
-        LOGGER.debug("Sourced {}".format(self.value))
+        LOGGER.debug(f"Sourced {self.value}")
         return DeviceUpdate(SourceDevice.Outputs(value=self.value), None)
 
 

@@ -51,7 +51,7 @@ class CounterDevice(Device):
                 requests a callback after callback_period.
         """
         self._value = self._value + 1
-        LOGGER.debug("Counter incremented to {}".format(self._value))
+        LOGGER.debug(f"Counter incremented to {self._value}")
         return DeviceUpdate(
             CounterDevice.Outputs(value=self._value),
             SimTime(time + self.callback_period),

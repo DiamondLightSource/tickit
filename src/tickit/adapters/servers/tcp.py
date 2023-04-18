@@ -81,7 +81,7 @@ class TcpServer(Server[bytes]):
                 async for reply in replies:
                     if reply is None:
                         continue
-                    LOGGER.debug("Replying with {!r}".format(reply))
+                    LOGGER.debug(f"Replying with {reply!r}")
                     writer.write(self.format % reply)
                     if writer.is_closing():
                         break
@@ -95,7 +95,7 @@ class TcpServer(Server[bytes]):
                     break
                 addr = writer.get_extra_info("peername")
 
-                LOGGER.debug("Recieved {!r} from {}".format(data, addr))
+                LOGGER.debug(f"Recieved {data!r} from {addr}")
                 tasks.append(asyncio.create_task(reply(await handler(data))))
 
             await asyncio.wait(tasks)

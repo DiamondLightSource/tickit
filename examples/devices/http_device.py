@@ -78,7 +78,7 @@ class ExampleHTTPAdapter(HTTPAdapter):
         Returns:
             web.Response: [description]
         """
-        return web.Response(text="Your data: {}".format(request.match_info["data"]))
+        return web.Response(text=f"Your data: {request.match_info['data']}")
 
 
 @dataclass

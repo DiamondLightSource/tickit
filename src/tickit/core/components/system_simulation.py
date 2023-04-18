@@ -94,7 +94,7 @@ class SystemSimulationComponent(BaseComponent):
 
         Cancels long running adapter tasks associated with the component.
         """
-        LOGGER.debug("Stopping {}".format(self.name))
+        LOGGER.debug(f"Stopping {self.name}")
         for task in self._tasks:
             task.cancel()
 
