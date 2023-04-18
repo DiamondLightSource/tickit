@@ -232,7 +232,9 @@ class EventRouter:
         return inverse_tree
 
     def dependants(self, root: ComponentID) -> Set[ComponentID]:
-        """Finds the set of all components which are recursively dependant on the root
+        """Finds the set of root component dependents .
+
+        Finds the set of all components which are recursively dependant on the root
         component.
 
         Args:

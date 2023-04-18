@@ -48,7 +48,9 @@ class BaseScheduler:
 
     @abstractmethod
     async def schedule_interrupt(self, source: ComponentID) -> None:
-        """An abstract asynchronous method which should schedule an interrupt
+        """An abstract asynchronous method which should schedule an interrupt.
+
+        When implemented in a child this method should schedule an interrupt
         immediately.
 
         Args:

@@ -123,7 +123,7 @@ class BaseComponent(Component):
         )
 
     async def raise_interrupt(self) -> None:
-        """Send an Interrupt message to the component output topic.
+        """Sends an Interrupt message to the component output topic.
 
         An asynchronous method whicb constructs an Interrupt message tagged with the
         component name and sends it to the output topic of this component.
@@ -133,7 +133,7 @@ class BaseComponent(Component):
     async def run_forever(
         self, state_consumer: Type[StateConsumer], state_producer: Type[StateProducer]
     ) -> None:
-        """Create and configures a state consumer and state producer.
+        """Creates and configures a state consumer and state producer.
 
         An asynchronous method which creates a state consumer which is subscribed to
         the input topic of the component and calls back to handle_input, and a state
@@ -145,8 +145,7 @@ class BaseComponent(Component):
 
     @abstractmethod
     async def on_tick(self, time: SimTime, changes: Changes):
-        """An abstract asynchronous method which implements the core logic of the
-        component.
+        """Abstract asynchronous method which implements core logic of the component.
 
         Args:
             time (SimTime): The current simulation time (in nanoseconds).

@@ -20,8 +20,7 @@ class ComposedAdapter(Adapter, Generic[T]):
     interpreter: Interpreter
 
     async def on_connect(self) -> AsyncIterable[Optional[T]]:
-        """An overridable asynchronous iterable which yields messages on client
-        connection.
+        """Overridable asynchronous iterable which yields messages on client connection.
 
         Returns:
             AsyncIterable[Optional[T]]: An asynchronous iterable of messages.
@@ -30,8 +29,7 @@ class ComposedAdapter(Adapter, Generic[T]):
             yield None
 
     async def handle_message(self, message: T) -> AsyncIterable[Optional[T]]:
-        """Delegates message handling to the interpreter and raises interrupt if
-        requested.
+        """Delegates message handling to the interpreter, raises interrupt if requested.
 
         Args:
             message (T): The message from the server to be handled.
