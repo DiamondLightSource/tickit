@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.utils.configuration.configurable &#8212; tickit 0.2.2.dev1+g41cf1ee documentation</title>
+    <title>tickit.utils.configuration.configurable &#8212; tickit 0.2.2.dev2+gada93e7 documentation</title>
   
   
   
@@ -448,8 +448,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="as_tagged_union"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.utils.configuration.configurable.as_tagged_union">[docs]</a><span class="k">def</span> <span class="nf">as_tagged_union</span><span class="p">(</span><span class="bp">cls</span><span class="p">:</span> <span class="n">Cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Cls</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A decorator to make a config base class which can deserialize aliased</span>
-<span class="sd">    sub-classes.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A decorator to make a config base class that can deserialize aliased sub-classes.</span>
 
 <span class="sd">    A decorator which makes a config class the root of a tagged union of sub-classes</span>
 <span class="sd">    allowing for serialization and deserialization of config trees by class alias. The</span>
@@ -464,8 +463,9 @@ document.write(`
 <span class="sd">        Cls: The modified config base class.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># This will only be used if we want to generate a json schema (which we will)</span>
-    <span class="k">def</span> <span class="nf">deserialization</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Conversion</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">deserialization</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">(</span>
+        <span class="n">Conversion</span>
+    <span class="p">):</span>  <span class="c1"># This will only be used if we want to generate a json schema (which we will)</span>
         <span class="n">annotations</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">deserialization_namespace</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;__annotations__&quot;</span><span class="p">:</span> <span class="n">annotations</span><span class="p">}</span>
         <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">rec_subclasses</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>

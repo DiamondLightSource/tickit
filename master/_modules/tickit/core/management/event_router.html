@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.management.event_router &#8212; tickit 0.2.2.dev1+g41cf1ee documentation</title>
+    <title>tickit.core.management.event_router &#8212; tickit 0.2.2.dev2+gada93e7 documentation</title>
   
   
   
@@ -650,7 +650,9 @@ document.write(`
         <span class="k">return</span> <span class="n">inverse_tree</span>
 
 <div class="viewcode-block" id="EventRouter.dependants"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.management.event_router.EventRouter.dependants">[docs]</a>    <span class="k">def</span> <span class="nf">dependants</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="n">ComponentID</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Finds the set of all components which are recursively dependant on the root</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Finds the set of root component dependents .</span>
+
+<span class="sd">        Finds the set of all components which are recursively dependant on the root</span>
 <span class="sd">        component.</span>
 
 <span class="sd">        Args:</span>

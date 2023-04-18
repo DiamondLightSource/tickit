@@ -48,10 +48,6 @@
     "url": "https://dls-controls.github.io/tickit/96_isolated_components/"
   },
   {
-    "version": "logging_fstrings",
-    "url": "https://dls-controls.github.io/tickit/logging_fstrings/"
-  },
-  {
     "version": "update_docstrings",
     "url": "https://dls-controls.github.io/tickit/update_docstrings/"
   }

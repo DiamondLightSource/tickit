@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.adapters.composed &#8212; tickit 0.2.2.dev1+g41cf1ee documentation</title>
+    <title>tickit.adapters.composed &#8212; tickit 0.2.2.dev2+gada93e7 documentation</title>
   
   
   
@@ -438,8 +438,7 @@ document.write(`
     <span class="n">interpreter</span><span class="p">:</span> <span class="n">Interpreter</span>
 
 <div class="viewcode-block" id="ComposedAdapter.on_connect"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.adapters.composed.ComposedAdapter.on_connect">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">on_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterable</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">T</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;An overridable asynchronous iterable which yields messages on client</span>
-<span class="sd">        connection.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Overridable asynchronous iterable which yields messages on client connection.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            AsyncIterable[Optional[T]]: An asynchronous iterable of messages.</span>
@@ -448,8 +447,7 @@ document.write(`
             <span class="k">yield</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="ComposedAdapter.handle_message"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.adapters.composed.ComposedAdapter.handle_message">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterable</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">T</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Delegates message handling to the interpreter and raises interrupt if</span>
-<span class="sd">        requested.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Delegates message handling to the interpreter, raises interrupt if requested.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            message (T): The message from the server to be handled.</span>

@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.management.schedulers.slave &#8212; tickit 0.2.2.dev1+g41cf1ee documentation</title>
+    <title>tickit.core.management.schedulers.slave &#8212; tickit 0.2.2.dev2+gada93e7 documentation</title>
   
   
   
@@ -449,8 +449,7 @@ document.write(`
         <span class="n">expose</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">PortID</span><span class="p">,</span> <span class="n">ComponentPort</span><span class="p">],</span>
         <span class="n">raise_interrupt</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">Awaitable</span><span class="p">[</span><span class="kc">None</span><span class="p">]],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;A slave scheduler constructor which adds wiring and saves values for</span>
-<span class="sd">        reference.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Slave scheduler constructor which adds wiring and saves values for reference.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            wiring (Union[Wiring, InverseWiring]): A wiring or inverse wiring object</span>
@@ -499,8 +498,7 @@ document.write(`
         <span class="k">return</span> <span class="n">wiring</span></div>
 
 <div class="viewcode-block" id="SlaveScheduler.update_component"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.slave.SlaveScheduler.update_component">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_component</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">:</span> <span class="n">Input</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sends an input to the corresponding component. Mocks I/O for &quot;external&quot; or</span>
-<span class="sd">        &quot;expose&quot;.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sends an input to the target component. Mocks I/O for &quot;external&quot; or &quot;expose&quot;.</span>
 
 <span class="sd">        For real components the input is sent in a message to their input topic, for</span>
 <span class="sd">        the mock component named &quot;external&quot;, external inputs are injected, whilst for</span>
@@ -525,8 +523,7 @@ document.write(`
 <div class="viewcode-block" id="SlaveScheduler.on_tick"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.slave.SlaveScheduler.on_tick">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">on_tick</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">SimTime</span><span class="p">,</span> <span class="n">changes</span><span class="p">:</span> <span class="n">Changes</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Changes</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SimTime</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Routes inputs, performs a tick and returns output changes and a callback</span>
-<span class="sd">        time.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Routes inputs, does a tick and returns output changes and a callback time.</span>
 
 <span class="sd">        An asyhcnronous method which determines which components within the simulation</span>
 <span class="sd">        require being woken up, sets the input changes for use by the &quot;external&quot; mock</span>
