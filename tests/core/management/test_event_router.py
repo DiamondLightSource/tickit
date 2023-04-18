@@ -187,3 +187,11 @@ def test_event_router_route(
     expected: Dict[ComponentID, Dict[PortID, object]],
 ):
     assert expected == event_router.route(source, changes)
+
+
+def test_event_router_isolated_components(event_router: EventRouter):
+    pass
+
+
+def test_event_router_components_isolated_components(event_router: EventRouter):
+    pass
