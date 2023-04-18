@@ -35,7 +35,7 @@ values and requests to be called back for an update sometime later.
             """
             output = randint(0, 255)
             LOGGER.debug(
-                "Boing! (delta: {}, inputs: {}, output: {})".format(time, inputs, output)
+                f"Boing! (delta: {time}, inputs: {inputs}, output: {output})"
             )
             return DeviceUpdate(
                 RandomTrampolineDevice.Outputs(output=output),
