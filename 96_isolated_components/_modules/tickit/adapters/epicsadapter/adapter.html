@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.adapters.epicsadapter.adapter &#8212; tickit 0.2.2.dev2+g125de81 documentation</title>
+    <title>tickit.adapters.epicsadapter.adapter &#8212; tickit 0.2.2.dev6+g0c9e76c documentation</title>
   
   
   
@@ -478,7 +478,7 @@ document.write(`
         <span class="k">for</span> <span class="n">record</span><span class="p">,</span> <span class="n">getter</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">interrupt_records</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">current_value</span> <span class="o">=</span> <span class="n">getter</span><span class="p">()</span>
             <span class="n">record</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">current_value</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Record </span><span class="si">{}</span><span class="s2"> updated to : </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">current_value</span><span class="p">))</span></div>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Record </span><span class="si">{</span><span class="n">record</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> updated to : </span><span class="si">{</span><span class="n">current_value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="EpicsAdapter.on_db_load"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.adapters.epicsadapter.adapter.EpicsAdapter.on_db_load">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">on_db_load</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>

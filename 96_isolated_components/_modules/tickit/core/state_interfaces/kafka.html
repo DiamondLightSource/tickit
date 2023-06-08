@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.state_interfaces.kafka &#8212; tickit 0.2.2.dev2+g125de81 documentation</title>
+    <title>tickit.core.state_interfaces.kafka &#8212; tickit 0.2.2.dev6+g0c9e76c documentation</title>
   
   
   
@@ -464,7 +464,9 @@ document.write(`
                 <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 
 <div class="viewcode-block" id="KafkaStateConsumer.subscribe"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.kafka.KafkaStateConsumer.subscribe">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">subscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topics</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Subscribes the consumer to the given topics, new messages are passed to the</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Subscribes the consumer to the given topics.</span>
+
+<span class="sd">        Subscribes the consumer to the given topics, new messages are passed to the</span>
 <span class="sd">        callback.</span>
 
 <span class="sd">        Args:</span>

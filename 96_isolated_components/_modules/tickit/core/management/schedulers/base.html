@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.management.schedulers.base &#8212; tickit 0.2.2.dev2+g125de81 documentation</title>
+    <title>tickit.core.management.schedulers.base &#8212; tickit 0.2.2.dev6+g0c9e76c documentation</title>
   
   
   
@@ -466,7 +466,9 @@ document.write(`
 
 <div class="viewcode-block" id="BaseScheduler.schedule_interrupt"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.schedule_interrupt">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">schedule_interrupt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">ComponentID</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;An abstract asynchronous method which should schedule an interrupt</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;An abstract asynchronous method which should schedule an interrupt.</span>
+
+<span class="sd">        When implemented in a child this method should schedule an interrupt</span>
 <span class="sd">        immediately.</span>
 
 <span class="sd">        Args:</span>
@@ -498,7 +500,7 @@ document.write(`
 <span class="sd">            message (Union[Interrupt, Output, ComponentException]): An Interrupt,</span>
 <span class="sd">                Output or ComponentException recieved by the state consumer.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Scheduler (</span><span class="si">{}</span><span class="s2">) got </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">message</span><span class="p">))</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Scheduler (</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">) got </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">Output</span><span class="p">):</span>
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">ticker</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">message</span><span class="o">.</span><span class="n">call_at</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -533,7 +535,7 @@ document.write(`
 <span class="sd">            component (ComponentID): The component which should be updated.</span>
 <span class="sd">            when (SimTime): The simulation time at which the update should occur.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Scheduling </span><span class="si">{}</span><span class="s2"> for wakeup at </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">component</span><span class="p">,</span> <span class="n">when</span><span class="p">))</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Scheduling </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2"> for wakeup at </span><span class="si">{</span><span class="n">when</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wakeups</span><span class="p">[</span><span class="n">component</span><span class="p">]</span> <span class="o">=</span> <span class="n">when</span></div>
 
 <div class="viewcode-block" id="BaseScheduler.get_first_wakeups"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.get_first_wakeups">[docs]</a>    <span class="k">def</span> <span class="nf">get_first_wakeups</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SimTime</span><span class="p">]]:</span>

@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.components.system_simulation &#8212; tickit 0.2.2.dev2+g125de81 documentation</title>
+    <title>tickit.core.components.system_simulation &#8212; tickit 0.2.2.dev6+g0c9e76c documentation</title>
   
   
   
@@ -455,8 +455,7 @@ document.write(`
 <div class="viewcode-block" id="SystemSimulationComponent.run_forever"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.components.system_simulation.SystemSimulationComponent.run_forever">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run_forever</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">state_consumer</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">StateConsumer</span><span class="p">],</span> <span class="n">state_producer</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">StateProducer</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets up state interfaces, the scheduler, and components and blocks until any</span>
-<span class="sd">        complete.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets up state interfaces, the scheduler, and components to run continuously.</span>
 
 <span class="sd">        An asynchronous method starts the run_forever method of each component, runs</span>
 <span class="sd">        the scheduler, and sets up externally facing state interfaces. The method</span>
@@ -512,7 +511,7 @@ document.write(`
 
 <span class="sd">        Cancels long running adapter tasks associated with the component.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Stopping </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stopping </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="p">:</span>
             <span class="n">task</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span></div></div>
 

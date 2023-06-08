@@ -46,9 +46,5 @@
   {
     "version": "96_isolated_components",
     "url": "https://dls-controls.github.io/tickit/96_isolated_components/"
-  },
-  {
-    "version": "update_docstrings",
-    "url": "https://dls-controls.github.io/tickit/update_docstrings/"
   }
 ]

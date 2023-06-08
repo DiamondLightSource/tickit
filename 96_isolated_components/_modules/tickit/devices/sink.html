@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.devices.sink &#8212; tickit 0.2.2.dev2+g125de81 documentation</title>
+    <title>tickit.devices.sink &#8212; tickit 0.2.2.dev6+g0c9e76c documentation</title>
   
   
   
@@ -437,8 +437,7 @@ document.write(`
     <span class="n">Outputs</span><span class="p">:</span> <span class="n">TypedDict</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Outputs&quot;</span><span class="p">,</span> <span class="p">{})</span>
 
 <div class="viewcode-block" id="SinkDevice.update"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.devices.sink.SinkDevice.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">SimTime</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">Inputs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeviceUpdate</span><span class="p">[</span><span class="n">Outputs</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The update method which logs the inputs at debug level and produces no</span>
-<span class="sd">        outputs.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The update method which logs the inputs and produces no outputs.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            time (SimTime): The current simulation time (in nanoseconds).</span>
@@ -449,7 +448,7 @@ document.write(`
 <span class="sd">                The produced update event which never contains any changes, and never</span>
 <span class="sd">                requests a callback.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Sunk </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">inputs</span><span class="o">.</span><span class="n">items</span><span class="p">()}))</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sunk </span><span class="si">{</span><span class="w"> </span><span class="p">{</span><span class="n">k</span><span class="p">:</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">inputs</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span><span class="w"> </span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">DeviceUpdate</span><span class="p">(</span><span class="n">SinkDevice</span><span class="o">.</span><span class="n">Outputs</span><span class="p">(),</span> <span class="kc">None</span><span class="p">)</span></div></div>
 
 

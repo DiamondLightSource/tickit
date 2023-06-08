@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.adapters.interpreters.wrappers.beheading_interpreter &#8212; tickit 0.2.2.dev2+g125de81 documentation</title>
+    <title>tickit.adapters.interpreters.wrappers.beheading_interpreter &#8212; tickit 0.2.2.dev6+g0c9e76c documentation</title>
   
   
   
@@ -443,8 +443,7 @@ document.write(`
 <div class="viewcode-block" id="BeheadingInterpreter.handle"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.adapters.interpreters.wrappers.beheading_interpreter.BeheadingInterpreter.handle">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">adapter</span><span class="p">:</span> <span class="n">Adapter</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">AnyStr</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">AsyncIterable</span><span class="p">[</span><span class="n">AnyStr</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Removes a header from the start of a message, and passes it on to an</span>
-<span class="sd">        interpreter.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Removes a header from a message and passes the message on to an interpreter.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            adapter (Adapter): The adapter in which the function should be executed</span>

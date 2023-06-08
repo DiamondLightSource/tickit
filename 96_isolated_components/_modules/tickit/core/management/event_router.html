@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.management.event_router &#8212; tickit 0.2.2.dev2+g125de81 documentation</title>
+    <title>tickit.core.management.event_router &#8212; tickit 0.2.2.dev6+g0c9e76c documentation</title>
   
   
   
@@ -589,14 +589,11 @@ document.write(`
 <span class="sd">        Returns:</span>
 <span class="sd">            Set[ComponentID]: A set of all components in the wiring.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_components</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_components</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">set</span><span class="o">.</span><span class="n">union</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">input_components</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">output_components</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">isolated_components</span><span class="p">,</span>
-            <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">isolated_components</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">set</span><span class="o">.</span><span class="n">union</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">input_components</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">output_components</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">isolated_components</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">output_components</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">]:</span>
@@ -628,7 +625,10 @@ document.write(`
 <span class="sd">        Returns:</span>
 <span class="sd">            Set[ComponentID]: A set of components which are isolated</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span><span class="n">component</span> <span class="k">for</span> <span class="n">component</span><span class="p">,</span> <span class="n">port</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wiring</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="k">return</span> <span class="nb">set</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
+            <span class="p">{</span><span class="n">component</span> <span class="k">for</span> <span class="n">component</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wiring</span><span class="o">.</span><span class="n">items</span><span class="p">()},</span>
+            <span class="nb">set</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_components</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_components</span><span class="p">),</span>
+        <span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">component_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">,</span> <span class="n">Set</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">]]:</span>
@@ -668,7 +668,9 @@ document.write(`
         <span class="k">return</span> <span class="n">inverse_tree</span>
 
 <div class="viewcode-block" id="EventRouter.dependants"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.management.event_router.EventRouter.dependants">[docs]</a>    <span class="k">def</span> <span class="nf">dependants</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="n">ComponentID</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Finds the set of all components which are recursively dependant on the root</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Finds the set of root component dependents .</span>
+
+<span class="sd">        Finds the set of all components which are recursively dependant on the root</span>
 <span class="sd">        component.</span>
 
 <span class="sd">        Args:</span>

@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.devices.source &#8212; tickit 0.2.2.dev2+g125de81 documentation</title>
+    <title>tickit.devices.source &#8212; tickit 0.2.2.dev6+g0c9e76c documentation</title>
   
   
   
@@ -457,7 +457,7 @@ document.write(`
 <span class="sd">                The produced update event which contains the pre-configured value, and</span>
 <span class="sd">                never requests a callback.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Sourced </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sourced </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">DeviceUpdate</span><span class="p">(</span><span class="n">SourceDevice</span><span class="o">.</span><span class="n">Outputs</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span></div></div>
 
 
