@@ -9,7 +9,7 @@ from tickit.core.typedefs import Changes, ComponentID, ComponentPort, PortID
 
 
 @pytest.fixture
-def wiring_struct():
+def wiring_struct_4_1():
     return {
         ComponentID("Out1"): {
             PortID("Out1>1"): {ComponentPort(ComponentID("Mid1"), PortID("Mid1<1"))}
@@ -29,7 +29,7 @@ def wiring_struct():
 
 
 @pytest.fixture
-def inverse_wiring_struct():
+def inverse_wiring_struct_4_1():
     return {
         ComponentID("Isolated"): {},
         ComponentID("Out1"): {},
@@ -46,7 +46,7 @@ def inverse_wiring_struct():
 
 
 @pytest.fixture
-def component_configs_list():
+def component_configs_list_4_1():
     return [
         ComponentConfig(ComponentID("Out1"), dict()),
         ComponentConfig(ComponentID("Out2"), dict()),
@@ -196,3 +196,237 @@ def test_event_router_route(
     expected: Dict[ComponentID, Dict[PortID, object]],
 ):
     assert expected == event_router.route(source, changes)
+
+
+# (1)
+
+
+@pytest.fixture
+def wiring_struct_1():
+    return {
+        ComponentID("Iso1"): {},
+    }
+
+
+@pytest.fixture
+def inverse_wiring_struct_1():
+    return {
+        ComponentID("Iso1"): {},
+    }
+
+
+@pytest.fixture
+def component_configs_list_1():
+    return [
+        ComponentConfig(ComponentID("Iso1"), dict()),
+    ]
+
+
+# (1,1)
+
+
+@pytest.fixture
+def wiring_struct_1_1():
+    return {
+        ComponentID("Iso1"): {},
+        ComponentID("Iso2"): {},
+    }
+
+
+@pytest.fixture
+def inverse_wiring_struct_1_1():
+    return {
+        ComponentID("Iso1"): {},
+        ComponentID("Iso2"): {},
+    }
+
+
+@pytest.fixture
+def component_configs_list_1_1():
+    return [
+        ComponentConfig(ComponentID("Iso1"), dict()),
+        ComponentConfig(ComponentID("Iso2"), dict()),
+    ]
+
+
+# (2,2)
+
+
+@pytest.fixture
+def wiring_struct_2_2():
+    return {
+        ComponentID("Out1"): {
+            PortID("Out1>1"): {ComponentPort(ComponentID("In1"), PortID("In1<1"))}
+        },
+        ComponentID("In1"): {},
+        ComponentID("Out2"): {
+            PortID("Out2>1"): {ComponentPort(ComponentID("In2"), PortID("In2<1"))}
+        },
+        ComponentID("In2"): {},
+    }
+
+
+@pytest.fixture
+def inverse_wiring_struct_2_2():
+    return {
+        ComponentID("Out1"): {},
+        ComponentID("Out2"): {},
+        ComponentID("In1"): {
+            PortID("In1<1"): ComponentPort(ComponentID("Out1"), PortID("Out1>1")),
+        },
+        ComponentID("In2"): {
+            PortID("In2<1"): ComponentPort(ComponentID("Out2"), PortID("Out2>1")),
+        },
+    }
+
+
+@pytest.fixture
+def component_configs_list_2_2():
+    return [
+        ComponentConfig(ComponentID("Out1"), dict()),
+        ComponentConfig(ComponentID("Out2"), dict()),
+        ComponentConfig(
+            ComponentID("In1"),
+            {
+                PortID("In1<1"): ComponentPort(ComponentID("Out1"), PortID("Out1>1")),
+            },
+        ),
+        ComponentConfig(
+            ComponentID("In2"),
+            {
+                PortID("In2<1"): ComponentPort(ComponentID("Out2"), PortID("Out2>1")),
+            },
+        ),
+    ]
+
+
+# (3,1,1)
+
+
+@pytest.fixture
+def wiring_struct_3_1_1():
+    return {
+        ComponentID("Out1"): {
+            PortID("Out1>1"): {ComponentPort(ComponentID("Mid1"), PortID("Mid1<1"))}
+        },
+        ComponentID("Mid1"): {
+            PortID("Mid1>1"): {ComponentPort(ComponentID("In1"), PortID("In1<1"))}
+        },
+        ComponentID("In1"): {},
+        ComponentID("Iso1"): {},
+        ComponentID("Iso2"): {},
+    }
+
+
+@pytest.fixture
+def inverse_wiring_struct_3_1_1():
+    return {
+        ComponentID("Iso1"): {},
+        ComponentID("Iso2"): {},
+        ComponentID("Out1"): {},
+        ComponentID("Mid1"): {
+            PortID("Mid1<1"): ComponentPort(ComponentID("Out1"), PortID("Out1>1")),
+        },
+        ComponentID("In1"): {
+            PortID("In1<1"): ComponentPort(ComponentID("Mid1"), PortID("Mid1>1")),
+        },
+    }
+
+
+@pytest.fixture
+def component_configs_list_3_1_1():
+    return [
+        ComponentConfig(ComponentID("Iso1"), dict()),
+        ComponentConfig(ComponentID("Iso2"), dict()),
+        ComponentConfig(ComponentID("Out1"), dict()),
+        ComponentConfig(
+            ComponentID("Mid1"),
+            {
+                PortID("Mid1<1"): ComponentPort(ComponentID("Out1"), PortID("Out1>1")),
+            },
+        ),
+        ComponentConfig(
+            ComponentID("In1"),
+            {
+                PortID("In1<1"): ComponentPort(ComponentID("Mid1"), PortID("Mid1>1")),
+            },
+        ),
+    ]
+
+
+# (3,2,2)
+
+
+@pytest.fixture
+def wiring_struct_3_2_2():
+    return {
+        ComponentID("Out1"): {
+            PortID("Out1>1"): {ComponentPort(ComponentID("Mid1"), PortID("Mid1<1"))}
+        },
+        ComponentID("Mid1"): {
+            PortID("Mid1>1"): {ComponentPort(ComponentID("In1"), PortID("In1<1"))}
+        },
+        ComponentID("In1"): {},
+        ComponentID("Out2"): {
+            PortID("Out2>1"): {ComponentPort(ComponentID("In2"), PortID("In2<1"))}
+        },
+        ComponentID("In2"): {},
+        ComponentID("Out3"): {
+            PortID("Out3>1"): {ComponentPort(ComponentID("In3"), PortID("In3<1"))}
+        },
+        ComponentID("In3"): {},
+    }
+
+
+@pytest.fixture
+def inverse_wiring_struct_3_2_2():
+    return {
+        ComponentID("Out3"): {},
+        ComponentID("Out2"): {},
+        ComponentID("Out1"): {},
+        ComponentID("Mid1"): {
+            PortID("Mid1<1"): ComponentPort(ComponentID("Out1"), PortID("Out1>1")),
+        },
+        ComponentID("In1"): {
+            PortID("In1<1"): ComponentPort(ComponentID("Mid1"), PortID("Mid1>1")),
+        },
+        ComponentID("In2"): {
+            PortID("In2<1"): ComponentPort(ComponentID("Out2"), PortID("Out2>1")),
+        },
+        ComponentID("In3"): {
+            PortID("In3<1"): ComponentPort(ComponentID("Out3"), PortID("Out3>1")),
+        },
+    }
+
+
+@pytest.fixture
+def component_configs_list_3_2_2():
+    return [
+        ComponentConfig(ComponentID("Out3"), dict()),
+        ComponentConfig(ComponentID("Out2"), dict()),
+        ComponentConfig(ComponentID("Out1"), dict()),
+        ComponentConfig(
+            ComponentID("Mid1"),
+            {
+                PortID("Mid1<1"): ComponentPort(ComponentID("Out1"), PortID("Out1>1")),
+            },
+        ),
+        ComponentConfig(
+            ComponentID("In1"),
+            {
+                PortID("In1<1"): ComponentPort(ComponentID("Mid1"), PortID("Mid1>1")),
+            },
+        ),
+        ComponentConfig(
+            ComponentID("In2"),
+            {
+                PortID("In2<1"): ComponentPort(ComponentID("Out2"), PortID("Out2>1")),
+            },
+        ),
+        ComponentConfig(
+            ComponentID("In3"),
+            {
+                PortID("In3<1"): ComponentPort(ComponentID("Out3"), PortID("Out3>1")),
+            },
+        ),
+    ]
