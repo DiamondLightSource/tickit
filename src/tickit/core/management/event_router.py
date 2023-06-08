@@ -122,7 +122,6 @@ class InverseWiring(Default_InverseWiring_Struct):
             InverseWiring: A mapping of component input ports to component output ports.
         """
         wiring = cls({config.name: config.inputs for config in configs})
-        print(wiring)
         return wiring
 
 
