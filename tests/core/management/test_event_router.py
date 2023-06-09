@@ -84,6 +84,11 @@ def output_component_set_4_1():
 
 
 @pytest.fixture
+def isolated_component_set_4_1():
+    return {"Iso1"}
+
+
+@pytest.fixture
 def wiring(wiring_struct_4_1):
     return Wiring(wiring_struct_4_1)
 
@@ -112,10 +117,6 @@ def test_inverse_wiring_unknown_in_io(inverse_wiring_struct_4_1):
     inverse_wiring = InverseWiring(inverse_wiring_struct_4_1)
     with pytest.raises(KeyError):
         inverse_wiring["In1"]["In1<3"]
-
-
-def test_event_router_isolated_components(event_router: EventRouter):
-    assert {"Iso1"} == event_router.isolated_components
 
 
 def test_event_router_component_tree(event_router: EventRouter):
@@ -211,6 +212,11 @@ def output_component_set_1():
     return set()
 
 
+@pytest.fixture
+def isolated_component_set_1():
+    return {"Iso1"}
+
+
 # (1,1)
 
 
@@ -251,6 +257,11 @@ def input_component_set_1_1():
 @pytest.fixture
 def output_component_set_1_1():
     return set()
+
+
+@pytest.fixture
+def isolated_component_set_1_1():
+    return {"Iso1", "Iso2"}
 
 
 # (2,2)
@@ -317,6 +328,11 @@ def input_component_set_2_2():
 @pytest.fixture
 def output_component_set_2_2():
     return {"Out1", "Out2"}
+
+
+@pytest.fixture
+def isolated_component_set_2_2():
+    return set()
 
 
 # (3,1,1)
@@ -386,6 +402,11 @@ def input_component_set_3_1_1():
 @pytest.fixture
 def output_component_set_3_1_1():
     return {"Out1", "Mid1"}
+
+
+@pytest.fixture
+def isolated_component_set_3_1_1():
+    return {"Iso1", "Iso2"}
 
 
 # (3,2,2)
@@ -479,6 +500,11 @@ def input_component_set_3_2_2():
 @pytest.fixture
 def output_component_set_3_2_2():
     return {"Out1", "Mid1", "Out2", "Out3"}
+
+
+@pytest.fixture
+def isolated_component_set_3_2_2():
+    return set()
 
 
 @pytest.mark.parametrize(
@@ -623,4 +649,25 @@ def test_event_router_output_components(wiring_struct, output_component_set, req
     event_router = EventRouter(Wiring(request.getfixturevalue(wiring_struct)))
     assert (
         request.getfixturevalue(output_component_set) == event_router.output_components
+    )
+
+
+@pytest.mark.parametrize(
+    "wiring_struct, isolated_component_set",
+    [
+        ("wiring_struct_1", "isolated_component_set_1"),
+        ("wiring_struct_1_1", "isolated_component_set_1_1"),
+        ("wiring_struct_2_2", "isolated_component_set_2_2"),
+        ("wiring_struct_3_1_1", "isolated_component_set_3_1_1"),
+        ("wiring_struct_3_2_2", "isolated_component_set_3_2_2"),
+        ("wiring_struct_4_1", "isolated_component_set_4_1"),
+    ],
+)
+def test_event_router_isolated_components(
+    wiring_struct, isolated_component_set, request
+):
+    event_router = EventRouter(Wiring(request.getfixturevalue(wiring_struct)))
+    assert (
+        request.getfixturevalue(isolated_component_set)
+        == event_router.isolated_components
     )
