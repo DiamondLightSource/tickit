@@ -79,6 +79,11 @@ def input_component_set_4_1():
 
 
 @pytest.fixture
+def output_component_set_4_1():
+    return {"Out1", "Out2", "Mid1"}
+
+
+@pytest.fixture
 def wiring(wiring_struct_4_1):
     return Wiring(wiring_struct_4_1)
 
@@ -107,10 +112,6 @@ def test_inverse_wiring_unknown_in_io(inverse_wiring_struct_4_1):
     inverse_wiring = InverseWiring(inverse_wiring_struct_4_1)
     with pytest.raises(KeyError):
         inverse_wiring["In1"]["In1<3"]
-
-
-def test_event_router_output_components(event_router: EventRouter):
-    assert {"Out1", "Out2", "Mid1"} == event_router.output_components
 
 
 def test_event_router_isolated_components(event_router: EventRouter):
@@ -205,6 +206,11 @@ def input_component_set_1():
     return set()
 
 
+@pytest.fixture
+def output_component_set_1():
+    return set()
+
+
 # (1,1)
 
 
@@ -239,6 +245,11 @@ def component_set_1_1():
 
 @pytest.fixture
 def input_component_set_1_1():
+    return set()
+
+
+@pytest.fixture
+def output_component_set_1_1():
     return set()
 
 
@@ -303,6 +314,11 @@ def input_component_set_2_2():
     return {"In1", "In2"}
 
 
+@pytest.fixture
+def output_component_set_2_2():
+    return {"Out1", "Out2"}
+
+
 # (3,1,1)
 
 
@@ -365,6 +381,11 @@ def component_set_3_1_1():
 @pytest.fixture
 def input_component_set_3_1_1():
     return {"Mid1", "In1"}
+
+
+@pytest.fixture
+def output_component_set_3_1_1():
+    return {"Out1", "Mid1"}
 
 
 # (3,2,2)
@@ -453,6 +474,11 @@ def component_set_3_2_2():
 @pytest.fixture
 def input_component_set_3_2_2():
     return {"Mid1", "In1", "In2", "In3"}
+
+
+@pytest.fixture
+def output_component_set_3_2_2():
+    return {"Out1", "Mid1", "Out2", "Out3"}
 
 
 @pytest.mark.parametrize(
@@ -580,3 +606,21 @@ def test_event_router_components(wiring_struct, component_set, request):
 def test_event_router_input_components(wiring_struct, input_component_set, request):
     event_router = EventRouter(Wiring(request.getfixturevalue(wiring_struct)))
     assert request.getfixturevalue(input_component_set) == event_router.input_components
+
+
+@pytest.mark.parametrize(
+    "wiring_struct, output_component_set",
+    [
+        ("wiring_struct_1", "output_component_set_1"),
+        ("wiring_struct_1_1", "output_component_set_1_1"),
+        ("wiring_struct_2_2", "output_component_set_2_2"),
+        ("wiring_struct_3_1_1", "output_component_set_3_1_1"),
+        ("wiring_struct_3_2_2", "output_component_set_3_2_2"),
+        ("wiring_struct_4_1", "output_component_set_4_1"),
+    ],
+)
+def test_event_router_output_components(wiring_struct, output_component_set, request):
+    event_router = EventRouter(Wiring(request.getfixturevalue(wiring_struct)))
+    assert (
+        request.getfixturevalue(output_component_set) == event_router.output_components
+    )
