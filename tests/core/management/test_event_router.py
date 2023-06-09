@@ -24,14 +24,14 @@ def wiring_struct_4_1():
             PortID("Mid1>1"): {ComponentPort(ComponentID("In1"), PortID("In1<1"))}
         },
         ComponentID("In1"): {},
-        ComponentID("Isolated"): {},
+        ComponentID("Iso1"): {},
     }
 
 
 @pytest.fixture
 def inverse_wiring_struct_4_1():
     return {
-        ComponentID("Isolated"): {},
+        ComponentID("Iso1"): {},
         ComponentID("Out1"): {},
         ComponentID("Out2"): {},
         ComponentID("Mid1"): {
@@ -64,7 +64,7 @@ def component_configs_list_4_1():
                 PortID("In1<2"): ComponentPort(ComponentID("Out2"), PortID("Out2>1")),
             },
         ),
-        ComponentConfig(ComponentID("Isolated"), dict()),
+        ComponentConfig(ComponentID("Iso1"), dict()),
     ]
 
 
@@ -100,7 +100,7 @@ def test_inverse_wiring_unknown_in_io(inverse_wiring_struct_4_1):
 
 
 def test_event_router_components(event_router: EventRouter):
-    assert {"Out1", "Out2", "Mid1", "In1", "Isolated"} == event_router.components
+    assert {"Out1", "Out2", "Mid1", "In1", "Iso1"} == event_router.components
 
 
 def test_event_router_input_components(event_router: EventRouter):
@@ -112,12 +112,12 @@ def test_event_router_output_components(event_router: EventRouter):
 
 
 def test_event_router_isolated_components(event_router: EventRouter):
-    assert {"Isolated"} == event_router.isolated_components
+    assert {"Iso1"} == event_router.isolated_components
 
 
 def test_event_router_component_tree(event_router: EventRouter):
     assert {
-        "Isolated": set(),
+        "Iso1": set(),
         "In1": set(),
         "Out1": {"Mid1"},
         "Out2": {"Mid1", "In1"},
@@ -131,7 +131,7 @@ def test_event_router_inverse_component_tree(event_router: EventRouter):
         "Out2": set(),
         "Mid1": {"Out1", "Out2"},
         "In1": {"Mid1", "Out2"},
-        "Isolated": set(),
+        "Iso1": set(),
     } == event_router.inverse_component_tree
 
 
