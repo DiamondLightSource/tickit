@@ -99,12 +99,6 @@ def test_inverse_wiring_unknown_in_io(inverse_wiring_struct_4_1):
         inverse_wiring["In1"]["In1<3"]
 
 
-def test_event_router_wiring_from_inverse(wiring: Wiring):
-    inverse_wiring = InverseWiring.from_wiring(wiring)
-    event_router = EventRouter(inverse_wiring)
-    assert wiring == event_router.wiring
-
-
 def test_event_router_components(event_router: EventRouter):
     assert {"Out1", "Out2", "Mid1", "In1", "Isolated"} == event_router.components
 
@@ -480,4 +474,22 @@ def test_inverse_wiring_from_component_configs_equal(
 def test_event_router_wiring_from_wiring(wiring_struct, request):
     wiring = Wiring(request.getfixturevalue(wiring_struct))
     event_router = EventRouter(wiring)
+    assert wiring == event_router.wiring
+
+
+@pytest.mark.parametrize(
+    "wiring_struct",
+    [
+        ("wiring_struct_1"),
+        ("wiring_struct_1_1"),
+        ("wiring_struct_2_2"),
+        ("wiring_struct_3_1_1"),
+        ("wiring_struct_3_2_2"),
+        ("wiring_struct_4_1"),
+    ],
+)
+def test_event_router_wiring_from_inverse(wiring_struct, request):
+    wiring = Wiring(request.getfixturevalue(wiring_struct))
+    inverse_wiring = InverseWiring.from_wiring(wiring)
+    event_router = EventRouter(inverse_wiring)
     assert wiring == event_router.wiring
