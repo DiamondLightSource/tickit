@@ -173,7 +173,7 @@ def test_event_router_route(
     assert expected == event_router.route(source, changes)
 
 
-# (1)
+# 1 Graph with 1 device (1)
 
 
 @pytest.fixture
@@ -217,7 +217,7 @@ def isolated_component_set_1():
     return {"Iso1"}
 
 
-# (1,1)
+# 2 graphs each with 1 device (1,1)
 
 
 @pytest.fixture
@@ -264,7 +264,7 @@ def isolated_component_set_1_1():
     return {"Iso1", "Iso2"}
 
 
-# (2,2)
+# 2 graphs each with 2 devices (2,2)
 
 
 @pytest.fixture
@@ -335,7 +335,7 @@ def isolated_component_set_2_2():
     return set()
 
 
-# (3,1,1)
+# 3 graphs, one with 3 devices and two with 1 (3,1,1)
 
 
 @pytest.fixture
@@ -409,7 +409,7 @@ def isolated_component_set_3_1_1():
     return {"Iso1", "Iso2"}
 
 
-# (3,2,2)
+# 3 graphs, one with 3 devices and two with 2 (3,2,2)
 
 
 @pytest.fixture
@@ -597,9 +597,6 @@ def test_event_router_wiring_from_inverse(wiring_struct, request):
     inverse_wiring = InverseWiring.from_wiring(wiring)
     event_router = EventRouter(inverse_wiring)
     assert wiring == event_router.wiring
-
-
-# Component recognition
 
 
 @pytest.mark.parametrize(
