@@ -69,8 +69,8 @@ def component_configs_list_4_1():
 
 
 @pytest.fixture
-def wiring(wiring_struct):
-    return Wiring(wiring_struct)
+def wiring(wiring_struct_4_1):
+    return Wiring(wiring_struct_4_1)
 
 
 @pytest.fixture
@@ -78,43 +78,25 @@ def event_router(wiring):
     return EventRouter(wiring)
 
 
-def test_wiring_unknown_out_dev(wiring_struct):
-    wiring = Wiring(wiring_struct)
+def test_wiring_unknown_out_dev(wiring_struct_4_1):
+    wiring = Wiring(wiring_struct_4_1)
     assert dict() == wiring["Out3"]
 
 
-def test_wiring_unknown_out_io(wiring_struct):
-    wiring = Wiring(wiring_struct)
+def test_wiring_unknown_out_io(wiring_struct_4_1):
+    wiring = Wiring(wiring_struct_4_1)
     assert set() == wiring["Out1"]["Out1>2"]
 
 
-def test_wiring_from_inverse_equal(wiring_struct, inverse_wiring_struct):
-    assert Wiring(wiring_struct) == Wiring.from_inverse_wiring(inverse_wiring_struct)
-
-
-def test_inverse_wiring_unknown_in_dev(inverse_wiring_struct):
-    inverse_wiring = InverseWiring(inverse_wiring_struct)
+def test_inverse_wiring_unknown_in_dev(inverse_wiring_struct_4_1):
+    inverse_wiring = InverseWiring(inverse_wiring_struct_4_1)
     assert dict() == inverse_wiring["In2"]
 
 
-def test_inverse_wiring_unknown_in_io(inverse_wiring_struct):
-    inverse_wiring = InverseWiring(inverse_wiring_struct)
+def test_inverse_wiring_unknown_in_io(inverse_wiring_struct_4_1):
+    inverse_wiring = InverseWiring(inverse_wiring_struct_4_1)
     with pytest.raises(KeyError):
         inverse_wiring["In1"]["In1<3"]
-
-
-def test_inverse_wiring_from_wiring_equal(inverse_wiring_struct, wiring_struct):
-    assert InverseWiring(inverse_wiring_struct) == InverseWiring.from_wiring(
-        wiring_struct
-    )
-
-
-def test_inverse_wiring_from_component_configs_equal(
-    inverse_wiring_struct, component_configs_list
-):
-    assert InverseWiring(inverse_wiring_struct) == InverseWiring.from_component_configs(
-        component_configs_list
-    )
 
 
 def test_event_router_wiring_from_wiring(wiring: Wiring):
@@ -430,3 +412,60 @@ def component_configs_list_3_2_2():
             },
         ),
     ]
+
+
+@pytest.mark.parametrize(
+    "wiring_struct, inverse_wiring_struct",
+    [
+        ("wiring_struct_1", "inverse_wiring_struct_1"),
+        ("wiring_struct_1_1", "inverse_wiring_struct_1_1"),
+        ("wiring_struct_2_2", "inverse_wiring_struct_2_2"),
+        ("wiring_struct_3_1_1", "inverse_wiring_struct_3_1_1"),
+        ("wiring_struct_3_2_2", "inverse_wiring_struct_3_2_2"),
+        ("wiring_struct_4_1", "inverse_wiring_struct_4_1"),
+    ],
+)
+def test_wiring_from_inverse_equal(wiring_struct, inverse_wiring_struct, request):
+    assert Wiring(request.getfixturevalue(wiring_struct)) == Wiring.from_inverse_wiring(
+        request.getfixturevalue(inverse_wiring_struct)
+    )
+
+
+@pytest.mark.parametrize(
+    "wiring_struct, inverse_wiring_struct",
+    [
+        ("wiring_struct_1", "inverse_wiring_struct_1"),
+        ("wiring_struct_1_1", "inverse_wiring_struct_1_1"),
+        ("wiring_struct_2_2", "inverse_wiring_struct_2_2"),
+        ("wiring_struct_3_1_1", "inverse_wiring_struct_3_1_1"),
+        ("wiring_struct_3_2_2", "inverse_wiring_struct_3_2_2"),
+        ("wiring_struct_4_1", "inverse_wiring_struct_4_1"),
+    ],
+)
+def test_inverse_wiring_from_wiring_equal(
+    wiring_struct, inverse_wiring_struct, request
+):
+    assert InverseWiring(
+        request.getfixturevalue(inverse_wiring_struct)
+    ) == InverseWiring.from_wiring(request.getfixturevalue(wiring_struct))
+
+
+@pytest.mark.parametrize(
+    "inverse_wiring_struct, component_configs_list",
+    [
+        ("inverse_wiring_struct_1", "component_configs_list_1"),
+        ("inverse_wiring_struct_1_1", "component_configs_list_1_1"),
+        ("inverse_wiring_struct_2_2", "component_configs_list_2_2"),
+        ("inverse_wiring_struct_3_1_1", "component_configs_list_3_1_1"),
+        ("inverse_wiring_struct_3_2_2", "component_configs_list_3_2_2"),
+        ("inverse_wiring_struct_4_1", "component_configs_list_4_1"),
+    ],
+)
+def test_inverse_wiring_from_component_configs_equal(
+    inverse_wiring_struct, component_configs_list, request
+):
+    assert InverseWiring(
+        request.getfixturevalue(inverse_wiring_struct)
+    ) == InverseWiring.from_component_configs(
+        request.getfixturevalue(component_configs_list)
+    )
