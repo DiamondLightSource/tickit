@@ -69,6 +69,11 @@ def component_configs_list_4_1():
 
 
 @pytest.fixture
+def component_set_4_1():
+    return {"Out1", "Out2", "Mid1", "In1", "Iso1"}
+
+
+@pytest.fixture
 def wiring(wiring_struct_4_1):
     return Wiring(wiring_struct_4_1)
 
@@ -97,10 +102,6 @@ def test_inverse_wiring_unknown_in_io(inverse_wiring_struct_4_1):
     inverse_wiring = InverseWiring(inverse_wiring_struct_4_1)
     with pytest.raises(KeyError):
         inverse_wiring["In1"]["In1<3"]
-
-
-def test_event_router_components(event_router: EventRouter):
-    assert {"Out1", "Out2", "Mid1", "In1", "Iso1"} == event_router.components
 
 
 def test_event_router_input_components(event_router: EventRouter):
@@ -193,6 +194,11 @@ def component_configs_list_1():
     ]
 
 
+@pytest.fixture
+def component_set_1():
+    return {"Iso1"}
+
+
 # (1,1)
 
 
@@ -218,6 +224,11 @@ def component_configs_list_1_1():
         ComponentConfig(ComponentID("Iso1"), dict()),
         ComponentConfig(ComponentID("Iso2"), dict()),
     ]
+
+
+@pytest.fixture
+def component_set_1_1():
+    return {"Iso1", "Iso2"}
 
 
 # (2,2)
@@ -269,6 +280,11 @@ def component_configs_list_2_2():
             },
         ),
     ]
+
+
+@pytest.fixture
+def component_set_2_2():
+    return {"Out1", "Out2", "In1", "In2"}
 
 
 # (3,1,1)
@@ -323,6 +339,11 @@ def component_configs_list_3_1_1():
             },
         ),
     ]
+
+
+@pytest.fixture
+def component_set_3_1_1():
+    return {"Out1", "Mid1", "In1", "Iso1", "Iso2"}
 
 
 # (3,2,2)
@@ -401,6 +422,11 @@ def component_configs_list_3_2_2():
             },
         ),
     ]
+
+
+@pytest.fixture
+def component_set_3_2_2():
+    return {"Out1", "Mid1", "In1", "Out2", "In2", "Out3", "In3"}
 
 
 @pytest.mark.parametrize(
@@ -493,3 +519,22 @@ def test_event_router_wiring_from_inverse(wiring_struct, request):
     inverse_wiring = InverseWiring.from_wiring(wiring)
     event_router = EventRouter(inverse_wiring)
     assert wiring == event_router.wiring
+
+
+# test cpt recognition
+
+
+@pytest.mark.parametrize(
+    "wiring_struct, component_set",
+    [
+        ("wiring_struct_1", "component_set_1"),
+        ("wiring_struct_1_1", "component_set_1_1"),
+        ("wiring_struct_2_2", "component_set_2_2"),
+        ("wiring_struct_3_1_1", "component_set_3_1_1"),
+        ("wiring_struct_3_2_2", "component_set_3_2_2"),
+        ("wiring_struct_4_1", "component_set_4_1"),
+    ],
+)
+def test_event_router_components(wiring_struct, component_set, request):
+    event_router = EventRouter(Wiring(request.getfixturevalue(wiring_struct)))
+    assert request.getfixturevalue(component_set) == event_router.components
