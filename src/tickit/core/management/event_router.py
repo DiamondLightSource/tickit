@@ -206,7 +206,7 @@ class EventRouter:
             Set[ComponentID]: A set of components which are isolated
         """
         return set.difference(
-            {component for component, _ in self.wiring.items()},
+            set(self.wiring.keys()),
             set.union(self.input_components, self.output_components),
         )
 
