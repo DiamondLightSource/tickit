@@ -46,5 +46,9 @@
   {
     "version": "96_isolated_components",
     "url": "https://dls-controls.github.io/tickit/96_isolated_components/"
+  },
+  {
+    "version": "box-device",
+    "url": "https://dls-controls.github.io/tickit/box-device/"
   }
 ]
