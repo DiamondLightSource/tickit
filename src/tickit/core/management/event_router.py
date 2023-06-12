@@ -169,7 +169,11 @@ class EventRouter:
         Returns:
             Set[ComponentID]: A set of all components in the wiring.
         """
-        return set.union(self.input_components, self.output_components)
+        return set.union(
+            self.input_components,
+            self.output_components,
+            self.isolated_components,
+        )
 
     @cached_property
     def output_components(self) -> Set[ComponentID]:
@@ -192,6 +196,18 @@ class EventRouter:
             for out in self.wiring.values()
             for port in out.values()
             for dev, _ in port
+        )
+
+    @cached_property
+    def isolated_components(self) -> Set[ComponentID]:
+        """A cached set of components without inputs or outputs.
+
+        Returns:
+            Set[ComponentID]: A set of components which are isolated
+        """
+        return set.difference(
+            set(self.wiring.keys()),
+            set.union(self.input_components, self.output_components),
         )
 
     @cached_property
