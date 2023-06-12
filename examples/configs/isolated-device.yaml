@@ -1,0 +1,6 @@
+- examples.devices.isolated_device.IsolatedBox:
+    name: MrBox
+    inputs: {}
+    initial_value: 2
+    ioc_name: ISOLATED_BOX
+    port: 25561

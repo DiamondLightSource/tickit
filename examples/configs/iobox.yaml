@@ -1,6 +1,0 @@
-- examples.devices.iobox.IoBox:
-    name: MrBox
-    inputs: {}
-    initial_value: 2
-    ioc_name: IOBOX
-    port: 25561

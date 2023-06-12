@@ -15,8 +15,8 @@ from tickit.core.typedefs import SimTime
 from tickit.utils.byte_format import ByteFormat
 
 
-class IoBoxDevice(Device):
-    """I/O box device.
+class IsolatedBoxDevice(Device):
+    """Isolated device which stores a float value.
 
     The device has no inputs or outputs and interacts solely through adapters.
     """
@@ -46,18 +46,18 @@ class IoBoxDevice(Device):
         return DeviceUpdate(self.Outputs(), None)
 
     def get_value(self):
-        """Returns the value set for the IO box, required for the epics adapter."""
+        """Returns the value set for the device, required for the epics adapter."""
         return self.value
 
     def set_value(self, value: float):
-        """Sets the value for the IO box, required for the epics adapter."""
+        """Sets the value for the device, required for the epics adapter."""
         self.value = value
 
 
-class IoBoxTCPAdapter(ComposedAdapter):
-    """A composed adapter which allows getting and setting the value of the box."""
+class IsolatedBoxTCPAdapter(ComposedAdapter):
+    """A composed adapter which allows getting and setting the value of the device."""
 
-    device: IoBoxDevice
+    device: IsolatedBoxDevice
 
     def __init__(
         self,
@@ -96,10 +96,10 @@ class IoBoxTCPAdapter(ComposedAdapter):
         self.device.value = value
 
 
-class IoBoxEpicsAdapter(EpicsAdapter):
-    """IoBox adapter to allow interaction using an EPICS interface."""
+class IsolatedBoxEpicsAdapter(EpicsAdapter):
+    """IsolatedBox adapter to allow interaction using an EPICS interface."""
 
-    device: IoBoxDevice
+    device: IsolatedBoxDevice
 
     async def callback(self, value) -> None:
         """Device callback function.
@@ -117,24 +117,24 @@ class IoBoxEpicsAdapter(EpicsAdapter):
 
 
 @dataclass
-class IoBox(ComponentConfig):
-    """IoBox device you can change the value of either over TCP or via EPICS."""
+class IsolatedBox(ComponentConfig):
+    """Isolated box device you can change the value of either over TCP or via EPICS."""
 
     initial_value: float
     port: int
     ioc_name: str
     host: str = "localhost"
-    db_file_path: str = "src/../examples/devices/iobox_record.db"
+    db_file_path: str = "src/../examples/devices/isolated_record.db"
 
     def __call__(self) -> Component:  # noqa: D102
         return DeviceSimulation(
             name=self.name,
-            device=IoBoxDevice(
+            device=IsolatedBoxDevice(
                 initial_value=self.initial_value,
             ),
             adapters=[
-                IoBoxTCPAdapter(host=self.host, port=self.port),
-                IoBoxEpicsAdapter(
+                IsolatedBoxTCPAdapter(host=self.host, port=self.port),
+                IsolatedBoxEpicsAdapter(
                     db_file=self.db_file_path,
                     ioc_name=self.ioc_name,
                 ),
