@@ -1,5 +1,7 @@
 import logging
-from typing import Dict, Generic, List, Tuple, TypeVar
+from typing import Any, Dict, Generic, List, Tuple, TypeVar
+
+from typing_extensions import NotRequired
 
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
@@ -14,9 +16,11 @@ V = TypeVar("V")
 
 
 class IoBoxDevice(Device, Generic[A, V]):
-    """A simple device which can take and store key-value pairs.
+    """
+    A simple device which can take and store key-value pairs from both
+    network adapters and the ticket graph.
 
-    Adapter should write values to the device via device.write(addr, value)
+    Adapters should write values to the device via device.write(addr, value)
     or device[addr] = value. The writes will be pending until the scheduler
     interrupts the device. For example:
 
@@ -31,16 +35,31 @@ class IoBoxDevice(Device, Generic[A, V]):
     >> 6
     ```
 
-    Useful for simulating a basic block of memory. The envisioned use of this class is
-    where you wish to simulate a network interface but the internal hardware
-    logic is either not needed or very simple. A custom adapter can be made
-    for the network interface and can simply read and write to an IoBox
+    Linked devices can send values to be written via inputs and receive changes
+    via outputs. For example:
+    ```python
+    update = box.update(SimTime(0), {"updates": [(4, "foo")]})
+    assert update.outputs["updates"] == [(4, "foo")]
+    >> 6
+    ```
+
+    The two modes of I/O may used independently, optionally and interoperably.
+
+    This device is useful for simulating a basic block of memory.
+    The envisioned use of this class is where you wish to simulate a network
+    interface but the internal hardware logic is either not needed or very simple.
+    A custom adapter can be made for the network interface and can simply
+    read and write to an IoBox.
     """
 
     #: A typed mapping containing the 'input' input value
-    Inputs: TypedDict = TypedDict("Inputs", {})
+    Inputs: TypedDict = TypedDict(
+        "Inputs", {"updates": NotRequired[List[Tuple[Any, Any]]]}
+    )
     #: An empty typed mapping of device outputs
-    Outputs: TypedDict = TypedDict("Outputs", {})
+    Outputs: TypedDict = TypedDict(
+        "Outputs", {"updates": NotRequired[List[Tuple[Any, Any]]]}
+    )
 
     _memory: Dict[A, V]
     _change_buffer: List[Tuple[A, V]]
@@ -84,15 +103,21 @@ class IoBoxDevice(Device, Generic[A, V]):
 
         Args:
             time (SimTime): (Simulated) time at which this is called
-            inputs (Inputs): Inputs to this device, always empty
+            inputs (Inputs): Inputs to this device, may contain addresses
+                and values to update
 
         Returns:
-            DeviceUpdate[Outputs]: Outputs and update, always empty
+            DeviceUpdate[Outputs]: Outputs and update, may contain addresses
+                and values that have been updated, either via inputs or
+                an adapter
         """
+        self._change_buffer += inputs.get("updates", [])
+        updates = []
         while self._change_buffer:
             addr, value = self._change_buffer.pop()
             self._memory[addr] = value
-        return DeviceUpdate(IoBoxDevice.Outputs(), None)
+            updates.append((addr, value))
+        return DeviceUpdate(IoBoxDevice.Outputs(updates=updates), None)
 
 
 class IoBox(ComponentConfig):
