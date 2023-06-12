@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.management.event_router &#8212; tickit 0.2.2.dev2+gada93e7 documentation</title>
+    <title>tickit.core.management.event_router &#8212; tickit 0.2.2.dev3+g464663e documentation</title>
   
   
   
@@ -587,7 +587,11 @@ document.write(`
 <span class="sd">        Returns:</span>
 <span class="sd">            Set[ComponentID]: A set of all components in the wiring.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">set</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_components</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_components</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">set</span><span class="o">.</span><span class="n">union</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">input_components</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">output_components</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">isolated_components</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">output_components</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">]:</span>
@@ -610,6 +614,18 @@ document.write(`
             <span class="k">for</span> <span class="n">out</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wiring</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">port</span> <span class="ow">in</span> <span class="n">out</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">dev</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">port</span>
+        <span class="p">)</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">isolated_components</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A cached set of components without inputs or outputs.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Set[ComponentID]: A set of components which are isolated</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">set</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
+            <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wiring</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
+            <span class="nb">set</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_components</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_components</span><span class="p">),</span>
         <span class="p">)</span>
 
     <span class="nd">@cached_property</span>
