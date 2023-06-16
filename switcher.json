@@ -46,5 +46,9 @@
   {
     "version": "0.1",
     "url": "https://dls-controls.github.io/tickit/0.1/"
+  },
+  {
+    "version": "76_running_event",
+    "url": "https://dls-controls.github.io/tickit/76_running_event/"
   }
 ]
