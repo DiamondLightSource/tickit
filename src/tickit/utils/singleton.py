@@ -2,7 +2,7 @@ from typing import Any, Dict
 
 
 class Singleton(type):
-    """A singlton metaclass, which allows only one instance of derived types."""
+    """A singleton metaclass, which allows only one instance of derived types."""
 
     _instances: Dict["Singleton", "Singleton"] = {}
 

@@ -63,7 +63,7 @@ class SystemSimulationComponent(BaseComponent):
         """Delegates core behaviour to the slave scheduler.
 
         An asynchronous method which delegates core behaviour of computing changes and
-        determining a callback period to the slave shceduler and sends the resulting
+        determining a callback period to the slave scheduler and sends the resulting
         Output.
 
         Args:

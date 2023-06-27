@@ -39,7 +39,7 @@ class TcpServer(Server[bytes]):
 
         An asynchronous method used to run the server indefinitely on the configured
         host and port. Upon client connection, messages from the on_connect iterable
-        will be sent. Upon recieving a message the server will delegate handling of it
+        will be sent. Upon receiving a message the server will delegate handling of it
         to the handler. Replies will be formatted according to the configured format
         string.
 
@@ -95,7 +95,7 @@ class TcpServer(Server[bytes]):
                     break
                 addr = writer.get_extra_info("peername")
 
-                LOGGER.debug(f"Recieved {data!r} from {addr}")
+                LOGGER.debug(f"Received {data!r} from {addr}")
                 tasks.append(asyncio.create_task(reply(await handler(data))))
 
             await asyncio.wait(tasks)

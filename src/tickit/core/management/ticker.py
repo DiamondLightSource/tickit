@@ -73,7 +73,7 @@ class Ticker:
         """Set up the ticker to perform a tick.
 
         An asynchronous method which sets up the ticker to perform a tick by updating
-        time, reseting accumulators and finding the set of components which require
+        time, resetting accumulators and finding the set of components which require
         update.
 
         Args:
@@ -99,7 +99,7 @@ class Ticker:
 
         An asynchronous method which schedules updates for components with resolved
         dependencies, as determined by the intersection of the components first order
-        dependencies and the set of componets which still require an update.
+        dependencies and the set of components which still require an update.
         """
 
         def required_dependencies(component) -> Set[ComponentID]:
@@ -132,7 +132,7 @@ class Ticker:
         An asynchronous message which propagates the output of an updated component by
         removing the component from the set of components requiring update, adding the
         routed inputs to the accumulator, and scheduling any possible updates. If no
-        components require update the finsihed flag will be set.
+        components require update the finished flag will be set.
 
         Args:
             output (Output): The output produced by the update of a component.

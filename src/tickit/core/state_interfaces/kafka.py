@@ -9,7 +9,7 @@ from tickit.core.state_interfaces import state_interface
 
 #: A consumable value
 C = TypeVar("C")
-#: A producable value
+#: A producible value
 P = TypeVar("P")
 
 
@@ -18,7 +18,7 @@ class KafkaStateConsumer(Generic[C]):
     """A kafka implementation of the StateConsumer protocol.
 
     A kafka implementation of the StateConsumer protocol, this consumer can subscribe
-    to kafka topics, upon recieving a message the consumer passes the value to the
+    to kafka topics, upon receiving a message the consumer passes the value to the
     callback function passed during initialization, if a topic is subscribed to which
     does not yet exist it is created.
     """

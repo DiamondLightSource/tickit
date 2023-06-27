@@ -38,7 +38,7 @@ def test_epics_adapter_is_adapter():
     assert issubclass(EpicsAdapter, Adapter)
 
 
-def test_epics_adapter_constuctor(epics_adapter: EpicsAdapter):
+def test_epics_adapter_constructor(epics_adapter: EpicsAdapter):
     pass
 
 

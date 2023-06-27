@@ -44,8 +44,8 @@ class SplittingInterpreter(Interpreter[AnyStr]):
         """Combines results from handling multiple messages.
 
         Takes the responses from when the wrapped interpreter handles multiple messages
-        and returns an appropriate composite repsonse and interrrupt. The response is
-        an asyncronous iterable of each of the individual responses, the composite
+        and returns an appropriate composite response and interrupt. The response is
+        an asynchronous iterable of each of the individual responses, the composite
         interrupt is a logical inclusive 'or' of all of the individual interrupts.
 
         Args:
@@ -66,8 +66,8 @@ class SplittingInterpreter(Interpreter[AnyStr]):
         ]
 
         resp = wrap_messages_as_async_iterable(responses)
-        interrrupt = any(individual_interrupts)
-        return resp, interrrupt
+        interrupt = any(individual_interrupts)
+        return resp, interrupt
 
     async def handle(
         self, adapter: Adapter, message: AnyStr

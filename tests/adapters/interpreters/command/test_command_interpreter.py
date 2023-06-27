@@ -116,7 +116,7 @@ async def test_command_interpreter_handle_wraps_non_iterable_reply(
 )
 @pytest.mark.asyncio
 @pytest.mark.parametrize("interrupt", [True, False])
-async def test_command_interpreter_handle_returns_interupt(
+async def test_command_interpreter_handle_returns_interrupt(
     command_interpreter: CommandInterpreter, interrupt: bool
 ):
     test_adapter = MagicMock(

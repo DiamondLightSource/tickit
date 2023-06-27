@@ -45,6 +45,6 @@ class ComposedAdapter(Adapter, Generic[T]):
     async def run_forever(
         self, device: Device, raise_interrupt: RaiseInterrupt
     ) -> None:
-        """Runs the server continously."""
+        """Runs the server continuously."""
         await super().run_forever(device, raise_interrupt)
         await self.server.run_forever(self.on_connect, self.handle_message)

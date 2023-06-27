@@ -25,5 +25,5 @@ def subsequent_call_creates_same(TestSingleton):
     assert original == TestSingleton()
 
 
-def derived_unequal(TestSingleton, OtherSigleton):
-    assert TestSingleton() != OtherSigleton()
+def derived_unequal(TestSingleton, OtherSingleton):
+    assert TestSingleton() != OtherSingleton()

@@ -35,8 +35,8 @@ class JoiningInterpreter(Interpreter[AnyStr]):
         """Combines results from handling multiple messages.
 
         Takes the responses from when the wrapped interpreter handles multiple messages
-        and returns an appropriate composite repsonse and interrrupt. The composite
-        response is the concatentation of each of the individual responses, the
+        and returns an appropriate composite response and interrupt. The composite
+        response is the concatenation of each of the individual responses, the
         composite interrupt is a logical inclusive 'or' of all of the individual
         responses.
 

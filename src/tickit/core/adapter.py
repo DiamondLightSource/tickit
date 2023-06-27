@@ -61,21 +61,21 @@ class Adapter:
 
 @as_tagged_union
 class Interpreter(ABC, Generic[T]):
-    """An interface for types which handle messages recieved by an adapter."""
+    """An interface for types which handle messages received by an adapter."""
 
     @abstractmethod
     async def handle(
         self, adapter: Adapter, message: T
     ) -> Tuple[AsyncIterable[T], bool]:
-        """An asynchronous method which handles messages recieved by an adapter.
+        """An asynchronous method which handles messages received by an adapter.
 
-        An asynchronous method which handles messages recieved by an adapter, replies
-        are sent as an asynchronous iterable to support setting of continious readback,
+        An asynchronous method which handles messages received by an adapter, replies
+        are sent as an asynchronous iterable to support setting of continuous readback,
         stand alone replies should be wrapped in an asynchronous iterable of length one.
 
         Args:
             adapter (Adapter): The adapter which is delegating message handling.
-            message (T): The message recieved by the adapter.
+            message (T): The message received by the adapter.
 
         Returns:
             Tuple[AsyncIterable[T], bool]: A tuple containing both an asynchronous
@@ -98,6 +98,6 @@ class Server(Generic[T]):
             on_connect (Callable[[], AsyncIterable[Optional[T]]]): An asynchronous
                 iterable of messages to be sent once a client connects.
             handler (Callable[[T], Awaitable[AsyncIterable[Optional[T]]]]): An
-                asynchronous method used to handle recieved messages, returning an
+                asynchronous method used to handle received messages, returning an
                 asynchronous iterable of replies.
         """

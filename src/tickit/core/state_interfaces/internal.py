@@ -18,7 +18,7 @@ from tickit.utils.singleton import Singleton
 
 #: A consumable value
 C = TypeVar("C")
-#: A producable value
+#: A producible value
 P = TypeVar("P")
 
 
@@ -113,7 +113,7 @@ class InternalStateConsumer(Generic[C]):
     """An internal, singleton based, implementation of the StateConsumer protocol.
 
     A internal, singleton based, implementation of the StateConsumer protocol, this
-    consumer can subscribe to InternalStateServer topics, upon recieving a message the
+    consumer can subscribe to InternalStateServer topics, upon receiving a message the
     consumer passes the value to the callback function passed during initialization, if
     a topic is subscribed to which does not yet exist it is created.
     """

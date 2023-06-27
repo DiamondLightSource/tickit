@@ -39,7 +39,7 @@ class RegexCommand(Generic[AnyStr]):
     def parse(self, data: bytes) -> Optional[Sequence[AnyStr]]:
         """Performs message decoding and regex matching to match and extract arguments.
 
-        A method which performs message decoding accoridng to the command formatting
+        A method which performs message decoding according to the command formatting
         string, checks for a full regular expression match and returns a sequence of
         function arguments if a match is found, otherwise the method returns None.
 

@@ -11,7 +11,7 @@ class ByteFormat:
 
     @serializer
     def serialize(self) -> str:
-        """An apischema serialiazation method which returns a utf-8 decoded string.
+        """An apischema serialization method which returns a utf-8 decoded string.
 
         Returns:
             str: A utf-8 decoded string of the format.
