@@ -60,8 +60,7 @@ class MasterScheduler(BaseScheduler):
         self.new_wakeup.set()
 
     async def run_forever(self) -> None:
-        """Perform an initial tick then continuously schedule ticks according to
-        wakeups.
+        """Perform initial tick then continuously schedule ticks according to wakeups.
 
         An asynchronous method which initially performs setup and an initial tick in
         which all components are updated, subsequently ticks are performed as requested
