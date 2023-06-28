@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>API &#8212; tickit 0.2.3.dev1+g73ed456 documentation</title>
+    <title>API &#8212; tickit 0.2.3.dev1+g81a1239 documentation</title>
   
   
   
@@ -1733,7 +1733,7 @@ components require update the finished flag will be set.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="tickit.core.state_interfaces.internal.P">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.core.state_interfaces.internal.</span></span><span class="sig-name descname"><span class="pre">P</span></span><a class="headerlink" href="#tickit.core.state_interfaces.internal.P" title="Permalink to this definition">#</a></dt>
-<dd><p>A producable value</p>
+<dd><p>A producible value</p>
 <p>alias of TypeVar(‘P’)</p>
 </dd></dl>
 
@@ -1920,7 +1920,7 @@ yet exist it is created.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="tickit.core.state_interfaces.kafka.P">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.core.state_interfaces.kafka.</span></span><span class="sig-name descname"><span class="pre">P</span></span><a class="headerlink" href="#tickit.core.state_interfaces.kafka.P" title="Permalink to this definition">#</a></dt>
-<dd><p>A producable value</p>
+<dd><p>A producible value</p>
 <p>alias of TypeVar(‘P’)</p>
 </dd></dl>
 
@@ -1990,7 +1990,7 @@ value to a kafka topic, if the topic does not yet exist it is created.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="tickit.core.state_interfaces.state_interface.P">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.core.state_interfaces.state_interface.</span></span><span class="sig-name descname"><span class="pre">P</span></span><a class="headerlink" href="#tickit.core.state_interfaces.state_interface.P" title="Permalink to this definition">#</a></dt>
-<dd><p>A producable value</p>
+<dd><p>A producible value</p>
 <p>alias of TypeVar(‘P’, contravariant=True)</p>
 </dd></dl>
 
@@ -2862,7 +2862,7 @@ never requests a callback.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tickit.utils.byte_format.ByteFormat.serialize">
 <span class="sig-name descname"><span class="pre">serialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></span><a class="reference internal" href="../../_modules/tickit/utils/byte_format.html#ByteFormat.serialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.utils.byte_format.ByteFormat.serialize" title="Permalink to this definition">#</a></dt>
-<dd><p>An apischema serialiazation method which returns a utf-8 decoded string.</p>
+<dd><p>An apischema serialization method which returns a utf-8 decoded string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A utf-8 decoded string of the format.</p>
@@ -2984,7 +2984,7 @@ apischema deserialization to produce a list of component configuration objects.<
 <dl class="py class">
 <dt class="sig sig-object py" id="tickit.utils.singleton.Singleton">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.utils.singleton.</span></span><span class="sig-name descname"><span class="pre">Singleton</span></span><a class="reference internal" href="../../_modules/tickit/utils/singleton.html#Singleton"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.utils.singleton.Singleton" title="Permalink to this definition">#</a></dt>
-<dd><p>A singlton metaclass, which allows only one instance of derived types.</p>
+<dd><p>A singleton metaclass, which allows only one instance of derived types.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tickit.utils.singleton.Singleton.__call__">
 <span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tickit.utils.singleton.Singleton" title="tickit.utils.singleton.Singleton"><span class="pre">Singleton</span></a></span></span><a class="reference internal" href="../../_modules/tickit/utils/singleton.html#Singleton.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.utils.singleton.Singleton.__call__" title="Permalink to this definition">#</a></dt>
