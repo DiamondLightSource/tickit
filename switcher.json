@@ -52,6 +52,10 @@
     "url": "https://dls-controls.github.io/tickit/76_running_event/"
   },
   {
+    "version": "epics-optional-db-file",
+    "url": "https://dls-controls.github.io/tickit/epics-optional-db-file/"
+  },
+  {
     "version": "split-interpreter-empty-strings",
     "url": "https://dls-controls.github.io/tickit/split-interpreter-empty-strings/"
   },
