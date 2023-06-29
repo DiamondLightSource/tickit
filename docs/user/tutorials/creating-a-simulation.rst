@@ -42,8 +42,7 @@ such we may extend our config, as:
     - tickit.devices.sink.Sink:
         name: tramp_sink
         inputs:
-          input:
-          - rand_tramp:output
+          input: rand_tramp:output
 
 Running the Simulation
 ----------------------

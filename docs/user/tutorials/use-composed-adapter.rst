@@ -62,6 +62,8 @@ message should be decoded to a string prior to matching using the ``utf-8`` stan
 
 .. code-block:: python
 
+    from tickit.adapters.interpreters.command.regex_command import RegexCommand
+
     class AmplifierAdapter(ComposedAdapter):
 
          ...

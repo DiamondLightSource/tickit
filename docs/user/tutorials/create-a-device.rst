@@ -154,12 +154,12 @@ and a `Sink`, named sink, which will receive the amplified signal.
     - amp.Amplifier:
         name: amp
         inputs:
-        initial_signal: source:value
+          initial_signal: source:value
         initial_amplification: 2.0
     - tickit.devices.sink.Sink:
         name: sink
         inputs:
-        input: amp:amplified_signal
+          input: amp:amplified_signal
 
 
 Where in ``amp.Amplifier`` ``amp`` is the name of the ``.py`` file the amplifier
