@@ -27,9 +27,9 @@ Added:
 Changed:
 
 - Reworked config (de)serialization
-  
+
   - User may now reference the :code:`ComponentConfig`, which encapsulate a device and adapters
-  - Device & Adapter config classes are no longer autmatically generated, configuration should be performed via the :code:`ComponentConfig`
+  - Device & Adapter config classes are no longer automatically generated, configuration should be performed via the :code:`ComponentConfig`
 
 - Made :code:`Device` a typed :code:`Generic` of :code:`InMap` and :code:`OutMap`
 
@@ -56,7 +56,7 @@ Initial release, with:
   - EPICS
 - Example Devices:
   - Remote Controlled (properties set via an adapter)
-  - Shutter (I/O iteraction and continuous motion)
+  - Shutter (I/O interaction and continuous motion)
   - Trampoline & RandomTrampoline (recurring call-backs)
 - Real Devices:
   - Cryostream (sample cryo-cooler)

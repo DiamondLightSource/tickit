@@ -13,7 +13,7 @@ Documentation  https://dls-controls.github.io/tickit
 Releases       https://github.com/dls-controls/tickit-devices/releases
 ============== ==============================================================
 
-An example simulation consits of a simple counter and a sink. The counter
+An example simulation consists of a simple counter and a sink. The counter
 increments up a given value and then passes this value to a sink.
 
 A simulation is defined using a yaml file, in which the graphing of the required
@@ -24,7 +24,7 @@ to the input of **counter_sink**.
 .. code-block:: yaml
 
     - examples.devices.counter.Counter:
-        name: counter  
+        name: counter
         inputs: {}
     - tickit.devices.sink.Sink:
         name: counter_sink
@@ -32,14 +32,14 @@ to the input of **counter_sink**.
           input: counter:_value
 
 
-This file is executed to run the simultation.
+This file is executed to run the simulation.
 
 .. code-block:: bash
 
     python -m tickit all examples/configs/counter.yaml
 
 
-The simulation will output logs depicting the incerementing of the counter:
+The simulation will output logs depicting the incrementing of the counter:
 
 .. code-block:: bash
 
@@ -52,7 +52,7 @@ The simulation will output logs depicting the incerementing of the counter:
     DEBUG:tickit.core.management.schedulers.base:Scheduling counter for wakeup at 1000000000
     DEBUG:tickit.core.components.component:counter_sink got Input(target='counter_sink', time=0, changes=immutables.Map({}))
     DEBUG:tickit.devices.sink:Sunk {}
-    DEBUG:tickit.core.management.schedulers.base:Scheduler got Output(source='counter_sink', time=0, changes=immutables.Map({}), call_at=None) 
+    DEBUG:tickit.core.management.schedulers.base:Scheduler got Output(source='counter_sink', time=0, changes=immutables.Map({}), call_at=None)
     DEBUG:tickit.core.management.ticker:Doing tick @ 1000000000
     DEBUG:tickit.core.components.component:counter got Input(target='counter', time=1000000000, changes=immutables.Map({}))
     DEBUG:examples.devices.counter:Counter incremented to 2

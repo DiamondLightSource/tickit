@@ -3,7 +3,7 @@ Creating a Device
 
 This tutorial shows how to create a simple amplifier `Device` for use in the tickit
 framework. This device will act as a simple amplifier which can multiply the signal
-recieved.
+received.
 
 Device Class
 ------------
@@ -74,14 +74,14 @@ Device Logic
 ------------
 
 In order to have a signal to amplifier we will make the following small system
-where the amplifier recieves a signal from a `source` and outputs it to a `sink`.
+where the amplifier receives a signal from a `source` and outputs it to a `sink`.
 The `sink` and `source` are already available in ``tickit.devices``.
 
 .. figure:: ../../images/tickit-create-device-amplifier.svg
     :align: center
 
 The core logic of the device will be implemented in the ``update`` method, which
-recieves the simulation time and any Inputs into the device. We want to recieve
+receives the simulation time and any Inputs into the device. We want to receive
 an input signal from the source, amplify it, and output it to our sink. As such
 we define our inputs and outputs in the maps, and the line of logic in the ``update``.
 
@@ -109,11 +109,11 @@ we define our inputs and outputs in the maps, and the line of logic in the ``upd
 Creating a ComponentConfig
 --------------------------
 
-In order to run the Device as a simulation, it requires a `ComponentConfig` that 
+In order to run the Device as a simulation, it requires a `ComponentConfig` that
 knows how to instantiate that Device. This will be defined in the same file as the
 device, and defines any default initial configuration values. As well as this, we
 overwrite the magic method `__call__()`, which returns a `DeviceSimulation` object.
-This object takes the component name, as well as it's device. We will return to this
+This object takes the component name, as well as its device. We will return to this
 if the device requires any adapters to control it externally.
 
 .. code-block:: python
@@ -141,9 +141,9 @@ Using the Device
 ----------------
 
 In order to use the device we must first create a simulation configuration yaml
-file. This file will be used to set up our simulation and will consist of: a 
+file. This file will be used to set up our simulation and will consist of: a
 `Source`, named source, which will produce a constant input signal; our amplifier;
-and a `Sink`, named sink, which will recieve the amplified signal.
+and a `Sink`, named sink, which will receive the amplified signal.
 
 .. code-block:: yaml
 

@@ -11,16 +11,16 @@ We will use a `ComposedAdapter` which will act as a simple TCP interface to the
     See the `Creating a Device` how-to for a walk-through of creating the Amplifier
     device.
 
-We will be using a composed adapter with a TCP server and the command interprerter.
+We will be using a composed adapter with a TCP server and the command interpreter.
 For more information on adapters see :doc:`here<../explanations/adapters>`.
 
 Initialise Adapter
 ------------------
 
-We shall begin using the same ``amp.py`` file from the ``Amplifier`` device. In 
-that file add a new ``AmplifierAdapter`` class which inherets `ComposedAdapter`.
+We shall begin using the same ``amp.py`` file from the ``Amplifier`` device. In
+that file add a new ``AmplifierAdapter`` class which inherits `ComposedAdapter`.
 Within ``AmplifierAdapter`` we need to assign the ``AmplifierDevice`` as a class
-member, and initialise the the server and interprerter like so:
+member, and initialise the server and interpreter like so:
 
 .. code-block:: python
 
@@ -72,7 +72,7 @@ message should be decoded to a string prior to matching using the ``utf-8`` stan
 
 
 We shall now add a method which sets a new value for the amplification when
-``A=(\d+\.?\d*)`` is recieved, where ``\d+\.?\d*`` denotes a decimal number and the
+``A=(\d+\.?\d*)`` is received, where ``\d+\.?\d*`` denotes a decimal number and the
 parentheses form the capture group from which the argument is extracted.
 
 .. code-block:: python
@@ -86,7 +86,7 @@ parentheses form the capture group from which the argument is extracted.
             self.device.amplification = amplification
 
 
-In its entirety your addapter should look as below.
+In its entirety your adapter should look as below.
 
 .. code-block:: python
 
@@ -119,7 +119,7 @@ In its entirety your addapter should look as below.
             self.device.amplification = amplification
 
 
-include the Adapter
+Include the Adapter
 -------------------
 
 In order to now use this adapter to control our device we need to include it in
@@ -169,7 +169,7 @@ When run we expect a response akin to:
     Connected to localhost.
     Escape character is \'^]\'.
 
-From this telnet client we can send various messages and recieve responses from our
+From this telnet client we can send various messages and receive responses from our
 adapter. The only messages our adapter will recognise are ``A?`` and ``A=``, so we
 enquire for the current amplification.
 
@@ -199,7 +199,7 @@ setting a new amplification of 4.4 with accompanying tickit debug output:
     DEBUG:tickit.core.components.component:sink got Input(target='sink', time=0, changes=immutables.Map({'input': 20.0}))
     DEBUG:tickit.devices.sink:Sunk {'input': 20.0}
     DEBUG:tickit.core.management.schedulers.base:Scheduler got Output(source='sink', time=0, changes=immutables.Map({}), call_at=None)
-    DEBUG:tickit.adapters.servers.tcp:Recieved b'A=4.4\r\n' from ('127.0.0.1', 56930)
+    DEBUG:tickit.adapters.servers.tcp:Received b'A=4.4\r\n' from ('127.0.0.1', 56930)
     DEBUG:tickit.core.management.schedulers.base:Scheduler got Interrupt(source='amp')
     DEBUG:tickit.core.management.schedulers.base:Scheduling amp for wakeup at 17846862439
     DEBUG:tickit.core.management.ticker:Doing tick @ 17846862439
@@ -210,8 +210,8 @@ setting a new amplification of 4.4 with accompanying tickit debug output:
     DEBUG:tickit.core.management.schedulers.base:Scheduler got Output(source='sink', time=17846862439, changes=immutables.Map({}), call_at=None)
 
 
-Here we see the inital tick at time=0 which initalises the system. We see the
+Here we see the initial tick at time=0 which initialises the system. We see the
 source providing a signal of 10, the amplifier getting the value of 10,
-amplifiying it to 20 and outputing it to the sink, which takes it. You then see
-the adapter interupting and changing the amplification to 4.4, continuting the
-same pattern but with the sink finally recieving a input signal of 44.
+amplifying it to 20 and outputting it to the sink, which takes it. You then see
+the adapter interrupting and changing the amplification to 4.4, continuing the
+same pattern but with the sink finally receiving a input signal of 44.

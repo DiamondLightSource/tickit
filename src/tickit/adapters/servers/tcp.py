@@ -64,7 +64,7 @@ class TcpServer(Server[bytes]):
     ) -> Callable[[StreamReader, StreamWriter], Awaitable[None]]:
         """Generates the handle function to be passed to the server.
 
-        The handle function is generated from the specified functions. It's purpose is
+        The handle function is generated from the specified functions. Its purpose is
         to define how the server will respond to incoming messages.
 
         Args:
