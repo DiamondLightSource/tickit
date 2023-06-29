@@ -60,7 +60,7 @@ class MasterScheduler(BaseScheduler):
         self.new_wakeup.set()
 
     async def run_forever(self) -> None:
-        """Perform an intial tick then continiously schedule ticks according to wakeups.
+        """Perform initial tick then continuously schedule ticks according to wakeups.
 
         An asynchronous method which initially performs setup and an initial tick in
         which all components are updated, subsequently ticks are performed as requested
@@ -106,7 +106,7 @@ class MasterScheduler(BaseScheduler):
         """Schedules the interrupt of a component immediately.
 
         An asynchronous method which implements the superclass abstract, an interrupt
-        is sheduled as an immediate wakeup. This is achieved by giving the wakeup a
+        is scheduled as an immediate wakeup. This is achieved by giving the wakeup a
         simulation time equal to the simulation time of the last tick plus the real
         world time which has passed, adjusted by the simulation speed.
 
@@ -136,7 +136,7 @@ class MasterScheduler(BaseScheduler):
         ) / 1e9
 
     async def handle_component_exception(self, message: ComponentException) -> None:
-        """Handle exceptions raised from componenets by shutting down the simulation.
+        """Handle exceptions raised from components by shutting down the simulation.
 
         If a component produces an exception, the scheduler will produce a message to
         all components in the simulation to cause them to cancel any running component

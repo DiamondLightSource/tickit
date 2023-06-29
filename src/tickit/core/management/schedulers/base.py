@@ -70,17 +70,17 @@ class BaseScheduler:
     async def handle_message(
         self, message: Union[Interrupt, Output, ComponentException]
     ) -> None:
-        """Handle messages recieved by the state consumer.
+        """Handle messages received by the state consumer.
 
         An asynchronous callback which handles Interrupt, Output and ComponentException
-        messages recieved by the state consumer. For Outputs, changes are propagated
+        messages received by the state consumer. For Outputs, changes are propagated
         and wakeups scheduled if required. For interrupts handling is deferred. For
         exceptions, a StopComponent message is produced to each component in the system
         to facilitate shut down.
 
         Args:
             message (Union[Interrupt, Output, ComponentException]): An Interrupt,
-                Output or ComponentException recieved by the state consumer.
+                Output or ComponentException received by the state consumer.
         """
         LOGGER.debug(f"Scheduler ({type(self).__name__}) got {message}")
         if isinstance(message, Output):
@@ -142,7 +142,7 @@ class BaseScheduler:
         return components, first
 
     async def handle_component_exception(self, message: ComponentException) -> None:
-        """Handle exceptions raised from componenets by shutting down the simulation.
+        """Handle exceptions raised from components by shutting down the simulation.
 
         If a component produces an exception, the scheduler will produce a message to
         all components in the simulation to cause them to cancel any running component

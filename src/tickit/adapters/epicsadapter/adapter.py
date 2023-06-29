@@ -81,7 +81,7 @@ class EpicsAdapter(Adapter):
     async def run_forever(
         self, device: Device, raise_interrupt: RaiseInterrupt
     ) -> None:
-        """Runs the server continously."""
+        """Runs the server continuously."""
         await super().run_forever(device, raise_interrupt)
         builder.SetDeviceName(self.ioc_name)
         self.load_records_without_DTYP_fields()

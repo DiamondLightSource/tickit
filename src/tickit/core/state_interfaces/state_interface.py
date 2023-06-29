@@ -11,17 +11,17 @@ elif sys.version_info >= (3, 5):
 
 #: A consumable value
 C = TypeVar("C", covariant=True)
-#: A producable value
+#: A producible value
 P = TypeVar("P", contravariant=True)
 
 
 @runtime_checkable
 class StateConsumer(Protocol[C]):
-    """An interface for types which implent publish/subscribe message consumers.
+    """An interface for types which implement publish/subscribe message consumers.
 
     An interface for types which implement publish/subscribe message consumers,
     the consumer must be able to subscribe to topics within the messaging framework,
-    upon recieving a message the consumer should pass the value to the callback
+    upon receiving a message the consumer should pass the value to the callback
     function, if a topic is subscribed to which does not yet exist it should be created.
     """
 
@@ -50,7 +50,7 @@ class StateConsumer(Protocol[C]):
 class StateProducer(Protocol[P]):
     """An interface for types which implement publish/subscribe message producers.
 
-    An interface for types which implment publish/subscribe message producers,
+    An interface for types which implement publish/subscribe message producers,
     the producer must be able to produce a value to a topic within the messaging
     framework, if the topic does not yet exist it should be created.
     """
@@ -112,7 +112,7 @@ def interfaces(external: bool = False) -> Set[str]:
 
     Gets a set of interface names for which both a StateConsumer and StateProducer
     exist. The external option may be used to restrict interfaces to those which may be
-    used in simulations which are distriubted across multiple processes.
+    used in simulations which are distributed across multiple processes.
 
     Args:
         external (bool): If true, only interfaces which can be used in simulations

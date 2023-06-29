@@ -24,7 +24,7 @@ def register_adapter() -> int:
     they are ready.
 
     Returns:
-        int: A unique ID for this adapter to use when notifiying that it is ready.
+        int: A unique ID for this adapter to use when notifying that it is ready.
     """
     adapter_id = next(_ID_COUNTER)
     LOGGER.debug(f"New IOC adapter registering with ID: {adapter_id}")
@@ -33,7 +33,7 @@ def register_adapter() -> int:
 
 
 def notify_adapter_ready(adapter_id: int) -> None:
-    """Notify the builder that a particular adpater has made all the records it needs.
+    """Notify the builder that a particular adapter has made all the records it needs.
 
     Once all registered adapters have notified, the IOC will start.
 

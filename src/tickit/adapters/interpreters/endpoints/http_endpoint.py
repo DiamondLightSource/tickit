@@ -51,7 +51,7 @@ class HTTPEndpoint(Generic[AnyStr]):
          URL and handler function for the endpoint, to then return to the HTTP Server.
 
         Args:
-            func (Callable): The handler funcion to be attached to the route
+            func (Callable): The handler function to be attached to the route
             definition for the endpoint.
 
         Returns:

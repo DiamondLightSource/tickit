@@ -9,7 +9,7 @@ from tickit.utils.compat.typing_compat import Protocol, runtime_checkable
 
 @runtime_checkable
 class Command(Protocol):
-    """An interface for interperable commands."""
+    """An interface for interpretable commands."""
 
     #: A flag which indicates whether calling of the method should trigger an interrupt
     interrupt: bool

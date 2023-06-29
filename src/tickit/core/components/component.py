@@ -73,17 +73,17 @@ class ComponentConfig:
 
 
 class BaseComponent(Component):
-    """A base class for compnents, implementing state interface related methods."""
+    """A base class for components, implementing state interface related methods."""
 
     state_consumer: StateConsumer[Union[Input, StopComponent]]
     state_producer: StateProducer[Union[Interrupt, Output, ComponentException]]
 
     async def handle_input(self, message: Union[Input, StopComponent]):
-        """Call on_tick when an input is recieved.
+        """Call on_tick when an input is received.
 
         Args:
             message (Union[Input, StopComponent])): An immutable data container for any
-                message a component recieves.
+                message a component receives.
         """
         if isinstance(message, Input):
             LOGGER.debug(f"{self.name} got {message}")
@@ -92,7 +92,7 @@ class BaseComponent(Component):
                     self.on_tick(message.time, message.changes), return_exceptions=False
                 )
             except Exception as err:
-                LOGGER.exception(f"Exception occured in {self.name} component.")
+                LOGGER.exception(f"Exception occurred in {self.name} component.")
                 await self.state_producer.produce(
                     output_topic(self.name),
                     ComponentException(self.name, err, traceback.format_exc()),
@@ -125,7 +125,7 @@ class BaseComponent(Component):
     async def raise_interrupt(self) -> None:
         """Sends an Interrupt message to the component output topic.
 
-        An asynchronous method whicb constructs an Interrupt message tagged with the
+        An asynchronous method which constructs an Interrupt message tagged with the
         component name and sends it to the output topic of this component.
         """
         await self.state_producer.produce(output_topic(self.name), Interrupt(self.name))

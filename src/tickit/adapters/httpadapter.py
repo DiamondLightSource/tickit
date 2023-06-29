@@ -28,7 +28,7 @@ class HTTPAdapter(Adapter):
     async def run_forever(
         self, device: Device, raise_interrupt: RaiseInterrupt
     ) -> None:
-        """Runs the server continously."""
+        """Runs the server continuously."""
         await super().run_forever(device, raise_interrupt)
 
         await self._start_server()

@@ -186,10 +186,10 @@ class EventRouter:
 
     @cached_property
     def input_components(self) -> Set[ComponentID]:
-        """A cached set of components which recieve inputs.
+        """A cached set of components which receive inputs.
 
         Returns:
-            Set[ComponentID]: A set of components which recieve inputs.
+            Set[ComponentID]: A set of components which receive inputs.
         """
         return set(
             dev
@@ -229,7 +229,7 @@ class EventRouter:
 
     @cached_property
     def inverse_component_tree(self) -> Dict[ComponentID, Set[ComponentID]]:
-        """A cached mapping of first order component dependancies.
+        """A cached mapping of first order component dependencies.
 
         A cached property which returns a mapping of components to the set of
         components which are wired to any of its inputs.

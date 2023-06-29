@@ -107,7 +107,7 @@ class SlaveScheduler(BaseScheduler):
     ) -> Tuple[Changes, Optional[SimTime]]:
         """Routes inputs, does a tick and returns output changes and a callback time.
 
-        An asyhcnronous method which determines which components within the simulation
+        An asynchronous method which determines which components within the simulation
         require being woken up, sets the input changes for use by the "external" mock
         component, performs a tick, determines the period in which the slave scheduler
         should next be updated, and returns the changes collated by the "expose" mock
@@ -161,13 +161,13 @@ class SlaveScheduler(BaseScheduler):
         await self.raise_interrupt()
 
     async def handle_component_exception(self, message: ComponentException) -> None:
-        """Handle exceptions raised from componenets by shutting down the simulation.
+        """Handle exceptions raised from components by shutting down the simulation.
 
         If a component inside a system simulation produces an exception, the slave
         scheduler will produce a message to all components it contains to cause them
         to cancel any running component tasks (adapter tasks). Afterwards the scheduler
         stores the ComponentException message, allowing its associated system simulation
-        component to propogate the exception to the master scheduler.
+        component to propagate the exception to the master scheduler.
 
         """
         await super().handle_component_exception(message)
