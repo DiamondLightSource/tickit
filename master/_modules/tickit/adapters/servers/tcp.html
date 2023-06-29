@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.adapters.servers.tcp &#8212; tickit 0.2.2.dev4+gcd428de documentation</title>
+    <title>tickit.adapters.servers.tcp &#8212; tickit 0.2.3.dev1+gad4499e documentation</title>
   
   
   
@@ -457,7 +457,7 @@ document.write(`
 
 <span class="sd">        An asynchronous method used to run the server indefinitely on the configured</span>
 <span class="sd">        host and port. Upon client connection, messages from the on_connect iterable</span>
-<span class="sd">        will be sent. Upon recieving a message the server will delegate handling of it</span>
+<span class="sd">        will be sent. Upon receiving a message the server will delegate handling of it</span>
 <span class="sd">        to the handler. Replies will be formatted according to the configured format</span>
 <span class="sd">        string.</span>
 
@@ -513,7 +513,7 @@ document.write(`
                     <span class="k">break</span>
                 <span class="n">addr</span> <span class="o">=</span> <span class="n">writer</span><span class="o">.</span><span class="n">get_extra_info</span><span class="p">(</span><span class="s2">&quot;peername&quot;</span><span class="p">)</span>
 
-                <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Recieved </span><span class="si">{</span><span class="n">data</span><span class="si">!r}</span><span class="s2"> from </span><span class="si">{</span><span class="n">addr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Received </span><span class="si">{</span><span class="n">data</span><span class="si">!r}</span><span class="s2"> from </span><span class="si">{</span><span class="n">addr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="n">tasks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">reply</span><span class="p">(</span><span class="k">await</span> <span class="n">handler</span><span class="p">(</span><span class="n">data</span><span class="p">))))</span>
 
             <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">tasks</span><span class="p">)</span>

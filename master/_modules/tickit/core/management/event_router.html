@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.management.event_router &#8212; tickit 0.2.2.dev4+gcd428de documentation</title>
+    <title>tickit.core.management.event_router &#8212; tickit 0.2.3.dev1+gad4499e documentation</title>
   
   
   
@@ -604,10 +604,10 @@ document.write(`
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">input_components</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;A cached set of components which recieve inputs.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A cached set of components which receive inputs.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Set[ComponentID]: A set of components which recieve inputs.</span>
+<span class="sd">            Set[ComponentID]: A set of components which receive inputs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">set</span><span class="p">(</span>
             <span class="n">dev</span>
@@ -647,7 +647,7 @@ document.write(`
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">inverse_component_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">,</span> <span class="n">Set</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;A cached mapping of first order component dependancies.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A cached mapping of first order component dependencies.</span>
 
 <span class="sd">        A cached property which returns a mapping of components to the set of</span>
 <span class="sd">        components which are wired to any of its inputs.</span>

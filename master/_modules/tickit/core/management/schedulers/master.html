@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.management.schedulers.master &#8212; tickit 0.2.2.dev4+gcd428de documentation</title>
+    <title>tickit.core.management.schedulers.master &#8212; tickit 0.2.3.dev1+gad4499e documentation</title>
   
   
   
@@ -478,7 +478,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">new_wakeup</span><span class="o">.</span><span class="n">set</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="MasterScheduler.run_forever"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.master.MasterScheduler.run_forever">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run_forever</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform an intial tick then continiously schedule ticks according to wakeups.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform initial tick then continuously schedule ticks according to wakeups.</span>
 
 <span class="sd">        An asynchronous method which initially performs setup and an initial tick in</span>
 <span class="sd">        which all components are updated, subsequently ticks are performed as requested</span>
@@ -524,7 +524,7 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Schedules the interrupt of a component immediately.</span>
 
 <span class="sd">        An asynchronous method which implements the superclass abstract, an interrupt</span>
-<span class="sd">        is sheduled as an immediate wakeup. This is achieved by giving the wakeup a</span>
+<span class="sd">        is scheduled as an immediate wakeup. This is achieved by giving the wakeup a</span>
 <span class="sd">        simulation time equal to the simulation time of the last tick plus the real</span>
 <span class="sd">        world time which has passed, adjusted by the simulation speed.</span>
 
@@ -554,7 +554,7 @@ document.write(`
         <span class="p">)</span> <span class="o">/</span> <span class="mf">1e9</span></div>
 
 <div class="viewcode-block" id="MasterScheduler.handle_component_exception"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.master.MasterScheduler.handle_component_exception">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_component_exception</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">ComponentException</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle exceptions raised from componenets by shutting down the simulation.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle exceptions raised from components by shutting down the simulation.</span>
 
 <span class="sd">        If a component produces an exception, the scheduler will produce a message to</span>
 <span class="sd">        all components in the simulation to cause them to cancel any running component</span>
