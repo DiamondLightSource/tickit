@@ -52,6 +52,10 @@
     "url": "https://dls-controls.github.io/tickit/76_running_event/"
   },
   {
+    "version": "split-interpreter-empty-strings",
+    "url": "https://dls-controls.github.io/tickit/split-interpreter-empty-strings/"
+  },
+  {
     "version": "typing_extensions",
     "url": "https://dls-controls.github.io/tickit/typing_extensions/"
   }
