@@ -2,8 +2,13 @@ import asyncio
 import logging
 from dataclasses import dataclass, field
 from typing import Dict, List, Type
+from tickit.adapters.composed import ComposedAdapter
+from tickit.adapters.interpreters.command.command_interpreter import CommandInterpreter
+from tickit.adapters.servers.tcp import TcpServer
+from tickit.core.adapter import Adapter
 
 from tickit.core.components.component import BaseComponent, Component, ComponentConfig
+from tickit.core.components.system_simulation_view import SystemSimulationView
 from tickit.core.management.event_router import InverseWiring
 from tickit.core.management.schedulers.slave import SlaveScheduler
 from tickit.core.runner import run_all
@@ -32,6 +37,10 @@ class SystemSimulationComponent(BaseComponent):
     #: corresponding output of an internal component.
     expose: Dict[PortID, ComponentPort]
 
+    _internal_adapter: Adapter[SystemSimulationView] = ComposedAdapter(
+        TcpServer(host="localhost", port=25555), CommandInterpreter()
+    )
+
     _tasks: List[asyncio.Task] = field(default_factory=list)
 
     async def run_forever(
@@ -51,10 +60,23 @@ class SystemSimulationComponent(BaseComponent):
             self.expose,
             self.raise_interrupt,
         )
+        components = {config.name: config() for config in self.components}
+
         self._tasks = run_all(
-            component().run_forever(state_consumer, state_producer)
-            for component in self.components
+            component.run_forever(state_consumer, state_producer)
+            for component in components.values()
         ) + run_all([self.scheduler.run_forever()])
+
+        if self._internal_adapter:
+            self._tasks.append(
+                asyncio.create_task(
+                    self._internal_adapter.run_forever(
+                        SystemSimulationView(self.scheduler._wiring, components),
+                        self.raise_interrupt,
+                    )
+                )
+            )
+
         await super().run_forever(state_consumer, state_producer)
         if self._tasks:
             await asyncio.wait(self._tasks)
