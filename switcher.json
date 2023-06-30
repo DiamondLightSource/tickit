@@ -64,6 +64,10 @@
     "url": "https://dls-controls.github.io/tickit/fix-http-adapter/"
   },
   {
+    "version": "simulation-wrapper",
+    "url": "https://dls-controls.github.io/tickit/simulation-wrapper/"
+  },
+  {
     "version": "split-interpreter-empty-strings",
     "url": "https://dls-controls.github.io/tickit/split-interpreter-empty-strings/"
   },
