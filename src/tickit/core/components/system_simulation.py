@@ -5,6 +5,7 @@ from typing import Dict, List, Type
 from tickit.adapters.composed import ComposedAdapter
 from tickit.adapters.interpreters.command.command_interpreter import CommandInterpreter
 from tickit.adapters.servers.tcp import TcpServer
+from tickit.adapters.system_simulation_adapter import SystemSimulationAdapter
 from tickit.core.adapter import Adapter
 
 from tickit.core.components.component import BaseComponent, Component, ComponentConfig
@@ -14,6 +15,7 @@ from tickit.core.management.schedulers.slave import SlaveScheduler
 from tickit.core.runner import run_all
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import Changes, ComponentID, ComponentPort, PortID, SimTime
+from tickit.utils.byte_format import ByteFormat
 from tickit.utils.topic_naming import output_topic
 
 LOGGER = logging.getLogger(__name__)
@@ -37,8 +39,9 @@ class SystemSimulationComponent(BaseComponent):
     #: corresponding output of an internal component.
     expose: Dict[PortID, ComponentPort]
 
-    _internal_adapter: Adapter[SystemSimulationView] = ComposedAdapter(
-        TcpServer(host="localhost", port=25555), CommandInterpreter()
+    _internal_adapter: Adapter[SystemSimulationView] = SystemSimulationAdapter(
+        TcpServer(host="localhost", port=25555, format=ByteFormat(b"%b\r\n")),
+        CommandInterpreter(),
     )
 
     _tasks: List[asyncio.Task] = field(default_factory=list)
