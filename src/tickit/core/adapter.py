@@ -18,6 +18,9 @@ from tickit.utils.configuration.configurable import as_tagged_union
 #: Message type
 T = TypeVar("T")
 
+#: Device or View type
+D = TypeVar("D")
+
 
 # https://github.com/python/mypy/issues/708#issuecomment-647124281
 class RaiseInterrupt(Protocol):
@@ -29,10 +32,10 @@ class RaiseInterrupt(Protocol):
 
 
 @as_tagged_union
-class Adapter:
+class Adapter(Generic[D]):
     """An interface for types which implement device adapters."""
 
-    device: Device
+    device: D
     raise_interrupt: RaiseInterrupt
 
     def __getattr__(self, name: str) -> Any:
@@ -43,9 +46,7 @@ class Adapter:
             )
         return super().__getattribute__(name)
 
-    async def run_forever(
-        self, device: Device, raise_interrupt: RaiseInterrupt
-    ) -> None:
+    async def run_forever(self, device: D, raise_interrupt: RaiseInterrupt) -> None:
         """An asynchronous method allowing indefinite running of core adapter logic.
 
         An asynchronous method allowing for indefinite running of core adapter logic
