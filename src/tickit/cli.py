@@ -7,6 +7,7 @@ from click.core import Context
 from tickit.core.management.event_router import InverseWiring
 from tickit.core.management.schedulers.master import MasterScheduler
 from tickit.core.runner import run_all_forever
+from tickit.core.simulation import TickitSimulation
 from tickit.core.state_interfaces.state_interface import get_interface, interfaces
 from tickit.utils.configuration.loading import read_configs
 
@@ -79,12 +80,4 @@ def all(config_path: str, backend: str) -> None:
         config_path (str): The path to the configuration file.
         backend (str): The message broker to be used.
     """
-    configs = read_configs(config_path)
-    inverse_wiring = InverseWiring.from_component_configs(configs)
-    scheduler = MasterScheduler(inverse_wiring, *get_interface(backend))
-    asyncio.run(
-        run_all_forever(
-            [config().run_forever(*get_interface(backend)) for config in configs]
-            + [scheduler.run_forever()]
-        )
-    )
+    asyncio.run(TickitSimulation(config_path, backend).run_forever())
