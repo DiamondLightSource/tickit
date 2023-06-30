@@ -6,7 +6,7 @@ from tickit.core.components.system_simulation_view import SystemSimulationView
 class ZebraAdapter(ComposedAdapter[bytes, SystemSimulationView]):
     """network adapetr for zebra system simulation"""
 
-    _device: SystemSimulationView
+    device: SystemSimulationView
 
     _registry: dict
 
