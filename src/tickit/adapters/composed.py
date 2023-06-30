@@ -2,14 +2,16 @@ from dataclasses import dataclass
 from typing import AsyncIterable, Generic, Optional, TypeVar
 
 from tickit.core.adapter import Adapter, Interpreter, RaiseInterrupt, Server
-from tickit.core.device import Device
 
 #: Message type
 T = TypeVar("T")
 
+#: Device type
+D = TypeVar("D")
+
 
 @dataclass
-class ComposedAdapter(Adapter, Generic[T]):
+class ComposedAdapter(Adapter[D], Generic[T, D]):
     """An adapter implementation which delegates to a server and interpreter.
 
     An adapter implementation which delegates the hosting of an external messaging
@@ -42,9 +44,7 @@ class ComposedAdapter(Adapter, Generic[T]):
             await self.raise_interrupt()
         return reply
 
-    async def run_forever(
-        self, device: Device, raise_interrupt: RaiseInterrupt
-    ) -> None:
+    async def run_forever(self, device: D, raise_interrupt: RaiseInterrupt) -> None:
         """Runs the server continuously."""
         await super().run_forever(device, raise_interrupt)
         await self.server.run_forever(self.on_connect, self.handle_message)

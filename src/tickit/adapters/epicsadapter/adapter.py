@@ -3,14 +3,16 @@ import re
 from abc import abstractmethod
 from dataclasses import dataclass
 from tempfile import NamedTemporaryFile
-from typing import Any, Callable, Dict, Optional
+from typing import Any, Callable, Dict, Optional, TypeVar
 
 from softioc import builder, softioc
 
 from tickit.core.adapter import Adapter, RaiseInterrupt
-from tickit.core.device import Device
 
 from .ioc_manager import notify_adapter_ready, register_adapter
+
+#: Device type
+D = TypeVar("D")
 
 
 @dataclass(frozen=True)
@@ -29,7 +31,7 @@ class OutputRecord:
     name: str
 
 
-class EpicsAdapter(Adapter):
+class EpicsAdapter(Adapter[D]):
     """An adapter implementation which acts as an EPICS IOC.
 
     This is optionally initialised from an EPICS database (db) file
@@ -82,9 +84,7 @@ class EpicsAdapter(Adapter):
         softioc.dbLoadDatabase(out.name, substitutions=f"device={self.ioc_name}")
         os.unlink(out.name)
 
-    async def run_forever(
-        self, device: Device, raise_interrupt: RaiseInterrupt
-    ) -> None:
+    async def run_forever(self, device: D, raise_interrupt: RaiseInterrupt) -> None:
         """Runs the server continuously."""
         await super().run_forever(device, raise_interrupt)
         builder.SetDeviceName(self.ioc_name)

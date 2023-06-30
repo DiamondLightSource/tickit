@@ -2,20 +2,22 @@ import asyncio
 import logging
 from dataclasses import dataclass
 from inspect import getmembers
-from typing import Awaitable, Callable, Iterable, Optional
+from typing import Awaitable, Callable, Iterable, Optional, TypeVar
 
 from aiohttp import web
 from aiohttp.web_routedef import RouteDef
 
 from tickit.adapters.interpreters.endpoints.http_endpoint import HttpEndpoint
 from tickit.core.adapter import Adapter, RaiseInterrupt
-from tickit.core.device import Device
 
 LOGGER = logging.getLogger(__name__)
 
+#: Device type
+D = TypeVar("D")
+
 
 @dataclass
-class HttpAdapter(Adapter):
+class HTTPAdapter(Adapter[D]):
     """An adapter implementation which delegates to a server and sets up endpoints.
 
     An adapter implementation which delegates the hosting of an http requests to a
@@ -28,9 +30,7 @@ class HttpAdapter(Adapter):
     _stopped: Optional[asyncio.Event] = None
     _ready: Optional[asyncio.Event] = None
 
-    async def run_forever(
-        self, device: Device, raise_interrupt: RaiseInterrupt
-    ) -> None:
+    async def run_forever(self, device: D, raise_interrupt: RaiseInterrupt) -> None:
         """Runs the server continuously."""
         await super().run_forever(device, raise_interrupt)
 
