@@ -22,9 +22,9 @@ class RemoteControlledDevice(Device):
     """A trivial toy device which is controlled by an adapter."""
 
     #: An empty typed mapping of device inputs
-    Inputs: TypedDict = TypedDict("Inputs", {})
+    Inputs: type = TypedDict("Inputs", {})
     #: A typed mapping containing the 'observed' output value
-    Outputs: TypedDict = TypedDict("Outputs", {"observed": float})
+    Outputs: type = TypedDict("Outputs", {"observed": float})
 
     def __init__(
         self,

@@ -18,9 +18,9 @@ class ExampleHTTPDevice(Device):
     ...
     """
 
-    Inputs: TypedDict = TypedDict("Inputs", {"foo": bool})
+    Inputs: type = TypedDict("Inputs", {"foo": bool})
 
-    Outputs: TypedDict = TypedDict("Outputs", {"bar": float})
+    Outputs: type = TypedDict("Outputs", {"bar": float})
 
     def __init__(
         self,

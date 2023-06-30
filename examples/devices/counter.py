@@ -22,9 +22,9 @@ class CounterDevice(Device):
     """A simple device which increments a value."""
 
     #: An empty typed mapping of input values
-    Inputs: TypedDict = TypedDict("Inputs", {})
+    Inputs: type = TypedDict("Inputs", {})
     #: A typed mapping containing the 'value' output value
-    Outputs: TypedDict = TypedDict("Outputs", {"value": int})
+    Outputs: type = TypedDict("Outputs", {"value": int})
 
     def __init__(self, initial_value: int = 0, callback_period: int = int(1e9)) -> None:
         """A constructor of the counter, which increments the input value.
