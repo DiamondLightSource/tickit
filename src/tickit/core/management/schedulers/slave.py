@@ -28,6 +28,7 @@ class SlaveScheduler(BaseScheduler):
         wiring: Union[Wiring, InverseWiring],
         state_consumer: Type[StateConsumer],
         state_producer: Type[StateProducer],
+        external: Dict[PortID, ComponentPort],
         expose: Dict[PortID, ComponentPort],
         raise_interrupt: Callable[[], Awaitable[None]],
     ) -> None:
@@ -40,12 +41,13 @@ class SlaveScheduler(BaseScheduler):
                 by the component.
             state_producer (Type[StateProducer]): The state producer class to be used
                 by the component.
+            external : idk yet.
             expose (Dict[PortID, ComponentPort]): A mapping of slave scheduler
                 outputs to internal component ports.
             raise_interrupt (Callable[[], Awaitable[None]]): A callback to request that
                 the slave scheduler is updated immediately.
         """
-        wiring = self.add_exposing_wiring(wiring, expose)
+        wiring = self.add_exposing_wiring(wiring, external, expose)
         super().__init__(wiring, state_consumer, state_producer)
 
         self.raise_interrupt = raise_interrupt
@@ -55,6 +57,7 @@ class SlaveScheduler(BaseScheduler):
     @staticmethod
     def add_exposing_wiring(
         wiring: Union[Wiring, InverseWiring],
+        external: Dict[PortID, ComponentPort],
         expose: Dict[PortID, ComponentPort],
     ) -> InverseWiring:
         """Adds wiring to expose slave scheduler outputs.
@@ -65,6 +68,7 @@ class SlaveScheduler(BaseScheduler):
         Args:
             wiring (Union[Wiring, InverseWiring]): A wiring or inverse wiring object
                 representing the connections between components in the system.
+            external (Dict[PortID, ComponentPort]): idk
             expose (Dict[PortID, ComponentPort]): A mapping of slave scheduler
                 outputs to internal component ports.
 
@@ -77,6 +81,7 @@ class SlaveScheduler(BaseScheduler):
         if isinstance(wiring, Wiring):
             wiring = InverseWiring.from_wiring(wiring)
         wiring[ComponentID("expose")].update(expose)
+        wiring[ComponentID("external")].update(external)
         return wiring
 
     async def update_component(self, input: Input) -> None:
@@ -130,7 +135,7 @@ class SlaveScheduler(BaseScheduler):
         root_components: Set[ComponentID] = {
             *self.interrupts,
             *wakeup_components,
-            ComponentID("external"),
+            ComponentID("external"),  # why?
         }
         for component in wakeup_components:
             del self.wakeups[component]

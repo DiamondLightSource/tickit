@@ -71,7 +71,7 @@ def test_base_scheduler_constructor_and_setup(base_scheduler):
 
 @pytest.mark.asyncio
 async def test_base_scheduler_update_component_method(
-    base_scheduler: Any,
+    base_scheduler: BaseScheduler,
 ):
     _input = Input(
         ComponentID("foo"), SimTime(0), Changes(Map({PortID("42"): "hello"}))

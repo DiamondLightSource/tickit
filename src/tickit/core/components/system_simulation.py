@@ -27,10 +27,18 @@ class SystemSimulationComponent(BaseComponent):
 
     #: A list of immutable component configuration data containers, used to
     #: construct internal components.
-    components: List[ComponentConfig]
+    component_configs: List[ComponentConfig]
+
+    #: A mapping of inputs which the system simulation ingests and the
+    #: corresponding output of an external component.
+    external: Dict[PortID, ComponentPort]
+
     #: A mapping of outputs which the system simulation exposes and the
     #: corresponding output of an internal component.
     expose: Dict[PortID, ComponentPort]
+
+    #: Externally accessible list of Components, created from the component_configs.
+    components: List[Component] = field(default_factory=list)
 
     _tasks: List[asyncio.Task] = field(default_factory=list)
 
@@ -43,18 +51,24 @@ class SystemSimulationComponent(BaseComponent):
         the scheduler, and sets up externally facing state interfaces. The method
         blocks until and of the components or the scheduler complete.
         """
-        inverse_wiring = InverseWiring.from_component_configs(self.components)
+        inverse_wiring = InverseWiring.from_component_configs(self.component_configs)
         self.scheduler = SlaveScheduler(
             inverse_wiring,
             state_consumer,
             state_producer,
+            self.external,
             self.expose,
             self.raise_interrupt,
         )
+
+        self.components = [component() for component in self.component_configs]
+
+        await self.scheduler.run_forever()
+
         self._tasks = run_all(
-            component().run_forever(state_consumer, state_producer)
+            component.run_forever(state_consumer, state_producer)
             for component in self.components
-        ) + run_all([self.scheduler.run_forever()])
+        )
         await super().run_forever(state_consumer, state_producer)
         if self._tasks:
             await asyncio.wait(self._tasks)
@@ -110,6 +124,7 @@ class SystemSimulation(ComponentConfig):
     def __call__(self) -> Component:  # noqa: D102
         return SystemSimulationComponent(
             name=self.name,
-            components=self.components,
+            component_configs=self.components,
+            external=self.inputs,
             expose=self.expose,
         )
