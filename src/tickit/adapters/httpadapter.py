@@ -2,7 +2,7 @@ import asyncio
 import logging
 from dataclasses import dataclass, field
 from inspect import getmembers
-from typing import Iterable
+from typing import Iterable, Optional
 
 from aiohttp import web
 from aiohttp.web_routedef import RouteDef
@@ -25,8 +25,7 @@ class HttpAdapter(Adapter):
     host: str = "localhost"
     port: int = 8080
 
-    _started: asyncio.Event = field(default_factory=asyncio.Event)
-    _stopped: asyncio.Event = field(default_factory=asyncio.Event)
+    _stopped: Optional[asyncio.Event] = None
 
     async def run_forever(
         self, device: Device, raise_interrupt: RaiseInterrupt
@@ -35,22 +34,18 @@ class HttpAdapter(Adapter):
         await super().run_forever(device, raise_interrupt)
 
         await self._start_server()
-        await self._stopped.wait()
-
-    async def wait_until_ready(self, timeout: float = 1.0) -> None:
-        """Blocks until server is ready to receive requests.
-
-        Args:
-            timeout: Raise a TimeoutError if the server is not ready within
-                this many seconds. Defaults to 1.0
-        """
-        await asyncio.wait_for(self._started.wait(), timeout=timeout)
+        await self._ensure_stopped_event().wait()
 
     async def stop(self) -> None:
         await self.site.stop()
         await self.app.shutdown()
         await self.app.cleanup()
-        self._stopped.set()
+        self._ensure_stopped_event().set()
+
+    def _ensure_stopped_event(self) -> asyncio.Event:
+        if self._stopped is None:
+            self._stopped = asyncio.Event()
+        return self._stopped
 
     async def _start_server(self):
         LOGGER.debug(f"Starting HTTP server... {self}")
@@ -60,7 +55,6 @@ class HttpAdapter(Adapter):
         await runner.setup()
         self.site = web.TCPSite(runner, host=self.host, port=self.port)
         await self.site.start()
-        self._started.set()
 
     def endpoints(self) -> Iterable[RouteDef]:
         """Returns list of endpoints.

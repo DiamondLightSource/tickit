@@ -79,7 +79,6 @@ async def adapter_url(
     adapter: HttpAdapter, mock_device: Device, event_loop: asyncio.BaseEventLoop
 ):
     task = event_loop.create_task(adapter.run_forever(mock_device, lambda: None))
-    await adapter.wait_until_ready(timeout=10.0)
     yield f"http://localhost:{adapter.port}"
     await adapter.stop()
     await asyncio.wait_for(task, timeout=10.0)
