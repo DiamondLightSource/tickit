@@ -10,7 +10,7 @@ orchestration of complex multi-device simulations.
 PyPI           ``pip install tickit``
 Source code    https://github.com/dls-controls/tickit
 Documentation  https://dls-controls.github.io/tickit
-Releases       https://github.com/dls-controls/tickit-devices/releases
+Releases       https://github.com/dls-controls/tickit/releases
 ============== ==============================================================
 
 An example simulation consits of a simple counter and a sink. The counter
