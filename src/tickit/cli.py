@@ -4,12 +4,9 @@ import logging
 import click
 from click.core import Context
 
-from tickit.core.management.event_router import InverseWiring
-from tickit.core.management.schedulers.master import MasterScheduler
-from tickit.core.runner import run_all_forever
 from tickit.core.simulation import TickitSimulation
-from tickit.core.state_interfaces.state_interface import get_interface, interfaces
-from tickit.utils.configuration.loading import read_configs
+from tickit.core.state_interfaces.state_interface import interfaces
+from tickit.core.typedefs import ComponentID
 
 
 @click.group(invoke_without_command=True)
@@ -34,22 +31,26 @@ def main(ctx: Context, log_level: str):
         click.echo(main.get_help(ctx))
 
 
-@main.command(help="run a single simulated component")
-@click.argument("component")
+@main.command(help="run one or more components without a scheduler")
+@click.argument("components", nargs=-1)
 @click.argument("config_path")
 @click.option("--backend", default="kafka", type=click.Choice(list(interfaces(True))))
-def component(config_path: str, component: str, backend: str) -> None:
-    """Runs a single simulated component from a configuration file.
+def components(config_path: str, components: set[ComponentID], backend: str) -> None:
+    """Runs one or more simulated components from a configuration file.
+
+    If you pass it no componentID arguments it will run all of the components in the
+    configuration file.
 
     Args:
         config_path (str): The path to the configuration file.
         component (str): The name of the component to be run.
         backend (str): The message broker to be used.
     """
-    configs = read_configs(config_path)
-    config = [config for config in configs if config.name == component]
-    assert len(config) == 1, f"Expected only one component {component}"
-    asyncio.run(run_all_forever([config[0]().run_forever(*get_interface(backend))]))
+    asyncio.run(
+        TickitSimulation(
+            config_path, backend, include_schedulers=False, components_to_run=components
+        ).run()
+    )
 
 
 @main.command(help="run the simulation scheduler")
@@ -62,10 +63,7 @@ def scheduler(config_path: str, backend: str) -> None:
         config_path (str): The path to the configuration file.
         backend (str): The message broker to be used.
     """
-    configs = read_configs(config_path)
-    inverse_wiring = InverseWiring.from_component_configs(configs)
-    scheduler = MasterScheduler(inverse_wiring, *get_interface(backend))
-    asyncio.run(run_all_forever([scheduler.run_forever()]))
+    asyncio.run(TickitSimulation(config_path, backend, include_components=False).run())
 
 
 @main.command(help="run a collection of devices with a scheduler")
@@ -80,4 +78,4 @@ def all(config_path: str, backend: str) -> None:
         config_path (str): The path to the configuration file.
         backend (str): The message broker to be used.
     """
-    asyncio.run(TickitSimulation(config_path, backend).run_forever())
+    asyncio.run(TickitSimulation(config_path, backend).run())
