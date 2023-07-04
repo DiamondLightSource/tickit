@@ -21,6 +21,7 @@ dependencies = [
     "pyyaml",
     "pyzmq",
     "softioc",
+    "typing_extensions",
     "click",
 
 ] # Add project dependencies here, e.g. ["click", "numpy"]
