@@ -83,7 +83,7 @@ def add(
     """A decorator to add a StateInterface to the registry.
 
     A decorator to add a StateInterface to the registry of StateConsumers or
-    StateProducer according to it's signature. StateConsumers and StateProducers which
+    StateProducer according to its signature. StateConsumers and StateProducers which
     are intended to work together should be added with the same name.
 
     Args:

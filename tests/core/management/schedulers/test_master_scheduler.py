@@ -75,7 +75,7 @@ def patch_asyncio_wait() -> Iterable[Mock]:
             """Simulates the call to asyncio.wait(return_when=FIRST_COMPLETED).
 
             The call to wait is a (deliberate) race condition. To simulate this and
-            test all parts of the code, this method switches it's response depending
+            test all parts of the code, this method switches its response depending
             on how many times it's been called.
             """
             for aw in awaitables:

@@ -16,34 +16,33 @@ Adding Devices
 
 In order to be included in a simulation, tickit devices must have a `ComponentConfig`
 dataclass associated with them. This defines the device to be used, as well as any
-adapters to allow the device to be externally controlled. At the top level, tickit 
+adapters to allow the device to be externally controlled. At the top level, tickit
 simulations comprise a list of these components which are denoted in YAML.
 
-In this example our first device shall be a ``RandomTrampoline`` with a callback_period 
-of :math:`1s` or :math:`10^9n\s` named ``rand_tramp`` with no adapters - denoted 
-in YAML by ``[]`` - and with no mapped inputs - denoted in YAML by ``{}``. As such 
+In this example our first device shall be a ``RandomTrampoline`` with a callback_period
+of :math:`1s` or :math:`10^9n\s` named ``rand_tramp`` with no adapters - denoted
+in YAML by ``[]`` - and with no mapped inputs - denoted in YAML by ``{}``. As such
 we may extend our config, as:
 
 .. code-block:: yaml
-    
+
     - examples.devices.trampoline.RandomTrampoline:
         name: rand_tramp
         inputs: {}
 
-We will now add a `Sink` device. This device will be named ``tramp_sink``, will have 
-no adapters but will take the ``output`` value of ``rand_tramp`` as ``input``. As 
+We will now add a `Sink` device. This device will be named ``tramp_sink``, will have
+no adapters but will take the ``output`` value of ``rand_tramp`` as ``input``. As
 such we may extend our config, as:
 
 .. code-block:: yaml
-    
+
     - examples.devices.trampoline.RandomTrampoline:
         name: rand_tramp
         inputs: {}
     - tickit.devices.sink.Sink:
-        name: tramp_sink        
+        name: tramp_sink
         inputs:
-          input:
-          - rand_tramp:output
+          input: rand_tramp:output
 
 Running the Simulation
 ----------------------
@@ -76,7 +75,7 @@ Once run, we expect to see an output akin to:
     Sunk {'input': 139}
     Scheduler got Output(source='tramp_sink', time=1000000000, changes=immutables.Map({}), call_in=None)
 
-.. seealso:: 
+.. seealso::
     :doc:`Running a Simulation<running-a-simulation>`
 
 .. _Sink: <tickit.devices.sink.Sink>

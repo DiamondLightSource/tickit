@@ -146,7 +146,7 @@ class BaseScheduler:
 
         If a component produces an exception, the scheduler will produce a message to
         all components in the simulation to cause them to cancel any running component
-        tasks. After which the scheduler shuts its self down.
+        tasks. After which the scheduler shuts itself down.
 
         """
         await asyncio.wait(
