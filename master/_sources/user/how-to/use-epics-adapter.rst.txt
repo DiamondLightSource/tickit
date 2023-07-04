@@ -1,14 +1,14 @@
 Create a Device with an EPICS Interface
 =======================================
 
-It is possible to make a device accessable over channel access with EPICS by
+It is possible to make a device accessible over channel access with EPICS by
 using an EPICS adapter with the device.
 
 .. note::
     For information on EPICS, see `here. <https://epics.anl.gov/>`_
 
 This adapter creates and runs a python soft IOC within the simulator process. The
-PV's on this IOC can be accessed with the normal methods, eg ``caget``, ``caput`` etc.
+PVs on this IOC can be accessed with the normal methods, eg ``caget``, ``caput`` etc.
 
 If you have multiple devices in your simulation that require an epics adapter
 this is possible, a large singleton IOC is created as a composite IOC of all the
@@ -45,7 +45,7 @@ component:
 
 
 However, any PV you wish to directly link to a device attribute you must override
-and provide the neccessary methods to get and set that attribute.
+and provide the necessary methods to get and set that attribute.
 
 See again the femto device. It is a signal amplifier that takes an input and
 outputs a current.
@@ -88,7 +88,7 @@ outputs a current.
 The femto device has a PV GAIN as an ``ao`` record (analogue out).
 
 .. code-block:: C
-    
+
     record(ao, "$(device):GAIN") {
       field(DTYP, "Hy8001")
       field(OMSL, "supervisory")
@@ -128,8 +128,8 @@ to reflect that, we must override the epics adapter function ``on_db_load``.
 We provide a callback function to set the device gain to the new value then
 raise an interrupt, causing the device to update. This callback function is
 assigned to the epics record ``GAIN`` so that a change in that changes the device.
-A similar linking proccess occurs for readable records, eg ``aIn``, however these
+A similar linking process occurs for readable records, eg ``aIn``, however these
 are just supplied with getter methods to the device attributes.
 
-As a result the Femto device is accessable via EPICS. It gain can be set, and
+As a result the Femto device is accessible via EPICS. It gain can be set, and
 its gain and current read via the IOC.

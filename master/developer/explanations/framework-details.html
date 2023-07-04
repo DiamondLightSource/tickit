@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Framework Details &#8212; tickit 0.2.3.dev3+gcc31f1cd documentation</title>
+    <title>Framework Details &#8212; tickit 0.2.3.dev4+gc8e0fbdb documentation</title>
   
   
   
@@ -463,7 +463,7 @@ document.write(`
   <section id="framework-details">
 <h1>Framework Details<a class="headerlink" href="#framework-details" title="Permalink to this heading">#</a></h1>
 <p>Tickit is an event-based simulation framework allowing for the simulation of
-complex mutli-device systems.</p>
+complex multi-device systems.</p>
 <p>A tickit simulation consists of a scheduler and components, all of which
 communicate via a message bus.</p>
 <figure class="align-center">
@@ -482,28 +482,28 @@ ticker.</p>
 <h3>State Consumer and producer<a class="headerlink" href="#state-consumer-and-producer" title="Permalink to this heading">#</a></h3>
 <p>The consumer and producer are for the messaging between the scheduler and
 the system components via the message bus. This is organised with topics that
-messages can be published to and that consumers can be subsribed to in order to
-recieve those messages. The scheduler sets up the consumer to handle messages
-in a given way and subscribes its self to the output topic of every component
+messages can be published to and that consumers can be subscribed to in order to
+receive those messages. The scheduler sets up the consumer to handle messages
+in a given way and subscribes itself to the output topic of every component
 in the system.</p>
 <p>Whenever a device produces a device update, the scheduler consumes that output
-and propgates it to the relevent inputs via the ticker.</p>
+and propagates it to the relevant inputs via the ticker.</p>
 </section>
 <section id="the-ticker">
 <h3>The ticker<a class="headerlink" href="#the-ticker" title="Permalink to this heading">#</a></h3>
-<p>The ticker contains the logic for the propogation of an update through the system.</p>
+<p>The ticker contains the logic for the propagation of an update through the system.</p>
 </section>
 </section>
 <section id="one-update-cycle">
 <h2>One update cycle<a class="headerlink" href="#one-update-cycle" title="Permalink to this heading">#</a></h2>
-<p>When the simulation starts it initalises all of the components and runs through
+<p>When the simulation starts it initialises all of the components and runs through
 its first tick.</p>
 <p>The scheduler contains a list of wakeups, which is a dictionary of component ids
 and simtimes of when that component wants calling back.</p>
 <p>(these wakeups are the callbacks requested with the <a class="reference internal" href="../../user/reference/api.html#tickit.core.device.DeviceUpdate" title="tickit.core.device.DeviceUpdate"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DeviceUpdate</span></code></a> returned when
 you run a device update.)</p>
-<p>If there are no scheduled wakeups then the system will wait untill a new wake up
-is created. This is done via an interupt. These can be caused by an adapter
+<p>If there are no scheduled wakeups then the system will wait until a new wake up
+is created. This is done via an interrupt. These can be caused by an adapter
 changing something on a device. In this case an immediate wake up is scheduled
 for the device the adapter is connected to.</p>
 <p>When we have a scheduled wakeups the scheduler will check its dictionary of wakeups
@@ -511,16 +511,16 @@ to find the shortest time to the next wakeup and will then find the set of
 components which requested a wakeup at that time. This will often only be one component
 but could be multiple.</p>
 <p>We then wait for one of two events to occur. Either the time until the wake up
-elapses, or we are interupted in that time by an immidiate wakeup.</p>
-<p>Lets say we are not interupted and the scheduled wakeup occurs.</p>
+elapses, or we are interrupted in that time by an immediate wakeup.</p>
+<p>Lets say we are not interrupted and the scheduled wakeup occurs.</p>
 <p>The ticker is then called for that time, with each component in the set in turn.
 one call of the ticker will begin a tick at that time, update the component,
-wait for the scheduler to recieve back an output and use that to acknoladge the
+wait for the scheduler to receive back an output and use that to acknowledge the
 component has updated, produce the input in the correct channel, then get the
-next component in the graph to update. This propagates untill the last component
+next component in the graph to update. This propagates until the last component
 has updated and it passed back to the scheduler.</p>
 <p>The real time is then stored and we go back to looking for the next wakeup.</p>
-<p>Each tick as far as the simulation is concerned is instantanous, therefore over
+<p>Each tick as far as the simulation is concerned is instantaneous, therefore over
 time we can expect sim time to lag real time. This is mostly negligible but
 could potentially cause issues in larger more complex systems.</p>
 </section>
