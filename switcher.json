@@ -68,10 +68,6 @@
     "url": "https://dls-controls.github.io/tickit/fix-http-adapter/"
   },
   {
-    "version": "releases-link",
-    "url": "https://dls-controls.github.io/tickit/releases-link/"
-  },
-  {
     "version": "simulation-wrapper",
     "url": "https://dls-controls.github.io/tickit/simulation-wrapper/"
   },
