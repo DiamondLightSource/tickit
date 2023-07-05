@@ -1,8 +1,9 @@
 import asyncio
+import functools
 import logging
 from dataclasses import dataclass, field
 from inspect import getmembers
-from typing import Iterable, Optional
+from typing import Awaitable, Callable, Iterable, Optional
 
 from aiohttp import web
 from aiohttp.web_routedef import RouteDef
@@ -71,4 +72,19 @@ class HttpAdapter(Adapter):
         for _, func in getmembers(self):
             endpoint = getattr(func, "__endpoint__", None)  # type: ignore
             if endpoint is not None and isinstance(endpoint, HttpEndpoint):
+                if endpoint.interrupt:
+                    func = _with_posthoc_task(func, self.raise_interrupt)
                 yield endpoint.define(func)
+
+
+def _with_posthoc_task(
+    func: Callable[[web.Request], Awaitable[web.Response]],
+    afterwards: Callable[[], Awaitable[None]],
+) -> Callable[[web.Request], Awaitable[web.Response]]:
+    # @functools.wraps
+    async def wrapped(request: web.Request) -> web.Response:
+        response = await func(request)
+        await afterwards()
+        return response
+
+    return wrapped

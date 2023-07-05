@@ -1,7 +1,7 @@
 import asyncio
 from typing import Iterable
-import aiohttp
 
+import aiohttp
 import pytest
 import pytest_asyncio
 import requests
@@ -11,6 +11,7 @@ from mock.mock import create_autospec, patch
 
 from tickit.adapters.httpadapter import HttpAdapter
 from tickit.adapters.interpreters.endpoints.http_endpoint import HttpEndpoint
+from tickit.core.adapter import RaiseInterrupt
 from tickit.core.device import Device
 
 ISSUE_LINK = "https://github.com/dls-controls/tickit/issues/111"
@@ -22,7 +23,7 @@ def mock_device() -> Device:
 
 
 @pytest.fixture
-def mock_raise_interrupt():
+def mock_raise_interrupt() -> RaiseInterrupt:
     async def raise_interrupt():
         return False
 
@@ -67,6 +68,12 @@ class ExampleAdapter(HttpAdapter):
     async def get_baz(self, request: web.Request) -> web.Response:
         return web.Response(status=403)
 
+    @HttpEndpoint.put("/interrupt/{name}", interrupt=True)
+    async def put_interrupt(self, request: web.Request) -> web.Response:
+        name = request.match_info["name"]
+        value = (await request.json())["value"]
+        return web.json_response({"entity": name, "value": value})
+
 
 @pytest.fixture
 def adapter() -> HttpAdapter:
@@ -76,9 +83,14 @@ def adapter() -> HttpAdapter:
 
 @pytest_asyncio.fixture
 async def adapter_url(
-    adapter: HttpAdapter, mock_device: Device, event_loop: asyncio.BaseEventLoop
+    adapter: HttpAdapter,
+    mock_raise_interrupt: RaiseInterrupt,
+    mock_device: Device,
+    event_loop: asyncio.BaseEventLoop,
 ):
-    task = event_loop.create_task(adapter.run_forever(mock_device, lambda: None))
+    task = event_loop.create_task(
+        adapter.run_forever(mock_device, mock_raise_interrupt)
+    )
     yield f"http://localhost:{adapter.port}"
     await adapter.stop()
     await asyncio.wait_for(task, timeout=10.0)
@@ -147,3 +159,29 @@ async def test_http_adapter_post_by_name(adapter_url: str, name: str):
         async with session.post(url, json={"value": "foo"}) as response:
             assert response.status == 200
             assert (await response.json()) == {"entity": name, "value": "foo"}
+
+
+@pytest.mark.asyncio
+async def test_put_to_non_interrupting_endpoint_does_not_interrupt(
+    mock_raise_interrupt: RaiseInterrupt,
+    adapter_url: str,
+):
+    url = f"{adapter_url}/foo"
+    async with aiohttp.ClientSession() as session:
+        async with session.put(url, json={"value": "bar"}) as response:
+            assert response.status == 200
+            assert (await response.json()) == {"value": "bar"}
+    mock_raise_interrupt.assert_not_called()
+
+
+@pytest.mark.asyncio
+async def test_http_adapter_put_to_interrupt(
+    mock_raise_interrupt: RaiseInterrupt,
+    adapter_url: str,
+):
+    url = f"{adapter_url}/interrupt/a"
+    async with aiohttp.ClientSession() as session:
+        async with session.put(url, json={"value": "foo"}) as response:
+            assert response.status == 200
+            assert (await response.json()) == {"entity": "a", "value": "foo"}
+    mock_raise_interrupt.assert_called_once()
