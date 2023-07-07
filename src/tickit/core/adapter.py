@@ -6,11 +6,10 @@ from typing import (
     Callable,
     Generic,
     Optional,
+    Protocol,
     Tuple,
     TypeVar,
 )
-
-from typing_extensions import Protocol
 
 from tickit.core.device import Device
 from tickit.utils.configuration.configurable import as_tagged_union

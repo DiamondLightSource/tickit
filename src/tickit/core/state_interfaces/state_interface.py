@@ -1,13 +1,16 @@
-import sys
-from typing import Awaitable, Callable, Dict, Iterable, Set, Tuple, Type, TypeVar
+from typing import (
+    Awaitable,
+    Callable,
+    Dict,
+    Iterable,
+    Protocol,
+    Set,
+    Tuple,
+    Type,
+    TypeVar,
+    runtime_checkable,
+)
 from warnings import warn
-
-# TODO: Investigate why import from tickit.utils.compat.typing_compat causes mypy error
-# See mypy issue for details: https://github.com/python/mypy/issues/10851
-if sys.version_info >= (3, 8):
-    from typing import Protocol, runtime_checkable
-elif sys.version_info >= (3, 5):
-    from typing_extensions import Protocol, runtime_checkable
 
 #: A consumable value
 C = TypeVar("C", covariant=True)

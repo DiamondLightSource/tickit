@@ -1,13 +1,10 @@
 import logging
-from typing import Any, Dict, Generic, List, Tuple, TypeVar
-
-from typing_extensions import NotRequired
+from typing import Any, Dict, Generic, List, NotRequired, Tuple, TypedDict, TypeVar
 
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
-from tickit.utils.compat.typing_compat import TypedDict
 
 LOGGER = logging.getLogger(__name__)
 

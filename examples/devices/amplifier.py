@@ -1,6 +1,5 @@
 from dataclasses import dataclass
-
-from typing_extensions import TypedDict
+from typing import TypedDict
 
 from tickit.adapters.composed import ComposedAdapter
 from tickit.adapters.interpreters.command.command_interpreter import CommandInterpreter

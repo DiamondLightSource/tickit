@@ -24,7 +24,7 @@ maps as members. As such we shall put in the following boilerplate.
 
 .. code-block:: python
 
-    from typing_extensions import TypedDict
+    from typing import TypedDict
 
     from tickit.core.device import Device, DeviceUpdate
     from tickit.core.typedefs import SimTime
@@ -51,7 +51,7 @@ here.
 
 .. code-block:: python
 
-    from typing_extensions import TypedDict
+    from typing import TypedDict
 
     from tickit.core.device import Device, DeviceUpdate
     from tickit.core.typedefs import SimTime
@@ -87,7 +87,7 @@ we define our inputs and outputs in the maps, and the line of logic in the ``upd
 
 .. code-block:: python
 
-    from typing_extensions import TypedDict
+    from typing import TypedDict
 
     from tickit.core.device import Device, DeviceUpdate
     from tickit.core.typedefs import SimTime
