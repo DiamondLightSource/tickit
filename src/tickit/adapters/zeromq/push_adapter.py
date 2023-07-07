@@ -1,7 +1,18 @@
 import asyncio
 import json
 import logging
-from typing import Any, Iterable, Mapping, Optional, Sequence, Union
+from typing import (
+    Any,
+    Awaitable,
+    Callable,
+    Iterable,
+    Mapping,
+    Optional,
+    Protocol,
+    Sequence,
+    Union,
+    runtime_checkable,
+)
 
 import aiozmq
 import zmq
@@ -23,6 +34,18 @@ _SerializableMessagePart = Union[
 
 _ZeroMqInternalMessage = Sequence[_MessagePart]
 ZeroMqMessage = Sequence[_SerializableMessagePart]
+# SocketFactory = Callable[[], Awaitable[aiozmq.ZmqStream]]
+
+
+@runtime_checkable
+class SocketFactory(Protocol):
+    async def __call__(self, __host: str, __port: int) -> aiozmq.ZmqStream:
+        ...
+
+
+async def create_zmq_push_socket(host: str, port: int) -> aiozmq.ZmqStream:
+    addr = f"tcp://{host}:{port}"
+    return await aiozmq.create_zmq_stream(zmq.PUSH, connect=addr, bind=addr)
 
 
 class ZeroMqPushAdapter(Adapter):
@@ -31,18 +54,20 @@ class ZeroMqPushAdapter(Adapter):
     _host: str
     _port: int
     _socket: Optional[aiozmq.ZmqStream]
+    _socket_factory: SocketFactory
 
     def __init__(
         self,
         host: str = "127.0.0.1",
         port: int = 5555,
+        socket_factory: SocketFactory = create_zmq_push_socket,
     ) -> None:
         """Initialize with default values."""
         super().__init__()
         self._host = host
         self._port = port
         self._socket = None
-        self._message_queue = None
+        self._socket_factory = socket_factory
 
     async def run_forever(
         self,
@@ -71,10 +96,7 @@ class ZeroMqPushAdapter(Adapter):
 
     async def _ensure_socket(self) -> aiozmq.ZmqStream:
         if self._socket is None:
-            addr = f"tcp://{self._host}:{self._port}"
-            self._socket = await aiozmq.create_zmq_stream(
-                zmq.PUSH, connect=addr, bind=addr
-            )
+            self._socket = await self._socket_factory(self._host, self._port)
         return self._socket
 
     def _serialize(self, message: ZeroMqMessage) -> _ZeroMqInternalMessage:
