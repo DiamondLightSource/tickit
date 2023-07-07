@@ -1,0 +1,8 @@
+- tickit.devices.source.Source:
+    name: source  
+    inputs: {}
+    value: 42
+- tickit.devices.sink.Sink:
+    name: sink
+    inputs:
+      input: source:value

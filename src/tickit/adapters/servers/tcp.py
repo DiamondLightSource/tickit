@@ -29,6 +29,7 @@ class TcpServer(Server[bytes]):
         self.host = host
         self.port = port
         self.format = format.format
+        self.up: asyncio.Event = asyncio.Event()
 
     async def run_forever(
         self,
@@ -55,7 +56,10 @@ class TcpServer(Server[bytes]):
         server = await asyncio.start_server(handle, self.host, self.port)
 
         async with server:
+            self.up.set()
             await server.serve_forever()
+
+        self.up.clear()
 
     def _generate_handle_function(
         self,

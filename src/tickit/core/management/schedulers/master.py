@@ -41,6 +41,7 @@ class MasterScheduler(BaseScheduler):
         self._initial_time = SimTime(initial_time)
         self.simulation_speed = simulation_speed
         self.running = asyncio.Event()
+        self.initial_tick = asyncio.Event()
 
     async def setup(self) -> None:
         """Performs base setup and creates an awaitable flag to indicate new wakeups."""
@@ -83,6 +84,7 @@ class MasterScheduler(BaseScheduler):
             self.ticker.components,
         )
         self.last_time = time_ns()
+        self.initial_tick.set()
 
     async def _do_tick(self):
         """Continuously schedules ticks according to wakeups."""
