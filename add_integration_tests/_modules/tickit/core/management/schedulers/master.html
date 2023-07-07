@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.management.schedulers.master &#8212; tickit 0.2.3.dev2+g9833ce29 documentation</title>
+    <title>tickit.core.management.schedulers.master &#8212; tickit 0.2.3.dev3+gd31612a5 documentation</title>
   
   
   
@@ -459,6 +459,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">_initial_time</span> <span class="o">=</span> <span class="n">SimTime</span><span class="p">(</span><span class="n">initial_time</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">simulation_speed</span> <span class="o">=</span> <span class="n">simulation_speed</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">running</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_tick</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
 
 <div class="viewcode-block" id="MasterScheduler.setup"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.master.MasterScheduler.setup">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs base setup and creates an awaitable flag to indicate new wakeups.&quot;&quot;&quot;</span>
@@ -501,6 +502,7 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">ticker</span><span class="o">.</span><span class="n">components</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">last_time</span> <span class="o">=</span> <span class="n">time_ns</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_tick</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">_do_tick</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Continuously schedules ticks according to wakeups.&quot;&quot;&quot;</span>
