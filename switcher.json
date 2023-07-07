@@ -80,6 +80,10 @@
     "url": "https://dls-controls.github.io/tickit/typed_dict_typing/"
   },
   {
+    "version": "typing_compat_removal",
+    "url": "https://dls-controls.github.io/tickit/typing_compat_removal/"
+  },
+  {
     "version": "typing_extensions",
     "url": "https://dls-controls.github.io/tickit/typing_extensions/"
   }
