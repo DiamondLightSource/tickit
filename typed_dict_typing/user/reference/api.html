@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>API &#8212; tickit 0.2.3.dev2+g2d518392 documentation</title>
+    <title>API &#8212; tickit 0.2.3.dev5+g95a1e4cb documentation</title>
   
   
   
@@ -1136,7 +1136,7 @@ are scheduled.</p>
 <dd><p>Handle exceptions raised from components by shutting down the simulation.</p>
 <p>If a component produces an exception, the scheduler will produce a message to
 all components in the simulation to cause them to cancel any running component
-tasks. After which the scheduler shuts its self down.</p>
+tasks. After which the scheduler shuts itself down.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1234,7 +1234,7 @@ world time which has passed, adjusted by the simulation speed.</p>
 <dd><p>Handle exceptions raised from components by shutting down the simulation.</p>
 <p>If a component produces an exception, the scheduler will produce a message to
 all components in the simulation to cause them to cancel any running component
-tasks. After which the scheduler shuts its self down.</p>
+tasks. After which the scheduler shuts itself down.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2052,7 +2052,7 @@ framework, if the topic does not yet exist it should be created.</p>
 <span class="sig-prename descclassname"><span class="pre">tickit.core.state_interfaces.state_interface.</span></span><span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">external</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.11)"><span class="pre">Callable</span></a><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Type" title="(in Python v3.11)"><span class="pre">Type</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#tickit.core.state_interfaces.state_interface.StateInterface" title="tickit.core.state_interfaces.state_interface.StateInterface"><span class="pre">StateInterface</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Type" title="(in Python v3.11)"><span class="pre">Type</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#tickit.core.state_interfaces.state_interface.StateInterface" title="tickit.core.state_interfaces.state_interface.StateInterface"><span class="pre">StateInterface</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/tickit/core/state_interfaces/state_interface.html#add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.state_interfaces.state_interface.add" title="Permalink to this definition">#</a></dt>
 <dd><p>A decorator to add a StateInterface to the registry.</p>
 <p>A decorator to add a StateInterface to the registry of StateConsumers or
-StateProducer according to it’s signature. StateConsumers and StateProducers which
+StateProducer according to its signature. StateConsumers and StateProducers which
 are intended to work together should be added with the same name.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>

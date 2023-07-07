@@ -25,7 +25,7 @@ devices.
 event-based
 -----------
 
-Being event based each device in the system only updates when relevent. A
+Being event based each device in the system only updates when relevant. A
 device update can be triggered by interrupts caused by changes from other
 linked devices or adapters, or by a devices own scheduled callbacks.
 
@@ -36,7 +36,6 @@ downstream device.
 Bus based communication
 -----------------------
 
-Tickit uses message busses as a basis for the communication between its
+Tickit uses message buses as a basis for the communication between its
 devices. This was chosen in an attempt to simplify communication and to try
 and produce a less coupled system than is achievable with RPC.
-

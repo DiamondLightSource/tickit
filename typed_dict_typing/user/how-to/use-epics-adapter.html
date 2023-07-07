@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Create a Device with an EPICS Interface &#8212; tickit 0.2.3.dev2+g2d518392 documentation</title>
+    <title>Create a Device with an EPICS Interface &#8212; tickit 0.2.3.dev5+g95a1e4cb documentation</title>
   
   
   
@@ -459,14 +459,14 @@ document.write(`
                   
   <section id="create-a-device-with-an-epics-interface">
 <h1>Create a Device with an EPICS Interface<a class="headerlink" href="#create-a-device-with-an-epics-interface" title="Permalink to this heading">#</a></h1>
-<p>It is possible to make a device accessable over channel access with EPICS by
+<p>It is possible to make a device accessible over channel access with EPICS by
 using an EPICS adapter with the device.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>For information on EPICS, see <a class="reference external" href="https://epics.anl.gov/">here.</a></p>
 </div>
 <p>This adapter creates and runs a python soft IOC within the simulator process. The
-PV’s on this IOC can be accessed with the normal methods, eg <code class="docutils literal notranslate"><span class="pre">caget</span></code>, <code class="docutils literal notranslate"><span class="pre">caput</span></code> etc.</p>
+PVs on this IOC can be accessed with the normal methods, eg <code class="docutils literal notranslate"><span class="pre">caget</span></code>, <code class="docutils literal notranslate"><span class="pre">caput</span></code> etc.</p>
 <p>If you have multiple devices in your simulation that require an epics adapter
 this is possible, a large singleton IOC is created as a composite IOC of all the
 individual ones.</p>
@@ -497,7 +497,7 @@ component:</p>
 </pre></div>
 </div>
 <p>However, any PV you wish to directly link to a device attribute you must override
-and provide the neccessary methods to get and set that attribute.</p>
+and provide the necessary methods to get and set that attribute.</p>
 <p>See again the femto device. It is a signal amplifier that takes an input and
 outputs a current.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">FemtoDevice</span><span class="p">(</span><span class="n">Device</span><span class="p">):</span>
@@ -571,9 +571,9 @@ to reflect that, we must override the epics adapter function <code class="docuti
 <p>We provide a callback function to set the device gain to the new value then
 raise an interrupt, causing the device to update. This callback function is
 assigned to the epics record <code class="docutils literal notranslate"><span class="pre">GAIN</span></code> so that a change in that changes the device.
-A similar linking proccess occurs for readable records, eg <code class="docutils literal notranslate"><span class="pre">aIn</span></code>, however these
+A similar linking process occurs for readable records, eg <code class="docutils literal notranslate"><span class="pre">aIn</span></code>, however these
 are just supplied with getter methods to the device attributes.</p>
-<p>As a result the Femto device is accessable via EPICS. It gain can be set, and
+<p>As a result the Femto device is accessible via EPICS. It gain can be set, and
 its gain and current read via the IOC.</p>
 </section>
 </section>

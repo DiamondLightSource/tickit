@@ -32,7 +32,7 @@ from github::
 
     $ python3 -m pip install git+https://github.com/dls-controls/tickit.git
 
-The library should now be installed and the commandline interface on your path.
+The library should now be installed and the command line interface on your path.
 You can check the version that has been installed by typing::
 
     $ tickit --version
