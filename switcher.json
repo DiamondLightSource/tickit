@@ -68,6 +68,10 @@
     "url": "https://dls-controls.github.io/tickit/fix-http-adapter/"
   },
   {
+    "version": "pydantic1",
+    "url": "https://dls-controls.github.io/tickit/pydantic1/"
+  },
+  {
     "version": "simulation-wrapper",
     "url": "https://dls-controls.github.io/tickit/simulation-wrapper/"
   },
