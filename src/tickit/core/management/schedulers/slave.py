@@ -1,4 +1,3 @@
-import asyncio
 import logging
 from typing import Awaitable, Callable, Dict, Optional, Set, Tuple, Type, Union
 
@@ -31,7 +30,6 @@ class SlaveScheduler(BaseScheduler):
         state_producer: Type[StateProducer],
         expose: Dict[PortID, ComponentPort],
         raise_interrupt: Callable[[], Awaitable[None]],
-        initial_time: int = 0,
     ) -> None:
         """Slave scheduler constructor which adds wiring and saves values for reference.
 
@@ -46,8 +44,6 @@ class SlaveScheduler(BaseScheduler):
                 outputs to internal component ports.
             raise_interrupt (Callable[[], Awaitable[None]]): A callback to request that
                 the slave scheduler is updated immediately.
-            initial_time (int): The initial time of the simulation (in nanoseconds).
-                Defaults to 0.
         """
         wiring = self.add_exposing_wiring(wiring, expose)
         super().__init__(wiring, state_consumer, state_producer)
@@ -55,8 +51,6 @@ class SlaveScheduler(BaseScheduler):
         self.raise_interrupt = raise_interrupt
         self.interrupts: Set[ComponentID] = set()
         self.component_error: ComponentException
-        self._initial_time = SimTime(initial_time)
-        self.initial_tick: asyncio.Event = asyncio.Event()
 
     @staticmethod
     def add_exposing_wiring(
@@ -105,24 +99,15 @@ class SlaveScheduler(BaseScheduler):
             await self.ticker.propagate(
                 Output(ComponentID("expose"), input.time, Changes(Map()), None)
             )
-            await super().update_component(input)
         else:
             await super().update_component(input)
-
-    async def _do_initial_tick(self):
-        """Performs the initial tick of the system."""
-        await self.ticker(
-            self._initial_time,
-            self.ticker.components,
-        )
-        self.initial_tick.set()
 
     async def on_tick(
         self, time: SimTime, changes: Changes
     ) -> Tuple[Changes, Optional[SimTime]]:
         """Routes inputs, does a tick and returns output changes and a callback time.
 
-        An asynchronous method which determines which components within the simulation
+        An asyhcnronous method which determines which components within the simulation
         require being woken up, sets the input changes for use by the "external" mock
         component, performs a tick, determines the period in which the slave scheduler
         should next be updated, and returns the changes collated by the "expose" mock
@@ -161,7 +146,6 @@ class SlaveScheduler(BaseScheduler):
     async def run_forever(self) -> None:
         """Delegates to setup which instantiates the ticker and state interfaces."""
         await self.setup()
-        await self._do_initial_tick()
 
     async def schedule_interrupt(self, source: ComponentID) -> None:
         """Schedules the interrupt of a component immediately.

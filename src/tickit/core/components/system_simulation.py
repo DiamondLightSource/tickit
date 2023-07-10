@@ -27,16 +27,13 @@ class SystemSimulationComponent(BaseComponent):
 
     #: A list of immutable component configuration data containers, used to
     #: construct internal components.
-    component_configs: List[ComponentConfig]
+    components: List[ComponentConfig]
 
     #: A mapping of outputs which the system simulation exposes and the
     #: corresponding output of an internal component.
     expose: Dict[PortID, ComponentPort]
 
-    components: List[Component] = field(default_factory=list)
     _tasks: List[asyncio.Task] = field(default_factory=list)
-    doing_tick: asyncio.Event = asyncio.Event()
-    tick_finished: asyncio.Event = asyncio.Event()
 
     async def run_forever(
         self, state_consumer: Type[StateConsumer], state_producer: Type[StateProducer]
@@ -47,7 +44,7 @@ class SystemSimulationComponent(BaseComponent):
         the scheduler, and sets up externally facing state interfaces. The method
         blocks until and of the components or the scheduler complete.
         """
-        inverse_wiring = InverseWiring.from_component_configs(self.component_configs)
+        inverse_wiring = InverseWiring.from_component_configs(self.components)
         self.scheduler = SlaveScheduler(
             inverse_wiring,
             state_consumer,
@@ -56,9 +53,8 @@ class SystemSimulationComponent(BaseComponent):
             self.raise_interrupt,
         )
 
-        self.components = [config() for config in self.component_configs]
         self._tasks = run_all(
-            component.run_forever(state_consumer, state_producer)
+            component().run_forever(state_consumer, state_producer)
             for component in self.components
         ) + run_all([self.scheduler.run_forever()])
         await super().run_forever(state_consumer, state_producer)
@@ -77,7 +73,6 @@ class SystemSimulationComponent(BaseComponent):
             changes (Changes): A mapping of changed component inputs and their new
                 values.
         """
-        self.doing_tick.set()
         on_tick = asyncio.create_task(self.scheduler.on_tick(time, changes))
         error_state = asyncio.create_task(self.scheduler.error.wait())
 
@@ -94,10 +89,6 @@ class SystemSimulationComponent(BaseComponent):
         else:
             output_changes, call_in = on_tick.result()
             await self.output(time, output_changes, call_in)
-
-        self.tick_finished.set()
-        self.doing_tick.clear()
-        self.tick_finished.clear()
 
     async def stop_component(self) -> None:
         """Cancel all pending tasks associated with the System Simulation component.
@@ -121,6 +112,6 @@ class SystemSimulation(ComponentConfig):
     def __call__(self) -> Component:  # noqa: D102
         return SystemSimulationComponent(
             name=self.name,
-            component_configs=self.components,
+            components=self.components,
             expose=self.expose,
         )

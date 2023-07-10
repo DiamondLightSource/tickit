@@ -1,6 +1,8 @@
 import asyncio
+import socket
 from asyncio import AbstractEventLoop
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Dict, List, Tuple, cast
 
 import mock
@@ -28,6 +30,7 @@ from tickit.core.typedefs import (
 )
 from tickit.devices.sink import Sink, SinkDevice
 from tickit.utils.compat.typing_compat import TypedDict
+from tickit.utils.configuration.loading import read_configs
 
 
 @dataclass
@@ -204,8 +207,6 @@ async def test_system_simulation(
     print("ah")
 
 
-from pathlib import Path
-from tickit.utils.configuration.loading import read_configs
 
 TEST_TIME = int(1e9)
 
@@ -264,7 +265,6 @@ async def setup_scheduler(
     assert scheduler.running.is_set() is False
 
 
-import socket
 
 
 @pytest.mark.asyncio
