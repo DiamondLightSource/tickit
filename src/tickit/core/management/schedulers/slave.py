@@ -107,7 +107,7 @@ class SlaveScheduler(BaseScheduler):
     ) -> Tuple[Changes, Optional[SimTime]]:
         """Routes inputs, does a tick and returns output changes and a callback time.
 
-        An asyhcnronous method which determines which components within the simulation
+        An asynchronous method which determines which components within the simulation
         require being woken up, sets the input changes for use by the "external" mock
         component, performs a tick, determines the period in which the slave scheduler
         should next be updated, and returns the changes collated by the "expose" mock

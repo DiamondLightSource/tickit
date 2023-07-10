@@ -28,7 +28,6 @@ class SystemSimulationComponent(BaseComponent):
     #: A list of immutable component configuration data containers, used to
     #: construct internal components.
     components: List[ComponentConfig]
-
     #: A mapping of outputs which the system simulation exposes and the
     #: corresponding output of an internal component.
     expose: Dict[PortID, ComponentPort]
@@ -52,7 +51,6 @@ class SystemSimulationComponent(BaseComponent):
             self.expose,
             self.raise_interrupt,
         )
-
         self._tasks = run_all(
             component().run_forever(state_consumer, state_producer)
             for component in self.components
