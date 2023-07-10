@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.components.system_simulation &#8212; tickit 0.2.3.dev6+gcfad756b documentation</title>
+    <title>tickit.core.components.system_simulation &#8212; tickit 0.2.3.dev6+gb49606b5 documentation</title>
   
   
   
@@ -525,7 +525,7 @@ document.write(`
     <span class="n">components</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ComponentConfig</span><span class="p">]</span>
     <span class="n">expose</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">PortID</span><span class="p">,</span> <span class="n">ComponentPort</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Component</span><span class="p">:</span>  <span class="c1"># noqa: D102</span>
+    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Component</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">SystemSimulationComponent</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="n">components</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">,</span>
