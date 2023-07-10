@@ -22,7 +22,7 @@ dependencies = [
     "pyzmq",
     "softioc",
     "typing_extensions",
-    "click",
+    "click==8.1.3",
 
 ] # Add project dependencies here, e.g. ["click", "numpy"]
 dynamic = ["version"]
