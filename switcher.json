@@ -64,10 +64,6 @@
     "url": "https://dls-controls.github.io/tickit/fix-http-adapter/"
   },
   {
-    "version": "pin-click",
-    "url": "https://dls-controls.github.io/tickit/pin-click/"
-  },
-  {
     "version": "simulation-wrapper",
     "url": "https://dls-controls.github.io/tickit/simulation-wrapper/"
   },

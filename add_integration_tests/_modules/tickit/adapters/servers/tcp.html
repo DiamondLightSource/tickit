@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.adapters.servers.tcp &#8212; tickit 0.2.3.dev3+gd31612a5 documentation</title>
+    <title>tickit.adapters.servers.tcp &#8212; tickit 0.2.3.dev4+gb2fb7e42 documentation</title>
   
   
   
@@ -447,7 +447,6 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">host</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">port</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="nb">format</span><span class="o">.</span><span class="n">format</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">up</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
 
 <div class="viewcode-block" id="TcpServer.run_forever"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.adapters.servers.tcp.TcpServer.run_forever">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run_forever</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -474,10 +473,7 @@ document.write(`
         <span class="n">server</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">start_server</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
 
         <span class="k">async</span> <span class="k">with</span> <span class="n">server</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">up</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
-            <span class="k">await</span> <span class="n">server</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">up</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+            <span class="k">await</span> <span class="n">server</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span></div>
 
     <span class="k">def</span> <span class="nf">_generate_handle_function</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
