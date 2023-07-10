@@ -56,6 +56,10 @@
     "url": "https://dls-controls.github.io/tickit/add_integration_tests/"
   },
   {
+    "version": "component_ui",
+    "url": "https://dls-controls.github.io/tickit/component_ui/"
+  },
+  {
     "version": "epics-optional-db-file",
     "url": "https://dls-controls.github.io/tickit/epics-optional-db-file/"
   },
