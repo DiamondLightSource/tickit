@@ -87,7 +87,9 @@ class SplittingInterpreter(Interpreter[AnyStr]):
                 indicating whether an interrupt should be raised by the adapter.
         """
         individual_messages = [
-            msg for msg in re.split(self.message_delimiter, message) if msg is not None
+            msg
+            for msg in re.split(self.message_delimiter, message)
+            if msg  # Discard empty strings and None
         ]
 
         results = await self._handle_individual_messages(adapter, individual_messages)
