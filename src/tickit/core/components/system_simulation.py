@@ -107,7 +107,7 @@ class SystemSimulation(ComponentConfig):
     components: List[ComponentConfig]
     expose: Dict[PortID, ComponentPort]
 
-    def __call__(self) -> Component:  # noqa: D102
+    def build(self) -> Component:
         return SystemSimulationComponent(
             name=self.name,
             components=self.components,

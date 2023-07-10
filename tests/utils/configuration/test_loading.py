@@ -42,7 +42,7 @@ def test_importing_conversion_when_is_not_tagged_union(
 class MockConfig(ComponentConfig):
     pass
 
-    def __call__(self):
+    def build(self):
         return Mock()
 
 

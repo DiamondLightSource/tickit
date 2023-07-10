@@ -67,9 +67,12 @@ class ComponentConfig:
     inputs: Dict[PortID, ComponentPort]
 
     @abstractmethod
-    def __call__(self) -> Component:
+    def build(self) -> Component:
         """Create the component from the given config."""
         raise NotImplementedError(self)
+
+    def __call__(self):
+        return self.build()
 
 
 class BaseComponent(Component):
