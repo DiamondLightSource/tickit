@@ -5,7 +5,7 @@ from typing import Set
 import click
 from click.core import Context
 
-from tickit.core.simulation import TickitSimulation
+from tickit.core.simulation import TickitSimulationBuilder
 from tickit.core.state_interfaces.state_interface import interfaces
 from tickit.core.typedefs import ComponentID
 
@@ -49,9 +49,11 @@ def components(config_path: str, components: Set[ComponentID], backend: str) -> 
         backend (str): The message broker to be used.
     """
     asyncio.run(
-        TickitSimulation(
+        TickitSimulationBuilder(
             config_path, backend, include_schedulers=False, components_to_run=components
-        ).run()
+        )
+        .build()
+        .run()
     )
 
 
@@ -65,7 +67,11 @@ def scheduler(config_path: str, backend: str) -> None:
         config_path (str): The path to the configuration file.
         backend (str): The message broker to be used.
     """
-    asyncio.run(TickitSimulation(config_path, backend, include_components=False).run())
+    asyncio.run(
+        TickitSimulationBuilder(config_path, backend, include_components=False)
+        .build()
+        .run()
+    )
 
 
 @main.command(help="run a collection of devices with a scheduler")
@@ -80,4 +86,4 @@ def all(config_path: str, backend: str) -> None:
         config_path (str): The path to the configuration file.
         backend (str): The message broker to be used.
     """
-    asyncio.run(TickitSimulation(config_path, backend).run())
+    asyncio.run(TickitSimulationBuilder(config_path, backend).build().run())
