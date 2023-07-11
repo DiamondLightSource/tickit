@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.adapter &#8212; tickit 0.2.3.dev4+gb2fb7e42 documentation</title>
+    <title>tickit.core.adapter &#8212; tickit 0.2.3.dev11+g861547cc documentation</title>
   
   
   
@@ -479,21 +479,21 @@ document.write(`
 
 <div class="viewcode-block" id="Interpreter"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.adapter.Interpreter">[docs]</a><span class="nd">@as_tagged_union</span>
 <span class="k">class</span> <span class="nc">Interpreter</span><span class="p">(</span><span class="n">ABC</span><span class="p">,</span> <span class="n">Generic</span><span class="p">[</span><span class="n">T</span><span class="p">]):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;An interface for types which handle messages recieved by an adapter.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An interface for types which handle messages received by an adapter.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Interpreter.handle"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.adapter.Interpreter.handle">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">adapter</span><span class="p">:</span> <span class="n">Adapter</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">T</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">AsyncIterable</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;An asynchronous method which handles messages recieved by an adapter.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;An asynchronous method which handles messages received by an adapter.</span>
 
-<span class="sd">        An asynchronous method which handles messages recieved by an adapter, replies</span>
-<span class="sd">        are sent as an asynchronous iterable to support setting of continious readback,</span>
+<span class="sd">        An asynchronous method which handles messages received by an adapter, replies</span>
+<span class="sd">        are sent as an asynchronous iterable to support setting of continuous readback,</span>
 <span class="sd">        stand alone replies should be wrapped in an asynchronous iterable of length one.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            adapter (Adapter): The adapter which is delegating message handling.</span>
-<span class="sd">            message (T): The message recieved by the adapter.</span>
+<span class="sd">            message (T): The message received by the adapter.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Tuple[AsyncIterable[T], bool]: A tuple containing both an asynchronous</span>
@@ -516,7 +516,7 @@ document.write(`
 <span class="sd">            on_connect (Callable[[], AsyncIterable[Optional[T]]]): An asynchronous</span>
 <span class="sd">                iterable of messages to be sent once a client connects.</span>
 <span class="sd">            handler (Callable[[T], Awaitable[AsyncIterable[Optional[T]]]]): An</span>
-<span class="sd">                asynchronous method used to handle recieved messages, returning an</span>
+<span class="sd">                asynchronous method used to handle received messages, returning an</span>
 <span class="sd">                asynchronous iterable of replies.</span>
 <span class="sd">        &quot;&quot;&quot;</span></div></div>
 </pre></div>

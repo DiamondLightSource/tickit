@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.management.schedulers.base &#8212; tickit 0.2.3.dev4+gb2fb7e42 documentation</title>
+    <title>tickit.core.management.schedulers.base &#8212; tickit 0.2.3.dev11+g861547cc documentation</title>
   
   
   
@@ -488,17 +488,17 @@ document.write(`
 <div class="viewcode-block" id="BaseScheduler.handle_message"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.handle_message">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_message</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Interrupt</span><span class="p">,</span> <span class="n">Output</span><span class="p">,</span> <span class="n">ComponentException</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle messages recieved by the state consumer.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle messages received by the state consumer.</span>
 
 <span class="sd">        An asynchronous callback which handles Interrupt, Output and ComponentException</span>
-<span class="sd">        messages recieved by the state consumer. For Outputs, changes are propagated</span>
+<span class="sd">        messages received by the state consumer. For Outputs, changes are propagated</span>
 <span class="sd">        and wakeups scheduled if required. For interrupts handling is deferred. For</span>
 <span class="sd">        exceptions, a StopComponent message is produced to each component in the system</span>
 <span class="sd">        to facilitate shut down.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            message (Union[Interrupt, Output, ComponentException]): An Interrupt,</span>
-<span class="sd">                Output or ComponentException recieved by the state consumer.</span>
+<span class="sd">                Output or ComponentException received by the state consumer.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Scheduler (</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">) got </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">Output</span><span class="p">):</span>
@@ -560,11 +560,11 @@ document.write(`
         <span class="k">return</span> <span class="n">components</span><span class="p">,</span> <span class="n">first</span></div>
 
 <div class="viewcode-block" id="BaseScheduler.handle_component_exception"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.handle_component_exception">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_component_exception</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">ComponentException</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle exceptions raised from componenets by shutting down the simulation.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle exceptions raised from components by shutting down the simulation.</span>
 
 <span class="sd">        If a component produces an exception, the scheduler will produce a message to</span>
 <span class="sd">        all components in the simulation to cause them to cancel any running component</span>
-<span class="sd">        tasks. After which the scheduler shuts its self down.</span>
+<span class="sd">        tasks. After which the scheduler shuts itself down.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span>
