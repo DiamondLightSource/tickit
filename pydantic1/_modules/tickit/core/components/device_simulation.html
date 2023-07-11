@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.components.device_simulation &#8212; tickit 0.2.3.dev11+g57c4b3bb documentation</title>
+    <title>tickit.core.components.device_simulation &#8212; tickit 0.2.3.dev13+g899c416e documentation</title>
   
   
   
@@ -418,11 +418,10 @@ document.write(`
   <h1>Source code for tickit.core.components.device_simulation</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Awaitable</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Hashable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">cast</span>
 
 <span class="kn">from</span> <span class="nn">immutables</span> <span class="kn">import</span> <span class="n">Map</span>
-<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">Field</span>
-<span class="kn">from</span> <span class="nn">pydantic.dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 
 <span class="kn">from</span> <span class="nn">tickit.core.adapter</span> <span class="kn">import</span> <span class="n">Adapter</span>
 <span class="kn">from</span> <span class="nn">tickit.core.components.component</span> <span class="kn">import</span> <span class="n">BaseComponent</span>
@@ -430,7 +429,6 @@ document.write(`
 <span class="kn">from</span> <span class="nn">tickit.core.runner</span> <span class="kn">import</span> <span class="n">run_all</span>
 <span class="kn">from</span> <span class="nn">tickit.core.state_interfaces</span> <span class="kn">import</span> <span class="n">StateConsumer</span><span class="p">,</span> <span class="n">StateProducer</span>
 <span class="kn">from</span> <span class="nn">tickit.core.typedefs</span> <span class="kn">import</span> <span class="n">Changes</span><span class="p">,</span> <span class="n">ComponentID</span><span class="p">,</span> <span class="n">SimTime</span><span class="p">,</span> <span class="n">State</span>
-<span class="kn">from</span> <span class="nn">tickit.utils.configuration.configurable</span> <span class="kn">import</span> <span class="n">StrictConfig</span>
 
 <span class="n">InterruptHandler</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">Awaitable</span><span class="p">[</span><span class="kc">None</span><span class="p">]]</span>
 
@@ -438,7 +436,7 @@ document.write(`
 <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="DeviceSimulation"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.components.device_simulation.DeviceSimulation">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">StrictConfig</span><span class="p">)</span>
+<div class="viewcode-block" id="DeviceSimulation"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.components.device_simulation.DeviceSimulation">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">DeviceSimulation</span><span class="p">(</span><span class="n">BaseComponent</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A component containing a device and the corresponding adapters.</span>
 
@@ -449,10 +447,10 @@ document.write(`
 
     <span class="n">name</span><span class="p">:</span> <span class="n">ComponentID</span>
     <span class="n">device</span><span class="p">:</span> <span class="n">Device</span>
-    <span class="n">adapters</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Adapter</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
-    <span class="n">last_outputs</span><span class="p">:</span> <span class="n">State</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">State</span><span class="p">({}))</span>
-    <span class="n">device_inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Hashable</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
-    <span class="n">tasks</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">asyncio</span><span class="o">.</span><span class="n">Task</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">adapters</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Adapter</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">last_outputs</span><span class="p">:</span> <span class="n">State</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">State</span><span class="p">({}))</span>
+    <span class="n">device_inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Hashable</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+    <span class="n">_tasks</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">asyncio</span><span class="o">.</span><span class="n">Task</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
 
 <div class="viewcode-block" id="DeviceSimulation.run_forever"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.components.device_simulation.DeviceSimulation.run_forever">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run_forever</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">state_consumer</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">StateConsumer</span><span class="p">],</span> <span class="n">state_producer</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">StateProducer</span><span class="p">]</span>

@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.utils.configuration.configurable &#8212; tickit 0.2.3.dev11+g57c4b3bb documentation</title>
+    <title>tickit.utils.configuration.configurable &#8212; tickit 0.2.3.dev13+g899c416e documentation</title>
   
   
   
@@ -427,14 +427,15 @@ document.write(`
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for Pydantic dataclasses.&quot;&quot;&quot;</span>
 
     <span class="n">extra</span><span class="p">:</span> <span class="n">Extra</span> <span class="o">=</span> <span class="n">Extra</span><span class="o">.</span><span class="n">forbid</span>
-    <span class="n">arbitrary_types_allowed</span> <span class="o">=</span> <span class="kc">True</span></div>
+    <span class="n">arbitrary_types_allowed</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">underscore_attrs_are_private</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 
 <div class="viewcode-block" id="as_tagged_union"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.utils.configuration.configurable.as_tagged_union">[docs]</a><span class="k">def</span> <span class="nf">as_tagged_union</span><span class="p">(</span>
-        <span class="n">super_cls</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Type</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">discriminator</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;type&quot;</span><span class="p">,</span>
-        <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">BaseConfig</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">super_cls</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Type</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Type</span><span class="p">],</span> <span class="n">Type</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">discriminator</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;type&quot;</span><span class="p">,</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">BaseConfig</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Type</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Type</span><span class="p">],</span> <span class="n">Type</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add all subclasses of super_cls to a discriminated union.</span>
 
@@ -507,7 +508,7 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">_discriminated_union_of_subclasses</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">discriminator</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_as_tagged_union</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">discriminator</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
 
     <span class="c1"># Work out if the call was @discriminated_union_of_subclasses or</span>
     <span class="c1"># @discriminated_union_of_subclasses(...)</span>
@@ -519,15 +520,15 @@ document.write(`
 
 <span class="k">def</span> <span class="nf">_qualified_class_name</span><span class="p">(</span><span class="n">klass</span><span class="p">):</span>
     <span class="n">module</span> <span class="o">=</span> <span class="n">klass</span><span class="o">.</span><span class="vm">__module__</span>
-    <span class="k">if</span> <span class="n">module</span> <span class="o">==</span> <span class="s1">&#39;builtins&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">module</span> <span class="o">==</span> <span class="s2">&quot;builtins&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">klass</span><span class="o">.</span><span class="vm">__qualname__</span>  <span class="c1"># avoid outputs like &#39;builtins.str&#39;</span>
-    <span class="k">return</span> <span class="n">module</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="n">klass</span><span class="o">.</span><span class="vm">__qualname__</span>
+    <span class="k">return</span> <span class="n">module</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">klass</span><span class="o">.</span><span class="vm">__qualname__</span>
 
 
-<span class="k">def</span> <span class="nf">_discriminated_union_of_subclasses</span><span class="p">(</span>
-        <span class="n">super_cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">,</span>
-        <span class="n">discriminator</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">BaseConfig</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="k">def</span> <span class="nf">_as_tagged_union</span><span class="p">(</span>
+    <span class="n">super_cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">,</span>
+    <span class="n">discriminator</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">BaseConfig</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Type</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Type</span><span class="p">],</span> <span class="n">Type</span><span class="p">]]:</span>
     <span class="n">super_cls</span><span class="o">.</span><span class="n">_ref_classes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
     <span class="n">super_cls</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="kc">None</span>
@@ -564,11 +565,11 @@ document.write(`
             <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_model</span><span class="p">(</span><span class="n">__root__</span><span class="o">=</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">__root__</span>
         <span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">for</span> <span class="p">(</span>
-                    <span class="n">error</span>
+                <span class="n">error</span>
             <span class="p">)</span> <span class="ow">in</span> <span class="n">e</span><span class="o">.</span><span class="n">raw_errors</span><span class="p">:</span>  <span class="c1"># need in to remove redundant __root__ from error path</span>
                 <span class="k">if</span> <span class="p">(</span>
-                        <span class="nb">isinstance</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">ErrorWrapper</span><span class="p">)</span>
-                        <span class="ow">and</span> <span class="n">error</span><span class="o">.</span><span class="n">loc_tuple</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;__root__&quot;</span>
+                    <span class="nb">isinstance</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">ErrorWrapper</span><span class="p">)</span>
+                    <span class="ow">and</span> <span class="n">error</span><span class="o">.</span><span class="n">loc_tuple</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;__root__&quot;</span>
                 <span class="p">):</span>
                     <span class="n">error</span><span class="o">.</span><span class="n">_loc</span> <span class="o">=</span> <span class="n">error</span><span class="o">.</span><span class="n">loc_tuple</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]</span>
 

@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.utils.byte_format &#8212; tickit 0.2.3.dev11+g57c4b3bb documentation</title>
+    <title>tickit.utils.byte_format &#8212; tickit 0.2.3.dev13+g899c416e documentation</title>
   
   
   
@@ -418,8 +418,6 @@ document.write(`
   <h1>Source code for tickit.utils.byte_format</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 
-<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">validator</span>
-
 
 <div class="viewcode-block" id="ByteFormat"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.utils.byte_format.ByteFormat">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">ByteFormat</span><span class="p">:</span>
@@ -443,7 +441,6 @@ document.write(`
 <span class="sd">            ByteFormat: The deserialized ByteFormat.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">ByteFormat</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span></div></div>
-
 </pre></div>
 
                 </article>
