@@ -121,14 +121,12 @@ async def test_running_only_scheduler_does_not_start_component_tasks(
     assert isinstance(tickit_simulation._scheduler, MasterScheduler)
     assert tickit_simulation._components is None
 
-    start_scheduler = next(tickit_simulation._start_scheduler_tasks())  # type: ignore
-    assert isinstance(start_scheduler, asyncio.Task)
+    scheduler_tasks = list(tickit_simulation._start_scheduler_tasks())
+    assert len(scheduler_tasks) == 1
+    assert isinstance(scheduler_tasks[0], asyncio.Task)
 
-    start_component = next(
-        tickit_simulation._start_component_tasks(),  # type: ignore
-        None,
-    )
-    assert start_component is None
+    component_tasks = list(tickit_simulation._start_component_tasks())
+    assert len(component_tasks) == 0
 
 
 @pytest.fixture
