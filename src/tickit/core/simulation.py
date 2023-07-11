@@ -67,9 +67,6 @@ class TickitSimulationBuilder:
     _backend: str
     _config_path: str
 
-    _scheduler: MasterScheduler
-    _components: Dict[ComponentID, Component]
-
     _include_schedulers: bool
     _include_components: bool
     _components_to_run: Set[ComponentID]
