@@ -102,10 +102,8 @@ class SystemSimulationComponent(BaseComponent):
 class SystemSimulation(ComponentConfig):
     """Simulation of a nested set of components."""
 
-    name: ComponentID
-    inputs: Dict[PortID, ComponentPort]
     components: List[ComponentConfig]
-    expose: Dict[PortID, ComponentPort]
+    expose: Dict[PortID, ComponentPort] = field(default_factory=dict)
 
     def __call__(self) -> Component:  # noqa: D102
         return SystemSimulationComponent(

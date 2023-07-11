@@ -1,0 +1,12 @@
+- tickit.core.components.system_simulation.SystemSimulation:
+    name: internal_tickit
+    inputs: {}
+    components:
+      - tickit.devices.source.Source:
+          name: internal_source
+          inputs: {}
+          value: 42
+      - tickit.devices.sink.Sink:
+          name: internal_sink
+          inputs:
+            input: internal_source:value

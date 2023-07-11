@@ -1,3 +1,4 @@
+import asyncio
 import logging
 from typing import Awaitable, Callable, Dict, Optional, Set, Tuple, Type, Union
 
@@ -48,9 +49,21 @@ class SlaveScheduler(BaseScheduler):
         wiring = self.add_exposing_wiring(wiring, expose)
         super().__init__(wiring, state_consumer, state_producer)
 
+        reads_from_external: bool = False
+        for component in self._wiring:
+            input_components = [
+                p.component for p in self._wiring[component].values()  # type: ignore
+            ]
+            if "external" in input_components:
+                reads_from_external = True
+                break
+
+        self.reads_from_external = reads_from_external
         self.raise_interrupt = raise_interrupt
         self.interrupts: Set[ComponentID] = set()
         self.component_error: ComponentException
+
+        self.first_tick: asyncio.Event = asyncio.Event()
 
     @staticmethod
     def add_exposing_wiring(
@@ -127,17 +140,20 @@ class SlaveScheduler(BaseScheduler):
         wakeup_components = {
             component for component, when in self.wakeups.items() if when <= time
         }
-        root_components: Set[ComponentID] = {
-            *self.interrupts,
-            *wakeup_components,
-            ComponentID("external"),
-        }
+
+        root_components: Set[ComponentID] = {*self.interrupts, *wakeup_components}
+
+        if self.reads_from_external:
+            root_components.update([ComponentID("external")])
+
         for component in wakeup_components:
             del self.wakeups[component]
         self.interrupts.clear()
 
         self.input_changes = changes
         self.output_changes = Changes(Map())
+
+        await asyncio.wait_for(self.first_tick.wait(), timeout=30)
         await self.ticker(time, root_components)
 
         _, call_at = self.get_first_wakeups()
@@ -146,6 +162,11 @@ class SlaveScheduler(BaseScheduler):
     async def run_forever(self) -> None:
         """Delegates to setup which instantiates the ticker and state interfaces."""
         await self.setup()
+        await self.ticker(
+            SimTime(0),
+            self.ticker.components,
+        )
+        self.first_tick.set()
 
     async def schedule_interrupt(self, source: ComponentID) -> None:
         """Schedules the interrupt of a component immediately.
