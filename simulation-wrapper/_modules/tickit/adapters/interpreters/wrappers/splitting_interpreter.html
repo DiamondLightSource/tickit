@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.adapters.interpreters.wrappers.splitting_interpreter &#8212; tickit 0.2.3.dev12+gb7cc625a documentation</title>
+    <title>tickit.adapters.interpreters.wrappers.splitting_interpreter &#8212; tickit 0.2.3.dev17+gfce7d554 documentation</title>
   
   
   
@@ -505,7 +505,9 @@ document.write(`
 <span class="sd">                indicating whether an interrupt should be raised by the adapter.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">individual_messages</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">msg</span> <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">message_delimiter</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span> <span class="k">if</span> <span class="n">msg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="n">msg</span>
+            <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">message_delimiter</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">msg</span>  <span class="c1"># Discard empty strings and None</span>
         <span class="p">]</span>
 
         <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_individual_messages</span><span class="p">(</span><span class="n">adapter</span><span class="p">,</span> <span class="n">individual_messages</span><span class="p">)</span>

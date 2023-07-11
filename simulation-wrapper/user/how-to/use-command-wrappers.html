@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Use Command Interpreter Wrappers &#8212; tickit 0.2.3.dev12+gb7cc625a documentation</title>
+    <title>Use Command Interpreter Wrappers &#8212; tickit 0.2.3.dev17+gfce7d554 documentation</title>
   
   
   
@@ -463,8 +463,8 @@ document.write(`
 device so that it could receive commands of the form <code class="docutils literal notranslate"><span class="pre">A?</span></code> and <code class="docutils literal notranslate"><span class="pre">A=4.4</span></code> to get
 and set values to the device. These commands had to be sent exactly as specified
 and individually. However, when talking to a simulated device this may not be the
-case. Our simulated device may recieve more complex messages and as a result our
-command interprerter needs to be able to handle them.</p>
+case. Our simulated device may receive more complex messages and as a result our
+command interpreter needs to be able to handle them.</p>
 <p>This can be achieved by wrapping the <a class="reference internal" href="../reference/api.html#tickit.adapters.interpreters.command.command_interpreter.CommandInterpreter" title="tickit.adapters.interpreters.command.command_interpreter.CommandInterpreter"><code class="xref any py py-class docutils literal notranslate"><span class="pre">CommandInterpreter</span></code></a> in other helper interpreters.
 This allows us to do some pre/post processing on all commands before/after they
 are handled.</p>
@@ -526,8 +526,8 @@ P?<span class="w"> </span>T?
 Request<span class="w"> </span>does<span class="w"> </span>not<span class="w"> </span>match<span class="w"> </span>any<span class="w"> </span>known<span class="w"> </span><span class="nb">command</span>
 </pre></div>
 </div>
-<p>This is the usecase of <code class="docutils literal notranslate"><span class="pre">SplittingInterpreter</span></code>. This splits a message into multiple
-sub-messages and then passes them on to another interprerter that it wraps. Wrapping
+<p>This is the use-case of <code class="docutils literal notranslate"><span class="pre">SplittingInterpreter</span></code>. This splits a message into multiple
+sub-messages and then passes them on to another interpreter that it wraps. Wrapping
 the adapter’s <code class="docutils literal notranslate"><span class="pre">CommandInterprerter</span></code> as</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">SplittingInterpreter</span><span class="p">(</span><span class="n">CommandInterpreter</span><span class="p">(),</span> <span class="n">delimiter</span><span class="o">=</span><span class="sa">b</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
 </pre></div>
@@ -562,7 +562,7 @@ multiple commands separated by a space:</p>
 <span class="m">0</span>.2
 </pre></div>
 </div>
-<p>So far we have only seen interpreter wrappers altering the recieved message before
+<p>So far we have only seen interpreter wrappers altering the received message before
 passing it on to another interpreter. There are also wrappers that alter the response
 received from the wrapped interpreter before it is sent back.</p>
 </section>
@@ -572,7 +572,7 @@ received from the wrapped interpreter before it is sent back.</p>
 <code class="docutils literal notranslate"><span class="pre">SplittingInterpreter</span></code> we were able to execute multiple commands from a single
 message. Each executed command sent its own response, i.e. one message resulted in
 multiple responses. We may instead want each message to have its own response
-containing multiple command responses. This is the usecase for <code class="docutils literal notranslate"><span class="pre">JoiningInterpreter</span></code>.
+containing multiple command responses. This is the use-case for <code class="docutils literal notranslate"><span class="pre">JoiningInterpreter</span></code>.
 Wrapping the <code class="docutils literal notranslate"><span class="pre">SplittingInterpreter</span></code> with this will join each of the responses into a
 single message.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">JoiningInterpreter</span><span class="p">(</span>
