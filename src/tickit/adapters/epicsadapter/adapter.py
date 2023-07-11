@@ -72,7 +72,7 @@ class EpicsAdapter(Adapter):
         raise NotImplementedError
 
     def load_records_without_DTYP_fields(self):
-        """Loads the records without DTYP fields."""
+        """Load records from database file without DTYP fields."""
         with open(self.db_file, "rb") as inp:
             with NamedTemporaryFile(suffix=".db", delete=False) as out:
                 for line in inp.readlines():
