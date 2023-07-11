@@ -1,7 +1,7 @@
 import re
 from typing import AnyStr, AsyncIterable, List, Tuple
 
-from tickit.adapters.interpreters.utils import wrap_messages_as_async_iterable
+from tickit.adapters.interpreters.utils import wrap_messages_as_async_iterator
 from tickit.core.adapter import Adapter, Interpreter
 
 
@@ -65,7 +65,7 @@ class SplittingInterpreter(Interpreter[AnyStr]):
             async for response in response_gen
         ]
 
-        resp = wrap_messages_as_async_iterable(responses)
+        resp = wrap_messages_as_async_iterator(responses)
         interrupt = any(individual_interrupts)
         return resp, interrupt
 

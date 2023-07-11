@@ -1,6 +1,6 @@
 from typing import AnyStr, AsyncIterable, Tuple
 
-from tickit.adapters.interpreters.utils import wrap_as_async_iterable
+from tickit.adapters.interpreters.utils import wrap_as_async_iterator
 from tickit.core.adapter import Adapter, Interpreter
 
 
@@ -50,7 +50,7 @@ class JoiningInterpreter(Interpreter[AnyStr]):
         """
         response_list = [response async for response in responses]
         response = self.response_delimiter.join(response_list)
-        return wrap_as_async_iterable(response)
+        return wrap_as_async_iterator(response)
 
     async def handle(
         self, adapter: Adapter, message: AnyStr

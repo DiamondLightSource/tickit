@@ -3,13 +3,13 @@ from typing import AnyStr, AsyncIterable, List, Tuple
 import pytest
 from mock import ANY, AsyncMock, call, patch
 
-from tickit.adapters.interpreters.utils import wrap_as_async_iterable
+from tickit.adapters.interpreters.utils import wrap_as_async_iterator
 from tickit.adapters.interpreters.wrappers import SplittingInterpreter
 from tickit.core.adapter import Adapter
 
 
 async def dummy_response(msg: AnyStr) -> Tuple[AsyncIterable[AnyStr], bool]:
-    return wrap_as_async_iterable(msg), True
+    return wrap_as_async_iterator(msg), True
 
 
 class DummySplittingInterpreter(SplittingInterpreter):
@@ -92,7 +92,7 @@ async def test_handle_individual_messages_makes_correct_handle_calls(sub_message
 )
 @patch(
     "tickit.adapters.interpreters.wrappers."
-    "splitting_interpreter.wrap_messages_as_async_iterable"
+    "splitting_interpreter.wrap_messages_as_async_iterator"
 )
 async def test_individual_results_combined_correctly(
     mock_wrap_message: AsyncMock,
@@ -102,7 +102,7 @@ async def test_individual_results_combined_correctly(
 ):
     splitting_interpreter = DummySplittingInterpreter(AsyncMock(), " ")
     individual_results = [
-        (wrap_as_async_iterable(msg), interrupt)
+        (wrap_as_async_iterator(msg), interrupt)
         for msg, interrupt in zip(individual_messages, individual_interrupts)
     ]
     (
@@ -116,7 +116,7 @@ async def test_individual_results_combined_correctly(
 @pytest.mark.asyncio
 @patch(
     "tickit.adapters.interpreters.wrappers."
-    "splitting_interpreter.wrap_messages_as_async_iterable"
+    "splitting_interpreter.wrap_messages_as_async_iterator"
 )
 async def test_multi_resp(
     mock_wrap_message: AsyncMock,
