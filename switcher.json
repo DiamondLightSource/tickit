@@ -80,6 +80,10 @@
     "url": "https://dls-controls.github.io/tickit/split-interpreter-empty-strings/"
   },
   {
+    "version": "standalone-system-sim",
+    "url": "https://dls-controls.github.io/tickit/standalone-system-sim/"
+  },
+  {
     "version": "systemsimulation-adapter",
     "url": "https://dls-controls.github.io/tickit/systemsimulation-adapter/"
   },
