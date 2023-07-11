@@ -100,23 +100,23 @@ def event_router(wiring):
 
 def test_wiring_unknown_out_dev(wiring_struct_4_1):
     wiring = Wiring(wiring_struct_4_1)
-    assert dict() == wiring["Out3"]
+    assert dict() == wiring[ComponentID("Out3")]
 
 
 def test_wiring_unknown_out_io(wiring_struct_4_1):
     wiring = Wiring(wiring_struct_4_1)
-    assert set() == wiring["Out1"]["Out1>2"]
+    assert set() == wiring[ComponentID("Out1")][PortID("Out1>2")]
 
 
 def test_inverse_wiring_unknown_in_dev(inverse_wiring_struct_4_1):
     inverse_wiring = InverseWiring(inverse_wiring_struct_4_1)
-    assert dict() == inverse_wiring["In2"]
+    assert dict() == inverse_wiring[ComponentID("In2")]
 
 
 def test_inverse_wiring_unknown_in_io(inverse_wiring_struct_4_1):
     inverse_wiring = InverseWiring(inverse_wiring_struct_4_1)
     with pytest.raises(KeyError):
-        inverse_wiring["In1"]["In1<3"]
+        inverse_wiring[ComponentID("In1")][PortID("In1<3")]
 
 
 def test_event_router_component_tree(event_router: EventRouter):
