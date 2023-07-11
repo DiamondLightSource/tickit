@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Wiring &#8212; tickit 0.2.3.dev2+g388f84c4 documentation</title>
+    <title>Wiring &#8212; tickit 0.2.3.dev9+g6fc4afaf documentation</title>
   
   
   
@@ -464,12 +464,12 @@ to contain multiple devices in one simulation. These devices can be wired
 together to create more complex and intricate systems.</p>
 <p>The devices in a simulation can be wired together, with the output of one device
 wired to the input of another. This ensures devices update in the correct order,
-so that changes in the system propgate in the correct manner. This is structured
+so that changes in the system propagate in the correct manner. This is structured
 as a directed acyclic graph.</p>
 <figure class="align-center">
 <img alt="../../_images/tickit-simple-dag.svg" src="../../_images/tickit-simple-dag.svg" /></figure>
 <p>Here we can see that if component 1 updates, then this will cause component 2
-to update, which in turn causes 4 to update. Component 4 will not update untill
+to update, which in turn causes 4 to update. Component 4 will not update until
 component 3 has also updated, as component 4 depends on both component 2 and 3.</p>
 <p>This wiring is achieved with a configuration yaml file which is passed to the
 scheduler when starting a simulation. Here we see an example trampoline device
