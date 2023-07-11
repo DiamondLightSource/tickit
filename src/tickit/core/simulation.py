@@ -27,11 +27,11 @@ class TickitSimulation:
         self,
         backend,
         scheduler,
-        componets,
+        components,
     ) -> None:
         self._backend = backend
         self._scheduler = scheduler
-        self._components = componets
+        self._components = components
 
     async def run(self) -> None:
         """Awaits the scheduler and/or component tasks indefinitely."""
