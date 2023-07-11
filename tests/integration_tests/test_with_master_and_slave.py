@@ -58,11 +58,14 @@ async def master_scheduler(
 
     exception_task = event_loop.create_task(
         scheduler.handle_component_exception(
-            ComponentException(source="sim", error=NotImplementedError, traceback="")
+            ComponentException(
+                source="internal_tickit", error=NotImplementedError, traceback=""
+            )
         )
     )
 
-    await asyncio.gather(run_task, exception_task)
+    await asyncio.wait([run_task, exception_task])
+
     assert scheduler.running.is_set() is False
 
 

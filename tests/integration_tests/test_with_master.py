@@ -23,55 +23,27 @@ from tickit.utils.configuration.loading import read_configs
 
 
 @pytest.fixture
-def components() -> List[Component]:
-    component_configs = [
-        Source(name="source", inputs={}, value=42),
-        Sink(
-            name="sink",
-            inputs={
-                PortID("input"): ComponentPort(ComponentID("source"), PortID("value"))
-            },
-        ),
-    ]
-    return [config() for config in component_configs]
-
-
-@pytest.fixture
 def configs_from_yaml() -> List[ComponentConfig]:
     path_to_yaml = Path(__file__).parent / "configs" / "test_with_master.yaml"
     return read_configs(path_to_yaml)
 
 
-@pytest.fixture(params=["yaml", "not-yaml"])
-def wiring_and_components(
-    request, configs_from_yaml, components
-) -> Tuple[Union[InverseWiring, Wiring], List[Component]]:
-    if hasattr(request, "param") and getattr(request, "param") == "yaml":
-        return InverseWiring.from_component_configs(configs_from_yaml), [
-            config() for config in configs_from_yaml
-        ]
+@pytest.fixture
+def wiring(configs_from_yaml: List[ComponentConfig]) -> InverseWiring:
+    return InverseWiring.from_component_configs(configs_from_yaml)
 
-    return (
-        Wiring(
-            {
-                ComponentID("source"): {
-                    PortID("value"): {
-                        ComponentPort(ComponentID("sink"), PortID("input"))
-                    }
-                },
-                ComponentID("sink"): {},
-            }
-        ),
-        components,
-    )
+
+@pytest.fixture
+def components(configs_from_yaml) -> List[Component]:
+    return [config() for config in configs_from_yaml]
 
 
 @pytest_asyncio.fixture
 async def master_scheduler(
-    wiring_and_components: Tuple[Union[InverseWiring, Wiring], List[Component]],
+    wiring: InverseWiring,
+    components: List[Component],
     event_loop: AbstractEventLoop,
 ):
-    wiring, components = wiring_and_components
     with mock.patch(
         "tickit.devices.sink.SinkDevice.update",
         return_value=create_autospec(SinkDevice.update),
@@ -108,10 +80,9 @@ async def test_master_scheduler_is_running(master_scheduler: MasterScheduler):
 
 @pytest.mark.asyncio
 async def test_sink_has_captured_value(
-    wiring_and_components: Tuple[Union[InverseWiring, Wiring], List[Component]],
+    components: List[Component],
     master_scheduler: MasterScheduler,
 ):
-    components = wiring_and_components[1]
     sink = cast(DeviceSimulation, components[1])
     assert sink.device_inputs == {}
 
