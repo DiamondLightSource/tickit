@@ -24,8 +24,8 @@ def patch_logging() -> Iterable[Mock]:
 
 
 @pytest.fixture
-def patch_run_tickit_simulation() -> Iterable[Mock]:
-    with patch("tickit.cli.TickitSimulation", autospec=True) as mock:
+def patch_run_tickit_simulation_builder() -> Iterable[Mock]:
+    with patch("tickit.cli.TickitSimulationBuilder", autospec=True) as mock:
         yield mock
 
 
@@ -39,17 +39,12 @@ def test_cli_set_logging_level(
 
 
 def test_components_command_for_one_component(
-    patch_run_tickit_simulation: Mock,
-    event_loop,
+    patch_run_tickit_simulation_builder: Mock,
 ):
     runner: CliRunner = CliRunner()
+    runner.invoke(main, args=["components", "fake_device", "path/to/fake_device.yaml"])
 
-    result: Result = runner.invoke(
-        main, args=["components", "fake_device", "path/to/fake_device.yaml"]
-    )
-
-    assert result.exit_code == 0
-    patch_run_tickit_simulation.assert_called_once_with(
+    patch_run_tickit_simulation_builder.assert_called_once_with(
         "path/to/fake_device.yaml",
         "kafka",
         include_schedulers=False,
@@ -58,12 +53,10 @@ def test_components_command_for_one_component(
 
 
 def test_components_command_for_multiple_components(
-    patch_run_tickit_simulation: Mock,
-    event_loop,
+    patch_run_tickit_simulation_builder: Mock,
 ):
     runner: CliRunner = CliRunner()
-
-    result: Result = runner.invoke(
+    runner.invoke(
         main,
         args=[
             "components",
@@ -73,8 +66,7 @@ def test_components_command_for_multiple_components(
         ],
     )
 
-    assert result.exit_code == 0
-    patch_run_tickit_simulation.assert_called_once_with(
+    patch_run_tickit_simulation_builder.assert_called_once_with(
         "path/to/fake_device.yaml",
         "kafka",
         include_schedulers=False,
@@ -86,16 +78,12 @@ def test_components_command_for_multiple_components(
 
 
 def test_scheduler(
-    patch_run_tickit_simulation: Mock,
-    event_loop,
+    patch_run_tickit_simulation_builder: Mock,
 ):
     runner: CliRunner = CliRunner()
+    runner.invoke(main, args=["scheduler", "path/to/fake_device.yaml"])
 
-    result: Result = runner.invoke(main, args=["scheduler", "path/to/fake_device.yaml"])
-
-    assert result.exit_code == 0
-
-    patch_run_tickit_simulation.assert_called_once_with(
+    patch_run_tickit_simulation_builder.assert_called_once_with(
         "path/to/fake_device.yaml",
         "kafka",
         include_components=False,
@@ -103,15 +91,12 @@ def test_scheduler(
 
 
 def test_all(
-    patch_run_tickit_simulation: Mock,
-    event_loop,
+    patch_run_tickit_simulation_builder: Mock,
 ):
     runner: CliRunner = CliRunner()
+    runner.invoke(main, args=["all", "path/to/fake_device.yaml"])
 
-    result: Result = runner.invoke(main, args=["all", "path/to/fake_device.yaml"])
-
-    assert result.exit_code == 0
-    patch_run_tickit_simulation.assert_called_once_with(
+    patch_run_tickit_simulation_builder.assert_called_once_with(
         "path/to/fake_device.yaml",
         "internal",
     )
