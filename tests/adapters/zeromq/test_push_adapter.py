@@ -130,3 +130,26 @@ async def test_serializes_and_sends_message(
 ) -> None:
     await running_zeromq_adapter.send_message(message)
     mock_socket.write.assert_called_once_with(serialized_message)
+
+
+@pytest.mark.asyncio
+async def test_socket_cleaned_up_on_cancel(
+    mock_device: Device,
+    mock_raise_interrupt: RaiseInterrupt,
+) -> None:
+    adapter_a = ZeroMqPushAdapter()
+    adapter_b = ZeroMqPushAdapter()
+    for adapter in (adapter_a, adapter_b):
+        task = asyncio.create_task(
+            adapter.run_forever(
+                mock_device,
+                mock_raise_interrupt,
+            )
+        )
+        await adapter.send_message([b"test"])
+        task.cancel()
+        try:
+            await task
+        except asyncio.CancelledError:
+            pass
+        assert task.done()

@@ -55,6 +55,7 @@ class ZeroMqPushAdapter(Adapter):
     _port: int
     _socket: Optional[aiozmq.ZmqStream]
     _socket_factory: SocketFactory
+    _socket_lock: asyncio.Lock
 
     def __init__(
         self,
@@ -68,6 +69,7 @@ class ZeroMqPushAdapter(Adapter):
         self._port = port
         self._socket = None
         self._socket_factory = socket_factory
+        self._socket_lock = asyncio.Lock()
 
     async def run_forever(
         self,
@@ -76,7 +78,13 @@ class ZeroMqPushAdapter(Adapter):
     ) -> None:
         """Runs the ZeroMQ adapter continuously."""
         await super().run_forever(device, raise_interrupt)
-        await self._ensure_socket()
+
+        try:
+            await self._ensure_socket()
+        except asyncio.CancelledError:
+            if self._socket is not None:
+                self._socket.close()
+                await self._socket.drain()
 
     def send_message_sequence_soon(
         self,
@@ -95,8 +103,9 @@ class ZeroMqPushAdapter(Adapter):
         await socket.drain()
 
     async def _ensure_socket(self) -> aiozmq.ZmqStream:
-        if self._socket is None:
-            self._socket = await self._socket_factory(self._host, self._port)
+        async with self._socket_lock:
+            if self._socket is None:
+                self._socket = await self._socket_factory(self._host, self._port)
         return self._socket
 
     def _serialize(self, message: ZeroMqMessage) -> _ZeroMqInternalMessage:
