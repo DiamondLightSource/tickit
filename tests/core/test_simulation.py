@@ -1,5 +1,5 @@
 import asyncio
-from typing import AsyncGenerator, DefaultDict, Dict, Iterable
+from typing import AsyncGenerator, Dict, Iterable
 
 import pytest
 import pytest_asyncio
@@ -12,6 +12,8 @@ from tickit.core.management.ticker import Ticker
 from tickit.core.simulation import TickitSimulation, TickitSimulationBuilder
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import ComponentID, SimTime
+from tickit.devices.sink import Sink
+from tickit.devices.source import Source
 
 
 def test_builder_scheduler_and_components_included_by_default() -> None:
@@ -32,7 +34,9 @@ def test_builder_choose_components_to_run() -> None:
         "tests/core/sim.yaml",
         components_to_run={ComponentID("source")},
     )
+
     assert tickit_simulation_builder._components_to_run == {"source"}
+    assert len(tickit_simulation_builder._components_to_run) == 1
 
 
 def test_builder_default_includes_all_components_in_simulation() -> None:
@@ -112,8 +116,8 @@ async def mock_master_scheduler(
 
 
 @pytest.mark.asyncio
-async def test_running_only_scheduler_does_not_start_component_tasks(
-    mock_master_scheduler,
+async def test_running_only_scheduler(
+    mock_master_scheduler: MasterScheduler,
     backend="internal",
 ) -> None:
     tickit_simulation = TickitSimulation(backend, mock_master_scheduler, None)
@@ -129,33 +133,66 @@ async def test_running_only_scheduler_does_not_start_component_tasks(
     assert len(component_tasks) == 0
 
 
+@pytest_asyncio.fixture
+async def patch_component_run_forever() -> AsyncGenerator:
+    with patch(
+        "tickit.core.components.device_simulation.DeviceSimulation.run_forever",
+        autospec=True,
+    ):
+        yield asyncio.create_task(asyncio.sleep(2))
+
+
 @pytest.fixture
-def mock_components() -> Dict[ComponentID, Component]:
-    return DefaultDict()
+def mock_components(patch_component_run_forever) -> Dict[ComponentID, Component]:
+    sink = Sink(name=ComponentID("test_sink"), inputs=dict())
+    source = Source(name=ComponentID("test_source"), inputs=dict(), value=42)
+    mock_components = {
+        ComponentID("test_sink"): sink(),
+        ComponentID("test_source"): source(),
+    }
+    return mock_components
 
 
-@pytest.mark.skip
 @pytest.mark.asyncio
-async def test_running_only_one_component() -> None:
-    pass
+async def test_running_only_components(
+    mock_components: Dict[ComponentID, Component],
+    backend="internal",
+) -> None:
+    tickit_simulation = TickitSimulation(backend, None, mock_components)
+
+    assert tickit_simulation._scheduler is None
+    assert tickit_simulation._components is not None
+
+    scheduler_tasks = list(tickit_simulation._start_scheduler_tasks())
+    assert len(scheduler_tasks) == 0
+
+    component_tasks = list(tickit_simulation._start_component_tasks())
+    assert len(component_tasks) == 2
+    for i in range(1):
+        assert isinstance(component_tasks[i], asyncio.Task)
 
 
-@pytest.mark.skip
 @pytest.mark.asyncio
-async def test_running_scheduler_and_one_component() -> None:
-    pass
+async def test_running_all(
+    mock_master_scheduler: MasterScheduler,
+    mock_components: Dict[ComponentID, Component],
+    backend="internal",
+) -> None:
+    tickit_simulation = TickitSimulation(
+        backend, mock_master_scheduler, mock_components
+    )
 
+    assert isinstance(tickit_simulation._scheduler, MasterScheduler)
+    assert tickit_simulation._components is not None
 
-@pytest.mark.skip
-@pytest.mark.asyncio
-async def test_running_only_all_components() -> None:
-    pass
+    scheduler_tasks = list(tickit_simulation._start_scheduler_tasks())
+    assert len(scheduler_tasks) == 1
+    assert isinstance(scheduler_tasks[0], asyncio.Task)
 
-
-@pytest.mark.skip
-@pytest.mark.asyncio
-async def test_running_all() -> None:
-    pass
+    component_tasks = list(tickit_simulation._start_component_tasks())
+    assert len(component_tasks) == 2
+    for i in range(1):
+        assert isinstance(component_tasks[i], asyncio.Task)
 
 
 @pytest.fixture
@@ -175,7 +212,7 @@ def patch_tickit_simulation_start_component_tasks() -> Iterable[asyncio.Task]:
 
 
 @pytest.mark.asyncio
-async def test_running_only_scheduler_calls_both_start_tasks(
+async def test_running_simulation_calls_both_start_tasks(
     mock_master_scheduler,
     patch_tickit_simulation_start_component_tasks,
     patch_tickit_simulation_start_scheduler_tasks,
