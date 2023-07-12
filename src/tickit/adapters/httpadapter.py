@@ -27,6 +27,7 @@ class HttpAdapter(Adapter):
     port: int = 8080
 
     _stopped: Optional[asyncio.Event] = None
+    _ready: Optional[asyncio.Event] = None
 
     async def run_forever(
         self, device: Device, raise_interrupt: RaiseInterrupt
@@ -36,10 +37,16 @@ class HttpAdapter(Adapter):
 
         self._ensure_stopped_event().clear()
         await self._start_server()
+        self._ensure_ready_event().set()
         try:
             await self._ensure_stopped_event().wait()
         except asyncio.CancelledError:
             await self.stop()
+
+    async def wait_until_ready(self, timeout: float = 1.0) -> None:
+        while self._ready is None:
+            await asyncio.sleep(0.1)
+        await asyncio.wait_for(self._ready.wait(), timeout=timeout)
 
     async def stop(self) -> None:
         stopped = self._ensure_stopped_event()
@@ -48,11 +55,18 @@ class HttpAdapter(Adapter):
             await self.app.shutdown()
             await self.app.cleanup()
             self._ensure_stopped_event().set()
+        if self._ready is not None:
+            self._ready.clear()
 
     def _ensure_stopped_event(self) -> asyncio.Event:
         if self._stopped is None:
             self._stopped = asyncio.Event()
         return self._stopped
+
+    def _ensure_ready_event(self) -> asyncio.Event:
+        if self._ready is None:
+            self._ready = asyncio.Event()
+        return self._ready
 
     async def _start_server(self):
         LOGGER.debug(f"Starting HTTP server... {self}")

@@ -92,6 +92,7 @@ async def adapter_task(
     task = event_loop.create_task(
         adapter.run_forever(mock_device, mock_raise_interrupt)
     )
+    await adapter.wait_until_ready()
     yield task
     await adapter.stop()
     await asyncio.wait_for(task, timeout=10.0)
@@ -147,6 +148,7 @@ async def test_stop_is_idempotent(
                 mock_raise_interrupt,
             )
         )
+        await adapter.wait_until_ready()
         await assert_server_is_up(adapter_url)
 
         # Finally stop it one more time and check it is stopped
