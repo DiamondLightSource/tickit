@@ -105,7 +105,7 @@ async def adapter_url(adapter_task: asyncio.Task, adapter: HttpAdapter):
 
 
 @pytest.mark.asyncio
-async def test_adapter_shuts_down_server_on_cancel(
+async def test__shuts_down_server_on_cancel(
     adapter: HttpAdapter,
     adapter_task: asyncio.Task,
     adapter_url: str,
@@ -174,7 +174,7 @@ async def assert_server_is_down(adapter_url: str) -> None:
 
 
 @pytest.mark.asyncio
-async def test_http_adapter_get(adapter_url: str):
+async def test__get(adapter_url: str):
     url = f"{adapter_url}/foo"
     async with aiohttp.ClientSession() as session:
         async with session.get(url, timeout=REQUEST_TIMEOUT) as response:
@@ -184,7 +184,7 @@ async def test_http_adapter_get(adapter_url: str):
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("name", ["a", "b"])
-async def test_http_adapter_get_by_name(adapter_url: str, name: str):
+async def test__get_by_name(adapter_url: str, name: str):
     url = f"{adapter_url}/bar/{name}"
     async with aiohttp.ClientSession() as session:
         async with session.get(url, timeout=REQUEST_TIMEOUT) as response:
@@ -193,7 +193,7 @@ async def test_http_adapter_get_by_name(adapter_url: str, name: str):
 
 
 @pytest.mark.asyncio
-async def test_http_adapter_error_code(adapter_url: str):
+async def test__error_code(adapter_url: str):
     url = f"{adapter_url}/baz"
     async with aiohttp.ClientSession() as session:
         async with session.get(url, timeout=REQUEST_TIMEOUT) as response:
@@ -201,7 +201,7 @@ async def test_http_adapter_error_code(adapter_url: str):
 
 
 @pytest.mark.asyncio
-async def test_http_adapter_put(adapter_url: str):
+async def test__put(adapter_url: str):
     url = f"{adapter_url}/foo"
     async with aiohttp.ClientSession() as session:
         async with session.put(
@@ -213,7 +213,7 @@ async def test_http_adapter_put(adapter_url: str):
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("name", ["a", "b"])
-async def test_http_adapter_put_by_name(adapter_url: str, name: str):
+async def test__put_by_name(adapter_url: str, name: str):
     url = f"{adapter_url}/bar/{name}"
     async with aiohttp.ClientSession() as session:
         async with session.put(
@@ -224,7 +224,7 @@ async def test_http_adapter_put_by_name(adapter_url: str, name: str):
 
 
 @pytest.mark.asyncio
-async def test_http_adapter_post(adapter_url: str):
+async def test__post(adapter_url: str):
     url = f"{adapter_url}/foo"
     async with aiohttp.ClientSession() as session:
         async with session.post(
@@ -236,7 +236,7 @@ async def test_http_adapter_post(adapter_url: str):
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("name", ["a", "b"])
-async def test_http_adapter_post_by_name(adapter_url: str, name: str):
+async def test__post_by_name(adapter_url: str, name: str):
     url = f"{adapter_url}/bar/{name}"
     async with aiohttp.ClientSession() as session:
         async with session.post(
@@ -262,7 +262,7 @@ async def test_put_to_non_interrupting_endpoint_does_not_interrupt(
 
 
 @pytest.mark.asyncio
-async def test_http_adapter_put_to_interrupt(
+async def test__put_to_interrupt(
     mock_raise_interrupt: RaiseInterrupt,
     adapter_url: str,
 ):
