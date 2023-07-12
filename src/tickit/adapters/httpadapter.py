@@ -34,14 +34,20 @@ class HttpAdapter(Adapter):
         """Runs the server continuously."""
         await super().run_forever(device, raise_interrupt)
 
+        self._ensure_stopped_event().clear()
         await self._start_server()
-        await self._ensure_stopped_event().wait()
+        try:
+            await self._ensure_stopped_event().wait()
+        except asyncio.CancelledError:
+            await self.stop()
 
     async def stop(self) -> None:
-        await self.site.stop()
-        await self.app.shutdown()
-        await self.app.cleanup()
-        self._ensure_stopped_event().set()
+        stopped = self._ensure_stopped_event()
+        if not stopped.is_set():
+            await self.site.stop()
+            await self.app.shutdown()
+            await self.app.cleanup()
+            self._ensure_stopped_event().set()
 
     def _ensure_stopped_event(self) -> asyncio.Event:
         if self._stopped is None:

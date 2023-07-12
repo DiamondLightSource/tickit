@@ -15,6 +15,7 @@ from tickit.core.adapter import RaiseInterrupt
 from tickit.core.device import Device
 
 ISSUE_LINK = "https://github.com/dls-controls/tickit/issues/111"
+REQUEST_TIMEOUT = 0.5
 
 
 @pytest.fixture
@@ -82,7 +83,7 @@ def adapter() -> HttpAdapter:
 
 
 @pytest_asyncio.fixture
-async def adapter_url(
+async def adapter_task(
     adapter: HttpAdapter,
     mock_raise_interrupt: RaiseInterrupt,
     mock_device: Device,
@@ -91,16 +92,90 @@ async def adapter_url(
     task = event_loop.create_task(
         adapter.run_forever(mock_device, mock_raise_interrupt)
     )
-    yield f"http://localhost:{adapter.port}"
+    yield task
     await adapter.stop()
     await asyncio.wait_for(task, timeout=10.0)
+    assert task.done()
+
+
+@pytest_asyncio.fixture
+async def adapter_url(adapter_task: asyncio.Task, adapter: HttpAdapter):
+    yield f"http://localhost:{adapter.port}"
+
+
+@pytest.mark.asyncio
+async def test_adapter_shuts_down_server_on_cancel(
+    adapter: HttpAdapter,
+    adapter_task: asyncio.Task,
+    adapter_url: str,
+):
+    # Verify server is up
+    await assert_server_is_up(adapter_url)
+
+    # Cancel task
+    adapter_task.cancel()
+    try:
+        await adapter_task
+    except asyncio.CancelledError:
+        pass
+
+    # Verify server is now down
+    await assert_server_is_down(adapter_url)
+
+
+@pytest.mark.asyncio
+async def test_stop_is_idempotent(
+    adapter: HttpAdapter,
+    adapter_task: asyncio.Task,
+    adapter_url: str,
+    mock_raise_interrupt: RaiseInterrupt,
+    mock_device: Device,
+) -> None:
+    # First ensure the server is working, then stop it and
+    # ensure it is no longer working
+    await assert_server_is_up(adapter_url)
+    await adapter.stop()
+    await adapter_task
+    assert adapter_task.done()
+    await assert_server_is_down(adapter_url)
+
+    for i in range(2):
+        # Then start it again and check it is working
+        new_task = asyncio.create_task(
+            adapter.run_forever(
+                mock_device,
+                mock_raise_interrupt,
+            )
+        )
+        await assert_server_is_up(adapter_url)
+
+        # Finally stop it one more time and check it is stopped
+        await adapter.stop()
+        await new_task
+        assert new_task.done()
+        await assert_server_is_down(adapter_url)
+
+
+async def assert_server_is_up(adapter_url: str) -> None:
+    url = f"{adapter_url}/foo"
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url, timeout=REQUEST_TIMEOUT) as response:
+            assert response.status == 200
+
+
+async def assert_server_is_down(adapter_url: str) -> None:
+    url = f"{adapter_url}/foo"
+    with pytest.raises(aiohttp.ClientConnectionError):
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url, timeout=REQUEST_TIMEOUT) as response:
+                assert response.status == 200
 
 
 @pytest.mark.asyncio
 async def test_http_adapter_get(adapter_url: str):
     url = f"{adapter_url}/foo"
     async with aiohttp.ClientSession() as session:
-        async with session.get(url) as response:
+        async with session.get(url, timeout=REQUEST_TIMEOUT) as response:
             assert response.status == 200
             assert (await response.json()) == {"value": "foo"}
 
@@ -110,7 +185,7 @@ async def test_http_adapter_get(adapter_url: str):
 async def test_http_adapter_get_by_name(adapter_url: str, name: str):
     url = f"{adapter_url}/bar/{name}"
     async with aiohttp.ClientSession() as session:
-        async with session.get(url) as response:
+        async with session.get(url, timeout=REQUEST_TIMEOUT) as response:
             assert response.status == 200
             assert (await response.json()) == {"entity": name, "value": "bar"}
 
@@ -119,7 +194,7 @@ async def test_http_adapter_get_by_name(adapter_url: str, name: str):
 async def test_http_adapter_error_code(adapter_url: str):
     url = f"{adapter_url}/baz"
     async with aiohttp.ClientSession() as session:
-        async with session.get(url) as response:
+        async with session.get(url, timeout=REQUEST_TIMEOUT) as response:
             assert response.status == 403
 
 
@@ -127,7 +202,9 @@ async def test_http_adapter_error_code(adapter_url: str):
 async def test_http_adapter_put(adapter_url: str):
     url = f"{adapter_url}/foo"
     async with aiohttp.ClientSession() as session:
-        async with session.put(url, json={"value": "bar"}) as response:
+        async with session.put(
+            url, json={"value": "bar"}, timeout=REQUEST_TIMEOUT
+        ) as response:
             assert response.status == 200
             assert (await response.json()) == {"value": "bar"}
 
@@ -137,7 +214,9 @@ async def test_http_adapter_put(adapter_url: str):
 async def test_http_adapter_put_by_name(adapter_url: str, name: str):
     url = f"{adapter_url}/bar/{name}"
     async with aiohttp.ClientSession() as session:
-        async with session.put(url, json={"value": "foo"}) as response:
+        async with session.put(
+            url, json={"value": "foo"}, timeout=REQUEST_TIMEOUT
+        ) as response:
             assert response.status == 200
             assert (await response.json()) == {"entity": name, "value": "foo"}
 
@@ -146,7 +225,9 @@ async def test_http_adapter_put_by_name(adapter_url: str, name: str):
 async def test_http_adapter_post(adapter_url: str):
     url = f"{adapter_url}/foo"
     async with aiohttp.ClientSession() as session:
-        async with session.post(url, json={"value": "bar"}) as response:
+        async with session.post(
+            url, json={"value": "bar"}, timeout=REQUEST_TIMEOUT
+        ) as response:
             assert response.status == 200
             assert (await response.json()) == {"value": "bar"}
 
@@ -156,7 +237,9 @@ async def test_http_adapter_post(adapter_url: str):
 async def test_http_adapter_post_by_name(adapter_url: str, name: str):
     url = f"{adapter_url}/bar/{name}"
     async with aiohttp.ClientSession() as session:
-        async with session.post(url, json={"value": "foo"}) as response:
+        async with session.post(
+            url, json={"value": "foo"}, timeout=REQUEST_TIMEOUT
+        ) as response:
             assert response.status == 200
             assert (await response.json()) == {"entity": name, "value": "foo"}
 
@@ -168,7 +251,9 @@ async def test_put_to_non_interrupting_endpoint_does_not_interrupt(
 ):
     url = f"{adapter_url}/foo"
     async with aiohttp.ClientSession() as session:
-        async with session.put(url, json={"value": "bar"}) as response:
+        async with session.put(
+            url, json={"value": "bar"}, timeout=REQUEST_TIMEOUT
+        ) as response:
             assert response.status == 200
             assert (await response.json()) == {"value": "bar"}
     mock_raise_interrupt.assert_not_called()
@@ -181,7 +266,9 @@ async def test_http_adapter_put_to_interrupt(
 ):
     url = f"{adapter_url}/interrupt/a"
     async with aiohttp.ClientSession() as session:
-        async with session.put(url, json={"value": "foo"}) as response:
+        async with session.put(
+            url, json={"value": "foo"}, timeout=REQUEST_TIMEOUT
+        ) as response:
             assert response.status == 200
             assert (await response.json()) == {"entity": "a", "value": "foo"}
     mock_raise_interrupt.assert_called_once()
