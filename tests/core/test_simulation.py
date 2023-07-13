@@ -124,7 +124,7 @@ async def test_running_only_scheduler(
 
     await tickit_simulation.run()
 
-    tickit_simulation._scheduler.run_forever.assert_called_once()
+    tickit_simulation._scheduler.run_forever.assert_called_once()  # type: ignore
 
 
 @pytest_asyncio.fixture
@@ -163,7 +163,9 @@ async def test_running_only_components(
 
     # device simulation run forever is called for each component in the dict
     component = next(iter(tickit_simulation._components.values()))
-    assert component.run_forever.call_count == len(tickit_simulation._components)
+    assert component.run_forever.call_count == len(  # type: ignore
+        tickit_simulation._components
+    )
 
 
 @pytest.mark.asyncio
@@ -180,7 +182,9 @@ async def test_running_all(
 
     await tickit_simulation.run()
 
-    tickit_simulation._scheduler.run_forever.assert_called_once()
+    tickit_simulation._scheduler.run_forever.assert_called_once()  # type: ignore
     # device simulation run forever is called for each component in the dict
     component = next(iter(tickit_simulation._components.values()))
-    assert component.run_forever.call_count == len(tickit_simulation._components)
+    assert component.run_forever.call_count == len(  # type: ignore
+        tickit_simulation._components
+    )
