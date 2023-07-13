@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Framework Summary &#8212; tickit 0.2.3.dev3+g40bb22fe documentation</title>
+    <title>Framework Summary &#8212; tickit 0.2.3.dev21+gf81c041d documentation</title>
   
   
   
@@ -460,7 +460,7 @@ document.write(`
   <section id="framework-summary">
 <h1>Framework Summary<a class="headerlink" href="#framework-summary" title="Permalink to this heading">#</a></h1>
 <p>Tickit is an event-based simulation framework allowing for the simulation of
-complex mutli-device systems.</p>
+complex multi-device systems.</p>
 <p>A tickit simulation consists of a scheduler and <a class="reference internal" href="components.html"><span class="doc">components</span></a>, all of which
 communicate via a message bus. The scheduler keeps simulation time running and
 updates the components in the simulation when required.</p>
@@ -476,7 +476,7 @@ influence the device from outside the simulation, such as using a TCP client to
 alter a parameter on a device.</p>
 <p>Using the example <a class="reference external" href="https://github.com/dls-controls/tickit/blob/master/examples/devices/shutter.py">Shutter</a> to demonstrate. The <code class="docutils literal notranslate"><span class="pre">ShutterDevice</span></code> contains the
 behaviour, the <code class="docutils literal notranslate"><span class="pre">ShutterAdapter</span></code> enables a TCP interface with the shutter, but
-the actual <code class="docutils literal notranslate"><span class="pre">Shutter</span></code> is the component which encpsulates both.</p>
+the actual <code class="docutils literal notranslate"><span class="pre">Shutter</span></code> is the component which encapsulates both.</p>
 </section>
 <section id="scheduler">
 <h2>Scheduler<a class="headerlink" href="#scheduler" title="Permalink to this heading">#</a></h2>
@@ -485,15 +485,15 @@ a simulation and primarily encapsulates the ticker.</p>
 <p>The scheduler is instantiated with <a class="reference internal" href="wiring.html"><span class="doc">wiring</span></a> from the config
 file used to start up the simulation. See tutorial <a class="reference internal" href="../tutorials/creating-a-simulation.html"><span class="doc">creating a simulation.</span></a>
 With this wiring the scheduler knows which components are connected together and
-therfore how to propogate messages and updates through the system.</p>
-<p>The <strong>ticker</strong> contains the logic for the propogation of updates through the system.
-When a component requests an update, either by a callback or an interupt, the
-ticker updates that component then propogates the update to any component
+therefore how to propagate messages and updates through the system.</p>
+<p>The <strong>ticker</strong> contains the logic for the propagation of updates through the system.
+When a component requests an update, either by a callback or an interrupt, the
+ticker updates that component then propagates the update to any component
 downstream.</p>
 <section id="running-a-tickit-simulation">
 <h3>Running a tickit simulation<a class="headerlink" href="#running-a-tickit-simulation" title="Permalink to this heading">#</a></h3>
 <p>When we <em>run</em> a simulation, we first initialise all our components, devices,
-adapters and the scheduler. The scheduler runs the system through its inital
+adapters and the scheduler. The scheduler runs the system through its initial
 <strong>tick</strong>, updating every device in the system. The scheduler will then run
 time on, waiting for next time it needs to update system components.</p>
 <p>When a device is told to update by the scheduler it takes the current values of
@@ -505,11 +505,11 @@ process with all devices downstream of it until they have all updated. The
 scheduler will then check if it has been asked by any device to call it back at
 a given time. If it has, it will wait until that time then update the device and
 again any downstream of it.</p>
-<p>Adapters wait to recieve external interaction with the device. When this
-interaction causes something to change on the device which is interupting, an
-interupt is sent to the scheduler to let it know that the device needs updating
+<p>Adapters wait to receive external interaction with the device. When this
+interaction causes something to change on the device which is interrupting, an
+interrupt is sent to the scheduler to let it know that the device needs updating
 immediately. The scheduler updates that device and then begins the cycle of
-updating the rest. When it finishes the tick caused by the interupt, the scheduler
+updating the rest. When it finishes the tick caused by the interrupt, the scheduler
 continues to wait until the next update.</p>
 </section>
 </section>

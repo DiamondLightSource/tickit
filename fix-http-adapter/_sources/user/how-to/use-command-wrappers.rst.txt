@@ -5,8 +5,8 @@ In `Using an Adapter` we saw how to use a composed adapter with the amplifier
 device so that it could receive commands of the form ``A?`` and ``A=4.4`` to get
 and set values to the device. These commands had to be sent exactly as specified
 and individually. However, when talking to a simulated device this may not be the
-case. Our simulated device may recieve more complex messages and as a result our
-command interprerter needs to be able to handle them.
+case. Our simulated device may receive more complex messages and as a result our
+command interpreter needs to be able to handle them.
 
 This can be achieved by wrapping the `CommandInterpreter` in other helper interpreters.
 This allows us to do some pre/post processing on all commands before/after they
@@ -26,9 +26,9 @@ Beheading Interpreter
 
 Suppose that when communicating with a real shutter device, all messages are
 prepended with a fixed-length header that can be ignored. For example each message
-being prepended with a header of 2 bytes: ``\x00\x02P?``, ``\x00\x04T=1.0`` etc. 
+being prepended with a header of 2 bytes: ``\x00\x02P?``, ``\x00\x04T=1.0`` etc.
 
-Our simulated device needs to handle messages of the same form. 
+Our simulated device needs to handle messages of the same form.
 
 We could use regex pattern matching to avoid this header but in some cases this is
 not desirable. In such cases we can cutoff the first two characters of each message
@@ -83,14 +83,14 @@ interpreted as commands by the ``ShutterAdapter``, ``P? T?`` is not:
     P? T?
     Request does not match any known command
 
-This is the usecase of ``SplittingInterpreter``. This splits a message into multiple
-sub-messages and then passes them on to another interprerter that it wraps. Wrapping
+This is the use-case of ``SplittingInterpreter``. This splits a message into multiple
+sub-messages and then passes them on to another interpreter that it wraps. Wrapping
 the adapter's ``CommandInterprerter`` as
 
 .. code-block:: python
 
-    SplittingInterpreter(CommandInterpreter(), delimiter=b" ") 
-    
+    SplittingInterpreter(CommandInterpreter(), delimiter=b" ")
+
 with the rest of the adapter unchanged, allows for interpreting commands separated by
 a space:
 
@@ -108,7 +108,7 @@ A wrapped adapter can be wrapped by another adapter wrapper. Combining the two a
 examples as
 
 .. code-block:: python
-    
+
     BeheadingInterpreter(
         SplittingInterpreter(
             CommandInterpreter(), delimiter=b" "
@@ -127,7 +127,7 @@ multiple commands separated by a space:
     0.2
     0.2
 
-So far we have only seen interpreter wrappers altering the recieved message before
+So far we have only seen interpreter wrappers altering the received message before
 passing it on to another interpreter. There are also wrappers that alter the response
 received from the wrapped interpreter before it is sent back.
 
@@ -139,7 +139,7 @@ Above, by wrapping the ``ShutterAdapter``'s ``CommandInterpreter`` with a
 ``SplittingInterpreter`` we were able to execute multiple commands from a single
 message. Each executed command sent its own response, i.e. one message resulted in
 multiple responses. We may instead want each message to have its own response
-containing multiple command responses. This is the usecase for ``JoiningInterpreter``.
+containing multiple command responses. This is the use-case for ``JoiningInterpreter``.
 Wrapping the ``SplittingInterpreter`` with this will join each of the responses into a
 single message.
 
