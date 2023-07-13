@@ -4,7 +4,7 @@ import pytest
 from mock import MagicMock, Mock, create_autospec, mock_open, patch
 
 from tickit.adapters.epicsadapter import EpicsAdapter, InputRecord
-from tickit.core.adapter import Adapter, Interpreter
+from tickit.core.adapter import Adapter, Interpreter, RaiseInterrupt
 from tickit.core.device import Device
 
 
@@ -20,7 +20,12 @@ def MockInterpreter() -> Mock:
 
 @pytest.fixture
 def epics_adapter() -> EpicsAdapter:
-    return EpicsAdapter("db_file", "ioc_name")  # type: ignore
+    return EpicsAdapter("ioc_name", db_file="db_file")  # type: ignore
+
+
+@pytest.fixture
+def adapter_no_db_file() -> EpicsAdapter:
+    return EpicsAdapter("ioc_name")  # type: ignore
 
 
 @pytest.fixture
@@ -32,6 +37,14 @@ def input_record() -> InputRecord:
         return False
 
     return InputRecord("input", Mock(setter), Mock(getter))
+
+
+@pytest.fixture
+def mock_raise_interrupt():
+    async def raise_interrupt():
+        return False
+
+    return Mock(raise_interrupt)
 
 
 def test_epics_adapter_is_adapter():
@@ -139,3 +152,31 @@ def test_epics_adapter_load_records_without_DTYP_fields_method(
         written_data = file.read()
 
     assert str(written_data).strip() == str(test_params["expected"]).strip()
+
+
+@pytest.mark.asyncio
+async def test_db_file_not_specified(
+    adapter_no_db_file: EpicsAdapter,
+    MockDevice: Device,
+    mock_raise_interrupt: RaiseInterrupt,
+):
+    adapter_no_db_file.on_db_load = MagicMock()  # type: ignore
+    adapter_no_db_file.load_records_without_DTYP_fields = MagicMock()  # type: ignore
+
+    await adapter_no_db_file.run_forever(MockDevice, mock_raise_interrupt)
+
+    adapter_no_db_file.load_records_without_DTYP_fields.assert_not_called()
+
+
+@pytest.mark.asyncio
+async def test_db_load_called_if_file_specified(
+    epics_adapter: EpicsAdapter,
+    MockDevice: Device,
+    mock_raise_interrupt: RaiseInterrupt,
+):
+    epics_adapter.on_db_load = MagicMock()  # type: ignore
+    epics_adapter.load_records_without_DTYP_fields = MagicMock()  # type: ignore
+
+    await epics_adapter.run_forever(MockDevice, mock_raise_interrupt)
+
+    epics_adapter.load_records_without_DTYP_fields.assert_called_once()
