@@ -60,10 +60,6 @@
     "url": "https://dls-controls.github.io/tickit/component_ui/"
   },
   {
-    "version": "epics-optional-db-file",
-    "url": "https://dls-controls.github.io/tickit/epics-optional-db-file/"
-  },
-  {
     "version": "fix-http-adapter",
     "url": "https://dls-controls.github.io/tickit/fix-http-adapter/"
   },
