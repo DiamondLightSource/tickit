@@ -1,63 +1,21 @@
 from dataclasses import dataclass
-from typing import Optional
 
 from aiohttp import web
 
-from tickit.adapters.httpadapter import HTTPAdapter
-from tickit.adapters.interpreters.endpoints.http_endpoint import HTTPEndpoint
+from tickit.adapters.httpadapter import HttpAdapter
+from tickit.adapters.interpreters.endpoints.http_endpoint import HttpEndpoint
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
-from tickit.core.device import Device, DeviceUpdate
-from tickit.core.typedefs import SimTime
-from tickit.utils.compat.typing_compat import TypedDict
+from tickit.devices.iobox import IoBoxDevice
 
 
-class ExampleHTTPDevice(Device):
-    """A device class for an example HTTP device.
+class IoBoxHttpAdapter(HttpAdapter):
+    """An adapter for an IoBox that allows reads and writes via REST calls"""
 
-    ...
-    """
+    device: IoBoxDevice
 
-    Inputs: TypedDict = TypedDict("Inputs", {"foo": bool})
-
-    Outputs: TypedDict = TypedDict("Outputs", {"bar": float})
-
-    def __init__(
-        self,
-        foo: bool = False,
-        bar: Optional[int] = 10,
-    ) -> None:
-        """An example HTTP device constructor which configures the ... .
-
-        Args:
-            foo (bool): A flag to indicate something. Defauls to False.
-            bar (int, optional): A number to represent something. Defaults to 3600.
-        """
-        self.foo = foo
-        self.bar = bar
-
-    def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
-        """Generic update function to update the values of the ExampleHTTPDevice.
-
-        Args:
-            time (SimTime): The simulation time in nanoseconds.
-            inputs (Inputs): A TypedDict of the inputs to the ExampleHTTPDevice.
-
-        Returns:
-            DeviceUpdate[Outputs]:
-                The produced update event which contains the value of the device
-                variables.
-        """
-        pass
-
-
-class ExampleHTTPAdapter(HTTPAdapter):
-    """An Eiger adapter which parses the commands sent to the HTTP server."""
-
-    device: ExampleHTTPDevice
-
-    @HTTPEndpoint.put("/command/foo/")
-    async def foo(self, request: web.Request) -> web.Response:
+    @HttpEndpoint.put("/memory/{address}", interrupt=True)
+    async def write_to_address(self, request: web.Request) -> web.Response:
         """A HTTP endpoint for sending a command to the example HTTP device.
 
         Args:
@@ -66,10 +24,13 @@ class ExampleHTTPAdapter(HTTPAdapter):
         Returns:
             web.Response: [description]
         """
-        return web.Response(text=str("put data"))
+        address = request.match_info["address"]
+        new_value = (await request.json())["value"]
+        self.device.write(address, new_value)
+        return web.json_response({address: new_value})
 
-    @HTTPEndpoint.get("/info/bar/{data}")
-    async def bar(self, request: web.Request) -> web.Response:
+    @HttpEndpoint.get("/memory/{address}")
+    async def read_from_address(self, request: web.Request) -> web.Response:
         """A HTTP endpoint for requesting data from the example HTTP device.
 
         Args:
@@ -78,19 +39,21 @@ class ExampleHTTPAdapter(HTTPAdapter):
         Returns:
             web.Response: [description]
         """
-        return web.Response(text=f"Your data: {request.match_info['data']}")
+        address = request.match_info["address"]
+        value = self.device.read(address)
+        return web.json_response({address: value})
 
 
 @dataclass
-class ExampleHTTP(ComponentConfig):
+class ExampleHttpDevice(ComponentConfig):
     """Example HTTP device."""
 
-    foo: bool = False
-    bar: Optional[int] = 10
+    host: str = "localhost"
+    port: int = 8080
 
     def __call__(self) -> Component:  # noqa: D102
         return DeviceSimulation(
             name=self.name,
-            device=ExampleHTTPDevice(foo=self.foo, bar=self.bar),
-            adapters=[ExampleHTTPAdapter()],
+            device=IoBoxDevice(),
+            adapters=[IoBoxHttpAdapter(self.host, self.port)],
         )
