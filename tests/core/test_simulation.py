@@ -9,7 +9,7 @@ from tickit.core.components.component import Component
 from tickit.core.management.event_router import Wiring
 from tickit.core.management.schedulers.master import MasterScheduler
 from tickit.core.management.ticker import Ticker
-from tickit.core.simulation import TickitSimulation, TickitSimulationBuilder
+from tickit.core.simulation import TickitSimulation, build_simulation
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import ComponentID, SimTime
 from tickit.devices.sink import Sink
@@ -17,33 +17,32 @@ from tickit.devices.source import Source
 
 
 def test_builder_scheduler_and_components_included_by_default() -> None:
-    tickit_simulation_builder = TickitSimulationBuilder("tests/core/sim.yaml")
+    tickit_simulation = build_simulation("tests/core/sim.yaml")
 
-    assert tickit_simulation_builder._include_components is True
-    assert tickit_simulation_builder._include_schedulers is True
+    assert tickit_simulation._scheduler is not None
+    assert tickit_simulation._components is not None
 
 
 def test__builder_backend_internal_by_default() -> None:
-    tickit_simulation_builder = TickitSimulationBuilder("tests/core/sim.yaml")
+    tickit_simulation = build_simulation("tests/core/sim.yaml")
 
-    assert tickit_simulation_builder._backend == "internal"
+    assert tickit_simulation._backend == "internal"
 
 
 def test_builder_choose_components_to_run() -> None:
-    tickit_simulation_builder = TickitSimulationBuilder(
+    tickit_simulation = build_simulation(
         "tests/core/sim.yaml",
         components_to_run={ComponentID("source")},
     )
 
-    assert tickit_simulation_builder._components_to_run == {"source"}
-    assert len(tickit_simulation_builder._components_to_run) == 1
+    assert tickit_simulation._components is not None
+    assert tickit_simulation._components.keys() == {"source"}
+    assert len(tickit_simulation._components) == 1
 
 
 def test_builder_default_includes_all_components_in_simulation() -> None:
-    tickit_simulation_builder = TickitSimulationBuilder("tests/core/sim.yaml")
-    assert tickit_simulation_builder._components_to_run == set()
+    tickit_simulation = build_simulation("tests/core/sim.yaml")
 
-    tickit_simulation = tickit_simulation_builder.build()
     assert tickit_simulation._components is not None
     assert tickit_simulation._components.keys() == {
         "source",
@@ -52,14 +51,11 @@ def test_builder_default_includes_all_components_in_simulation() -> None:
 
 
 def test_choosing_all_components_equivalent_to_choosing_none() -> None:
-    tickit_simulation_builder = TickitSimulationBuilder(
+    tickit_simulation = build_simulation(
         "tests/core/sim.yaml",
         components_to_run={ComponentID("source"), ComponentID("sink")},
     )
-    tickit_simulation = tickit_simulation_builder.build()
-
-    tickit_simulation_builder_2 = TickitSimulationBuilder("tests/core/sim.yaml")
-    tickit_simulation_2 = tickit_simulation_builder_2.build()
+    tickit_simulation_2 = build_simulation("tests/core/sim.yaml")
 
     assert tickit_simulation._components is not None
     assert tickit_simulation_2._components is not None
