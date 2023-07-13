@@ -1,7 +1,6 @@
 import asyncio
-import functools
 import logging
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from inspect import getmembers
 from typing import Awaitable, Callable, Iterable, Optional
 

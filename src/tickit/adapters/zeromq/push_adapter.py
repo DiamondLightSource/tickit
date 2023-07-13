@@ -3,8 +3,6 @@ import json
 import logging
 from typing import (
     Any,
-    Awaitable,
-    Callable,
     Iterable,
     Mapping,
     Optional,

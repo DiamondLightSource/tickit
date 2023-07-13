@@ -1,13 +1,11 @@
 import asyncio
-from typing import Iterable
 
 import aiohttp
 import pytest
 import pytest_asyncio
-import requests
 from aiohttp import web
 from mock import Mock
-from mock.mock import create_autospec, patch
+from mock.mock import create_autospec
 
 from tickit.adapters.httpadapter import HttpAdapter
 from tickit.adapters.interpreters.endpoints.http_endpoint import HttpEndpoint
