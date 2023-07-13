@@ -116,9 +116,10 @@ async def mock_master_scheduler(
 @pytest.mark.asyncio
 async def test_running_only_scheduler(
     mock_master_scheduler: MasterScheduler,
-    backend="internal",
 ) -> None:
-    tickit_simulation = TickitSimulation(backend, mock_master_scheduler, None)
+    tickit_simulation = TickitSimulation(
+        backend="internal", scheduler=mock_master_scheduler, components=None
+    )
     assert tickit_simulation._components is None
     assert tickit_simulation._scheduler is not None
 
@@ -150,9 +151,10 @@ def mock_components(patch_component_run_forever) -> Dict[ComponentID, Component]
 @pytest.mark.asyncio
 async def test_running_only_components(
     mock_components: Dict[ComponentID, Component],
-    backend="internal",
 ) -> None:
-    tickit_simulation = TickitSimulation(backend, None, mock_components)
+    tickit_simulation = TickitSimulation(
+        backend="internal", scheduler=None, components=mock_components
+    )
 
     assert tickit_simulation._scheduler is None
     assert tickit_simulation._components is not None
@@ -172,10 +174,9 @@ async def test_running_only_components(
 async def test_running_all(
     mock_master_scheduler: MasterScheduler,
     mock_components: Dict[ComponentID, Component],
-    backend="internal",
 ) -> None:
     tickit_simulation = TickitSimulation(
-        backend, mock_master_scheduler, mock_components
+        backend="internal", scheduler=mock_master_scheduler, components=mock_components
     )
     assert tickit_simulation._scheduler is not None
     assert tickit_simulation._components is not None
