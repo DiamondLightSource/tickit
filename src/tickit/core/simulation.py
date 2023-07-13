@@ -78,7 +78,7 @@ def build_simulation(
                 in the simulation. Defaults to True.
             components_to_run (Optional[Set[ComponentID]): A subset of components in
                 the system to be run. Defaults to None, in which case all components
-                will be run.
+                will be run (provided the include_components flag is not set to False).
 
     Returns:
             TickitSimulation: A simulation object containing a given set of a scheduler
