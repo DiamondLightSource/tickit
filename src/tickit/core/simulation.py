@@ -118,16 +118,11 @@ class TickitSimulationBuilder:
             scheduler = MasterScheduler(inverse_wiring, *get_interface(self._backend))
         if self._include_components:
             components = {config.name: config() for config in configs}
-
+            run_all = not self._components_to_run
             components = {
                 config.name: config()
                 for config in configs
-                if config.name
-                in (
-                    self._components_to_run
-                    if self._components_to_run
-                    else (config.name for config in configs)
-                )
+                if run_all or config.name in self._components_to_run
             }
 
         return TickitSimulation(
