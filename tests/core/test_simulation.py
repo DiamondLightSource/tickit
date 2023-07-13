@@ -95,7 +95,7 @@ async def patch_run_forever() -> AsyncGenerator:
         "tickit.core.management.schedulers.master.MasterScheduler.run_forever",
         autospec=True,
     ):
-        yield asyncio.create_task(asyncio.sleep(2))
+        yield asyncio.create_task(asyncio.sleep(1))
 
 
 @pytest_asyncio.fixture
@@ -119,16 +119,12 @@ async def test_running_only_scheduler(
     backend="internal",
 ) -> None:
     tickit_simulation = TickitSimulation(backend, mock_master_scheduler, None)
-
-    assert isinstance(tickit_simulation._scheduler, MasterScheduler)
     assert tickit_simulation._components is None
+    assert tickit_simulation._scheduler is not None
 
-    scheduler_tasks = list(tickit_simulation._start_scheduler_tasks())
-    assert len(scheduler_tasks) == 1
-    assert isinstance(scheduler_tasks[0], asyncio.Task)
+    await tickit_simulation.run()
 
-    component_tasks = list(tickit_simulation._start_component_tasks())
-    assert len(component_tasks) == 0
+    tickit_simulation._scheduler.run_forever.assert_called_once()
 
 
 @pytest_asyncio.fixture
@@ -137,7 +133,7 @@ async def patch_component_run_forever() -> AsyncGenerator:
         "tickit.core.components.device_simulation.DeviceSimulation.run_forever",
         autospec=True,
     ):
-        yield asyncio.create_task(asyncio.sleep(2))
+        yield asyncio.create_task(asyncio.sleep(1))
 
 
 @pytest.fixture
@@ -161,12 +157,13 @@ async def test_running_only_components(
     assert tickit_simulation._scheduler is None
     assert tickit_simulation._components is not None
 
-    scheduler_tasks = list(tickit_simulation._start_scheduler_tasks())
-    assert len(scheduler_tasks) == 0
+    await tickit_simulation.run()
 
-    component_tasks = list(tickit_simulation._start_component_tasks())
-    assert len(component_tasks) == 2
-    assert all(isinstance(task, asyncio.Task) for task in component_tasks)
+    tickit_simulation._components
+
+    # device simulation run forever is called for each component in the dict
+    component = next(iter(tickit_simulation._components.values()))
+    assert component.run_forever.call_count == len(tickit_simulation._components)
 
 
 @pytest.mark.asyncio
@@ -178,48 +175,12 @@ async def test_running_all(
     tickit_simulation = TickitSimulation(
         backend, mock_master_scheduler, mock_components
     )
-
-    assert isinstance(tickit_simulation._scheduler, MasterScheduler)
+    assert tickit_simulation._scheduler is not None
     assert tickit_simulation._components is not None
-
-    scheduler_tasks = list(tickit_simulation._start_scheduler_tasks())
-    assert len(scheduler_tasks) == 1
-    assert isinstance(scheduler_tasks[0], asyncio.Task)
-
-    component_tasks = list(tickit_simulation._start_component_tasks())
-    assert len(component_tasks) == 2
-    assert all(isinstance(task, asyncio.Task) for task in component_tasks)
-
-
-@pytest.fixture
-def patch_tickit_simulation_start_scheduler_tasks() -> Iterable[asyncio.Task]:
-    with patch(
-        "tickit.core.simulation.TickitSimulation._start_scheduler_tasks", autospec=True
-    ) as mock:
-        yield mock
-
-
-@pytest.fixture
-def patch_tickit_simulation_start_component_tasks() -> Iterable[asyncio.Task]:
-    with patch(
-        "tickit.core.simulation.TickitSimulation._start_component_tasks", autospec=True
-    ) as mock:
-        yield mock
-
-
-@pytest.mark.asyncio
-async def test_running_simulation_calls_both_start_tasks(
-    mock_master_scheduler,
-    patch_tickit_simulation_start_component_tasks,
-    patch_tickit_simulation_start_scheduler_tasks,
-    backend="internal",
-) -> None:
-    tickit_simulation = TickitSimulation(backend, mock_master_scheduler, None)
-
-    assert isinstance(tickit_simulation._scheduler, MasterScheduler)
-    assert tickit_simulation._components is None
 
     await tickit_simulation.run()
 
-    patch_tickit_simulation_start_scheduler_tasks.assert_called_once()
-    patch_tickit_simulation_start_component_tasks.assert_called_once()
+    tickit_simulation._scheduler.run_forever.assert_called_once()
+    # device simulation run forever is called for each component in the dict
+    component = next(iter(tickit_simulation._components.values()))
+    assert component.run_forever.call_count == len(tickit_simulation._components)
