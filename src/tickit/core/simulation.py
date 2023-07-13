@@ -85,6 +85,8 @@ def build_simulation(
                 and components which can be run.
 
     """
+    scheduler = None
+    components = None
     components_to_run = components_to_run or set()
 
     configs = read_configs(config_path)
@@ -101,8 +103,4 @@ def build_simulation(
             if run_all or config.name in components_to_run
         }
 
-    return TickitSimulation(
-        backend,
-        scheduler if include_schedulers else None,
-        components if include_components else None,
-    )
+    return TickitSimulation(backend, scheduler, components)
