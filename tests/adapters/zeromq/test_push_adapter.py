@@ -70,6 +70,7 @@ async def running_zeromq_adapter(
     zeromq_adapter: ZeroMqPushAdapter,
     socket_created: asyncio.Event,
     mock_device: Device,
+    mock_raise_interrupt: RaiseInterrupt,
 ) -> ZeroMqPushAdapter:
     asyncio.create_task(zeromq_adapter.run_forever(mock_device, mock_raise_interrupt))
     await asyncio.wait_for(socket_created.wait(), timeout=2.0)
