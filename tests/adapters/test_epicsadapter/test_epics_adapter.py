@@ -55,9 +55,8 @@ def test_epics_adapter_constructor(epics_adapter: EpicsAdapter):
     pass
 
 
-def test_epics_adapter_interrupt_records_empty_on_construct():
-    with pytest.raises(AttributeError):
-        EpicsAdapter.interrupt_records
+def test_epics_adapter_interrupt_records_empty_on_construct(epics_adapter):
+    assert epics_adapter.interrupt_records == {}
 
 
 def test_link_input_on_interrupt(

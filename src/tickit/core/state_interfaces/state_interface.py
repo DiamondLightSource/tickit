@@ -73,8 +73,7 @@ class StateProducer(Protocol[P]):
 
 
 #: The union of StateConsumer and StateProducer
-StateInterface = TypeVar("StateInterface", StateConsumer, StateProducer)
-
+StateInterface = TypeVar("StateInterface", bound=Union[StateConsumer, StateProducer])
 
 consumers: Dict[str, Tuple[Type[StateConsumer], bool]] = dict()
 producers: Dict[str, Tuple[Type[StateProducer], bool]] = dict()

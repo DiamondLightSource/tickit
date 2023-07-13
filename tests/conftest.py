@@ -25,9 +25,9 @@ def tickit_process(request):
         text=True,
     )
     # Wait for IOC to be up
-    while True:
-        if "complete" in proc.stdout.readline():
-            break
+    assert proc.stdout
+    while "complete" not in proc.stdout.readline():
+        pass
     yield proc
     proc.send_signal(signal.SIGINT)
     print(proc.communicate()[0])

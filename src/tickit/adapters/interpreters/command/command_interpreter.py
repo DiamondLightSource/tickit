@@ -2,6 +2,7 @@ from abc import abstractmethod
 from inspect import getmembers
 from typing import (
     AnyStr,
+    AsyncIterator,
     Optional,
     Protocol,
     Sequence,
@@ -82,5 +83,13 @@ class CommandInterpreter(Interpreter[AnyStr]):
             if not isinstance(resp, AsyncIterator):
                 resp = wrap_as_async_iterator(resp)
             return resp, command.interrupt
-        resp = CommandInterpreter.unknown_command()
-        return resp, False
+
+        msg = "Request does not match any known command"
+        # This is a pain but the message needs to match the input message
+        # TODO: Fix command interpreters' handling of bytes vs str
+        if isinstance(message, bytes):
+            resp = wrap_as_async_iterator(msg.encode("utf-8"))
+            return resp, False
+        else:
+            resp = wrap_as_async_iterator(msg)
+            return resp, False

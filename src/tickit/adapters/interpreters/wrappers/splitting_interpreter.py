@@ -62,7 +62,8 @@ class SplittingInterpreter(Interpreter[AnyStr]):
         responses = [
             response
             for response_gen in individual_responses
-            async for response in response_gen
+            # type checking can't figure out the return types of zip(*args)
+            async for response in response_gen  # type: ignore
         ]
 
         resp = wrap_messages_as_async_iterator(responses)

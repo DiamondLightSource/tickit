@@ -1,6 +1,6 @@
 import pytest
-from tickit.core.typedefs import ComponentID
 
+from tickit.core.typedefs import ComponentID
 from tickit.utils.topic_naming import input_topic, output_topic
 
 

@@ -108,7 +108,9 @@ async def test_individual_results_combined_correctly(
     (
         _,
         combined_interrupt,
-    ) = await splitting_interpreter._collect_responses(individual_results)
+    ) = await splitting_interpreter._collect_responses(
+        individual_results  # type: ignore
+    )
     mock_wrap_message.assert_called_once_with(individual_messages)
     assert combined_interrupt == expected_combined_interrupt
 
@@ -127,7 +129,7 @@ async def test_multi_resp(
 
     splitting_interpreter = DummySplittingInterpreter(AsyncMock(), " ")
     individual_results = [(multi_resp(["resp1", "resp2"]), True)]
-    await splitting_interpreter._collect_responses(individual_results)
+    await splitting_interpreter._collect_responses(individual_results)  # type: ignore
     mock_wrap_message.assert_called_once_with(["resp1", "resp2"])
 
 

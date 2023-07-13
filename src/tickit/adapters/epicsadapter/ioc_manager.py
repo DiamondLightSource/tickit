@@ -63,5 +63,5 @@ def _build_and_run_ioc() -> None:
     # dbl directly prints out all record names, so we have to check
     # the log level in order to only do it in DEBUG.
     if LOGGER.level <= logging.DEBUG:
-        softioc.dbl() # type: ignore
+        softioc.dbl()  # type: ignore
     LOGGER.debug("IOC started")

@@ -58,7 +58,8 @@ def test_add_both_adds_to_interfaces(TestStateConsumer, TestStateProducer):
 
 def test_add_non_interface_warns():
     with pytest.warns(RuntimeWarning):
-        add("Test", False)(type("TestClass", tuple(), dict()))
+        # ignore intentionally wrong type
+        add("Test", False)(type("TestClass", (), {}))  # type: ignore
 
 
 def test_get_returns_consumer(TestStateConsumer, TestStateProducer):

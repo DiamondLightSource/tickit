@@ -43,7 +43,8 @@ class KafkaStateConsumer(Generic[C]):
         await self.consumer.start()
         while True:
             async for message in self.consumer:
-                await self.callback(message.value)
+                if message.value is not None:
+                    await self.callback(message.value)
 
     async def subscribe(self, topics: Iterable[str]):
         """Subscribes the consumer to the given topics.
