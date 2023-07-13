@@ -44,7 +44,8 @@ def test_builder_default_includes_all_components_in_simulation() -> None:
     assert tickit_simulation_builder._components_to_run == set()
 
     tickit_simulation = tickit_simulation_builder.build()
-    assert set(tickit_simulation._components.keys()) == {  # type: ignore
+    assert tickit_simulation._components is not None
+    assert tickit_simulation._components.keys() == {
         "source",
         "sink",
     }
@@ -60,9 +61,10 @@ def test_choosing_all_components_equivalent_to_choosing_none() -> None:
     tickit_simulation_builder_2 = TickitSimulationBuilder("tests/core/sim.yaml")
     tickit_simulation_2 = tickit_simulation_builder_2.build()
 
+    assert tickit_simulation._components is not None
+    assert tickit_simulation_2._components is not None
     assert (
-        tickit_simulation._components.keys()  # type: ignore
-        == tickit_simulation_2._components.keys()  # type: ignore
+        tickit_simulation._components.keys() == tickit_simulation_2._components.keys()
     )
 
 
