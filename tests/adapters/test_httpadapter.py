@@ -69,6 +69,10 @@ class ExampleAdapter(HttpAdapter):
     async def get_baz(self, request: web.Request) -> web.Response:
         return web.Response(status=403)
 
+    @HttpEndpoint.get("/error")
+    async def cause_error(self, request: web.Request) -> web.Response:
+        raise Exception("An error has occurred")
+
     @HttpEndpoint.put("/interrupt/{name}", interrupt=True)
     async def put_interrupt(self, request: web.Request) -> web.Response:
         name = request.match_info["name"]
@@ -198,6 +202,14 @@ async def test_error_code(adapter_url: str):
     async with aiohttp.ClientSession() as session:
         async with session.get(url, timeout=REQUEST_TIMEOUT) as response:
             assert response.status == 403
+
+
+@pytest.mark.asyncio
+async def test_internal_error(adapter_url: str):
+    url = f"{adapter_url}/error"
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url, timeout=REQUEST_TIMEOUT) as response:
+            assert response.status == 500
 
 
 @pytest.mark.asyncio
