@@ -258,7 +258,7 @@ async def test_post_by_name(adapter_url: str, name: str):
 
 @pytest.mark.asyncio
 async def test_put_to_non_interrupting_endpoint_does_not_interrupt(
-    mock_raise_interrupt: RaiseInterrupt,
+    mock_raise_interrupt: Mock,
     adapter_url: str,
 ):
     url = f"{adapter_url}/foo"
@@ -273,7 +273,7 @@ async def test_put_to_non_interrupting_endpoint_does_not_interrupt(
 
 @pytest.mark.asyncio
 async def test_put_to_interrupt(
-    mock_raise_interrupt: RaiseInterrupt,
+    mock_raise_interrupt: Mock,
     adapter_url: str,
 ):
     url = f"{adapter_url}/interrupt/a"
