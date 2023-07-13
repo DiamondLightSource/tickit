@@ -25,7 +25,7 @@ def patch_logging() -> Iterable[Mock]:
 
 @pytest.fixture
 def patch_run_tickit_simulation_builder() -> Iterable[Mock]:
-    with patch("tickit.cli.TickitSimulationBuilder", autospec=True) as mock:
+    with patch("tickit.cli.build_simulation", autospec=True) as mock:
         yield mock
 
 
