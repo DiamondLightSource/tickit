@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>API &#8212; tickit 0.2.3.dev11+g59c1326d documentation</title>
+    <title>API &#8212; tickit 0.2.3.dev14+g42934976 documentation</title>
   
   
   
@@ -2692,14 +2692,16 @@ being processed.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="tickit.adapters.epicsadapter.adapter.EpicsAdapter">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.adapters.epicsadapter.adapter.</span></span><span class="sig-name descname"><span class="pre">EpicsAdapter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ioc_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/adapters/epicsadapter/adapter.html#EpicsAdapter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.adapter.EpicsAdapter" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.adapters.epicsadapter.adapter.</span></span><span class="sig-name descname"><span class="pre">EpicsAdapter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ioc_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/adapters/epicsadapter/adapter.html#EpicsAdapter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.adapter.EpicsAdapter" title="Permalink to this definition">#</a></dt>
 <dd><p>An adapter implementation which acts as an EPICS IOC.</p>
+<p>This is optionally initialised from an EPICS database (db) file
+but can be customised in code by implementing on_db_load.</p>
 <p>An EpicsAdapter constructor which stores the db_file path and the IOC name.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>db_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The path to the db_file.</p></li>
 <li><p><strong>ioc_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The name of the EPICS IOC.</p></li>
+<li><p><strong>db_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>optional</em>) – The path to the db_file.</p></li>
 </ul>
 </dd>
 </dl>
@@ -2732,7 +2734,7 @@ being processed.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tickit.adapters.epicsadapter.adapter.EpicsAdapter.load_records_without_DTYP_fields">
 <span class="sig-name descname"><span class="pre">load_records_without_DTYP_fields</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/adapters/epicsadapter/adapter.html#EpicsAdapter.load_records_without_DTYP_fields"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.epicsadapter.adapter.EpicsAdapter.load_records_without_DTYP_fields" title="Permalink to this definition">#</a></dt>
-<dd><p>Loads the records without DTYP fields.</p>
+<dd><p>Load records from database file without DTYP fields.</p>
 </dd></dl>
 
 <dl class="py method">
