@@ -114,19 +114,21 @@ class TickitSimulationBuilder:
         """
         configs = read_configs(self._config_path)
         inverse_wiring = InverseWiring.from_component_configs(configs)
-        scheduler = MasterScheduler(inverse_wiring, *get_interface(self._backend))
-        components = {config.name: config() for config in configs}
+        if self._include_schedulers:
+            scheduler = MasterScheduler(inverse_wiring, *get_interface(self._backend))
+        if self._include_components:
+            components = {config.name: config() for config in configs}
 
-        components = {
-            config.name: config()
-            for config in configs
-            if config.name
-            in (
-                self._components_to_run
-                if self._components_to_run
-                else (config.name for config in configs)
-            )
-        }
+            components = {
+                config.name: config()
+                for config in configs
+                if config.name
+                in (
+                    self._components_to_run
+                    if self._components_to_run
+                    else (config.name for config in configs)
+                )
+            }
 
         return TickitSimulation(
             self._backend,
