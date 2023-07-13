@@ -57,31 +57,19 @@ class TickitSimulation:
                 )
 
 
-class TickitSimulationBuilder:
-    """A Ticket simulation builder.
+def build_simulation(
+    config_path: str,
+    backend: str = "internal",
+    include_schedulers: bool = True,
+    include_components: bool = True,
+    components_to_run: Optional[Set[ComponentID]] = None,
+) -> TickitSimulation:
+    """Builds the master scheduler and components for a simulation.
 
-    A utility class that uses a config file to create a scheduler and the components
-    for a simulation.
-    """
+        A config file is read, retrieving the relevant components. The wiring of
+        these components is generated and used by to constuct the master scheduler.
 
-    _backend: str
-    _config_path: str
-
-    _include_schedulers: bool
-    _include_components: bool
-    _components_to_run: Set[ComponentID]
-
-    def __init__(
-        self,
-        config_path: str,
-        backend: str = "internal",
-        include_schedulers: bool = True,
-        include_components: bool = True,
-        components_to_run: Optional[Set[ComponentID]] = None,
-    ) -> None:
-        """Instantiate the builder class variables.
-
-        Args:
+    Args:
             config_path (str): The path to the configuration file.
             backend (str): The message broker to be used.
             include_schedulers (bool): A flag to determine if the master scheduler is
@@ -92,41 +80,29 @@ class TickitSimulationBuilder:
                 the system to be run. Defaults to None, in which case all components
                 will be run.
 
-        """
-        self._backend = backend
-        self._config_path = config_path
-
-        self._include_schedulers = include_schedulers
-        self._include_components = include_components
-        self._components_to_run = components_to_run or set()
-
-    def build(self) -> TickitSimulation:
-        """Builds the master scheduler and components for a simulation.
-
-        A config file is read, retrieving the relevant components. The wiring of
-        these components is generated and used by the master scheduler for event
-        routing.
-
-        Returns:
+    Returns:
             TickitSimulation: A simulation object containing a given set of a scheduler
                 and components which can be run.
 
-        """
-        configs = read_configs(self._config_path)
-        inverse_wiring = InverseWiring.from_component_configs(configs)
-        if self._include_schedulers:
-            scheduler = MasterScheduler(inverse_wiring, *get_interface(self._backend))
-        if self._include_components:
-            components = {config.name: config() for config in configs}
-            run_all = not self._components_to_run
-            components = {
-                config.name: config()
-                for config in configs
-                if run_all or config.name in self._components_to_run
-            }
+    """
+    components_to_run = components_to_run or set()
 
-        return TickitSimulation(
-            self._backend,
-            scheduler if self._include_schedulers else None,
-            components if self._include_components else None,
-        )
+    configs = read_configs(config_path)
+    inverse_wiring = InverseWiring.from_component_configs(configs)
+
+    if include_schedulers:
+        scheduler = MasterScheduler(inverse_wiring, *get_interface(backend))
+    if include_components:
+        components = {config.name: config() for config in configs}
+        run_all = not components_to_run
+        components = {
+            config.name: config()
+            for config in configs
+            if run_all or config.name in components_to_run
+        }
+
+    return TickitSimulation(
+        backend,
+        scheduler if include_schedulers else None,
+        components if include_components else None,
+    )
