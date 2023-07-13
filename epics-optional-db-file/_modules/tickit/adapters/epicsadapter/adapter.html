@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.adapters.epicsadapter.adapter &#8212; tickit 0.2.3.dev9+g47798110 documentation</title>
+    <title>tickit.adapters.epicsadapter.adapter &#8212; tickit 0.2.3.dev9+g6dc6cd4f documentation</title>
   
   
   
@@ -490,7 +490,7 @@ document.write(`
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 <div class="viewcode-block" id="EpicsAdapter.load_records_without_DTYP_fields"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.adapters.epicsadapter.adapter.EpicsAdapter.load_records_without_DTYP_fields">[docs]</a>    <span class="k">def</span> <span class="nf">load_records_without_DTYP_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load records form database file without DTYP fields.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load records from database file without DTYP fields.&quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_file</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">inp</span><span class="p">:</span>
             <span class="k">with</span> <span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;.db&quot;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">inp</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
