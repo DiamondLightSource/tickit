@@ -170,8 +170,7 @@ async def test_running_only_components(
 
     component_tasks = list(tickit_simulation._start_component_tasks())
     assert len(component_tasks) == 2
-    for i in range(1):
-        assert isinstance(component_tasks[i], asyncio.Task)
+    assert all(isinstance(task, asyncio.Task) for task in component_tasks)
 
 
 @pytest.mark.asyncio
@@ -193,8 +192,7 @@ async def test_running_all(
 
     component_tasks = list(tickit_simulation._start_component_tasks())
     assert len(component_tasks) == 2
-    for i in range(1):
-        assert isinstance(component_tasks[i], asyncio.Task)
+    assert all(isinstance(task, asyncio.Task) for task in component_tasks)
 
 
 @pytest.fixture
