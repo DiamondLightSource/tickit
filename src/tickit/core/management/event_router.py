@@ -1,9 +1,9 @@
 from collections import defaultdict, deque
+from functools import cached_property
 from typing import DefaultDict, Dict, Iterable, Mapping, Optional, Set, Union, overload
 
 from tickit.core.components.component import ComponentConfig
 from tickit.core.typedefs import ComponentID, ComponentPort, PortID
-from tickit.utils.compat.functools_compat import cached_property
 
 #: A mapping of component output ports to component input ports with defaults
 Default_Wiring_Struct = DefaultDict[
