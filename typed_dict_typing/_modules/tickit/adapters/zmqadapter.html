@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.adapters.zmqadapter &#8212; tickit 0.2.3.dev5+g95a1e4cb documentation</title>
+    <title>tickit.adapters.zmqadapter &#8212; tickit 0.2.3.dev12+g84cf91aa documentation</title>
   
   
   
@@ -455,11 +455,13 @@ document.write(`
             <span class="n">zmq</span><span class="o">.</span><span class="n">ROUTER</span><span class="p">,</span> <span class="n">bind</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;tcp://</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">zmq_host</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">zmq_port</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
 
-        <span class="n">addr</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_router</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">bindings</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># zmq library is untyped so ignore warnings about possible missing fields</span>
+
+        <span class="n">addr</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_router</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">bindings</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dealer</span> <span class="o">=</span> <span class="k">await</span> <span class="n">aiozmq</span><span class="o">.</span><span class="n">create_zmq_stream</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">DEALER</span><span class="p">,</span> <span class="n">connect</span><span class="o">=</span><span class="n">addr</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_router</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">LINGER</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_dealer</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">LINGER</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_router</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">LINGER</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dealer</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">LINGER</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># type: ignore</span></div>
 
 <div class="viewcode-block" id="ZeroMQAdapter.close_stream"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.adapters.zmqadapter.ZeroMQAdapter.close_stream">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">close_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Close the ZeroMQ stream.&quot;&quot;&quot;</span>

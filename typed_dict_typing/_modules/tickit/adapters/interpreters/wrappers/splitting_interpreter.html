@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.adapters.interpreters.wrappers.splitting_interpreter &#8212; tickit 0.2.3.dev5+g95a1e4cb documentation</title>
+    <title>tickit.adapters.interpreters.wrappers.splitting_interpreter &#8212; tickit 0.2.3.dev12+g84cf91aa documentation</title>
   
   
   
@@ -419,7 +419,7 @@ document.write(`
 <span></span><span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">AnyStr</span><span class="p">,</span> <span class="n">AsyncIterable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
 
-<span class="kn">from</span> <span class="nn">tickit.adapters.interpreters.utils</span> <span class="kn">import</span> <span class="n">wrap_messages_as_async_iterable</span>
+<span class="kn">from</span> <span class="nn">tickit.adapters.interpreters.utils</span> <span class="kn">import</span> <span class="n">wrap_messages_as_async_iterator</span>
 <span class="kn">from</span> <span class="nn">tickit.core.adapter</span> <span class="kn">import</span> <span class="n">Adapter</span><span class="p">,</span> <span class="n">Interpreter</span>
 
 
@@ -480,10 +480,11 @@ document.write(`
         <span class="n">responses</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">response</span>
             <span class="k">for</span> <span class="n">response_gen</span> <span class="ow">in</span> <span class="n">individual_responses</span>
-            <span class="k">async</span> <span class="k">for</span> <span class="n">response</span> <span class="ow">in</span> <span class="n">response_gen</span>
+            <span class="c1"># type checking can&#39;t figure out the return types of zip(*args)</span>
+            <span class="k">async</span> <span class="k">for</span> <span class="n">response</span> <span class="ow">in</span> <span class="n">response_gen</span>  <span class="c1"># type: ignore</span>
         <span class="p">]</span>
 
-        <span class="n">resp</span> <span class="o">=</span> <span class="n">wrap_messages_as_async_iterable</span><span class="p">(</span><span class="n">responses</span><span class="p">)</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">wrap_messages_as_async_iterator</span><span class="p">(</span><span class="n">responses</span><span class="p">)</span>
         <span class="n">interrupt</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span><span class="n">individual_interrupts</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">resp</span><span class="p">,</span> <span class="n">interrupt</span>
 
