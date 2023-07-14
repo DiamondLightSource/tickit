@@ -9,7 +9,6 @@ from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.compat.typing_compat import TypedDict
-from tickit.utils.configuration.configurable import StrictConfig
 
 LOGGER = logging.getLogger(__name__)
 
@@ -94,7 +93,7 @@ class RandomTrampolineDevice(Device):
         )
 
 
-@dataclass(config=StrictConfig)
+@dataclass
 class RandomTrampoline(ComponentConfig):
     """Random thing that goes boing."""
 
