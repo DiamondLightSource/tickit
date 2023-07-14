@@ -13,7 +13,6 @@ from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.byte_format import ByteFormat
 from tickit.utils.compat.typing_compat import TypedDict
-from tickit.utils.configuration.configurable import StrictConfig
 
 
 class ShutterDevice(Device):
@@ -156,7 +155,7 @@ class ShutterAdapter(ComposedAdapter):
         self.device.last_time = None
 
 
-@dataclass(config=StrictConfig)
+@dataclass
 class Shutter(ComponentConfig):
     """Shutter you can open or close over TCP."""
 
