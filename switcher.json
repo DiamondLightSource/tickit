@@ -64,10 +64,6 @@
     "url": "https://dls-controls.github.io/tickit/component_ui/"
   },
   {
-    "version": "py3.8_removal",
-    "url": "https://dls-controls.github.io/tickit/py3.8_removal/"
-  },
-  {
     "version": "pydantic1",
     "url": "https://dls-controls.github.io/tickit/pydantic1/"
   },
