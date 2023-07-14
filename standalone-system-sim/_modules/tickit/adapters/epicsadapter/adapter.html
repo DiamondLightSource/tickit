@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.adapters.epicsadapter.adapter &#8212; tickit 0.2.3.dev7+gc1784097 documentation</title>
+    <title>tickit.adapters.epicsadapter.adapter &#8212; tickit 0.2.4.dev2+gd6cd04f3 documentation</title>
   
   
   
@@ -421,7 +421,7 @@ document.write(`
 <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 <span class="kn">from</span> <span class="nn">tempfile</span> <span class="kn">import</span> <span class="n">NamedTemporaryFile</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">from</span> <span class="nn">softioc</span> <span class="kn">import</span> <span class="n">builder</span><span class="p">,</span> <span class="n">softioc</span>
 
@@ -448,14 +448,18 @@ document.write(`
 
 
 <div class="viewcode-block" id="EpicsAdapter"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.adapters.epicsadapter.adapter.EpicsAdapter">[docs]</a><span class="k">class</span> <span class="nc">EpicsAdapter</span><span class="p">(</span><span class="n">Adapter</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;An adapter implementation which acts as an EPICS IOC.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An adapter implementation which acts as an EPICS IOC.</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ioc_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="sd">    This is optionally initialised from an EPICS database (db) file</span>
+<span class="sd">    but can be customised in code by implementing on_db_load.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ioc_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">db_file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;An EpicsAdapter constructor which stores the db_file path and the IOC name.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            db_file (str): The path to the db_file.</span>
 <span class="sd">            ioc_name (str): The name of the EPICS IOC.</span>
+<span class="sd">            db_file (str, optional): The path to the db_file.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">db_file</span> <span class="o">=</span> <span class="n">db_file</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ioc_name</span> <span class="o">=</span> <span class="n">ioc_name</span>
@@ -486,7 +490,7 @@ document.write(`
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 <div class="viewcode-block" id="EpicsAdapter.load_records_without_DTYP_fields"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.adapters.epicsadapter.adapter.EpicsAdapter.load_records_without_DTYP_fields">[docs]</a>    <span class="k">def</span> <span class="nf">load_records_without_DTYP_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Loads the records without DTYP fields.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load records from database file without DTYP fields.&quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_file</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">inp</span><span class="p">:</span>
             <span class="k">with</span> <span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;.db&quot;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">inp</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
@@ -502,7 +506,8 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Runs the server continuously.&quot;&quot;&quot;</span>
         <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">run_forever</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">raise_interrupt</span><span class="p">)</span>
         <span class="n">builder</span><span class="o">.</span><span class="n">SetDeviceName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ioc_name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">load_records_without_DTYP_fields</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_file</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_records_without_DTYP_fields</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">on_db_load</span><span class="p">()</span>
         <span class="n">builder</span><span class="o">.</span><span class="n">UnsetDevice</span><span class="p">()</span>
         <span class="n">notify_adapter_ready</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ioc_num</span><span class="p">)</span></div></div>

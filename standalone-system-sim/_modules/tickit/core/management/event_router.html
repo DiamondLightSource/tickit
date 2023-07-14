@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.management.event_router &#8212; tickit 0.2.3.dev7+gc1784097 documentation</title>
+    <title>tickit.core.management.event_router &#8212; tickit 0.2.4.dev2+gd6cd04f3 documentation</title>
   
   
   
@@ -417,11 +417,11 @@ document.write(`
                   
   <h1>Source code for tickit.core.management.event_router</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span><span class="p">,</span> <span class="n">deque</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">cached_property</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">DefaultDict</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">overload</span>
 
 <span class="kn">from</span> <span class="nn">tickit.core.components.component</span> <span class="kn">import</span> <span class="n">ComponentConfig</span>
 <span class="kn">from</span> <span class="nn">tickit.core.typedefs</span> <span class="kn">import</span> <span class="n">ComponentID</span><span class="p">,</span> <span class="n">ComponentPort</span><span class="p">,</span> <span class="n">PortID</span>
-<span class="kn">from</span> <span class="nn">tickit.utils.compat.functools_compat</span> <span class="kn">import</span> <span class="n">cached_property</span>
 
 <span class="c1">#: A mapping of component output ports to component input ports with defaults</span>
 <span class="n">Default_Wiring_Struct</span> <span class="o">=</span> <span class="n">DefaultDict</span><span class="p">[</span>
