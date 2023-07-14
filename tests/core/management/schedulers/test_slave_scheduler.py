@@ -179,6 +179,8 @@ async def test_slave_scheduler_run_forever_method(slave_scheduler: SlaveSchedule
 async def test_slave_scheduler_on_tick_method(
     slave_scheduler: SlaveScheduler, mock_ticker: Mock
 ):
+    await slave_scheduler.run_forever()
+
     changes = Changes(Map({PortID("67"): 67}))
     slave_scheduler.ticker = mock_ticker
     output_changes, call_at = await slave_scheduler.on_tick(SimTime(8), changes)
@@ -190,6 +192,7 @@ async def test_slave_scheduler_on_tick_method(
 async def test_slave_scheduler_on_tick_method_with_wakeups(
     slave_scheduler: SlaveScheduler, mock_ticker: Mock
 ):
+    await slave_scheduler.run_forever()
     changes = Changes(Map({PortID("67"): 67}))
     slave_scheduler.ticker = mock_ticker
     slave_scheduler.wakeups = {

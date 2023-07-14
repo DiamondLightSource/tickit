@@ -1,0 +1,11 @@
+- tickit.core.components.system_simulation.SystemSimulation:
+    name: internal_tickit
+    inputs: {}
+    components:
+      - examples.devices.counter.Counter:
+          name: counter  
+          inputs: {}
+      - tickit.devices.sink.Sink:
+          name: counter_sink
+          inputs:
+            input: counter:value
