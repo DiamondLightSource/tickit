@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.adapters.httpadapter &#8212; tickit 0.2.3.dev19+gbdda7bcd documentation</title>
+    <title>tickit.adapters.httpadapter &#8212; tickit 0.2.4.dev15+g9b82b321 documentation</title>
   
   
   
@@ -420,20 +420,20 @@ document.write(`
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 <span class="kn">from</span> <span class="nn">inspect</span> <span class="kn">import</span> <span class="n">getmembers</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterable</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Awaitable</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">from</span> <span class="nn">aiohttp</span> <span class="kn">import</span> <span class="n">web</span>
 <span class="kn">from</span> <span class="nn">aiohttp.web_routedef</span> <span class="kn">import</span> <span class="n">RouteDef</span>
 
-<span class="kn">from</span> <span class="nn">tickit.adapters.interpreters.endpoints.http_endpoint</span> <span class="kn">import</span> <span class="n">HTTPEndpoint</span>
+<span class="kn">from</span> <span class="nn">tickit.adapters.interpreters.endpoints.http_endpoint</span> <span class="kn">import</span> <span class="n">HttpEndpoint</span>
 <span class="kn">from</span> <span class="nn">tickit.core.adapter</span> <span class="kn">import</span> <span class="n">Adapter</span><span class="p">,</span> <span class="n">RaiseInterrupt</span>
 <span class="kn">from</span> <span class="nn">tickit.core.device</span> <span class="kn">import</span> <span class="n">Device</span>
 
 <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="HTTPAdapter"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.adapters.httpadapter.HTTPAdapter">[docs]</a><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">HTTPAdapter</span><span class="p">(</span><span class="n">Adapter</span><span class="p">):</span>
+<div class="viewcode-block" id="HttpAdapter"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.adapters.httpadapter.HttpAdapter">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">HttpAdapter</span><span class="p">(</span><span class="n">Adapter</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An adapter implementation which delegates to a server and sets up endpoints.</span>
 
 <span class="sd">    An adapter implementation which delegates the hosting of an http requests to a</span>
@@ -443,20 +443,47 @@ document.write(`
     <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;localhost&quot;</span>
     <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8080</span>
 
-<div class="viewcode-block" id="HTTPAdapter.run_forever"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.adapters.httpadapter.HTTPAdapter.run_forever">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run_forever</span><span class="p">(</span>
+    <span class="n">_stopped</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_ready</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="HttpAdapter.run_forever"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.adapters.httpadapter.HttpAdapter.run_forever">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run_forever</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">Device</span><span class="p">,</span> <span class="n">raise_interrupt</span><span class="p">:</span> <span class="n">RaiseInterrupt</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Runs the server continuously.&quot;&quot;&quot;</span>
         <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">run_forever</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">raise_interrupt</span><span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ensure_stopped_event</span><span class="p">()</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_server</span><span class="p">()</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ensure_ready_event</span><span class="p">()</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
-        <span class="k">finally</span><span class="p">:</span>
-            <span class="c1"># TODO: This doesn&#39;t work yet due to asyncio&#39;s own exception handler</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ensure_stopped_event</span><span class="p">()</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">CancelledError</span><span class="p">:</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span></div>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">wait_until_ready</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ready</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">wait_for</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ready</span><span class="o">.</span><span class="n">wait</span><span class="p">(),</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">stopped</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ensure_stopped_event</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">stopped</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
-            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span></div>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ensure_stopped_event</span><span class="p">()</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ready</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ready</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_ensure_stopped_event</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stopped</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_stopped</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stopped</span>
+
+    <span class="k">def</span> <span class="nf">_ensure_ready_event</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ready</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ready</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ready</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">_start_server</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Starting HTTP server... </span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -464,25 +491,40 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">add_routes</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoints</span><span class="p">()))</span>
         <span class="n">runner</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">AppRunner</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">)</span>
         <span class="k">await</span> <span class="n">runner</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
-        <span class="n">site</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">TCPSite</span><span class="p">(</span><span class="n">runner</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
-        <span class="k">await</span> <span class="n">site</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">site</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">TCPSite</span><span class="p">(</span><span class="n">runner</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
-<div class="viewcode-block" id="HTTPAdapter.endpoints"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.adapters.httpadapter.HTTPAdapter.endpoints">[docs]</a>    <span class="k">def</span> <span class="nf">endpoints</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">RouteDef</span><span class="p">]:</span>
+<div class="viewcode-block" id="HttpAdapter.endpoints"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.adapters.httpadapter.HttpAdapter.endpoints">[docs]</a>    <span class="k">def</span> <span class="nf">endpoints</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">RouteDef</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns list of endpoints.</span>
 
 <span class="sd">        Fetches the defined HTTP endpoints in the device adapter, parses them and</span>
 <span class="sd">        then yields them.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Iterable[HTTPEndpoint]: The list of defined endpoints</span>
+<span class="sd">            Iterable[HttpEndpoint]: The list of defined endpoints</span>
 
 <span class="sd">        Yields:</span>
-<span class="sd">            Iterator[Iterable[HTTPEndpoint]]: The iterator of the defined endpoints</span>
+<span class="sd">            Iterator[Iterable[HttpEndpoint]]: The iterator of the defined endpoints</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">getmembers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="n">endpoint</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="s2">&quot;__endpoint__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
-            <span class="k">if</span> <span class="n">endpoint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">HTTPEndpoint</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">endpoint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">HttpEndpoint</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">interrupt</span><span class="p">:</span>
+                    <span class="n">func</span> <span class="o">=</span> <span class="n">_with_posthoc_task</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">raise_interrupt</span><span class="p">)</span>
                 <span class="k">yield</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></div></div>
+
+
+<span class="k">def</span> <span class="nf">_with_posthoc_task</span><span class="p">(</span>
+    <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">web</span><span class="o">.</span><span class="n">Request</span><span class="p">],</span> <span class="n">Awaitable</span><span class="p">[</span><span class="n">web</span><span class="o">.</span><span class="n">Response</span><span class="p">]],</span>
+    <span class="n">afterwards</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">Awaitable</span><span class="p">[</span><span class="kc">None</span><span class="p">]],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">web</span><span class="o">.</span><span class="n">Request</span><span class="p">],</span> <span class="n">Awaitable</span><span class="p">[</span><span class="n">web</span><span class="o">.</span><span class="n">Response</span><span class="p">]]:</span>
+    <span class="c1"># @functools.wraps</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">wrapped</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">web</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">web</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">func</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">afterwards</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">response</span>
+
+    <span class="k">return</span> <span class="n">wrapped</span>
 </pre></div>
 
                 </article>
