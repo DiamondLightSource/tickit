@@ -8,6 +8,7 @@ from typing import Dict, Optional, Type, Union
 
 from pydantic.v1.dataclasses import dataclass
 from pydantic.v1 import root_validator, validator
+
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import (
     Changes,
@@ -56,8 +57,8 @@ class Component:
         """
 
 
-@dataclass(config=StrictConfig)  # type: ignore
 @as_tagged_union
+@dataclass(config=StrictConfig)
 class ComponentConfig:
     """A data container for component configuration.
 

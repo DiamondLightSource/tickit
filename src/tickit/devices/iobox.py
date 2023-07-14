@@ -1,8 +1,7 @@
 import logging
-from typing import Any, Dict, Generic, List, Tuple, TypeVar
+from typing import Any, Dict, Generic, List, Tuple, Type, TypeVar
 
 from pydantic.v1.dataclasses import dataclass
-
 from typing_extensions import NotRequired
 
 from tickit.core.components.component import Component, ComponentConfig
@@ -56,11 +55,9 @@ class IoBoxDevice(Device, Generic[A, V]):
     """
 
     #: A typed mapping containing the 'input' input value
-    Inputs: TypedDict = TypedDict(
-        "Inputs", {"updates": NotRequired[List[Tuple[Any, Any]]]}
-    )
+    Inputs: Type = TypedDict("Inputs", {"updates": NotRequired[List[Tuple[Any, Any]]]})
     #: An empty typed mapping of device outputs
-    Outputs: TypedDict = TypedDict(
+    Outputs: Type = TypedDict(
         "Outputs", {"updates": NotRequired[List[Tuple[Any, Any]]]}
     )
 

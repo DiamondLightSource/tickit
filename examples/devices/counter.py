@@ -1,4 +1,5 @@
 import logging
+from typing import Type
 
 from pydantic.v1.dataclasses import dataclass
 
@@ -7,10 +8,10 @@ from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.compat.typing_compat import TypedDict
+from tickit.utils.configuration.configurable import StrictConfig
 
 LOGGER = logging.getLogger(__name__)
 
-from tickit.utils.configuration.configurable import StrictConfig
 
 @dataclass(config=StrictConfig)
 class Counter(ComponentConfig):
@@ -24,9 +25,9 @@ class CounterDevice(Device):
     """A simple device which increments a value."""
 
     #: An empty typed mapping of input values
-    Inputs: TypedDict = TypedDict("Inputs", {})
+    Inputs: Type = TypedDict("Inputs", {})
     #: A typed mapping containing the 'value' output value
-    Outputs: TypedDict = TypedDict("Outputs", {"value": int})
+    Outputs: Type = TypedDict("Outputs", {"value": int})
 
     def __init__(self, initial_value: int = 0, callback_period: int = int(1e9)) -> None:
         """A constructor of the counter, which increments the input value.

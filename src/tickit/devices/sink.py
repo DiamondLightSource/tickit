@@ -1,5 +1,5 @@
 import logging
-from typing import Any
+from typing import Any, Type
 
 from pydantic.v1.dataclasses import dataclass
 
@@ -17,9 +17,9 @@ class SinkDevice(Device):
     """A simple device which can take any input and produces no output."""
 
     #: A typed mapping containing the 'input' input value
-    Inputs: TypedDict = TypedDict("Inputs", {"input": Any})
+    Inputs: Type = TypedDict("Inputs", {"input": Any})
     #: An empty typed mapping of device outputs
-    Outputs: TypedDict = TypedDict("Outputs", {})
+    Outputs: Type = TypedDict("Outputs", {})
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
         """The update method which logs the inputs and produces no outputs.

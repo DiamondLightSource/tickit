@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Type
 
 from aiohttp import web
 from pydantic.v1.dataclasses import dataclass
@@ -10,8 +10,8 @@ from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.compat.typing_compat import TypedDict
-
 from tickit.utils.configuration.configurable import StrictConfig
+
 
 class ExampleHTTPDevice(Device):
     """A device class for an example HTTP device.
@@ -19,9 +19,9 @@ class ExampleHTTPDevice(Device):
     ...
     """
 
-    Inputs: TypedDict = TypedDict("Inputs", {"foo": bool})
+    Inputs: Type = TypedDict("Inputs", {"foo": bool})
 
-    Outputs: TypedDict = TypedDict("Outputs", {"bar": float})
+    Outputs: Type = TypedDict("Outputs", {"bar": float})
 
     def __init__(
         self,

@@ -1,4 +1,4 @@
-from typing import TypedDict
+from typing import Type, TypedDict
 
 from pydantic.v1.dataclasses import dataclass
 from softioc import builder
@@ -13,8 +13,8 @@ from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.byte_format import ByteFormat
-
 from tickit.utils.configuration.configurable import StrictConfig
+
 
 class IsolatedBoxDevice(Device):
     """Isolated device which stores a float value.
@@ -22,8 +22,8 @@ class IsolatedBoxDevice(Device):
     The device has no inputs or outputs and interacts solely through adapters.
     """
 
-    Inputs: TypedDict = TypedDict("Inputs", {})
-    Outputs: TypedDict = TypedDict("Outputs", {})
+    Inputs: Type = TypedDict("Inputs", {})
+    Outputs: Type = TypedDict("Outputs", {})
 
     def __init__(self, initial_value: float = 2) -> None:
         """Constructor which configures the initial value

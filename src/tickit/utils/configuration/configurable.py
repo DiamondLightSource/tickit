@@ -27,7 +27,7 @@ def as_tagged_union(
 
     def __validate__(cls, v: Any) -> Any:
         if cls._model is None:
-            root = Union[tuple(cls.__ref_classes__)]
+            root = Union[tuple(cls._ref_classes)]
             cls._model = create_model(
                 super_cls.__name__,
                 __root__=(root, Field(..., discriminator="type")),

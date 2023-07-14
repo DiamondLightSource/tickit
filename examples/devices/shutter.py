@@ -1,5 +1,5 @@
 from random import random
-from typing import Optional
+from typing import Optional, Type
 
 from pydantic.v1.dataclasses import dataclass
 
@@ -26,9 +26,9 @@ class ShutterDevice(Device):
     """
 
     #: A typed mapping containing the 'flux' input value
-    Inputs: TypedDict = TypedDict("Inputs", {"flux": float})
+    Inputs: Type = TypedDict("Inputs", {"flux": float})
     #: A typed mapping containing the 'flux' output value
-    Outputs: TypedDict = TypedDict("Outputs", {"flux": float})
+    Outputs: Type = TypedDict("Outputs", {"flux": float})
 
     def __init__(
         self, default_position: float, initial_position: Optional[float] = None
