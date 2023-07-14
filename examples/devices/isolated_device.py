@@ -13,7 +13,7 @@ from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.byte_format import ByteFormat
-from tickit.utils.configuration.configurable import StrictConfig
+from tickit.utils.configuration.configurable import LooseConfig
 
 
 class IsolatedBoxDevice(Device):
@@ -117,7 +117,7 @@ class IsolatedBoxEpicsAdapter(EpicsAdapter):
         self.link_input_on_interrupt(builder.aIn("VALUE_RBV"), self.device.get_value)
 
 
-@dataclass(config=StrictConfig)
+@dataclass(config=LooseConfig)
 class IsolatedBox(ComponentConfig):
     """Isolated box device you can change the value of either over TCP or via EPICS."""
 

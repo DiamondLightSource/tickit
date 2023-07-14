@@ -12,7 +12,7 @@ from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.byte_format import ByteFormat
-from tickit.utils.configuration.configurable import StrictConfig
+from tickit.utils.configuration.configurable import LooseConfig
 
 
 class AmplifierDevice(Device):
@@ -91,7 +91,7 @@ class AmplifierAdapter(ComposedAdapter):
         self.device.amplification = amplification
 
 
-@dataclass(config=StrictConfig)
+@dataclass(config=LooseConfig)
 class Amplifier(ComponentConfig):
     """Amplifier you can set the amplification value of over TCP."""
 

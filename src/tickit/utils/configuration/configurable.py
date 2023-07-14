@@ -5,9 +5,11 @@ from pydantic.v1 import BaseConfig, Extra, Field, ValidationError, create_model
 from pydantic.v1.error_wrappers import ErrorWrapper
 
 
-class StrictConfig(BaseConfig):
-    """Configuration for Pydantic dataclasses."""
+class LooseConfig(BaseConfig):
+    extra: Extra = Extra.allow
 
+
+class StrictConfig(BaseConfig):
     extra: Extra = Extra.forbid
 
 
@@ -112,14 +114,15 @@ def _as_tagged_union(
 ) -> Union[Type, Callable[[Type], Type]]:
     super_cls._ref_classes = set()
     super_cls._model = None
-    setattr(super_cls, discriminator, field())
+    print(super_cls.__dict__)
+    print(f"as_tagged_union: {super_cls}")
 
-    def __init_subclass__(cls) -> None:
+    def __init_subclass__(cls, **kwargs) -> None:
+        print(f"__init_subclass__: {cls}:{super_cls}")
         super_cls._model = None
         cls_name = qualified_class_name(cls)
         # Keep track of inherting classes in super class
         super_cls._ref_classes.add(cls)
-        cls._ref_classes.add(cls)
 
         # Add a discriminator field to the class so it can
         # be identified when deserailizing.
@@ -136,14 +139,19 @@ def _as_tagged_union(
         # Lazily initialize model on first use because this
         # needs to be done once, after all subclasses have been
         # declared
+        print("VALIDATE")
+        print(cls._model)
         if cls._model is None:
-            root = Union[tuple(cls._ref_classes)]  # type: ignore
+            print("foo")
+            print(super_cls._ref_classes)
+            root = Union[tuple(super_cls._ref_classes)]  # type: ignore
+            print(f"root: {root}")
             cls._model = create_model(
                 super_cls.__name__,
                 __root__=(root, Field(..., discriminator=discriminator)),
                 __config__=config,
             )
-
+        print(cls._model)
         try:
             return cls._model(__root__=v).__root__
         except ValidationError as e:

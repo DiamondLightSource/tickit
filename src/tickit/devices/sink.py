@@ -8,7 +8,7 @@ from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.compat.typing_compat import TypedDict
-from tickit.utils.configuration.configurable import StrictConfig
+from tickit.utils.configuration.configurable import LooseConfig
 
 LOGGER = logging.getLogger(__name__)
 
@@ -37,7 +37,7 @@ class SinkDevice(Device):
         return DeviceUpdate(SinkDevice.Outputs(), None)
 
 
-@dataclass(config=StrictConfig)
+@dataclass(config=LooseConfig)
 class Sink(ComponentConfig):
     """Arbitrary value sink that logs the value."""
 
