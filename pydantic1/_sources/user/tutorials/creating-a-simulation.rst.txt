@@ -26,9 +26,9 @@ we may extend our config, as:
 
 .. code-block:: yaml
 
-    - examples.devices.trampoline.RandomTrampoline:
-        name: rand_tramp
-        inputs: {}
+    - type: examples.devices.trampoline.RandomTrampoline
+      name: rand_tramp
+      inputs: {}
 
 We will now add a `Sink` device. This device will be named ``tramp_sink``, will have
 no adapters but will take the ``output`` value of ``rand_tramp`` as ``input``. As
@@ -36,13 +36,13 @@ such we may extend our config, as:
 
 .. code-block:: yaml
 
-    - examples.devices.trampoline.RandomTrampoline:
-        name: rand_tramp
-        inputs: {}
-    - tickit.devices.sink.Sink:
-        name: tramp_sink
-        inputs:
-          input: rand_tramp:output
+    - type: examples.devices.trampoline.RandomTrampoline
+      name: rand_tramp
+      inputs: {}
+    - type: tickit.devices.sink.Sink
+      name: tramp_sink
+      inputs:
+        input: rand_tramp:output
 
 Running the Simulation
 ----------------------

@@ -32,8 +32,8 @@ maps as members. As such we shall put in the following boilerplate.
 
     class AmplifierDevice(Device):
 
-    Inputs: TypedDict = TypedDict("Inputs", {})
-    Outputs: TypedDict = TypedDict("Outputs", {})
+    Inputs: type = TypedDict("Inputs", {})
+    Outputs: type = TypedDict("Outputs", {})
 
     def __init__(self) -> None:
 
@@ -59,8 +59,8 @@ here.
 
     class AmplifierDevice(Device):
 
-    Inputs: TypedDict = TypedDict("Inputs", {})
-    Outputs: TypedDict = TypedDict("Outputs", {})
+    Inputs: type = TypedDict("Inputs", {})
+    Outputs: type = TypedDict("Outputs", {})
 
     def __init__(self, initial_amplification: float = 2) -> None:
             self.amplification = initial_amplification
@@ -95,8 +95,8 @@ we define our inputs and outputs in the maps, and the line of logic in the ``upd
 
     class AmplifierDevice(Device):
 
-        Inputs: TypedDict = TypedDict("Inputs", {"initial_signal":float})
-        Outputs: TypedDict = TypedDict("Outputs", {"amplified_signal":float})
+        Inputs: type = TypedDict("Inputs", {"initial_signal":float})
+        Outputs: type = TypedDict("Outputs", {"amplified_signal":float})
 
         def __init__(self, initial_amplification: float = 2.0) -> None:
             self.amplification = initial_amplification
@@ -118,13 +118,13 @@ if the device requires any adapters to control it externally.
 
 .. code-block:: python
 
-    from dataclasses import dataclass
+    import pydantic.v1.dataclasses
 
     from tickit.core.components.component import Component, ComponentConfig
     from tickit.core.components.device_simulation import DeviceSimulation
 
 
-    @dataclass
+    @pydantic.v1.dataclasses.dataclass
     class Amplifier(ComponentConfig):
         initial_amplification: float
 
@@ -147,19 +147,19 @@ and a `Sink`, named sink, which will receive the amplified signal.
 
 .. code-block:: yaml
 
-    - tickit.devices.source.Source:
-        name: source
-        inputs: {}
-        value: 10.0
-    - amp.Amplifier:
-        name: amp
-        inputs:
-          initial_signal: source:value
-        initial_amplification: 2.0
-    - tickit.devices.sink.Sink:
-        name: sink
-        inputs:
-          input: amp:amplified_signal
+    - type: tickit.devices.source.Source
+      name: source
+      inputs: {}
+      value: 10.0
+    - type: amp.Amplifier
+      name: amp
+      inputs:
+        initial_signal: source:value
+      initial_amplification: 2.0
+    - type: tickit.devices.sink.Sink
+      name: sink
+      inputs:
+        input: amp:amplified_signal
 
 
 Where in ``amp.Amplifier`` ``amp`` is the name of the ``.py`` file the amplifier
