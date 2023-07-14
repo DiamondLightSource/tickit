@@ -106,7 +106,6 @@ class SystemSimulation(ComponentConfig):
     """Simulation of a nested set of components."""
 
     name: ComponentID
-    inputs: Dict[PortID, ComponentPort]
     components: List[ComponentConfig]
     expose: Dict[PortID, ComponentPort]
 

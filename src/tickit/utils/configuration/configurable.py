@@ -67,7 +67,8 @@ def _as_tagged_union(
 
         if cls._model is None:
             if len(super_cls._ref_classes) == 1:
-                return parse_obj_as(super_cls._ref_classes.pop(), v)
+                single_subclass = next(iter(super_cls._ref_classes))
+                return parse_obj_as(single_subclass, v)
             root = Union[tuple(super_cls._ref_classes)]  # type: ignore
             super_cls._model = create_model(
                 super_cls.__name__,

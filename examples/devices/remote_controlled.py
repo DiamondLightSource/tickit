@@ -15,7 +15,6 @@ from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.byte_format import ByteFormat
 from tickit.utils.compat.typing_compat import TypedDict
-from tickit.utils.configuration.configurable import StrictConfig
 
 LOGGER = logging.getLogger(__name__)
 
@@ -225,7 +224,7 @@ class RemoteControlledAdapter(ComposedAdapter[bytes]):
             yield f"Observed is {self.device.observed}".encode("utf-8")
 
 
-@dataclass(config=StrictConfig)
+@dataclass
 class RemoteControlled(ComponentConfig):
     """Thing you can poke over TCP."""
 
