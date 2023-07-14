@@ -41,11 +41,11 @@ def _as_tagged_union(
 
     def _load_module_with_type(values: dict[str, str]) -> None:
         fullname = values.get(discriminator)
+        assert fullname
         pkg, clsname = fullname.rsplit(".", maxsplit=1)
         getattr(import_module(pkg), clsname)
 
     def __init_subclass__(cls) -> None:
-        print("init_subclass")
         super_cls._model = None
         cls_name = qualified_class_name(cls)
         # Keep track of inherting classes in super class
@@ -63,12 +63,10 @@ def _as_tagged_union(
         yield cls.__validate__
 
     def __validate__(cls, v: Any) -> Any:
-        print("validate")
         _load_module_with_type(v)
 
         if cls._model is None:
             if len(super_cls._ref_classes) == 1:
-                print("Length is exactly 1")
                 return parse_obj_as(super_cls._ref_classes.pop(), v)
             root = Union[tuple(super_cls._ref_classes)]  # type: ignore
             super_cls._model = create_model(
@@ -77,6 +75,7 @@ def _as_tagged_union(
                 __config__=config,
             )
         try:
+            assert cls._model
             return cls._model(__root__=v).__root__
         except ValidationError as e:
             for (
