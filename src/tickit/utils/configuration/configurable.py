@@ -2,7 +2,7 @@ from dataclasses import field
 from importlib import import_module
 from typing import Any, Callable, Literal, Optional, Type, Union
 
-from pydantic.v1 import BaseConfig, Field, ValidationError, create_model
+from pydantic.v1 import BaseConfig, Field, ValidationError, create_model, parse_obj_as
 from pydantic.v1.error_wrappers import ErrorWrapper
 
 
@@ -12,7 +12,6 @@ def as_tagged_union(
     discriminator: str = "type",
     config: Optional[Type[BaseConfig]] = None,
 ) -> Union[Type, Callable[[Type], Type]]:
-
     def wrap(cls):
         return _as_tagged_union(cls, discriminator, config)
 
@@ -45,31 +44,33 @@ def _as_tagged_union(
         pkg, clsname = fullname.rsplit(".", maxsplit=1)
         getattr(import_module(pkg), clsname)
 
-    def _decorate_with_discriminator(cls):
+    def __init_subclass__(cls) -> None:
+        print("init_subclass")
+        super_cls._model = None
+        cls_name = qualified_class_name(cls)
         # Keep track of inherting classes in super class
         super_cls._ref_classes.add(cls)
+
         # Add a discriminator field to the class so it can
         # be identified when deserailizing.
-        cls_name = qualified_class_name(cls)
         cls.__annotations__ = {
             **cls.__annotations__,
             discriminator: Literal[cls_name],
         }
         setattr(cls, discriminator, field(default=cls_name, repr=False))
 
-    def __init_subclass__(cls) -> None:
-        super_cls._model = None
-        _decorate_with_discriminator(cls)
-
     def __get_validators__(cls) -> Any:
         yield cls.__validate__
 
     def __validate__(cls, v: Any) -> Any:
+        print("validate")
         _load_module_with_type(v)
 
         if cls._model is None:
+            if len(super_cls._ref_classes) == 1:
+                print("Length is exactly 1")
+                return parse_obj_as(super_cls._ref_classes.pop(), v)
             root = Union[tuple(super_cls._ref_classes)]  # type: ignore
-            print(root)
             super_cls._model = create_model(
                 super_cls.__name__,
                 __root__=(root, Field(..., discriminator=discriminator)),
@@ -88,8 +89,6 @@ def _as_tagged_union(
                     error._loc = error.loc_tuple()[1:]
 
             raise e
-
-    _decorate_with_discriminator(super_cls)
 
     # Inject magic methods into super_cls
     for method in __init_subclass__, __get_validators__, __validate__:

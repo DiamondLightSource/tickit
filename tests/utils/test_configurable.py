@@ -29,4 +29,3 @@ def test_tagged_union_deserializes():
     expected_serialisation = {"type": "test_configurable.MyClass", "a": 1, "b": "foo"}
     assert asdict(expected) == expected_serialisation
     assert parse_obj_as(MyBase, expected_serialisation) == expected
-

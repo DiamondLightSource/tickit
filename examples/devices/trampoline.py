@@ -56,9 +56,9 @@ class RandomTrampolineDevice(Device):
     """A trivial toy device which produced a random output and requests a callback."""
 
     #: An empty typed mapping of device inputs
-    Inputs: TypedDict = TypedDict("Inputs", {})
+    Inputs: Type = TypedDict("Inputs", {})
     #: A typed mapping containing the 'output' output value
-    Outputs: TypedDict = TypedDict("Outputs", {"output": int})
+    Outputs: Type = TypedDict("Outputs", {"output": int})
 
     def __init__(self, callback_period: int = int(1e9)) -> None:
         """A constructor of the sink which configures the device callback period.
