@@ -1,6 +1,6 @@
 from typing import Type
 
-from pydantic.v1.dataclasses import dataclass
+import pydantic.v1.dataclasses
 from typing_extensions import TypedDict
 
 from tickit.adapters.composed import ComposedAdapter
@@ -90,7 +90,7 @@ class AmplifierAdapter(ComposedAdapter):
         self.device.amplification = amplification
 
 
-@dataclass
+@pydantic.v1.dataclasses.dataclass
 class Amplifier(ComponentConfig):
     """Amplifier you can set the amplification value of over TCP."""
 

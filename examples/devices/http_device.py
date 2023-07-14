@@ -1,7 +1,7 @@
 from typing import Optional, Type
 
 from aiohttp import web
-from pydantic.v1.dataclasses import dataclass
+import pydantic.v1.dataclasses
 
 from tickit.adapters.httpadapter import HTTPAdapter
 from tickit.adapters.interpreters.endpoints.http_endpoint import HTTPEndpoint
@@ -81,7 +81,7 @@ class ExampleHTTPAdapter(HTTPAdapter):
         return web.Response(text=f"Your data: {request.match_info['data']}")
 
 
-@dataclass
+@pydantic.v1.dataclasses.dataclass
 class ExampleHTTP(ComponentConfig):
     """Example HTTP device."""
 

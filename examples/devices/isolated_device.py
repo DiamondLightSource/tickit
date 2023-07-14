@@ -1,6 +1,6 @@
 from typing import Type, TypedDict
 
-from pydantic.v1.dataclasses import dataclass
+import pydantic.v1.dataclasses
 from softioc import builder
 
 from tickit.adapters.composed import ComposedAdapter
@@ -116,7 +116,7 @@ class IsolatedBoxEpicsAdapter(EpicsAdapter):
         self.link_input_on_interrupt(builder.aIn("VALUE_RBV"), self.device.get_value)
 
 
-@dataclass
+@pydantic.v1.dataclasses.dataclass
 class IsolatedBox(ComponentConfig):
     """Isolated box device you can change the value of either over TCP or via EPICS."""
 

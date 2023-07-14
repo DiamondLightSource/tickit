@@ -2,7 +2,7 @@ import logging
 from random import randint
 from typing import Type
 
-from pydantic.v1.dataclasses import dataclass
+import pydantic.v1.dataclasses
 
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
@@ -93,7 +93,7 @@ class RandomTrampolineDevice(Device):
         )
 
 
-@dataclass
+@pydantic.v1.dataclasses.dataclass
 class RandomTrampoline(ComponentConfig):
     """Random thing that goes boing."""
 

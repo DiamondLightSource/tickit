@@ -1,12 +1,12 @@
 import asyncio
-import dataclasses
 import logging
 import traceback
 from abc import abstractmethod
+from dataclasses import dataclass
 from typing import Dict, Optional, Type, Union
 
+import pydantic.v1.dataclasses
 from pydantic.v1 import validator
-from pydantic.v1.dataclasses import dataclass
 
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import (
@@ -27,7 +27,7 @@ from tickit.utils.topic_naming import input_topic, output_topic
 LOGGER = logging.getLogger(__name__)
 
 
-@dataclasses.dataclass
+@dataclass
 class Component:
     """An interface for types which implement stand-alone simulation components.
 
@@ -57,7 +57,7 @@ class Component:
 
 
 @as_tagged_union
-@dataclass
+@pydantic.v1.dataclasses.dataclass
 class ComponentConfig:
     """A data container for component configuration.
 

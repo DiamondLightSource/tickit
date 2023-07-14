@@ -1,10 +1,9 @@
 import asyncio
-import dataclasses
 import logging
-from dataclasses import field
+from dataclasses import field, dataclass
 from typing import Dict, List, Type
 
-from pydantic.v1.dataclasses import dataclass
+import pydantic.v1.dataclasses
 
 from tickit.core.components.component import BaseComponent, Component, ComponentConfig
 from tickit.core.management.event_router import InverseWiring
@@ -17,7 +16,7 @@ from tickit.utils.topic_naming import output_topic
 LOGGER = logging.getLogger(__name__)
 
 
-@dataclasses.dataclass
+@dataclass
 class SystemSimulationComponent(BaseComponent):
     """A component containing a slave scheduler and several components.
 
@@ -101,7 +100,7 @@ class SystemSimulationComponent(BaseComponent):
             task.cancel()
 
 
-@dataclass
+@pydantic.v1.dataclasses.dataclass
 class SystemSimulation(ComponentConfig):
     """Simulation of a nested set of components."""
 
