@@ -1,6 +1,5 @@
 import logging
 from random import randint
-from typing import Type
 
 import pydantic.v1.dataclasses
 
@@ -17,9 +16,9 @@ class TrampolineDevice(Device):
     """A trivial toy device which requests a callback every update."""
 
     #: An empty typed mapping of device inputs
-    Inputs: Type = TypedDict("Inputs", {})
+    Inputs: type = TypedDict("Inputs", {})
     #: An empty typed mapping of device outputs
-    Outputs: Type = TypedDict("Outputs", {})
+    Outputs: type = TypedDict("Outputs", {})
 
     def __init__(self, callback_period: int = int(1e9)) -> None:
         """A constructor of the sink which configures the device callback period.
@@ -56,9 +55,9 @@ class RandomTrampolineDevice(Device):
     """A trivial toy device which produced a random output and requests a callback."""
 
     #: An empty typed mapping of device inputs
-    Inputs: Type = TypedDict("Inputs", {})
+    Inputs: type = TypedDict("Inputs", {})
     #: A typed mapping containing the 'output' output value
-    Outputs: Type = TypedDict("Outputs", {"output": int})
+    Outputs: type = TypedDict("Outputs", {"output": int})
 
     def __init__(self, callback_period: int = int(1e9)) -> None:
         """A constructor of the sink which configures the device callback period.

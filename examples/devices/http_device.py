@@ -1,7 +1,7 @@
-from typing import Optional, Type
+from typing import Optional
 
-from aiohttp import web
 import pydantic.v1.dataclasses
+from aiohttp import web
 
 from tickit.adapters.httpadapter import HTTPAdapter
 from tickit.adapters.interpreters.endpoints.http_endpoint import HTTPEndpoint
@@ -18,9 +18,8 @@ class ExampleHTTPDevice(Device):
     ...
     """
 
-    Inputs: Type = TypedDict("Inputs", {"foo": bool})
-
-    Outputs: Type = TypedDict("Outputs", {"bar": float})
+    Inputs: type = TypedDict("Inputs", {"foo": bool})
+    Outputs: type = TypedDict("Outputs", {"bar": float})
 
     def __init__(
         self,

@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Dict, Generic, List, Tuple, Type, TypeVar
+from typing import Any, Dict, Generic, List, Tuple, TypeVar
 
 import pydantic.v1.dataclasses
 from typing_extensions import NotRequired
@@ -54,9 +54,9 @@ class IoBoxDevice(Device, Generic[A, V]):
     """
 
     #: A typed mapping containing the 'input' input value
-    Inputs: Type = TypedDict("Inputs", {"updates": NotRequired[List[Tuple[Any, Any]]]})
+    Inputs: type = TypedDict("Inputs", {"updates": NotRequired[List[Tuple[Any, Any]]]})
     #: An empty typed mapping of device outputs
-    Outputs: Type = TypedDict(
+    Outputs: type = TypedDict(
         "Outputs", {"updates": NotRequired[List[Tuple[Any, Any]]]}
     )
 

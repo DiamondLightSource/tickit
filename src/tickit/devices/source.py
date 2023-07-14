@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Type
+from typing import Any
 
 import pydantic.v1.dataclasses
 
@@ -16,9 +16,9 @@ class SourceDevice(Device):
     """A simple device which produces a pre-configured value."""
 
     #: An empty typed mapping of device inputs
-    Inputs: Type = TypedDict("Inputs", {})
+    Inputs: type = TypedDict("Inputs", {})
     #: A typed mapping containing the 'value' output value
-    Outputs: Type = TypedDict("Outputs", {"value": Any})
+    Outputs: type = TypedDict("Outputs", {"value": Any})
 
     def __init__(self, value: Any) -> None:
         """A constructor of the source, which takes the pre-configured output value.

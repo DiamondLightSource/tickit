@@ -1,4 +1,4 @@
-from typing import Type, TypedDict
+from typing import TypedDict
 
 import pydantic.v1.dataclasses
 from softioc import builder
@@ -21,8 +21,8 @@ class IsolatedBoxDevice(Device):
     The device has no inputs or outputs and interacts solely through adapters.
     """
 
-    Inputs: Type = TypedDict("Inputs", {})
-    Outputs: Type = TypedDict("Outputs", {})
+    Inputs: type = TypedDict("Inputs", {})
+    Outputs: type = TypedDict("Outputs", {})
 
     def __init__(self, initial_value: float = 2) -> None:
         """Constructor which configures the initial value

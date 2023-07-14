@@ -1,5 +1,3 @@
-from typing import Type
-
 import pydantic.v1.dataclasses
 from typing_extensions import TypedDict
 
@@ -17,8 +15,8 @@ from tickit.utils.byte_format import ByteFormat
 class AmplifierDevice(Device):
     """Amplifier device which multiplies an input signal by an amplification value."""
 
-    Inputs: Type = TypedDict("Inputs", {"initial_signal": float})
-    Outputs: Type = TypedDict("Outputs", {"amplified_signal": float})
+    Inputs: type = TypedDict("Inputs", {"initial_signal": float})
+    Outputs: type = TypedDict("Outputs", {"amplified_signal": float})
 
     def __init__(self, initial_amplification: float = 2) -> None:
         """Amplifier constructor which configures the initial amplification.
