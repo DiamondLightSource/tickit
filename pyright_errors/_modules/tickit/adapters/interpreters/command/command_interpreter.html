@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.adapters.interpreters.command.command_interpreter &#8212; tickit 0.2.3.dev14+g42934976 documentation</title>
+    <title>tickit.adapters.interpreters.command.command_interpreter &#8212; tickit 0.2.3.dev15+g1b3ff046 documentation</title>
   
   
   
@@ -457,17 +457,6 @@ document.write(`
 <span class="sd">    commands registered against adapter methods, if a match is found the method is</span>
 <span class="sd">    called with the parsed arguments.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="CommandInterpreter.unknown_command"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.adapters.interpreters.command.command_interpreter.CommandInterpreter.unknown_command">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">unknown_command</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;An asynchronous iterator of containing a single unknown command reply.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            AsyncIterator[bytes]:</span>
-<span class="sd">                An asynchronous iterator of containing a single unknown command reply:</span>
-<span class="sd">                &quot;Request does not match any known command&quot;.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">yield</span> <span class="sa">b</span><span class="s2">&quot;Request does not match any known command&quot;</span></div>
 
 <div class="viewcode-block" id="CommandInterpreter.handle"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.adapters.interpreters.command.command_interpreter.CommandInterpreter.handle">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">adapter</span><span class="p">:</span> <span class="n">Adapter</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">AnyStr</span>
