@@ -38,6 +38,7 @@ def _as_tagged_union(
 ) -> Union[Type, Callable[[Type], Type]]:
     super_cls._ref_classes = set()
     super_cls._model = None
+    setattr(super_cls, discriminator, field())
 
     def _load_module_with_type(values: dict[str, str]) -> None:
         fullname = values.get(discriminator)

@@ -70,7 +70,9 @@ class ComponentConfig:
 
     @validator("inputs", pre=True)
     def _split_inputs(cls, v) -> Dict[PortID, ComponentPort]:
-        def component_port(s: str):
+        def component_port(s: Union[ComponentPort, str]):
+            if isinstance(s, ComponentPort):
+                return s
             component, port = s.split(":")
             return ComponentPort(ComponentID(component), PortID(port))
 

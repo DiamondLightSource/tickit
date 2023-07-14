@@ -35,7 +35,7 @@ class MockConfig(ComponentConfig):
 @pytest.fixture
 def patch_pydantic_deserialize() -> Iterable[Mock]:
     with patch(
-        "tickit.utils.configuration.loading.deserialize",
+        "tickit.utils.configuration.loading.parse_obj_as",
         autospec=True,
     ) as mock:
         mock.return_value = MockConfig(

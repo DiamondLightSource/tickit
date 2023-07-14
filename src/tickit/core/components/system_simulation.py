@@ -12,7 +12,6 @@ from tickit.core.management.schedulers.slave import SlaveScheduler
 from tickit.core.runner import run_all
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import Changes, ComponentID, ComponentPort, PortID, SimTime
-from tickit.utils.configuration.configurable import StrictConfig
 from tickit.utils.topic_naming import output_topic
 
 LOGGER = logging.getLogger(__name__)
@@ -102,7 +101,7 @@ class SystemSimulationComponent(BaseComponent):
             task.cancel()
 
 
-@dataclass(config=StrictConfig)
+@dataclass
 class SystemSimulation(ComponentConfig):
     """Simulation of a nested set of components."""
 
