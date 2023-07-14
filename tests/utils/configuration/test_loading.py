@@ -1,13 +1,12 @@
-from typing import Any, Callable, Iterable, Type
+from typing import Iterable
 
 import pytest
-from apischema.conversions.conversions import Conversion
 from mock import Mock, create_autospec, patch
 from mock.mock import mock_open
 
 from tickit.core.components.component import ComponentConfig
 from tickit.core.typedefs import ComponentID, ComponentPort, PortID
-from tickit.utils.configuration.loading import importing_conversion, read_configs
+from tickit.utils.configuration.loading import read_configs
 
 
 @pytest.fixture
@@ -22,21 +21,6 @@ def patch_tagged_union_dict(mock_component_config_type) -> Iterable[Mock]:
         {mock_component_config_type: True},
     ) as mock:
         yield mock
-
-
-def test_importing_conversion(
-    mock_component_config_type: Type[ComponentConfig], patch_tagged_union_dict
-):
-    conversion = importing_conversion(mock_component_config_type)
-    assert isinstance(conversion, Conversion)
-    assert conversion.target == mock_component_config_type
-
-
-def test_importing_conversion_when_is_not_tagged_union(
-    mock_component_config_type: Type[ComponentConfig],
-):
-    conversion = importing_conversion(mock_component_config_type)
-    assert conversion == []
 
 
 class MockConfig(ComponentConfig):
@@ -59,20 +43,6 @@ def patch_apischema_deserialize() -> Iterable[Mock]:
             )
         ]
         yield mock
-
-
-def test_conversion(
-    mock_component_config_type,
-    patch_tagged_union_dict,
-    patch_apischema_deserialize: Mock,
-):
-    conversion = importing_conversion(mock_component_config_type)
-    converter: Callable[[Any], Any] = conversion.converter  # type: ignore
-
-    _ = converter({"mock.Mock": 42})
-    patch_apischema_deserialize.assert_called_once_with(
-        Mock, 42, default_conversion=importing_conversion
-    )
 
 
 @pytest.fixture
