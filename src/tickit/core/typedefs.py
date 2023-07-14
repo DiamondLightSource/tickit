@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from typing import Hashable, Iterator, Mapping, NewType, Optional
 
-from apischema import deserializer, serializer
 from immutables import Map
 
 #: An identifier which specifies the component
@@ -30,31 +29,6 @@ class ComponentPort:
             str: A string representation of the object of format component:port.
         """
         return ":".join((self.component, self.port))
-
-    @serializer
-    def serialize(self) -> str:
-        """Returns a string of component:port.
-
-        An apischema serialization method which returns a string of component:port.
-
-        Returns:
-            str: The serialized ComponentPort, in format component:port.
-        """
-        return str(self)
-
-    @deserializer
-    @staticmethod
-    def deserialize(data: str) -> "ComponentPort":
-        """Builds a ComponentPort from a string of component:port.
-
-        An apischema deserialization method which builds a ComponentPort from a string
-        of component:port.
-
-        Returns:
-            ComponentPort: The deserialized ComponentPort.
-        """
-        component, port = data.split(":")
-        return ComponentPort(ComponentID(component), PortID(port))
 
     def __iter__(self) -> Iterator:
         """An iterator which returns (component, port).

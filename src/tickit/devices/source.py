@@ -1,12 +1,14 @@
 import logging
-from dataclasses import dataclass
 from typing import Any
+
+from pydantic.v1.dataclasses import dataclass
 
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.compat.typing_compat import TypedDict
+from tickit.utils.configuration.configurable import StrictConfig
 
 LOGGER = logging.getLogger(__name__)
 
@@ -43,7 +45,7 @@ class SourceDevice(Device):
         return DeviceUpdate(SourceDevice.Outputs(value=self.value), None)
 
 
-@dataclass
+@dataclass(config=StrictConfig)
 class Source(ComponentConfig):
     """Source of a fixed value."""
 

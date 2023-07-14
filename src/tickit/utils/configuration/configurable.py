@@ -1,67 +1,53 @@
-from typing import Any, DefaultDict, Dict, Iterator, Type, TypeVar
+from typing import Any, Type, Union
 
-from apischema import deserializer
-from apischema.conversions import Conversion
-from apischema.tagged_unions import Tagged, TaggedUnion, get_tagged
-
-# Implementation adapted from apischema example: Class as tagged union of its subclasses
-# see: https://wyfo.github.io/apischema/examples/subclass_tagged_union/
-
-#: A class
-Cls = TypeVar("Cls", bound=type)
+from pydantic.v1 import Field, ValidationError, create_model, BaseConfig, Extra
+from pydantic.v1.error_wrappers import ErrorWrapper
+from typing_extensions import Literal
 
 
-def rec_subclasses(cls: type) -> Iterator[type]:
-    """Recursive implementation of type.__subclasses__.
-
-    Args:
-        cls (Type): The base class.
-
-    Returns:
-        Iterator[type]: An iterator of subclasses.
-    """
-    for sub_cls in cls.__subclasses__():
-        yield sub_cls
-        yield from rec_subclasses(sub_cls)
+class StrictConfig(BaseConfig):
+    extra = Extra.forbid
 
 
-#: Whether the current class is registered as a tagged union
-is_tagged_union: Dict[Type[Any], bool] = DefaultDict(lambda: False)
+def as_tagged_union(
+    super_cls: Type
+) -> Type:
+    super_cls._ref_classes = set()
+    super_cls._model = None
 
+    def __init_subclass__(cls) -> None:
+        print(f"init_subclass: {cls}:{super_cls}")
+        cls._ref_classes.add(cls)
+        cls.__annotations__["type"] = Literal[cls.__name__]
+        setattr(cls, "type", cls.__name__)
 
-def as_tagged_union(cls: Cls) -> Cls:
-    """A decorator to make a config base class that can deserialize aliased sub-classes.
+    def __get_validators__(cls) -> Any:
+        print("get_validators")
+        yield cls.__validate__
 
-    A decorator which makes a config class the root of a tagged union of sub-classes
-    allowing for serialization and deserialization of config trees by class alias. The
-    function registers both an apischema serialization and an apischema deserialization
-    conversion for the base class which perform lookup based on a tagged union of
-    aliased sub-classes.
+    def __validate__(cls, v: Any) -> Any:
+        if cls._model is None:
+            root = Union[tuple(cls.__ref_classes__)]
+            cls._model = create_model(
+                super_cls.__name__,
+                __root__=(root, Field(..., discriminator="type")),
+            )
 
-    Args:
-        cls (Cls): The config base class.
+        try:
+            return cls._model(__root__=v).__root__
+        except ValidationError as e:
+            for (
+                error
+            ) in e.raw_errors:  # need in to remove redundant __root__ from error path
+                if (
+                    isinstance(error, ErrorWrapper)
+                    and error.loc_tuple()[0] == "__root__"
+                ):
+                    error._loc = error.loc_tuple()[1:]
 
-    Returns:
-        Cls: The modified config base class.
-    """
+            raise e
 
-    def deserialization() -> (
-        Conversion
-    ):  # This will only be used if we want to generate a json schema (which we will)
-        annotations: Dict[str, Any] = {}
-        deserialization_namespace: Dict[str, Any] = {"__annotations__": annotations}
-        for sub in rec_subclasses(cls):
-            fullname = sub.__module__ + "." + sub.__name__
-            annotations[fullname] = Tagged[sub]  # type: ignore
-        deserialization_union = type(
-            cls.__name__ + "TaggedUnion",
-            (TaggedUnion,),
-            deserialization_namespace,
-        )
-        return Conversion(
-            lambda obj: get_tagged(obj)[1], source=deserialization_union, target=cls
-        )
+    for method in __init_subclass__, __get_validators__, __validate__:
+        setattr(super_cls, method.__name__, classmethod(method))
 
-    deserializer(lazy=deserialization, target=cls)
-    is_tagged_union[cls] = True
-    return cls
+    return super_cls

@@ -1,10 +1,10 @@
-- tickit.devices.source.Source:
-    name: source
-    inputs: {}
-    value: False
-- examples.devices.http_device.ExampleHTTP:
-    name: http-device
-    inputs:
-      foo: source:value
-    foo: False
-    bar: 10
+- type: tickit.devices.source.Source
+  name: source
+  inputs: {}
+  value: False
+- type: examples.devices.http_device.ExampleHTTP
+  name: http-device
+  inputs:
+    foo: source:value
+  foo: False
+  bar: 10

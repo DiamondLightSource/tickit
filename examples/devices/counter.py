@@ -1,5 +1,6 @@
 import logging
-from dataclasses import dataclass
+
+from pydantic.v1.dataclasses import dataclass
 
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
@@ -9,8 +10,9 @@ from tickit.utils.compat.typing_compat import TypedDict
 
 LOGGER = logging.getLogger(__name__)
 
+from tickit.utils.configuration.configurable import StrictConfig
 
-@dataclass
+@dataclass(config=StrictConfig)
 class Counter(ComponentConfig):
     """Simulation of simple counting device."""
 

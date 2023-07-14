@@ -1,10 +1,13 @@
 import asyncio
+import dataclasses
 import logging
 import traceback
 from abc import abstractmethod
-from dataclasses import dataclass
+from importlib import import_module
 from typing import Dict, Optional, Type, Union
 
+from pydantic.v1.dataclasses import dataclass
+from pydantic.v1 import root_validator, validator
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import (
     Changes,
@@ -18,14 +21,13 @@ from tickit.core.typedefs import (
     SimTime,
     StopComponent,
 )
-from tickit.utils.configuration.configurable import as_tagged_union
+from tickit.utils.configuration.configurable import as_tagged_union, StrictConfig
 from tickit.utils.topic_naming import input_topic, output_topic
 
 LOGGER = logging.getLogger(__name__)
 
 
-@dataclass  # type: ignore
-@as_tagged_union
+@dataclasses.dataclass
 class Component:
     """An interface for types which implement stand-alone simulation components.
 
@@ -39,7 +41,7 @@ class Component:
 
     @abstractmethod
     async def run_forever(
-        self, state_consumer: Type[StateConsumer], state_producer: Type[StateProducer]
+            self, state_consumer: Type[StateConsumer], state_producer: Type[StateProducer]
     ) -> None:
         """Asynchronous method allowing indefinite running of core logic."""
 
@@ -54,7 +56,7 @@ class Component:
         """
 
 
-@dataclass  # type: ignore
+@dataclass(config=StrictConfig)  # type: ignore
 @as_tagged_union
 class ComponentConfig:
     """A data container for component configuration.
@@ -65,6 +67,21 @@ class ComponentConfig:
 
     name: ComponentID
     inputs: Dict[PortID, ComponentPort]
+
+    @validator("inputs")
+    def _split_inputs(cls, v: dict[str, str]) -> Dict[PortID, ComponentPort]:
+
+        def component_port(s: str):
+            component, port = s.split(":")
+            return ComponentPort(ComponentID(component), PortID(port))
+        return {PortID(key): component_port(value) for key, value in v.items()}
+
+    @root_validator(pre=True)
+    def _load_module(cls, v: dict[str, str]) -> dict[str, str]:
+        fullname = v.get("type")
+        pkg, clsname = fullname.rsplit(".", maxsplit=1)
+        getattr(import_module(pkg), clsname)
+        return v
 
     @abstractmethod
     def __call__(self) -> Component:
@@ -101,10 +118,10 @@ class BaseComponent(Component):
             await self.stop_component()
 
     async def output(
-        self,
-        time: SimTime,
-        changes: Changes,
-        call_at: Optional[SimTime],
+            self,
+            time: SimTime,
+            changes: Changes,
+            call_at: Optional[SimTime],
     ) -> None:
         """Construct and send an Output message to the component output topic.
 
@@ -131,7 +148,7 @@ class BaseComponent(Component):
         await self.state_producer.produce(output_topic(self.name), Interrupt(self.name))
 
     async def run_forever(
-        self, state_consumer: Type[StateConsumer], state_producer: Type[StateProducer]
+            self, state_consumer: Type[StateConsumer], state_producer: Type[StateProducer]
     ) -> None:
         """Creates and configures a state consumer and state producer.
 

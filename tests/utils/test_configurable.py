@@ -1,23 +1,23 @@
-from dataclasses import dataclass
+from dataclasses import asdict
 
-from apischema import deserialize
-from apischema.json_schema import deserialization_schema
-
-from tickit.utils.configuration.configurable import as_tagged_union
+from pydantic.v1.dataclasses import dataclass
+from pydantic.v1 import parse_obj_as
+from tickit.utils.configuration.configurable import as_tagged_union, StrictConfig
 
 
 @as_tagged_union
+@dataclass(config=StrictConfig)
 class MyBase:
     pass
 
 
-@dataclass
+@dataclass(config=StrictConfig)
 class MyClass(MyBase):
     a: int
     b: str
 
 
-@dataclass
+@dataclass(config=StrictConfig)
 class MyOtherClass(MyBase):
     a: int
     c: float
@@ -25,12 +25,13 @@ class MyOtherClass(MyBase):
 
 def test_tagged_union_deserializes():
     expected = MyClass(a=1, b="foo")
-    actual = deserialize(MyBase, {"test_configurable.MyClass": {"a": 1, "b": "foo"}})
-    assert actual == expected
+    expected_serialisation = {"type": "test_configurable.MyClass", "a": 1, "b": "foo"}
+    assert asdict(expected) == expected_serialisation
+    assert parse_obj_as(MyBase, expected_serialisation) == expected
 
 
 def test_deserialization_schema():
-    assert deserialization_schema(MyBase) == {
+    assert MyBase.__pydantic_model__.schema() == {
         "$schema": "http://json-schema.org/draft/2020-12/schema#",
         "additionalProperties": False,
         "maxProperties": 1,
