@@ -23,7 +23,7 @@ class IoBoxZeroMqAdapter(ZeroMqPushAdapter):
         self,
         host: str = "127.0.0.1",
         port: int = 5555,
-        socket_factory: Optional[SocketFactory] = create_zmq_push_socket,
+        socket_factory: SocketFactory = create_zmq_push_socket,
         addresses_to_publish: Optional[Set[str]] = None,
     ) -> None:
         super().__init__(host, port, socket_factory)
@@ -32,7 +32,7 @@ class IoBoxZeroMqAdapter(ZeroMqPushAdapter):
     def after_update(self):
         for address in self._addresses_to_publish:
             value = self.device.read(address)
-            self.send_message([{address: value}])
+            _ = self.send_message([{address: value}])
 
 
 @pydantic.v1.dataclasses.dataclass
