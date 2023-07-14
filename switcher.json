@@ -8,6 +8,10 @@
     "url": "https://dls-controls.github.io/tickit/v0.1/"
   },
   {
+    "version": "0.2.3",
+    "url": "https://dls-controls.github.io/tickit/0.2.3/"
+  },
+  {
     "version": "0.2.2",
     "url": "https://dls-controls.github.io/tickit/0.2.2/"
   },
@@ -70,10 +74,6 @@
   {
     "version": "pyright_errors",
     "url": "https://dls-controls.github.io/tickit/pyright_errors/"
-  },
-  {
-    "version": "remove_patch",
-    "url": "https://dls-controls.github.io/tickit/remove_patch/"
   },
   {
     "version": "simulation-wrapper",
