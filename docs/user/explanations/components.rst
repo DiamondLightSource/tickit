@@ -37,28 +37,28 @@ the master scheduler's wiring is correct, for example:
 
 .. code-block:: yaml
 
-    - examples.devices.trampoline.RandomTrampoline:
-        name: random_trampoline
-        inputs: {}
-        callback_period: 10000000000
-    - tickit.core.components.system_simulation.SystemSimulation:
-        name: internal_tickit
-        inputs:
-          input_1: random_trampoline:output
-        components:
-          - tickit.devices.sink.Sink:
-              name: internal_sink
-              inputs:
-                sink_1: external:input_1
-          - examples.devices.remote_controlled.RemoteControlled:
-              name: internal_tcp_controlled
-              inputs: {}
-        expose:
-          output_1: internal_tcp_controlled:observed
-    - tickit.devices.sink.Sink:
-        name: external_sink
-        inputs:
-          sink_1: internal_tickit:output_1
+    - type: examples.devices.trampoline.RandomTrampoline
+      name: random_trampoline
+      inputs: {}
+      callback_period: 10000000000
+    - type: tickit.core.components.system_simulation.SystemSimulation
+      name: internal_tickit
+      inputs:
+        input_1: random_trampoline:output
+      components:
+        - type: tickit.devices.sink.Sink
+          name: internal_sink
+          inputs:
+            sink_1: external:input_1
+        - type: examples.devices.remote_controlled.RemoteControlled
+          name: internal_tcp_controlled
+          inputs: {}
+      expose:
+        output_1: internal_tcp_controlled:observed
+    - type: tickit.devices.sink.Sink
+      name: external_sink
+      inputs:
+        sink_1: internal_tickit:output_1
 
 (See `SystemSimulationComponent`.)
 
