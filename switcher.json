@@ -72,6 +72,10 @@
     "url": "https://dls-controls.github.io/tickit/pyright_errors/"
   },
   {
+    "version": "remove_patch",
+    "url": "https://dls-controls.github.io/tickit/remove_patch/"
+  },
+  {
     "version": "simulation-wrapper",
     "url": "https://dls-controls.github.io/tickit/simulation-wrapper/"
   },
