@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Callable, Optional, Sequence
+from typing import AnyStr, Callable, Optional, Sequence
 
 import pytest
 from mock import AsyncMock, MagicMock, patch
@@ -160,17 +160,19 @@ async def test_command_interpreter_handle_skips_unparsed(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "command, response_message",
+    [
+        ("UnknownString", "Request does not match any known command"),
+        (b"UnknownBytes", b"Request does not match any known command"),
+    ],
+)
 async def test_command_interpreter_handle_returns_message_for_no_commands(
     command_interpreter: CommandInterpreter,
+    command: AnyStr,
+    response_message: AnyStr,
 ):
     test_adapter = MagicMock(Adapter)
-    assert (
-        b"Request does not match any known command"
-        == await (
-            await command_interpreter.handle(
-                test_adapter, "TestCommand".encode("utf-8")
-            )
-        )[0]
-        .__aiter__()
-        .__anext__()
-    )
+    response = await command_interpreter.handle(test_adapter, command)
+    message = await response[0].__anext__()
+    assert message == response_message
