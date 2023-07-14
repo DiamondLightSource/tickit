@@ -60,8 +60,8 @@
     "url": "https://dls-controls.github.io/tickit/component_ui/"
   },
   {
-    "version": "fix-http-adapter",
-    "url": "https://dls-controls.github.io/tickit/fix-http-adapter/"
+    "version": "py3.8_removal",
+    "url": "https://dls-controls.github.io/tickit/py3.8_removal/"
   },
   {
     "version": "pydantic1",
