@@ -1,8 +1,6 @@
 from dataclasses import dataclass, field
 from typing import Optional, Set
 
-from aiohttp import web
-
 from tickit.adapters.zeromq.push_adapter import (
     SocketFactory,
     ZeroMqPushAdapter,
