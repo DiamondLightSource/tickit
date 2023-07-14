@@ -21,5 +21,4 @@ def read_configs(config_path) -> List[ComponentConfig]:
     """
     with open(config_path, "r") as config_file:
         yaml_struct = yaml.load(config_file, Loader=yaml.Loader)
-    configs = [parse_obj_as(ComponentConfig, yaml_obj) for yaml_obj in yaml_struct]
-    return configs
+    return [parse_obj_as(ComponentConfig, yaml_obj) for yaml_obj in yaml_struct]

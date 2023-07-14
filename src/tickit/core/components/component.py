@@ -3,10 +3,9 @@ import dataclasses
 import logging
 import traceback
 from abc import abstractmethod
-from importlib import import_module
 from typing import Dict, Optional, Type, Union
 
-from pydantic.v1 import root_validator, validator
+from pydantic.v1 import validator
 from pydantic.v1.dataclasses import dataclass
 
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
@@ -22,7 +21,7 @@ from tickit.core.typedefs import (
     SimTime,
     StopComponent,
 )
-from tickit.utils.configuration.configurable import LooseConfig, as_tagged_union
+from tickit.utils.configuration.configurable import as_tagged_union
 from tickit.utils.topic_naming import input_topic, output_topic
 
 LOGGER = logging.getLogger(__name__)
@@ -58,7 +57,7 @@ class Component:
 
 
 @as_tagged_union
-@dataclass(config=LooseConfig)
+@dataclass
 class ComponentConfig:
     """A data container for component configuration.
 
@@ -76,13 +75,6 @@ class ComponentConfig:
             return ComponentPort(ComponentID(component), PortID(port))
 
         return {PortID(key): component_port(value) for key, value in v.items()}
-
-    @root_validator(pre=True)
-    def _load_module(cls, v):
-        fullname = v.get("type")
-        pkg, clsname = fullname.rsplit(".", maxsplit=1)
-        getattr(import_module(pkg), clsname)
-        return v
 
     @abstractmethod
     def __call__(self) -> Component:
