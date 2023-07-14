@@ -18,6 +18,7 @@ dependencies = [
     "aiozmq",
     "apischema==0.16.1",
     "immutables",
+    "pydantic",
     "pyyaml",
     "pyzmq",
     "softioc",
