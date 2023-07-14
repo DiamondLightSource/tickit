@@ -69,9 +69,8 @@ class ComponentConfig:
     name: ComponentID
     inputs: Dict[PortID, ComponentPort]
 
-    @validator("inputs")
-    def _split_inputs(cls, v: dict[str, str]) -> Dict[PortID, ComponentPort]:
-
+    @validator("inputs", pre=True)
+    def _split_inputs(cls, v) -> Dict[PortID, ComponentPort]:
         def component_port(s: str):
             component, port = s.split(":")
             return ComponentPort(ComponentID(component), PortID(port))
