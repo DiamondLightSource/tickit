@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.components.system_simulation &#8212; tickit 0.2.3.dev18+g96b960e4 documentation</title>
+    <title>tickit.core.components.system_simulation &#8212; tickit 0.2.3.dev19+gbdda7bcd documentation</title>
   
   
   
@@ -422,7 +422,7 @@ document.write(`
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">field</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Type</span>
 
-<span class="kn">from</span> <span class="nn">pydantic.dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">pydantic.v1.dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 
 <span class="kn">from</span> <span class="nn">tickit.core.components.component</span> <span class="kn">import</span> <span class="n">BaseComponent</span><span class="p">,</span> <span class="n">Component</span><span class="p">,</span> <span class="n">ComponentConfig</span>
 <span class="kn">from</span> <span class="nn">tickit.core.management.event_router</span> <span class="kn">import</span> <span class="n">InverseWiring</span>
@@ -430,7 +430,6 @@ document.write(`
 <span class="kn">from</span> <span class="nn">tickit.core.runner</span> <span class="kn">import</span> <span class="n">run_all</span>
 <span class="kn">from</span> <span class="nn">tickit.core.state_interfaces.state_interface</span> <span class="kn">import</span> <span class="n">StateConsumer</span><span class="p">,</span> <span class="n">StateProducer</span>
 <span class="kn">from</span> <span class="nn">tickit.core.typedefs</span> <span class="kn">import</span> <span class="n">Changes</span><span class="p">,</span> <span class="n">ComponentID</span><span class="p">,</span> <span class="n">ComponentPort</span><span class="p">,</span> <span class="n">PortID</span><span class="p">,</span> <span class="n">SimTime</span>
-<span class="kn">from</span> <span class="nn">tickit.utils.configuration.configurable</span> <span class="kn">import</span> <span class="n">StrictConfig</span>
 <span class="kn">from</span> <span class="nn">tickit.utils.topic_naming</span> <span class="kn">import</span> <span class="n">output_topic</span>
 
 <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -520,12 +519,11 @@ document.write(`
             <span class="n">task</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span></div></div>
 
 
-<div class="viewcode-block" id="SystemSimulation"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.components.system_simulation.SystemSimulation">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">StrictConfig</span><span class="p">)</span>
+<div class="viewcode-block" id="SystemSimulation"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.components.system_simulation.SystemSimulation">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">SystemSimulation</span><span class="p">(</span><span class="n">ComponentConfig</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Simulation of a nested set of components.&quot;&quot;&quot;</span>
 
     <span class="n">name</span><span class="p">:</span> <span class="n">ComponentID</span>
-    <span class="n">inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">PortID</span><span class="p">,</span> <span class="n">ComponentPort</span><span class="p">]</span>
     <span class="n">components</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ComponentConfig</span><span class="p">]</span>
     <span class="n">expose</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">PortID</span><span class="p">,</span> <span class="n">ComponentPort</span><span class="p">]</span>
 

@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>API &#8212; tickit 0.2.3.dev18+g96b960e4 documentation</title>
+    <title>API &#8212; tickit 0.2.3.dev19+gbdda7bcd documentation</title>
   
   
   
@@ -2760,7 +2760,7 @@ requests a callback.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="tickit.devices.sink.Sink">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.devices.sink.</span></span><span class="sig-name descname"><span class="pre">Sink</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.typedefs.ComponentID" title="tickit.core.typedefs.ComponentID"><span class="pre">ComponentID</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.11)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#tickit.core.typedefs.PortID" title="tickit.core.typedefs.PortID"><span class="pre">PortID</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#tickit.core.typedefs.ComponentPort" title="tickit.core.typedefs.ComponentPort"><span class="pre">ComponentPort</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/devices/sink.html#Sink"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.devices.sink.Sink" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.devices.sink.</span></span><span class="sig-name descname"><span class="pre">Sink</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.typedefs.ComponentID" title="tickit.core.typedefs.ComponentID"><span class="pre">ComponentID</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.11)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#tickit.core.typedefs.PortID" title="tickit.core.typedefs.PortID"><span class="pre">PortID</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#tickit.core.typedefs.ComponentPort" title="tickit.core.typedefs.ComponentPort"><span class="pre">ComponentPort</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.11)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'tickit.devices.sink.Sink'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'tickit.devices.sink.Sink'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/devices/sink.html#Sink"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.devices.sink.Sink" title="Permalink to this definition">#</a></dt>
 <dd><p>Arbitrary value sink that logs the value.</p>
 </dd></dl>
 
@@ -2863,94 +2863,6 @@ never requests a callback.</p>
 <span id="tickit-utils-configuration"></span><h4><code class="docutils literal notranslate"><span class="pre">tickit.utils.configuration</span></code><a class="headerlink" href="#module-tickit.utils.configuration.configurable" title="Permalink to this heading">#</a></h4>
 <section id="tickit-utils-configuration-configurable">
 <h5><code class="docutils literal notranslate"><span class="pre">tickit.utils.configuration.configurable</span></code><a class="headerlink" href="#tickit-utils-configuration-configurable" title="Permalink to this heading">#</a></h5>
-<dl class="py class">
-<dt class="sig sig-object py" id="tickit.utils.configuration.configurable.StrictConfig">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.utils.configuration.configurable.</span></span><span class="sig-name descname"><span class="pre">StrictConfig</span></span><a class="reference internal" href="../../_modules/tickit/utils/configuration/configurable.html#StrictConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.utils.configuration.configurable.StrictConfig" title="Permalink to this definition">#</a></dt>
-<dd><p>Configuration for Pydantic dataclasses.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="tickit.utils.configuration.configurable.as_tagged_union">
-<span class="sig-prename descclassname"><span class="pre">tickit.utils.configuration.configurable.</span></span><span class="sig-name descname"><span class="pre">as_tagged_union</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">super_cls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Type" title="(in Python v3.11)"><span class="pre">Type</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.11)"><span class="pre">Callable</span></a><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Type" title="(in Python v3.11)"><span class="pre">Type</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Type" title="(in Python v3.11)"><span class="pre">Type</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discriminator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'type'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Type" title="(in Python v3.11)"><span class="pre">Type</span></a><span class="p"><span class="pre">[</span></span><span class="pre">BaseConfig</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Type" title="(in Python v3.11)"><span class="pre">Type</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.11)"><span class="pre">Callable</span></a><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Type" title="(in Python v3.11)"><span class="pre">Type</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Type" title="(in Python v3.11)"><span class="pre">Type</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/tickit/utils/configuration/configurable.html#as_tagged_union"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.utils.configuration.configurable.as_tagged_union" title="Permalink to this definition">#</a></dt>
-<dd><p>Add all subclasses of super_cls to a discriminated union.</p>
-<p>For all subclasses of super_cls, add a discriminator field to identify
-the type. Raw JSON should look like {“type”: &lt;type name&gt;, params for
-&lt;type name&gt;…}.
-Add validation methods to super_cls so it can be parsed by pydantic.parse_obj_as.</p>
-<p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@as_tagged_union</span>
-<span class="k">class</span> <span class="nc">Expression</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-    <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="o">...</span>
-
-
-<span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">Add</span><span class="p">(</span><span class="n">Expression</span><span class="p">):</span>
-    <span class="n">left</span><span class="p">:</span> <span class="n">Expression</span>
-    <span class="n">right</span><span class="p">:</span> <span class="n">Expression</span>
-
-    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">calculate</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">calculate</span><span class="p">()</span>
-
-
-<span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">Subtract</span><span class="p">(</span><span class="n">Expression</span><span class="p">):</span>
-    <span class="n">left</span><span class="p">:</span> <span class="n">Expression</span>
-    <span class="n">right</span><span class="p">:</span> <span class="n">Expression</span>
-
-    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">calculate</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">calculate</span><span class="p">()</span>
-
-
-<span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">IntLiteral</span><span class="p">(</span><span class="n">Expression</span><span class="p">):</span>
-    <span class="n">value</span><span class="p">:</span> <span class="nb">int</span>
-
-    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
-
-
-<span class="n">my_sum</span> <span class="o">=</span> <span class="n">Add</span><span class="p">(</span><span class="n">IntLiteral</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="n">Subtract</span><span class="p">(</span><span class="n">IntLiteral</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">IntLiteral</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
-<span class="k">assert</span> <span class="n">my_sum</span><span class="o">.</span><span class="n">calculate</span><span class="p">()</span> <span class="o">==</span> <span class="mi">13</span>
-
-<span class="k">assert</span> <span class="n">my_sum</span> <span class="o">==</span> <span class="n">parse_obj_as</span><span class="p">(</span>
-    <span class="n">Expression</span><span class="p">,</span>
-    <span class="p">{</span>
-        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;Add&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;left&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;IntLiteral&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span>
-        <span class="s2">&quot;right&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;Subtract&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;left&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;IntLiteral&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">},</span>
-            <span class="s2">&quot;right&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;IntLiteral&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
-        <span class="p">},</span>
-    <span class="p">},</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>super_cls</strong> – The superclass of the union, Expression in the above example</p></li>
-<li><p><strong>discriminator</strong> – The discriminator that will be inserted into the
-serialized documents for type determination. Defaults to “type”.</p></li>
-<li><p><strong>config</strong> – A pydantic config class to be inserted into all
-subclasses. Defaults to None.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>A decorator that adds the necessary</dt><dd><p>functionality to a class.</p>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Union[Type, Callable[[Type], Type]]</p>
-</dd>
-</dl>
-</dd></dl>
-
 </section>
 <span class="target" id="module-tickit.utils.configuration.loading"></span><section id="tickit-utils-configuration-loading">
 <h5><code class="docutils literal notranslate"><span class="pre">tickit.utils.configuration.loading</span></code><a class="headerlink" href="#tickit-utils-configuration-loading" title="Permalink to this heading">#</a></h5>
@@ -3483,11 +3395,7 @@ required.</p>
 </ul>
 </li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tickit.utils.configuration.configurable"><code class="docutils literal notranslate"><span class="pre">tickit.utils.configuration</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit-utils-configuration-configurable"><code class="docutils literal notranslate"><span class="pre">tickit.utils.configuration.configurable</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.utils.configuration.configurable.StrictConfig"><code class="docutils literal notranslate"><span class="pre">StrictConfig</span></code></a></li>
-<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.utils.configuration.configurable.as_tagged_union"><code class="docutils literal notranslate"><span class="pre">as_tagged_union()</span></code></a></li>
-</ul>
-</li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit-utils-configuration-configurable"><code class="docutils literal notranslate"><span class="pre">tickit.utils.configuration.configurable</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit-utils-configuration-loading"><code class="docutils literal notranslate"><span class="pre">tickit.utils.configuration.loading</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.utils.configuration.loading.read_configs"><code class="docutils literal notranslate"><span class="pre">read_configs()</span></code></a></li>
 </ul>

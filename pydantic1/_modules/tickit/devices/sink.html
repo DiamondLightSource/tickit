@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.devices.sink &#8212; tickit 0.2.3.dev18+g96b960e4 documentation</title>
+    <title>tickit.devices.sink &#8212; tickit 0.2.3.dev19+gbdda7bcd documentation</title>
   
   
   
@@ -419,6 +419,8 @@ document.write(`
 <span></span><span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Type</span>
 
+<span class="kn">from</span> <span class="nn">pydantic.v1.dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+
 <span class="kn">from</span> <span class="nn">tickit.core.components.component</span> <span class="kn">import</span> <span class="n">Component</span><span class="p">,</span> <span class="n">ComponentConfig</span>
 <span class="kn">from</span> <span class="nn">tickit.core.components.device_simulation</span> <span class="kn">import</span> <span class="n">DeviceSimulation</span>
 <span class="kn">from</span> <span class="nn">tickit.core.device</span> <span class="kn">import</span> <span class="n">Device</span><span class="p">,</span> <span class="n">DeviceUpdate</span>
@@ -452,7 +454,8 @@ document.write(`
         <span class="k">return</span> <span class="n">DeviceUpdate</span><span class="p">(</span><span class="n">SinkDevice</span><span class="o">.</span><span class="n">Outputs</span><span class="p">(),</span> <span class="kc">None</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="Sink"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.devices.sink.Sink">[docs]</a><span class="k">class</span> <span class="nc">Sink</span><span class="p">(</span><span class="n">ComponentConfig</span><span class="p">):</span>
+<div class="viewcode-block" id="Sink"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.devices.sink.Sink">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Sink</span><span class="p">(</span><span class="n">ComponentConfig</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Arbitrary value sink that logs the value.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Component</span><span class="p">:</span>  <span class="c1"># noqa: D102</span>
