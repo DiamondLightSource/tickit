@@ -7,34 +7,33 @@ from aiohttp.web_routedef import RouteDef
 
 
 @dataclass(frozen=True)
-class HTTPEndpoint(Generic[AnyStr]):
-    """A decorator to register a device adapter method as a HTTP Endpoint.
+class HttpEndpoint(Generic[AnyStr]):
+    """A decorator intended for use with HttpAdapter.
+
+    Routes an HTTP endpoint to the decorated method.
 
     Args:
-        url (str): The URL that will point to a specific endpoint.
-        method (str): The method to use when using this endpoint.
-        name (str): The name of the route.
-        include_json (bool): A flag to indicate whether the route should include json.
-        interrupt (bool): A flag indicating whether calling of the method should
-            raise an adapter interrupt. Defaults to False.
+        path: The URL that will point to a specific endpoint.
+        method: The method to use when using this endpoint.
+        interrupt: If True, every time this endpoint is called the adapter's device
+            will be interrupted. Defaults to False.
 
     Returns:
         Callable:
             A decorator which registers the adapter method as an endpoint.
     """
 
-    url: str
+    path: str
     method: str
-    include_json: bool = False
     interrupt: bool = False
 
     # Type signature can become more specific if support is dropped for
     # Python 3.7, see https://github.com/python/mypy/issues/708
     def __call__(self, func: Callable) -> Callable:
-        """A decorator which registers the adapter method as an endpoint.
+        """Decorate a function for HTTP routing.
 
         Args:
-            func (Callable): The adapter method to be registered as an endpoint.
+            func: The adapter method to be registered as an endpoint.
 
         Returns:
             Callable: The registered adapter endpoint.
@@ -57,26 +56,31 @@ class HTTPEndpoint(Generic[AnyStr]):
         Returns:
             RouteDef: The route definition for the endpoint.
         """
-        return RouteDef(self.method, self.url, func, {})
+        return RouteDef(self.method, self.path, func, {})
 
     @classmethod
-    def get(
-        cls, url: str, include_json: bool = False, interrupt: bool = False
-    ) -> "HTTPEndpoint":
-        """Method for the HTTPEndpoint that sets the request method to "GET".
+    def get(cls, url: str, interrupt: bool = False) -> "HttpEndpoint":
+        """Shortcut to making a GET endpoint.
 
         Returns:
-            cls: The class of HTTPEndpoint with the "GET" request method.
+            cls: The class of HttpEndpoint with the "GET" request method.
         """
-        return cls(url, "GET", include_json, interrupt)
+        return cls(url, "GET", interrupt)
 
     @classmethod
-    def put(
-        cls, url: str, include_json: bool = False, interrupt: bool = False
-    ) -> "HTTPEndpoint":
-        """Method for the HTTPEndpoint that sets the request method to "PUT".
+    def put(cls, url: str, interrupt: bool = False) -> "HttpEndpoint":
+        """Shortcut to making a PUT endpoint.
 
         Returns:
-            cls: The class of HTTPEndpoint with the "PUT" request method.
+            cls: The class of HttpEndpoint with the "PUT" request method.
         """
-        return cls(url, "PUT", include_json, interrupt)
+        return cls(url, "PUT", interrupt)
+
+    @classmethod
+    def post(cls, url: str, interrupt: bool = False) -> "HttpEndpoint":
+        """Shortcut to making a POST endpoint.
+
+        Returns:
+            cls: The class of HttpEndpoint with the "POST" request method.
+        """
+        return cls(url, "POST", interrupt)

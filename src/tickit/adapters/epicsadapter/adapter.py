@@ -3,7 +3,7 @@ import re
 from abc import abstractmethod
 from dataclasses import dataclass
 from tempfile import NamedTemporaryFile
-from typing import Any, Callable, Dict
+from typing import Any, Callable, Dict, Optional
 
 from softioc import builder, softioc
 
@@ -30,14 +30,18 @@ class OutputRecord:
 
 
 class EpicsAdapter(Adapter):
-    """An adapter implementation which acts as an EPICS IOC."""
+    """An adapter implementation which acts as an EPICS IOC.
 
-    def __init__(self, db_file: str, ioc_name: str) -> None:
+    This is optionally initialised from an EPICS database (db) file
+    but can be customised in code by implementing on_db_load.
+    """
+
+    def __init__(self, ioc_name: str, db_file: Optional[str] = None) -> None:
         """An EpicsAdapter constructor which stores the db_file path and the IOC name.
 
         Args:
-            db_file (str): The path to the db_file.
             ioc_name (str): The name of the EPICS IOC.
+            db_file (str, optional): The path to the db_file.
         """
         self.db_file = db_file
         self.ioc_name = ioc_name
@@ -68,7 +72,7 @@ class EpicsAdapter(Adapter):
         raise NotImplementedError
 
     def load_records_without_DTYP_fields(self):
-        """Loads the records without DTYP fields."""
+        """Load records from database file without DTYP fields."""
         with open(self.db_file, "rb") as inp:
             with NamedTemporaryFile(suffix=".db", delete=False) as out:
                 for line in inp.readlines():
@@ -84,7 +88,8 @@ class EpicsAdapter(Adapter):
         """Runs the server continuously."""
         await super().run_forever(device, raise_interrupt)
         builder.SetDeviceName(self.ioc_name)
-        self.load_records_without_DTYP_fields()
+        if self.db_file:
+            self.load_records_without_DTYP_fields()
         self.on_db_load()
         builder.UnsetDevice()
         notify_adapter_ready(self.ioc_num)
