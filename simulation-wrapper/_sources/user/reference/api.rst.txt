@@ -231,11 +231,11 @@ This is the internal API reference for tickit
         -------------------------------
 
 
-    .. automodule:: tickit.adapters.zmqadapter
+    .. automodule:: tickit.adapters.zeromq.push_adapter
         :members:
         
-        ``tickit.adapters.zmqadapter``
-        ------------------------------
+        ``tickit.adapters.zeromq.push_adapter``
+        ---------------------------------------
 
 
     .. automodule:: tickit.adapters.epicsadapter

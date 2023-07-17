@@ -52,10 +52,6 @@
     "url": "https://dls-controls.github.io/tickit/0.1/"
   },
   {
-    "version": "76_running_event",
-    "url": "https://dls-controls.github.io/tickit/76_running_event/"
-  },
-  {
     "version": "add_integration_tests",
     "url": "https://dls-controls.github.io/tickit/add_integration_tests/"
   },

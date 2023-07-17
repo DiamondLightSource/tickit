@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.adapters.interpreters.endpoints.http_endpoint &#8212; tickit 0.2.3.dev36+g96b6eea6 documentation</title>
+    <title>tickit.adapters.interpreters.endpoints.http_endpoint &#8212; tickit 0.2.4.dev32+g9d06858e documentation</title>
   
   
   
@@ -424,35 +424,34 @@ document.write(`
 <span class="kn">from</span> <span class="nn">aiohttp.web_routedef</span> <span class="kn">import</span> <span class="n">RouteDef</span>
 
 
-<div class="viewcode-block" id="HTTPEndpoint"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.adapters.interpreters.endpoints.http_endpoint.HTTPEndpoint">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">HTTPEndpoint</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">AnyStr</span><span class="p">]):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A decorator to register a device adapter method as a HTTP Endpoint.</span>
+<div class="viewcode-block" id="HttpEndpoint"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.adapters.interpreters.endpoints.http_endpoint.HttpEndpoint">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">HttpEndpoint</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">AnyStr</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A decorator intended for use with HttpAdapter.</span>
+
+<span class="sd">    Routes an HTTP endpoint to the decorated method.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        url (str): The URL that will point to a specific endpoint.</span>
-<span class="sd">        method (str): The method to use when using this endpoint.</span>
-<span class="sd">        name (str): The name of the route.</span>
-<span class="sd">        include_json (bool): A flag to indicate whether the route should include json.</span>
-<span class="sd">        interrupt (bool): A flag indicating whether calling of the method should</span>
-<span class="sd">            raise an adapter interrupt. Defaults to False.</span>
+<span class="sd">        path: The URL that will point to a specific endpoint.</span>
+<span class="sd">        method: The method to use when using this endpoint.</span>
+<span class="sd">        interrupt: If True, every time this endpoint is called the adapter&#39;s device</span>
+<span class="sd">            will be interrupted. Defaults to False.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Callable:</span>
 <span class="sd">            A decorator which registers the adapter method as an endpoint.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">url</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">path</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">method</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">include_json</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">interrupt</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="c1"># Type signature can become more specific if support is dropped for</span>
     <span class="c1"># Python 3.7, see https://github.com/python/mypy/issues/708</span>
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;A decorator which registers the adapter method as an endpoint.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Decorate a function for HTTP routing.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            func (Callable): The adapter method to be registered as an endpoint.</span>
+<span class="sd">            func: The adapter method to be registered as an endpoint.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Callable: The registered adapter endpoint.</span>
@@ -460,7 +459,7 @@ document.write(`
         <span class="nb">setattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="s2">&quot;__endpoint__&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">func</span>
 
-<div class="viewcode-block" id="HTTPEndpoint.define"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.adapters.interpreters.endpoints.http_endpoint.HTTPEndpoint.define">[docs]</a>    <span class="k">def</span> <span class="nf">define</span><span class="p">(</span>
+<div class="viewcode-block" id="HttpEndpoint.define"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.adapters.interpreters.endpoints.http_endpoint.HttpEndpoint.define">[docs]</a>    <span class="k">def</span> <span class="nf">define</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">web</span><span class="o">.</span><span class="n">Request</span><span class="p">],</span> <span class="n">Awaitable</span><span class="p">[</span><span class="n">StreamResponse</span><span class="p">]]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RouteDef</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs the construction of the endpoint RouteDef for the HTTP Server.</span>
@@ -475,29 +474,34 @@ document.write(`
 <span class="sd">        Returns:</span>
 <span class="sd">            RouteDef: The route definition for the endpoint.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">RouteDef</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="p">{})</span></div>
+        <span class="k">return</span> <span class="n">RouteDef</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="p">{})</span></div>
 
-<div class="viewcode-block" id="HTTPEndpoint.get"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.adapters.interpreters.endpoints.http_endpoint.HTTPEndpoint.get">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span>
-        <span class="bp">cls</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">include_json</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">interrupt</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;HTTPEndpoint&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Method for the HTTPEndpoint that sets the request method to &quot;GET&quot;.</span>
+<div class="viewcode-block" id="HttpEndpoint.get"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.adapters.interpreters.endpoints.http_endpoint.HttpEndpoint.get">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">interrupt</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;HttpEndpoint&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Shortcut to making a GET endpoint.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            cls: The class of HTTPEndpoint with the &quot;GET&quot; request method.</span>
+<span class="sd">            cls: The class of HttpEndpoint with the &quot;GET&quot; request method.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="n">include_json</span><span class="p">,</span> <span class="n">interrupt</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="n">interrupt</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="HTTPEndpoint.put"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.adapters.interpreters.endpoints.http_endpoint.HTTPEndpoint.put">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span>
-        <span class="bp">cls</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">include_json</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">interrupt</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;HTTPEndpoint&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Method for the HTTPEndpoint that sets the request method to &quot;PUT&quot;.</span>
+<div class="viewcode-block" id="HttpEndpoint.put"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.adapters.interpreters.endpoints.http_endpoint.HttpEndpoint.put">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">interrupt</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;HttpEndpoint&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Shortcut to making a PUT endpoint.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            cls: The class of HTTPEndpoint with the &quot;PUT&quot; request method.</span>
+<span class="sd">            cls: The class of HttpEndpoint with the &quot;PUT&quot; request method.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="s2">&quot;PUT&quot;</span><span class="p">,</span> <span class="n">include_json</span><span class="p">,</span> <span class="n">interrupt</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="s2">&quot;PUT&quot;</span><span class="p">,</span> <span class="n">interrupt</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="HttpEndpoint.post"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.adapters.interpreters.endpoints.http_endpoint.HttpEndpoint.post">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">interrupt</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;HttpEndpoint&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Shortcut to making a POST endpoint.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            cls: The class of HttpEndpoint with the &quot;POST&quot; request method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">,</span> <span class="n">interrupt</span><span class="p">)</span></div></div>
 </pre></div>
 
                 </article>
