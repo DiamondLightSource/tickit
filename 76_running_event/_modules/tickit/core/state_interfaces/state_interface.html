@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.state_interfaces.state_interface &#8212; tickit 0.2.3.dev1+g0660126 documentation</title>
+    <title>tickit.core.state_interfaces.state_interface &#8212; tickit 0.2.4.dev2+geed8af4a documentation</title>
   
   
   
@@ -429,17 +429,17 @@ document.write(`
 
 <span class="c1">#: A consumable value</span>
 <span class="n">C</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="n">covariant</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="c1">#: A producable value</span>
+<span class="c1">#: A producible value</span>
 <span class="n">P</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="n">contravariant</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="StateConsumer"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.state_interface.StateConsumer">[docs]</a><span class="nd">@runtime_checkable</span>
 <span class="k">class</span> <span class="nc">StateConsumer</span><span class="p">(</span><span class="n">Protocol</span><span class="p">[</span><span class="n">C</span><span class="p">]):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;An interface for types which implent publish/subscribe message consumers.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An interface for types which implement publish/subscribe message consumers.</span>
 
 <span class="sd">    An interface for types which implement publish/subscribe message consumers,</span>
 <span class="sd">    the consumer must be able to subscribe to topics within the messaging framework,</span>
-<span class="sd">    upon recieving a message the consumer should pass the value to the callback</span>
+<span class="sd">    upon receiving a message the consumer should pass the value to the callback</span>
 <span class="sd">    function, if a topic is subscribed to which does not yet exist it should be created.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -468,7 +468,7 @@ document.write(`
 <span class="k">class</span> <span class="nc">StateProducer</span><span class="p">(</span><span class="n">Protocol</span><span class="p">[</span><span class="n">P</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An interface for types which implement publish/subscribe message producers.</span>
 
-<span class="sd">    An interface for types which implment publish/subscribe message producers,</span>
+<span class="sd">    An interface for types which implement publish/subscribe message producers,</span>
 <span class="sd">    the producer must be able to produce a value to a topic within the messaging</span>
 <span class="sd">    framework, if the topic does not yet exist it should be created.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -501,7 +501,7 @@ document.write(`
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A decorator to add a StateInterface to the registry.</span>
 
 <span class="sd">    A decorator to add a StateInterface to the registry of StateConsumers or</span>
-<span class="sd">    StateProducer according to it&#39;s signature. StateConsumers and StateProducers which</span>
+<span class="sd">    StateProducer according to its signature. StateConsumers and StateProducers which</span>
 <span class="sd">    are intended to work together should be added with the same name.</span>
 
 <span class="sd">    Args:</span>
@@ -530,7 +530,7 @@ document.write(`
 
 <span class="sd">    Gets a set of interface names for which both a StateConsumer and StateProducer</span>
 <span class="sd">    exist. The external option may be used to restrict interfaces to those which may be</span>
-<span class="sd">    used in simulations which are distriubted across multiple processes.</span>
+<span class="sd">    used in simulations which are distributed across multiple processes.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        external (bool): If true, only interfaces which can be used in simulations</span>

@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.adapters.interpreters.wrappers.splitting_interpreter &#8212; tickit 0.2.3.dev1+g0660126 documentation</title>
+    <title>tickit.adapters.interpreters.wrappers.splitting_interpreter &#8212; tickit 0.2.4.dev2+geed8af4a documentation</title>
   
   
   
@@ -462,8 +462,8 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Combines results from handling multiple messages.</span>
 
 <span class="sd">        Takes the responses from when the wrapped interpreter handles multiple messages</span>
-<span class="sd">        and returns an appropriate composite repsonse and interrrupt. The response is</span>
-<span class="sd">        an asyncronous iterable of each of the individual responses, the composite</span>
+<span class="sd">        and returns an appropriate composite response and interrupt. The response is</span>
+<span class="sd">        an asynchronous iterable of each of the individual responses, the composite</span>
 <span class="sd">        interrupt is a logical inclusive &#39;or&#39; of all of the individual interrupts.</span>
 
 <span class="sd">        Args:</span>
@@ -484,8 +484,8 @@ document.write(`
         <span class="p">]</span>
 
         <span class="n">resp</span> <span class="o">=</span> <span class="n">wrap_messages_as_async_iterable</span><span class="p">(</span><span class="n">responses</span><span class="p">)</span>
-        <span class="n">interrrupt</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span><span class="n">individual_interrupts</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">resp</span><span class="p">,</span> <span class="n">interrrupt</span>
+        <span class="n">interrupt</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span><span class="n">individual_interrupts</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">resp</span><span class="p">,</span> <span class="n">interrupt</span>
 
 <div class="viewcode-block" id="SplittingInterpreter.handle"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.adapters.interpreters.wrappers.splitting_interpreter.SplittingInterpreter.handle">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">adapter</span><span class="p">:</span> <span class="n">Adapter</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">AnyStr</span>
@@ -505,7 +505,9 @@ document.write(`
 <span class="sd">                indicating whether an interrupt should be raised by the adapter.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">individual_messages</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">msg</span> <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">message_delimiter</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span> <span class="k">if</span> <span class="n">msg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="n">msg</span>
+            <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">message_delimiter</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">msg</span>  <span class="c1"># Discard empty strings and None</span>
         <span class="p">]</span>
 
         <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_individual_messages</span><span class="p">(</span><span class="n">adapter</span><span class="p">,</span> <span class="n">individual_messages</span><span class="p">)</span>

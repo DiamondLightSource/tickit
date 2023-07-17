@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.management.schedulers.slave &#8212; tickit 0.2.3.dev1+g0660126 documentation</title>
+    <title>tickit.core.management.schedulers.slave &#8212; tickit 0.2.4.dev2+geed8af4a documentation</title>
   
   
   
@@ -525,7 +525,7 @@ document.write(`
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Changes</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SimTime</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Routes inputs, does a tick and returns output changes and a callback time.</span>
 
-<span class="sd">        An asyhcnronous method which determines which components within the simulation</span>
+<span class="sd">        An asynchronous method which determines which components within the simulation</span>
 <span class="sd">        require being woken up, sets the input changes for use by the &quot;external&quot; mock</span>
 <span class="sd">        component, performs a tick, determines the period in which the slave scheduler</span>
 <span class="sd">        should next be updated, and returns the changes collated by the &quot;expose&quot; mock</span>
@@ -579,13 +579,13 @@ document.write(`
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">raise_interrupt</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="SlaveScheduler.handle_component_exception"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.slave.SlaveScheduler.handle_component_exception">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_component_exception</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">ComponentException</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle exceptions raised from componenets by shutting down the simulation.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle exceptions raised from components by shutting down the simulation.</span>
 
 <span class="sd">        If a component inside a system simulation produces an exception, the slave</span>
 <span class="sd">        scheduler will produce a message to all components it contains to cause them</span>
 <span class="sd">        to cancel any running component tasks (adapter tasks). Afterwards the scheduler</span>
 <span class="sd">        stores the ComponentException message, allowing its associated system simulation</span>
-<span class="sd">        component to propogate the exception to the master scheduler.</span>
+<span class="sd">        component to propagate the exception to the master scheduler.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">handle_component_exception</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>

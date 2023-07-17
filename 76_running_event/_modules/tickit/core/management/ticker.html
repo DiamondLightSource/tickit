@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.management.ticker &#8212; tickit 0.2.3.dev1+g0660126 documentation</title>
+    <title>tickit.core.management.ticker &#8212; tickit 0.2.4.dev2+geed8af4a documentation</title>
   
   
   
@@ -491,7 +491,7 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set up the ticker to perform a tick.</span>
 
 <span class="sd">        An asynchronous method which sets up the ticker to perform a tick by updating</span>
-<span class="sd">        time, reseting accumulators and finding the set of components which require</span>
+<span class="sd">        time, resetting accumulators and finding the set of components which require</span>
 <span class="sd">        update.</span>
 
 <span class="sd">        Args:</span>
@@ -517,7 +517,7 @@ document.write(`
 
 <span class="sd">        An asynchronous method which schedules updates for components with resolved</span>
 <span class="sd">        dependencies, as determined by the intersection of the components first order</span>
-<span class="sd">        dependencies and the set of componets which still require an update.</span>
+<span class="sd">        dependencies and the set of components which still require an update.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">def</span> <span class="nf">required_dependencies</span><span class="p">(</span><span class="n">component</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">]:</span>
@@ -550,7 +550,7 @@ document.write(`
 <span class="sd">        An asynchronous message which propagates the output of an updated component by</span>
 <span class="sd">        removing the component from the set of components requiring update, adding the</span>
 <span class="sd">        routed inputs to the accumulator, and scheduling any possible updates. If no</span>
-<span class="sd">        components require update the finsihed flag will be set.</span>
+<span class="sd">        components require update the finished flag will be set.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            output (Output): The output produced by the update of a component.</span>

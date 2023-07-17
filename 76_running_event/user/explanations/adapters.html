@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Adapters &#8212; tickit 0.2.3.dev1+g0660126 documentation</title>
+    <title>Adapters &#8212; tickit 0.2.4.dev2+geed8af4a documentation</title>
   
   
   
@@ -459,7 +459,7 @@ document.write(`
                   
   <section id="adapters">
 <h1>Adapters<a class="headerlink" href="#adapters" title="Permalink to this heading">#</a></h1>
-<p>Adpaters are user implemented classes associated with a device which facilitate
+<p>Adapters are user implemented classes associated with a device which facilitate
 interactions between that device and components external to the simulation.
 Adapters allow us to influence the device from outside the simulation, such as
 using a TCP client to alter a parameter on a device. A device may have multiple
@@ -481,7 +481,7 @@ interpreter, the command interpreter.</p>
 <p>The command interpreter is a generic interpreter which identifies commands from
 incoming messages. Commands are defined via decoration of adapter methods and
 the only such command type currently is a <a class="reference internal" href="../reference/api.html#tickit.adapters.interpreters.command.regex_command.RegexCommand" title="tickit.adapters.interpreters.command.regex_command.RegexCommand"><code class="xref any py py-class docutils literal notranslate"><span class="pre">RegexCommand</span></code></a>. This matches incoming
-messages to regex patterns and processes the command approprately.</p>
+messages to regex patterns and processes the command appropriately.</p>
 <p>Tickit also includes three interpreter wrappers for the command interpreter.
 These wrap the command interpreter to allow for more complex message handling
 and can be used with the composed adapter in the same way.</p>
@@ -499,9 +499,9 @@ adapter to utilise them for the device.</p>
 <section id="epics-adapter">
 <h2>EPICS adapter<a class="headerlink" href="#epics-adapter" title="Permalink to this heading">#</a></h2>
 <p>An adapter implementation that acts as an EPICS IOC. It utilises pythonSoftIOC
-create an IOC in the process which hosts PV’s which can be linked to attributes
+create an IOC in the process which hosts PVs which can be linked to attributes
 on the device.</p>
-<p>This is useful for the simulation of devices which use hard IOC’s since these
+<p>This is useful for the simulation of devices which use hard IOCs since these
 cannot interact with simulated devices.</p>
 </section>
 </section>
