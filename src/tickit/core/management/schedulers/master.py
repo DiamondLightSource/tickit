@@ -40,6 +40,7 @@ class MasterScheduler(BaseScheduler):
 
         self._initial_time = SimTime(initial_time)
         self.simulation_speed = simulation_speed
+        self.running = asyncio.Event()
 
     async def setup(self) -> None:
         """Performs base setup and creates an awaitable flag to indicate new wakeups."""
@@ -62,15 +63,18 @@ class MasterScheduler(BaseScheduler):
     async def run_forever(self) -> None:
         """Perform initial tick then continuously schedule ticks according to wakeups.
 
-        An asynchronous method which initially performs setup and an initial tick in
-        which all components are updated, subsequently ticks are performed as requested
-        by components of the simulation according to the simulation speed.
+        An asynchronous method which initially performs setup, sets the event to
+        signify the simulation is running, and performs an initial tick in which all
+        components are updated. Subsequent ticks are performed as requested by
+        components of the simulation according to the simulation speed.
         """
         await self.setup()
+        self.running.set()
         await self._do_initial_tick()
         while not self.error.is_set():
             await self._do_tick()
         LOGGER.debug("Stopping Master Scheduler")
+        self.running.clear()
 
     async def _do_initial_tick(self):
         """Performs the initial tick of the system."""
