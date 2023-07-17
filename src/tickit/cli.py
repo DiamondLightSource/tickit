@@ -1,6 +1,6 @@
 import asyncio
 import logging
-from typing import Literal, Optional, Set, Union
+from typing import Optional, Set
 
 import click
 from click.core import Context
@@ -46,8 +46,8 @@ def components(
 
     Args:
         config_path (str): The path to the configuration file.
-        components (Optional[Set[ComponentID]]): The name of the components to be run, seperated by
-            whitespace. If none are provided, all components will be run.
+        components (Optional[Set[ComponentID]]): The name of the components to be run,
+        seperated by whitespace. If none are provided, all components will be run.
         backend (str): The message broker to be used.
     """
     if components == ():
