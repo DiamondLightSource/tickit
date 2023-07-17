@@ -15,7 +15,7 @@ from tickit.core.management.event_router import InverseWiring
 from tickit.core.management.schedulers.master import MasterScheduler
 from tickit.core.runner import run_all_forever
 from tickit.core.state_interfaces.state_interface import get_interface
-from tickit.core.typedefs import ComponentException
+from tickit.core.typedefs import ComponentException, ComponentID, PortID
 from tickit.utils.configuration.loading import read_configs
 
 
@@ -70,12 +70,12 @@ async def master_scheduler(
     exception_task = event_loop.create_task(
         scheduler.handle_component_exception(
             ComponentException(
-                source="internal_tickit", error=NotImplementedError, traceback=""
+                source=ComponentID("internal_tickit"), error=Exception(), traceback=""
             ),
         )
     )
     interrupt_task = event_loop.create_task(
-        scheduler.schedule_interrupt("external_sink")
+        scheduler.schedule_interrupt(ComponentID("external_sink"))
     )
 
     await asyncio.wait([run_task, exception_task, interrupt_task])
@@ -98,5 +98,9 @@ async def test_sink_has_captured_value(
     await asyncio.wait_for(master_scheduler.running.wait(), timeout=2.0)
     await asyncio.wait_for(master_scheduler.ticker.finished.wait(), timeout=3.0)
 
-    assert source.last_outputs["value"] == sim.scheduler.input_changes["input_1"] == 42
+    assert (
+        source.last_outputs[PortID("value")]
+        == sim.scheduler.input_changes[PortID("input_1")]
+        == 42
+    )
     assert sink.device_inputs == {"sink_1": 42}

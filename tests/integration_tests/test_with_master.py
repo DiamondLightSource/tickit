@@ -16,7 +16,7 @@ from tickit.core.management.event_router import InverseWiring
 from tickit.core.management.schedulers.master import MasterScheduler
 from tickit.core.runner import run_all_forever
 from tickit.core.state_interfaces.state_interface import get_interface
-from tickit.core.typedefs import ComponentException
+from tickit.core.typedefs import ComponentException, ComponentID, PortID
 from tickit.devices.sink import SinkDevice
 from tickit.utils.configuration.loading import read_configs
 
@@ -64,7 +64,9 @@ async def master_scheduler(
 
     exception_task = event_loop.create_task(
         scheduler.handle_component_exception(
-            ComponentException(source="sim", error=NotImplementedError, traceback="")
+            ComponentException(
+                source=ComponentID("sim"), error=Exception(), traceback=""
+            )
         )
     )
 
@@ -84,8 +86,8 @@ async def test_sink_has_captured_value(
 
     await asyncio.wait_for(master_scheduler.ticker.finished.wait(), timeout=2.0)
 
-    sunk_value = master_scheduler.ticker.inputs["sink"]
+    sunk_value = master_scheduler.ticker.inputs[ComponentID("sink")]
 
     mocked_update = cast(mock.MagicMock, sink.device.update)
     mocked_update.assert_called_once_with(0, sunk_value)
-    assert sunk_value.get("input") == 42
+    assert sunk_value.get(PortID("input")) == 42

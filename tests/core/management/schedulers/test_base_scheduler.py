@@ -77,7 +77,7 @@ async def test_base_scheduler_update_component_method(
         ComponentID("foo"), SimTime(0), Changes(Map({PortID("42"): "hello"}))
     )
     await base_scheduler.update_component(_input)
-    base_scheduler.state_producer.produce.assert_awaited_once()
+    base_scheduler.state_producer.produce.assert_awaited_once()  # type: ignore
 
 
 @pytest.mark.asyncio
