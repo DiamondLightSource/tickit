@@ -87,20 +87,21 @@ def build_simulation(
     """
     scheduler = None
     components = None
-    components_to_run = components_to_run or set()
-
     configs = read_configs(config_path)
-    inverse_wiring = InverseWiring.from_component_configs(configs)
 
     if include_schedulers:
+        inverse_wiring = InverseWiring.from_component_configs(configs)
         scheduler = MasterScheduler(inverse_wiring, *get_interface(backend))
     if include_components:
-        components = {config.name: config() for config in configs}
-        run_all = not components_to_run
+        available_components = {config.name for config in configs}
+        if components_to_run is None:
+            components_to_run = available_components
+        if any(name not in available_components for name in components_to_run):
+            raise ValueError("Requested components are not available in configuration")
         components = {
             config.name: config()
             for config in configs
-            if run_all or config.name in components_to_run
+            if config.name in components_to_run
         }
 
     return TickitSimulation(backend, scheduler, components)
