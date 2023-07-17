@@ -20,17 +20,28 @@ from tickit.utils.configuration.loading import read_configs
 
 
 @pytest.fixture
+def event_loop():
+    """Manage instance of event loop for runner test cases."""
+    try:
+        loop = asyncio.get_running_loop()
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+    yield loop
+    loop.close()
+
+
+@pytest_asyncio.fixture
 def configs_from_yaml() -> List[ComponentConfig]:
     path_to_yaml = Path(__file__).parent / "configs" / "nested.yaml"
     return read_configs(path_to_yaml)
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 def wiring(configs_from_yaml) -> InverseWiring:
     return InverseWiring.from_component_configs(configs_from_yaml)
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 def components(configs_from_yaml) -> List[Component]:
     return [config() for config in configs_from_yaml]
 
@@ -60,18 +71,16 @@ async def master_scheduler(
         scheduler.handle_component_exception(
             ComponentException(
                 source="internal_tickit", error=NotImplementedError, traceback=""
-            )
+            ),
         )
     )
+    interrupt_task = event_loop.create_task(
+        scheduler.schedule_interrupt("external_sink")
+    )
 
-    await asyncio.wait([run_task, exception_task])
+    await asyncio.wait([run_task, exception_task, interrupt_task])
 
     assert scheduler.running.is_set() is False
-
-
-@pytest.mark.asyncio
-async def test_master_scheduler_is_running(master_scheduler: MasterScheduler):
-    await asyncio.wait_for(master_scheduler.running.wait(), timeout=2.0)
 
 
 @pytest.mark.asyncio
@@ -86,6 +95,8 @@ async def test_sink_has_captured_value(
     assert sink.device_inputs == {}
     assert source.last_outputs == {}
 
+    await asyncio.wait_for(master_scheduler.running.wait(), timeout=2.0)
     await asyncio.wait_for(master_scheduler.ticker.finished.wait(), timeout=3.0)
 
-    assert source.last_outputs["value"] == sim.scheduler.input_changes["input_1"]
+    assert source.last_outputs["value"] == sim.scheduler.input_changes["input_1"] == 42
+    assert sink.device_inputs == {"sink_1": 42}

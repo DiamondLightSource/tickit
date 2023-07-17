@@ -3,7 +3,7 @@
 import asyncio
 from asyncio import AbstractEventLoop
 from pathlib import Path
-from typing import List, Tuple, Union, cast
+from typing import List, cast
 
 import mock
 import pytest
@@ -12,13 +12,12 @@ from mock import create_autospec
 
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
-from tickit.core.management.event_router import InverseWiring, Wiring
+from tickit.core.management.event_router import InverseWiring
 from tickit.core.management.schedulers.master import MasterScheduler
 from tickit.core.runner import run_all_forever
 from tickit.core.state_interfaces.state_interface import get_interface
-from tickit.core.typedefs import ComponentException, ComponentID, ComponentPort, PortID
-from tickit.devices.sink import Sink, SinkDevice
-from tickit.devices.source import Source
+from tickit.core.typedefs import ComponentException
+from tickit.devices.sink import SinkDevice
 from tickit.utils.configuration.loading import read_configs
 
 
@@ -74,15 +73,12 @@ async def master_scheduler(
 
 
 @pytest.mark.asyncio
-async def test_master_scheduler_is_running(master_scheduler: MasterScheduler):
-    await asyncio.wait_for(master_scheduler.running.wait(), timeout=2.0)
-
-
-@pytest.mark.asyncio
 async def test_sink_has_captured_value(
     components: List[Component],
     master_scheduler: MasterScheduler,
 ):
+    await asyncio.wait_for(master_scheduler.running.wait(), timeout=2.0)
+
     sink = cast(DeviceSimulation, components[1])
     assert sink.device_inputs == {}
 
