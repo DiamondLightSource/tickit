@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Creating a Device &#8212; tickit 0.2.4.dev23+g3605a95e documentation</title>
+    <title>Creating a Device &#8212; tickit 0.2.4.dev25+g2f06f681 documentation</title>
   
   
   
@@ -482,8 +482,8 @@ maps as members. As such we shall put in the following boilerplate.</p>
 
 <span class="k">class</span> <span class="nc">AmplifierDevice</span><span class="p">(</span><span class="n">Device</span><span class="p">):</span>
 
-<span class="n">Inputs</span><span class="p">:</span> <span class="n">TypedDict</span><span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Inputs&quot;</span><span class="p">,</span> <span class="p">{})</span>
-<span class="n">Outputs</span><span class="p">:</span> <span class="n">TypedDict</span><span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Outputs&quot;</span><span class="p">,</span> <span class="p">{})</span>
+<span class="n">Inputs</span><span class="p">:</span> <span class="n">TypedDict</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Inputs&quot;</span><span class="p">,</span> <span class="p">{})</span>
+<span class="n">Outputs</span><span class="p">:</span> <span class="n">TypedDict</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Outputs&quot;</span><span class="p">,</span> <span class="p">{})</span>
 
 <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
@@ -506,8 +506,8 @@ here.</p>
 
 <span class="k">class</span> <span class="nc">AmplifierDevice</span><span class="p">(</span><span class="n">Device</span><span class="p">):</span>
 
-<span class="n">Inputs</span><span class="p">:</span> <span class="n">TypedDict</span><span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Inputs&quot;</span><span class="p">,</span> <span class="p">{})</span>
-<span class="n">Outputs</span><span class="p">:</span> <span class="n">TypedDict</span><span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Outputs&quot;</span><span class="p">,</span> <span class="p">{})</span>
+<span class="n">Inputs</span><span class="p">:</span> <span class="n">TypedDict</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Inputs&quot;</span><span class="p">,</span> <span class="p">{})</span>
+<span class="n">Outputs</span><span class="p">:</span> <span class="n">TypedDict</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Outputs&quot;</span><span class="p">,</span> <span class="p">{})</span>
 
 <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_amplification</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">amplification</span> <span class="o">=</span> <span class="n">initial_amplification</span>
@@ -537,8 +537,8 @@ we define our inputs and outputs in the maps, and the line of logic in the <code
 
 <span class="k">class</span> <span class="nc">AmplifierDevice</span><span class="p">(</span><span class="n">Device</span><span class="p">):</span>
 
-    <span class="n">Inputs</span><span class="p">:</span> <span class="n">TypedDict</span><span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Inputs&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;initial_signal&quot;</span><span class="p">:</span><span class="nb">float</span><span class="p">})</span>
-    <span class="n">Outputs</span><span class="p">:</span> <span class="n">TypedDict</span><span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Outputs&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;amplified_signal&quot;</span><span class="p">:</span><span class="nb">float</span><span class="p">})</span>
+    <span class="n">Inputs</span><span class="p">:</span> <span class="n">TypedDict</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Inputs&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;initial_signal&quot;</span><span class="p">:</span><span class="nb">float</span><span class="p">})</span>
+    <span class="n">Outputs</span><span class="p">:</span> <span class="n">TypedDict</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Outputs&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;amplified_signal&quot;</span><span class="p">:</span><span class="nb">float</span><span class="p">})</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_amplification</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">amplification</span> <span class="o">=</span> <span class="n">initial_amplification</span>
@@ -557,13 +557,13 @@ device, and defines any default initial configuration values. As well as this, w
 overwrite the magic method <a class="reference internal" href="../reference/api.html#tickit.utils.singleton.Singleton.__call__" title="tickit.utils.singleton.Singleton.__call__"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a>, which returns a <a class="reference internal" href="../reference/api.html#tickit.core.components.device_simulation.DeviceSimulation" title="tickit.core.components.device_simulation.DeviceSimulation"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DeviceSimulation</span></code></a> object.
 This object takes the component name, as well as its device. We will return to this
 if the device requires any adapters to control it externally.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tickit.utils.compat.typing_compat</span> <span class="kn">import</span> <span class="n">pydantic_dataclass_dataclass</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tickit.utils.compat.typing_compat</span> <span class="kn">import</span> <span class="n">pydantic</span>
 
 <span class="kn">from</span> <span class="nn">tickit.core.components.component</span> <span class="kn">import</span> <span class="n">Component</span><span class="p">,</span> <span class="n">ComponentConfig</span>
 <span class="kn">from</span> <span class="nn">tickit.core.components.device_simulation</span> <span class="kn">import</span> <span class="n">DeviceSimulation</span>
 
 
-<span class="nd">@pydantic_dataclass</span>
+<span class="nd">@pydantic</span><span class="o">.</span><span class="n">dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
 <span class="k">class</span> <span class="nc">Amplifier</span><span class="p">(</span><span class="n">ComponentConfig</span><span class="p">):</span>
     <span class="n">initial_amplification</span><span class="p">:</span> <span class="nb">float</span>
 
