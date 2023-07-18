@@ -16,7 +16,7 @@ class TrampolineDevice(Device):
     """A trivial toy device which requests a callback every update."""
 
     #: An empty typed mapping of device inputs
-    Inputs: type = TypedDict("Inputs", {})
+    Inputs: TypedDict= TypedDict("Inputs", {})
     #: An empty typed mapping of device outputs
     Outputs: type = TypedDict("Outputs", {})
 
@@ -55,7 +55,7 @@ class RandomTrampolineDevice(Device):
     """A trivial toy device which produced a random output and requests a callback."""
 
     #: An empty typed mapping of device inputs
-    Inputs: type = TypedDict("Inputs", {})
+    Inputs: TypedDict= TypedDict("Inputs", {})
     #: A typed mapping containing the 'output' output value
     Outputs: type = TypedDict("Outputs", {"output": int})
 

@@ -16,7 +16,7 @@ class SinkDevice(Device):
     """A simple device which can take any input and produces no output."""
 
     #: A typed mapping containing the 'input' input value
-    Inputs: type = TypedDict("Inputs", {"input": Any})
+    Inputs: TypedDict= TypedDict("Inputs", {"input": Any})
     #: An empty typed mapping of device outputs
     Outputs: type = TypedDict("Outputs", {})
 

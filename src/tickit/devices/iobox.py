@@ -54,7 +54,7 @@ class IoBoxDevice(Device, Generic[A, V]):
     """
 
     #: A typed mapping containing the 'input' input value
-    Inputs: type = TypedDict("Inputs", {"updates": NotRequired[List[Tuple[Any, Any]]]})
+    Inputs: TypedDict= TypedDict("Inputs", {"updates": NotRequired[List[Tuple[Any, Any]]]})
     #: An empty typed mapping of device outputs
     Outputs: type = TypedDict(
         "Outputs", {"updates": NotRequired[List[Tuple[Any, Any]]]}

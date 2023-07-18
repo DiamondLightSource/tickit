@@ -18,9 +18,9 @@ values and requests to be called back for an update sometime later.
     """A trivial toy device which produced a random output and requests a callback."""
 
         #: An empty typed mapping of device inputs
-        Inputs: type = TypedDict("Inputs", {})
+        Inputs: TypedDict = TypedDict("Inputs", {})
         #: A typed mapping containing the 'output' output value
-        Outputs: type = TypedDict("Outputs", {"output": int})
+        Outputs: TypedDict = TypedDict("Outputs", {"output": int})
 
         def __init__(self, callback_period: int = int(1e9)) -> None:
             self.callback_period = SimTime(callback_period)

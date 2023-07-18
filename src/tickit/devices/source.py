@@ -16,7 +16,7 @@ class SourceDevice(Device):
     """A simple device which produces a pre-configured value."""
 
     #: An empty typed mapping of device inputs
-    Inputs: type = TypedDict("Inputs", {})
+    Inputs: TypedDict= TypedDict("Inputs", {})
     #: A typed mapping containing the 'value' output value
     Outputs: type = TypedDict("Outputs", {"value": Any})
 

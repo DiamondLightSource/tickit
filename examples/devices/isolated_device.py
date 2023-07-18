@@ -21,7 +21,7 @@ class IsolatedBoxDevice(Device):
     The device has no inputs or outputs and interacts solely through adapters.
     """
 
-    Inputs: type = TypedDict("Inputs", {})
+    Inputs: TypedDict= TypedDict("Inputs", {})
     Outputs: type = TypedDict("Outputs", {})
 
     def __init__(self, initial_value: float = 2) -> None:
