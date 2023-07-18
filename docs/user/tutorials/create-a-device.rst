@@ -118,13 +118,13 @@ if the device requires any adapters to control it externally.
 
 .. code-block:: python
 
-    from tickit.utils.compat.typing_compat import pydantic_dataclass_dataclass
+    from tickit.utils.compat.typing_compat import pydantic
 
     from tickit.core.components.component import Component, ComponentConfig
     from tickit.core.components.device_simulation import DeviceSimulation
 
 
-    @pydantic_dataclass
+    @pydantic.dataclasses.dataclass
     class Amplifier(ComponentConfig):
         initial_amplification: float
 

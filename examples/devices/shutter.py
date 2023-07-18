@@ -10,7 +10,7 @@ from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.byte_format import ByteFormat
-from tickit.utils.compat.typing_compat import TypedDict, pydantic_dataclass
+from tickit.utils.compat.typing_compat import TypedDict, pydantic
 
 
 class ShutterDevice(Device):
@@ -153,7 +153,7 @@ class ShutterAdapter(ComposedAdapter):
         self.device.last_time = None
 
 
-@pydantic_dataclass
+@pydantic.dataclasses.dataclass
 class Shutter(ComponentConfig):
     """Shutter you can open or close over TCP."""
 

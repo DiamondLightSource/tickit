@@ -1,9 +1,13 @@
 from typing import List
 
 import yaml
-from pydantic.v1 import parse_obj_as
 
 from tickit.core.components.component import ComponentConfig
+
+try:
+    from pydantic.v1 import parse_obj_as
+except ImportError:
+    from pydantic import parse_obj_as  # type: ignore[no-redef]
 
 
 def read_configs(config_path) -> List[ComponentConfig]:

@@ -130,7 +130,7 @@ our amplifier `ComponentConfig`. To do this we simply add it to the arguments of
 
 .. code-block:: python
 
-    @pydantic_dataclass
+    @pydantic.dataclasses.dataclass
     class Amplifier(ComponentConfig):
         initial_amplification: int
 

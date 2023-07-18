@@ -5,7 +5,7 @@ from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
-from tickit.utils.compat.typing_compat import TypedDict, pydantic_dataclass
+from tickit.utils.compat.typing_compat import TypedDict, pydantic
 
 LOGGER = logging.getLogger(__name__)
 
@@ -90,7 +90,7 @@ class RandomTrampolineDevice(Device):
         )
 
 
-@pydantic_dataclass
+@pydantic.dataclasses.dataclass
 class RandomTrampoline(ComponentConfig):
     """Random thing that goes boing."""
 

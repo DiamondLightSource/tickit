@@ -9,7 +9,7 @@ from tickit.core.management.schedulers.slave import SlaveScheduler
 from tickit.core.runner import run_all
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import Changes, ComponentID, ComponentPort, PortID, SimTime
-from tickit.utils.compat.typing_compat import pydantic_dataclass
+from tickit.utils.compat.typing_compat import pydantic
 from tickit.utils.topic_naming import output_topic
 
 LOGGER = logging.getLogger(__name__)
@@ -99,7 +99,7 @@ class SystemSimulationComponent(BaseComponent):
             task.cancel()
 
 
-@pydantic_dataclass
+@pydantic.dataclasses.dataclass
 class SystemSimulation(ComponentConfig):
     """Simulation of a nested set of components."""
 
