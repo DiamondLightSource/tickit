@@ -70,7 +70,7 @@ def _as_tagged_union(
         # Add a discriminator field to the class so it can
         # be identified when deserializing.
         cls.__annotations__ = {
-            **cls.__annotations__,
+            **getattr(cls, "__annotations__", {}),
             discriminator: Literal[cls_name],
         }
         setattr(cls, discriminator, field(default=cls_name, repr=False))
