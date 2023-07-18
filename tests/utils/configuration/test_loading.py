@@ -38,10 +38,10 @@ def patch_pydantic_deserialize() -> Iterable[Mock]:
         "tickit.utils.configuration.loading.parse_obj_as",
         autospec=True,
     ) as mock:
-        mock.return_value = MockConfig(
+        mock.return_value = [MockConfig(
             name=ComponentID("foo"),
             inputs={PortID("42"): ComponentPort(ComponentID("bar"), PortID("24"))},
-        )
+        )]
         yield mock
 
 
@@ -53,10 +53,10 @@ def patch_yaml_library() -> Iterable[Mock]:
 
 @pytest.fixture
 def patch_builtins_open() -> Iterable[Mock]:
-    minimal_list_yaml = "- foo"
+    blank_yaml = ""
     with patch(
         "tickit.utils.configuration.loading.open",
-        new=mock_open(read_data=minimal_list_yaml),
+        new=mock_open(read_data=blank_yaml),
     ) as mock:
         yield mock
 
