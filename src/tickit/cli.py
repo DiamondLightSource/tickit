@@ -1,6 +1,6 @@
 import asyncio
 import logging
-from typing import Optional, Set
+from typing import Iterable, Optional, Set
 
 import click
 from click.core import Context
@@ -36,7 +36,9 @@ def main(ctx: Context, log_level: str):
 @click.argument("components", nargs=-1)
 @click.argument("config_path")
 @click.option("--backend", default="kafka", type=click.Choice(list(interfaces(True))))
-def components(config_path: str, components: set, backend: str) -> None:
+def components(
+    config_path: str, components: Iterable[ComponentID], backend: str
+) -> None:
     """Runs one or more simulated components from a configuration file.
 
     If you pass it no componentID arguments it will run all of the components in the
@@ -44,7 +46,7 @@ def components(config_path: str, components: set, backend: str) -> None:
 
     Args:
         config_path (str): The path to the configuration file.
-        components (set): The name of the components to be run,
+        components (Iterable[ComponentID]): The name of the components to be run,
         seperated by whitespace. If none are provided, all components will be run.
         backend (str): The message broker to be used.
     """
@@ -52,7 +54,7 @@ def components(config_path: str, components: set, backend: str) -> None:
     if components == ():
         components_to_run = None
     else:
-        components_to_run = {ComponentID(component) for component in components}
+        components_to_run = set(components)
 
     asyncio.run(
         build_simulation(
