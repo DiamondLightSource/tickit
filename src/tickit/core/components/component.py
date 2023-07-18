@@ -5,7 +5,6 @@ from abc import abstractmethod
 from dataclasses import dataclass
 from typing import Dict, Optional, Type, Union
 
-import pydantic.v1.dataclasses
 from pydantic.v1 import validator
 
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
@@ -21,6 +20,7 @@ from tickit.core.typedefs import (
     SimTime,
     StopComponent,
 )
+from tickit.utils.compat.typing_compat import pydantic_dataclass
 from tickit.utils.configuration.configurable import as_tagged_union
 from tickit.utils.topic_naming import input_topic, output_topic
 
@@ -57,7 +57,7 @@ class Component:
 
 
 @as_tagged_union
-@pydantic.v1.dataclasses.dataclass
+@pydantic_dataclass
 class ComponentConfig:
     """A data container for component configuration.
 

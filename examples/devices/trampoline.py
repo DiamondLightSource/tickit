@@ -1,13 +1,11 @@
 import logging
 from random import randint
 
-import pydantic.v1.dataclasses
-
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
-from tickit.utils.compat.typing_compat import TypedDict
+from tickit.utils.compat.typing_compat import TypedDict, pydantic_dataclass
 
 LOGGER = logging.getLogger(__name__)
 
@@ -16,7 +14,7 @@ class TrampolineDevice(Device):
     """A trivial toy device which requests a callback every update."""
 
     #: An empty typed mapping of device inputs
-    Inputs: TypedDict= TypedDict("Inputs", {})
+    Inputs: TypedDict = TypedDict("Inputs", {})
     #: An empty typed mapping of device outputs
     Outputs: type = TypedDict("Outputs", {})
 
@@ -55,7 +53,7 @@ class RandomTrampolineDevice(Device):
     """A trivial toy device which produced a random output and requests a callback."""
 
     #: An empty typed mapping of device inputs
-    Inputs: TypedDict= TypedDict("Inputs", {})
+    Inputs: TypedDict = TypedDict("Inputs", {})
     #: A typed mapping containing the 'output' output value
     Outputs: type = TypedDict("Outputs", {"output": int})
 
@@ -92,7 +90,7 @@ class RandomTrampolineDevice(Device):
         )
 
 
-@pydantic.v1.dataclasses.dataclass
+@pydantic_dataclass
 class RandomTrampoline(ComponentConfig):
     """Random thing that goes boing."""
 

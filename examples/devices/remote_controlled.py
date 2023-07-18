@@ -3,8 +3,6 @@ import logging
 import struct
 from typing import AsyncIterable, Optional
 
-import pydantic.v1.dataclasses
-
 from tickit.adapters.composed import ComposedAdapter
 from tickit.adapters.interpreters.command import CommandInterpreter, RegexCommand
 from tickit.adapters.servers.tcp import TcpServer
@@ -14,7 +12,7 @@ from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.byte_format import ByteFormat
-from tickit.utils.compat.typing_compat import TypedDict
+from tickit.utils.compat.typing_compat import TypedDict, pydantic_dataclass
 
 LOGGER = logging.getLogger(__name__)
 
@@ -23,7 +21,7 @@ class RemoteControlledDevice(Device):
     """A trivial toy device which is controlled by an adapter."""
 
     #: An empty typed mapping of device inputs
-    Inputs: TypedDict= TypedDict("Inputs", {})
+    Inputs: TypedDict = TypedDict("Inputs", {})
     #: A typed mapping containing the 'observed' output value
     Outputs: type = TypedDict("Outputs", {"observed": float})
 
@@ -224,7 +222,7 @@ class RemoteControlledAdapter(ComposedAdapter[bytes]):
             yield f"Observed is {self.device.observed}".encode("utf-8")
 
 
-@pydantic.v1.dataclasses.dataclass
+@pydantic_dataclass
 class RemoteControlled(ComponentConfig):
     """Thing you can poke over TCP."""
 

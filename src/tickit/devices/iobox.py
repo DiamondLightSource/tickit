@@ -1,14 +1,13 @@
 import logging
 from typing import Any, Dict, Generic, List, Tuple, TypeVar
 
-import pydantic.v1.dataclasses
 from typing_extensions import NotRequired
 
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
-from tickit.utils.compat.typing_compat import TypedDict
+from tickit.utils.compat.typing_compat import TypedDict, pydantic_dataclass
 
 LOGGER = logging.getLogger(__name__)
 
@@ -54,7 +53,9 @@ class IoBoxDevice(Device, Generic[A, V]):
     """
 
     #: A typed mapping containing the 'input' input value
-    Inputs: TypedDict= TypedDict("Inputs", {"updates": NotRequired[List[Tuple[Any, Any]]]})
+    Inputs: TypedDict = TypedDict(
+        "Inputs", {"updates": NotRequired[List[Tuple[Any, Any]]]}
+    )
     #: An empty typed mapping of device outputs
     Outputs: type = TypedDict(
         "Outputs", {"updates": NotRequired[List[Tuple[Any, Any]]]}
@@ -119,7 +120,7 @@ class IoBoxDevice(Device, Generic[A, V]):
         return DeviceUpdate(IoBoxDevice.Outputs(updates=updates), None)
 
 
-@pydantic.v1.dataclasses.dataclass
+@pydantic_dataclass
 class IoBox(ComponentConfig):
     """Arbitrary box of key-value pairs."""
 

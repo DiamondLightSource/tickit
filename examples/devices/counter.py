@@ -1,17 +1,15 @@
 import logging
 
-import pydantic.v1.dataclasses
-
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
-from tickit.utils.compat.typing_compat import TypedDict
+from tickit.utils.compat.typing_compat import TypedDict, pydantic_dataclass
 
 LOGGER = logging.getLogger(__name__)
 
 
-@pydantic.v1.dataclasses.dataclass
+@pydantic_dataclass
 class Counter(ComponentConfig):
     """Simulation of simple counting device."""
 
@@ -23,7 +21,7 @@ class CounterDevice(Device):
     """A simple device which increments a value."""
 
     #: An empty typed mapping of input values
-    Inputs: TypedDict= TypedDict("Inputs", {})
+    Inputs: TypedDict = TypedDict("Inputs", {})
     #: A typed mapping containing the 'value' output value
     Outputs: type = TypedDict("Outputs", {"value": int})
 

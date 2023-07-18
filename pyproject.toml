@@ -16,7 +16,6 @@ dependencies = [
     "aiokafka",
     "aiozmq",
     "immutables",
-    "pydantic>=2.0",
     "pydantic",
     "pyyaml",
     "pyzmq",

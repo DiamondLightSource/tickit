@@ -1,13 +1,11 @@
 import logging
 from typing import Any
 
-import pydantic.v1.dataclasses
-
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
-from tickit.utils.compat.typing_compat import TypedDict
+from tickit.utils.compat.typing_compat import TypedDict, pydantic_dataclass
 
 LOGGER = logging.getLogger(__name__)
 
@@ -16,7 +14,7 @@ class SinkDevice(Device):
     """A simple device which can take any input and produces no output."""
 
     #: A typed mapping containing the 'input' input value
-    Inputs: TypedDict= TypedDict("Inputs", {"input": Any})
+    Inputs: TypedDict = TypedDict("Inputs", {"input": Any})
     #: An empty typed mapping of device outputs
     Outputs: type = TypedDict("Outputs", {})
 
@@ -36,7 +34,7 @@ class SinkDevice(Device):
         return DeviceUpdate(SinkDevice.Outputs(), None)
 
 
-@pydantic.v1.dataclasses.dataclass
+@pydantic_dataclass
 class Sink(ComponentConfig):
     """Arbitrary value sink that logs the value."""
 

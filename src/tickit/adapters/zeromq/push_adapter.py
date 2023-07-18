@@ -14,10 +14,10 @@ from typing import (
 
 import aiozmq
 import zmq
-from pydantic.v1 import BaseModel
 
 from tickit.core.adapter import Adapter, RaiseInterrupt
 from tickit.core.device import Device
+from tickit.utils.compat.typing_compat import BaseModel
 
 LOGGER = logging.getLogger(__name__)
 

@@ -1,13 +1,11 @@
 import logging
 from typing import Any
 
-import pydantic.v1.dataclasses
-
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
-from tickit.utils.compat.typing_compat import TypedDict
+from tickit.utils.compat.typing_compat import TypedDict, pydantic_dataclass
 
 LOGGER = logging.getLogger(__name__)
 
@@ -16,7 +14,7 @@ class SourceDevice(Device):
     """A simple device which produces a pre-configured value."""
 
     #: An empty typed mapping of device inputs
-    Inputs: TypedDict= TypedDict("Inputs", {})
+    Inputs: TypedDict = TypedDict("Inputs", {})
     #: A typed mapping containing the 'value' output value
     Outputs: type = TypedDict("Outputs", {"value": Any})
 
@@ -44,7 +42,7 @@ class SourceDevice(Device):
         return DeviceUpdate(SourceDevice.Outputs(value=self.value), None)
 
 
-@pydantic.v1.dataclasses.dataclass
+@pydantic_dataclass
 class Source(ComponentConfig):
     """Source of a fixed value."""
 
