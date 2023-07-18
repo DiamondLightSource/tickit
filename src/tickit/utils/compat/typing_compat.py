@@ -3,10 +3,10 @@ import sys
 import pydantic
 
 if pydantic.__version__.startswith("1"):
-    from pydantic import BaseModel
+    from pydantic import BaseModel, parse_obj_as
     from pydantic.dataclasses import dataclass as pydantic_dataclass
 else:
-    from pydantic.v1 import BaseModel  # type: ignore
+    from pydantic.v1 import BaseModel, parse_obj_as  # type: ignore
     from pydantic.v1.dataclasses import dataclass as pydantic_dataclass  # type: ignore
 
 if sys.version_info >= (3, 8):
@@ -20,4 +20,5 @@ __all__ = [
     "runtime_checkable",
     "pydantic_dataclass",
     "BaseModel",
+    "parse_obj_as"
 ]

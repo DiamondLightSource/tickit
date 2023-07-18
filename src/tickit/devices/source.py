@@ -16,7 +16,7 @@ class SourceDevice(Device):
     #: An empty typed mapping of device inputs
     Inputs: TypedDict = TypedDict("Inputs", {})
     #: A typed mapping containing the 'value' output value
-    Outputs: type = TypedDict("Outputs", {"value": Any})
+    Outputs: TypedDict = TypedDict("Outputs", {"value": Any})
 
     def __init__(self, value: Any) -> None:
         """A constructor of the source, which takes the pre-configured output value.

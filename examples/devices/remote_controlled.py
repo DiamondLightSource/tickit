@@ -23,7 +23,7 @@ class RemoteControlledDevice(Device):
     #: An empty typed mapping of device inputs
     Inputs: TypedDict = TypedDict("Inputs", {})
     #: A typed mapping containing the 'observed' output value
-    Outputs: type = TypedDict("Outputs", {"observed": float})
+    Outputs: TypedDict = TypedDict("Outputs", {"observed": float})
 
     def __init__(
         self,

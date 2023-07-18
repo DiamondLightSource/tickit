@@ -16,7 +16,7 @@ class SinkDevice(Device):
     #: A typed mapping containing the 'input' input value
     Inputs: TypedDict = TypedDict("Inputs", {"input": Any})
     #: An empty typed mapping of device outputs
-    Outputs: type = TypedDict("Outputs", {})
+    Outputs: TypedDict = TypedDict("Outputs", {})
 
     def update(self, time: SimTime, inputs: Inputs) -> DeviceUpdate[Outputs]:
         """The update method which logs the inputs and produces no outputs.

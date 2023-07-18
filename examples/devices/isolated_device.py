@@ -22,7 +22,7 @@ class IsolatedBoxDevice(Device):
     """
 
     Inputs: TypedDict = TypedDict("Inputs", {})
-    Outputs: type = TypedDict("Outputs", {})
+    Outputs: TypedDict = TypedDict("Outputs", {})
 
     def __init__(self, initial_value: float = 2) -> None:
         """Constructor which configures the initial value

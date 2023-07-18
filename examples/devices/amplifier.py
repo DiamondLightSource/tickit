@@ -16,7 +16,7 @@ class AmplifierDevice(Device):
     """Amplifier device which multiplies an input signal by an amplification value."""
 
     Inputs: TypedDict = TypedDict("Inputs", {"initial_signal": float})
-    Outputs: type = TypedDict("Outputs", {"amplified_signal": float})
+    Outputs: TypedDict = TypedDict("Outputs", {"amplified_signal": float})
 
     def __init__(self, initial_amplification: float = 2) -> None:
         """Amplifier constructor which configures the initial amplification.

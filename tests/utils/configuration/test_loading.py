@@ -3,11 +3,11 @@ from typing import Iterable
 import pytest
 from mock import Mock, create_autospec, patch
 from mock.mock import mock_open
-from pydantic.v1.dataclasses import dataclass
 
 from tickit.core.components.component import ComponentConfig
 from tickit.core.typedefs import ComponentID, ComponentPort, PortID
 from tickit.utils.configuration.loading import read_configs
+from tickit.utils.compat.typing_compat import pydantic_dataclass
 
 
 @pytest.fixture
@@ -24,7 +24,7 @@ def patch_tagged_union_dict(mock_component_config_type) -> Iterable[Mock]:
         yield mock
 
 
-@dataclass
+@pydantic_dataclass
 class MockConfig(ComponentConfig):
     pass
 

@@ -16,7 +16,7 @@ class TrampolineDevice(Device):
     #: An empty typed mapping of device inputs
     Inputs: TypedDict = TypedDict("Inputs", {})
     #: An empty typed mapping of device outputs
-    Outputs: type = TypedDict("Outputs", {})
+    Outputs: TypedDict = TypedDict("Outputs", {})
 
     def __init__(self, callback_period: int = int(1e9)) -> None:
         """A constructor of the sink which configures the device callback period.
@@ -55,7 +55,7 @@ class RandomTrampolineDevice(Device):
     #: An empty typed mapping of device inputs
     Inputs: TypedDict = TypedDict("Inputs", {})
     #: A typed mapping containing the 'output' output value
-    Outputs: type = TypedDict("Outputs", {"output": int})
+    Outputs: TypedDict = TypedDict("Outputs", {"output": int})
 
     def __init__(self, callback_period: int = int(1e9)) -> None:
         """A constructor of the sink which configures the device callback period.
