@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.typedefs &#8212; tickit 0.2.4.dev38+g61314db6 documentation</title>
+    <title>tickit.core.typedefs &#8212; tickit 0.2.4.dev41+g6267b045 documentation</title>
   
   
   
@@ -417,7 +417,7 @@ document.write(`
                   
   <h1>Source code for tickit.core.typedefs</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Hashable</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">NewType</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Hashable</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">NewType</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">from</span> <span class="nn">apischema</span> <span class="kn">import</span> <span class="n">deserializer</span><span class="p">,</span> <span class="n">serializer</span>
 <span class="kn">from</span> <span class="nn">immutables</span> <span class="kn">import</span> <span class="n">Map</span>
@@ -544,6 +544,10 @@ document.write(`
     <span class="n">source</span><span class="p">:</span> <span class="n">ComponentID</span>
     <span class="n">error</span><span class="p">:</span> <span class="ne">Exception</span>
     <span class="n">traceback</span><span class="p">:</span> <span class="nb">str</span></div>
+
+
+<span class="n">ComponentOutput</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">Interrupt</span><span class="p">,</span> <span class="n">Output</span><span class="p">,</span> <span class="n">ComponentException</span><span class="p">]</span>
+<span class="n">ComponentInput</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">Input</span><span class="p">,</span> <span class="n">StopComponent</span><span class="p">,</span> <span class="n">ComponentException</span><span class="p">]</span>
 </pre></div>
 
                 </article>
