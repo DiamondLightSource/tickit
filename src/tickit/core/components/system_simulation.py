@@ -1,13 +1,12 @@
 import asyncio
 import logging
 from dataclasses import dataclass, field
-from typing import Dict, List, Type
-from tickit.adapters.composed import ComposedAdapter
+from typing import Dict, List, Optional, Type
+
 from tickit.adapters.interpreters.command.command_interpreter import CommandInterpreter
 from tickit.adapters.servers.tcp import TcpServer
 from tickit.adapters.system_simulation_adapter import SystemSimulationAdapter
 from tickit.core.adapter import Adapter
-
 from tickit.core.components.component import BaseComponent, Component, ComponentConfig
 from tickit.core.components.system_simulation_view import SystemSimulationView
 from tickit.core.management.event_router import InverseWiring
@@ -39,10 +38,7 @@ class SystemSimulationComponent(BaseComponent):
     #: corresponding output of an internal component.
     expose: Dict[PortID, ComponentPort]
 
-    _internal_adapter: Adapter[SystemSimulationView] = SystemSimulationAdapter(
-        TcpServer(host="localhost", port=25555, format=ByteFormat(b"%b\r\n")),
-        CommandInterpreter(),
-    )
+    adapter: Optional[Adapter[SystemSimulationView]] = None
 
     _tasks: List[asyncio.Task] = field(default_factory=list)
 
@@ -70,11 +66,13 @@ class SystemSimulationComponent(BaseComponent):
             for component in components.values()
         ) + run_all([self.scheduler.run_forever()])
 
-        if self._internal_adapter:
+        if self.adapter:
             self._tasks.append(
                 asyncio.create_task(
-                    self._internal_adapter.run_forever(
-                        SystemSimulationView(self.scheduler._wiring, components),
+                    self.adapter.run_forever(
+                        SystemSimulationView(
+                            component_list=components, wiring=self.scheduler._wiring
+                        ),
                         self.raise_interrupt,
                     )
                 )
@@ -137,4 +135,25 @@ class SystemSimulation(ComponentConfig):
             name=self.name,
             components=self.components,
             expose=self.expose,
+        )
+
+
+@dataclass
+class SystemSimulationWithAdapter(ComponentConfig):
+    """Simulation of a nested set of components."""
+
+    name: ComponentID
+    inputs: Dict[PortID, ComponentPort]
+    components: List[ComponentConfig]
+    expose: Dict[PortID, ComponentPort]
+
+    def __call__(self) -> Component:  # noqa: D102
+        return SystemSimulationComponent(
+            name=self.name,
+            components=self.components,
+            expose=self.expose,
+            adapter=SystemSimulationAdapter(
+                TcpServer(host="localhost", port=25560, format=ByteFormat(b"%b\r\n")),
+                CommandInterpreter(),
+            ),
         )
