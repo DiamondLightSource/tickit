@@ -18,7 +18,7 @@ from tickit.core.device import Device
 try:
     from pydantic.v1 import BaseModel
 except ImportError:
-    from pydantic import BaseModel  # type: ignore[no-redef]
+    from pydantic import BaseModel  # type: ignore
 
 
 _HOST = "test.host"

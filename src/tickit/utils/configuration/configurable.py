@@ -12,7 +12,7 @@ try:
     )
     from pydantic.v1.error_wrappers import ErrorWrapper
 except ImportError:
-    from pydantic import (  # type: ignore[no-redef]
+    from pydantic import (  # type: ignore
         BaseConfig,
         Field,
         ValidationError,
