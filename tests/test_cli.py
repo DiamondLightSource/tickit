@@ -78,6 +78,26 @@ def test_components_command_for_multiple_components(
     )
 
 
+def test_components_command_for_all_components(
+    patch_build_simulation: Mock,
+):
+    runner: CliRunner = CliRunner()
+    runner.invoke(
+        main,
+        args=[
+            "components",
+            "tests/core/sim.yaml",
+        ],
+    )
+
+    patch_build_simulation.assert_called_once_with(
+        "tests/core/sim.yaml",
+        "kafka",
+        include_schedulers=False,
+        components_to_run=None,
+    )
+
+
 def test_scheduler(
     patch_build_simulation: Mock,
 ):
