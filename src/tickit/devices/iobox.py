@@ -7,7 +7,7 @@ from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
-from tickit.utils.compat.typing_compat import TypedDict, pydantic_dataclass
+from tickit.utils.compat.typing_compat import TypedDict, pydantic
 
 LOGGER = logging.getLogger(__name__)
 
@@ -120,7 +120,7 @@ class IoBoxDevice(Device, Generic[A, V]):
         return DeviceUpdate(IoBoxDevice.Outputs(updates=updates), None)
 
 
-@pydantic_dataclass
+@pydantic.dataclasses.dataclass
 class IoBox(ComponentConfig):
     """Arbitrary box of key-value pairs."""
 

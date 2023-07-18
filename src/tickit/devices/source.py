@@ -5,7 +5,7 @@ from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
-from tickit.utils.compat.typing_compat import TypedDict, pydantic_dataclass
+from tickit.utils.compat.typing_compat import TypedDict, pydantic
 
 LOGGER = logging.getLogger(__name__)
 
@@ -42,7 +42,7 @@ class SourceDevice(Device):
         return DeviceUpdate(SourceDevice.Outputs(value=self.value), None)
 
 
-@pydantic_dataclass
+@pydantic.dataclasses.dataclass
 class Source(ComponentConfig):
     """Source of a fixed value."""
 

@@ -12,7 +12,7 @@ from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.byte_format import ByteFormat
-from tickit.utils.compat.typing_compat import pydantic_dataclass
+from tickit.utils.compat.typing_compat import pydantic
 
 
 class IsolatedBoxDevice(Device):
@@ -116,7 +116,7 @@ class IsolatedBoxEpicsAdapter(EpicsAdapter):
         self.link_input_on_interrupt(builder.aIn("VALUE_RBV"), self.device.get_value)
 
 
-@pydantic_dataclass
+@pydantic.dataclasses.dataclass
 class IsolatedBox(ComponentConfig):
     """Isolated box device you can change the value of either over TCP or via EPICS."""
 

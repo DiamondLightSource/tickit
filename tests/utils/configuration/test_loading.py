@@ -6,8 +6,8 @@ from mock.mock import mock_open
 
 from tickit.core.components.component import ComponentConfig
 from tickit.core.typedefs import ComponentID, ComponentPort, PortID
+from tickit.utils.compat.typing_compat import pydantic
 from tickit.utils.configuration.loading import read_configs
-from tickit.utils.compat.typing_compat import pydantic_dataclass
 
 
 @pytest.fixture
@@ -24,7 +24,7 @@ def patch_tagged_union_dict(mock_component_config_type) -> Iterable[Mock]:
         yield mock
 
 
-@pydantic_dataclass
+@pydantic.dataclasses.dataclass
 class MockConfig(ComponentConfig):
     pass
 
@@ -38,10 +38,12 @@ def patch_pydantic_deserialize() -> Iterable[Mock]:
         "tickit.utils.configuration.loading.parse_obj_as",
         autospec=True,
     ) as mock:
-        mock.return_value = [MockConfig(
-            name=ComponentID("foo"),
-            inputs={PortID("42"): ComponentPort(ComponentID("bar"), PortID("24"))},
-        )]
+        mock.return_value = [
+            MockConfig(
+                name=ComponentID("foo"),
+                inputs={PortID("42"): ComponentPort(ComponentID("bar"), PortID("24"))},
+            )
+        ]
         yield mock
 
 

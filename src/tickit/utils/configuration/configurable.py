@@ -2,8 +2,24 @@ from dataclasses import field
 from importlib import import_module
 from typing import Any, Callable, Literal, Optional, Type, Union
 
-from pydantic.v1 import BaseConfig, Field, ValidationError, create_model, parse_obj_as
-from pydantic.v1.error_wrappers import ErrorWrapper
+try:
+    from pydantic.v1 import (
+        BaseConfig,
+        Field,
+        ValidationError,
+        create_model,
+        parse_obj_as,
+    )
+    from pydantic.v1.error_wrappers import ErrorWrapper
+except ImportError:
+    from pydantic import (  # type: ignore[no-redef]
+        BaseConfig,
+        Field,
+        ValidationError,
+        create_model,
+        parse_obj_as,
+    )
+    from pydantic.error_wrappers import ErrorWrapper  # type: ignore
 
 
 def as_tagged_union(
@@ -48,11 +64,11 @@ def _as_tagged_union(
     def __init_subclass__(cls) -> None:
         super_cls._model = None
         cls_name = qualified_class_name(cls)
-        # Keep track of inherting classes in super class
+        # Keep track of inheriting classes in super class
         super_cls._ref_classes.add(cls)
 
         # Add a discriminator field to the class so it can
-        # be identified when deserailizing.
+        # be identified when deserializing.
         cls.__annotations__ = {
             **cls.__annotations__,
             discriminator: Literal[cls_name],
