@@ -67,7 +67,7 @@ def build_simulation(
     """Builds the master scheduler and components for a simulation.
 
         A config file is read, retrieving the relevant components. The wiring of
-        these components is generated and used by to constuct the master scheduler.
+        these components is generated and used to constuct the master scheduler.
 
     Args:
             config_path (str): The path to the configuration file.
