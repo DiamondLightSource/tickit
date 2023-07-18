@@ -72,16 +72,6 @@ class ComponentConfig:
     name: ComponentID
     inputs: Dict[PortID, ComponentPort]
 
-    @validator("inputs", "expose", pre=True, check_fields=False)
-    def _split_inputs(cls, v) -> Dict[PortID, ComponentPort]:
-        def component_port(s: Union[ComponentPort, str]):
-            if isinstance(s, ComponentPort):
-                return s
-            component, port = s.split(":")
-            return ComponentPort(ComponentID(component), PortID(port))
-
-        return {PortID(key): component_port(value) for key, value in v.items()}
-
     @abstractmethod
     def __call__(self) -> Component:
         """Create the component from the given config."""
