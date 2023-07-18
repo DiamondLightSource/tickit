@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.management.schedulers.master &#8212; tickit 0.2.4.dev10+g2345d5d6 documentation</title>
+    <title>tickit.core.management.schedulers.master &#8212; tickit 0.2.4.dev11+geffc3ff5 documentation</title>
   
   
   
@@ -510,8 +510,8 @@ document.write(`
         <span class="k">assert</span> <span class="n">when</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">new_wakeup</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
-        <span class="n">current</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Future</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_time</span><span class="p">(</span><span class="n">when</span><span class="p">))</span>
         <span class="n">new</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">new_wakeup</span><span class="o">.</span><span class="n">wait</span><span class="p">())</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_time</span><span class="p">(</span><span class="n">when</span><span class="p">)))</span>
         <span class="n">which</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span>
             <span class="p">[</span><span class="n">current</span><span class="p">,</span> <span class="n">new</span><span class="p">],</span> <span class="n">return_when</span><span class="o">=</span><span class="n">asyncio</span><span class="o">.</span><span class="n">tasks</span><span class="o">.</span><span class="n">FIRST_COMPLETED</span>
         <span class="p">)</span>

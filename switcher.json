@@ -56,10 +56,6 @@
     "url": "https://dls-controls.github.io/tickit/add_integration_tests/"
   },
   {
-    "version": "asyncio-deprecation",
-    "url": "https://dls-controls.github.io/tickit/asyncio-deprecation/"
-  },
-  {
     "version": "component_ui",
     "url": "https://dls-controls.github.io/tickit/component_ui/"
   },
