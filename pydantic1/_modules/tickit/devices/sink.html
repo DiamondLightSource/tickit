@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.devices.sink &#8212; tickit 0.2.4.dev20+g27f91abc documentation</title>
+    <title>tickit.devices.sink &#8212; tickit 0.2.4.dev23+g3605a95e documentation</title>
   
   
   
@@ -419,13 +419,11 @@ document.write(`
 <span></span><span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
 
-<span class="kn">import</span> <span class="nn">pydantic.v1.dataclasses</span>
-
 <span class="kn">from</span> <span class="nn">tickit.core.components.component</span> <span class="kn">import</span> <span class="n">Component</span><span class="p">,</span> <span class="n">ComponentConfig</span>
 <span class="kn">from</span> <span class="nn">tickit.core.components.device_simulation</span> <span class="kn">import</span> <span class="n">DeviceSimulation</span>
 <span class="kn">from</span> <span class="nn">tickit.core.device</span> <span class="kn">import</span> <span class="n">Device</span><span class="p">,</span> <span class="n">DeviceUpdate</span>
 <span class="kn">from</span> <span class="nn">tickit.core.typedefs</span> <span class="kn">import</span> <span class="n">SimTime</span>
-<span class="kn">from</span> <span class="nn">tickit.utils.compat.typing_compat</span> <span class="kn">import</span> <span class="n">TypedDict</span>
+<span class="kn">from</span> <span class="nn">tickit.utils.compat.typing_compat</span> <span class="kn">import</span> <span class="n">TypedDict</span><span class="p">,</span> <span class="n">pydantic_dataclass</span>
 
 <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -434,7 +432,7 @@ document.write(`
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A simple device which can take any input and produces no output.&quot;&quot;&quot;</span>
 
     <span class="c1">#: A typed mapping containing the &#39;input&#39; input value</span>
-    <span class="n">Inputs</span><span class="p">:</span> <span class="nb">type</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Inputs&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="n">Any</span><span class="p">})</span>
+    <span class="n">Inputs</span><span class="p">:</span> <span class="n">TypedDict</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Inputs&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="n">Any</span><span class="p">})</span>
     <span class="c1">#: An empty typed mapping of device outputs</span>
     <span class="n">Outputs</span><span class="p">:</span> <span class="nb">type</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Outputs&quot;</span><span class="p">,</span> <span class="p">{})</span>
 
@@ -454,7 +452,7 @@ document.write(`
         <span class="k">return</span> <span class="n">DeviceUpdate</span><span class="p">(</span><span class="n">SinkDevice</span><span class="o">.</span><span class="n">Outputs</span><span class="p">(),</span> <span class="kc">None</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="Sink"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.devices.sink.Sink">[docs]</a><span class="nd">@pydantic</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
+<div class="viewcode-block" id="Sink"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.devices.sink.Sink">[docs]</a><span class="nd">@pydantic_dataclass</span>
 <span class="k">class</span> <span class="nc">Sink</span><span class="p">(</span><span class="n">ComponentConfig</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Arbitrary value sink that logs the value.&quot;&quot;&quot;</span>
 
