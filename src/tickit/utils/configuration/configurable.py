@@ -39,13 +39,6 @@ def as_tagged_union(
         return wrap(super_cls)
 
 
-def qualified_class_name(klass):
-    module = klass.__module__
-    if module == "builtins":
-        return klass.__qualname__  # avoid outputs like 'builtins.str'
-    return module + "." + klass.__qualname__
-
-
 def _as_tagged_union(
     super_cls: Type,
     discriminator: str,
@@ -63,7 +56,7 @@ def _as_tagged_union(
 
     def __init_subclass__(cls) -> None:
         super_cls._model = None
-        cls_name = qualified_class_name(cls)
+        cls_name = f"{cls.__module__}.{cls.__qualname__}"
         # Keep track of inheriting classes in super class
         super_cls._ref_classes.add(cls)
 
