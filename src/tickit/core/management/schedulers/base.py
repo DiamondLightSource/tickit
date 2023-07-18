@@ -9,6 +9,8 @@ from tickit.core.state_interfaces import StateConsumer, StateProducer
 from tickit.core.typedefs import (
     ComponentException,
     ComponentID,
+    ComponentInput,
+    ComponentOutput,
     Input,
     Interrupt,
     Output,
@@ -67,9 +69,7 @@ class BaseScheduler:
         """
         await self.state_producer.produce(input_topic(input.target), input)
 
-    async def handle_message(
-        self, message: Union[Interrupt, Output, ComponentException]
-    ) -> None:
+    async def handle_message(self, message: ComponentOutput) -> None:
         """Handle messages received by the state consumer.
 
         An asynchronous callback which handles Interrupt, Output and ComponentException
@@ -100,15 +100,13 @@ class BaseScheduler:
         producer to produce component inputs.
         """
         self.ticker = Ticker(self._wiring, self.update_component)
-        self.state_consumer: StateConsumer[
-            Union[Interrupt, Output, ComponentException]
-        ] = self._state_consumer_cls(self.handle_message)
+        self.state_consumer: StateConsumer[ComponentOutput] = self._state_consumer_cls(
+            self.handle_message
+        )
         await self.state_consumer.subscribe(
             {output_topic(component) for component in self.ticker.components}
         )
-        self.state_producer: StateProducer[
-            Union[Input, StopComponent, ComponentException]
-        ] = self._state_producer_cls()
+        self.state_producer: StateProducer[ComponentInput] = self._state_producer_cls()
 
     def add_wakeup(self, component: ComponentID, when: SimTime) -> None:
         """Adds a wakeup to the mapping.
