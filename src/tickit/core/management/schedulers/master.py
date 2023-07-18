@@ -88,8 +88,8 @@ class MasterScheduler(BaseScheduler):
         assert when is not None
         self.new_wakeup.clear()
 
-        current = asyncio.create_task(asyncio.sleep(self.sleep_time(when)))
         new = asyncio.create_task(self.new_wakeup.wait())
+        current = asyncio.create_task(asyncio.sleep(self.sleep_time(when)))
         which, _ = await asyncio.wait(
             [current, new], return_when=asyncio.tasks.FIRST_COMPLETED
         )
