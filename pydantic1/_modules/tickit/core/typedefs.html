@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.typedefs &#8212; tickit 0.2.4.dev29+gf8566c78 documentation</title>
+    <title>tickit.core.typedefs &#8212; tickit 0.2.4.dev31+g4173d07e documentation</title>
   
   
   
@@ -421,6 +421,13 @@ document.write(`
 
 <span class="kn">from</span> <span class="nn">immutables</span> <span class="kn">import</span> <span class="n">Map</span>
 
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">pydantic.v1</span> <span class="kn">import</span> <span class="n">root_validator</span>
+    <span class="kn">from</span> <span class="nn">pydantic.v1.dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span> <span class="k">as</span> <span class="n">pydantic_dataclass</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">root_validator</span>  <span class="c1"># type: ignore</span>
+    <span class="kn">from</span> <span class="nn">pydantic.dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span> <span class="k">as</span> <span class="n">pydantic_dataclass</span>  <span class="c1"># type: ignore</span>
+
 <span class="c1">#: An identifier which specifies the component</span>
 <span class="n">ComponentID</span> <span class="o">=</span> <span class="n">NewType</span><span class="p">(</span><span class="s2">&quot;ComponentID&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
 <span class="c1">#: An identifier which specifies the input/output port of a component</span>
@@ -433,12 +440,19 @@ document.write(`
 <span class="n">SimTime</span> <span class="o">=</span> <span class="n">NewType</span><span class="p">(</span><span class="s2">&quot;SimTime&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="ComponentPort"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.typedefs.ComponentPort">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="ComponentPort"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.typedefs.ComponentPort">[docs]</a><span class="nd">@pydantic_dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">ComponentPort</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An immutable dataclass for custom (de)serialization of component - port pairs.&quot;&quot;&quot;</span>
 
     <span class="n">component</span><span class="p">:</span> <span class="n">ComponentID</span>
     <span class="n">port</span><span class="p">:</span> <span class="n">PortID</span>
+
+    <span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_split_inputs</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">component</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">ComponentPort</span><span class="p">(</span><span class="n">ComponentID</span><span class="p">(</span><span class="n">component</span><span class="p">),</span> <span class="n">PortID</span><span class="p">(</span><span class="n">port</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">v</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;A string representation of the object of format component:port.</span>

@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.components.component &#8212; tickit 0.2.4.dev29+gf8566c78 documentation</title>
+    <title>tickit.core.components.component &#8212; tickit 0.2.4.dev31+g4173d07e documentation</title>
   
   
   
@@ -489,16 +489,6 @@ document.write(`
 
     <span class="n">name</span><span class="p">:</span> <span class="n">ComponentID</span>
     <span class="n">inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">PortID</span><span class="p">,</span> <span class="n">ComponentPort</span><span class="p">]</span>
-
-    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;inputs&quot;</span><span class="p">,</span> <span class="s2">&quot;expose&quot;</span><span class="p">,</span> <span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">check_fields</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">_split_inputs</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="n">PortID</span><span class="p">,</span> <span class="n">ComponentPort</span><span class="p">]:</span>
-        <span class="k">def</span> <span class="nf">component_port</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">ComponentPort</span><span class="p">,</span> <span class="nb">str</span><span class="p">]):</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">ComponentPort</span><span class="p">):</span>
-                <span class="k">return</span> <span class="n">s</span>
-            <span class="n">component</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">ComponentPort</span><span class="p">(</span><span class="n">ComponentID</span><span class="p">(</span><span class="n">component</span><span class="p">),</span> <span class="n">PortID</span><span class="p">(</span><span class="n">port</span><span class="p">))</span>
-
-        <span class="k">return</span> <span class="p">{</span><span class="n">PortID</span><span class="p">(</span><span class="n">key</span><span class="p">):</span> <span class="n">component_port</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Component</span><span class="p">:</span>
