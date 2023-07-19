@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>How component updates are ordered &#8212; tickit 0.2.3.dev13+gae81dbcc documentation</title>
+    <title>How component updates are ordered &#8212; tickit 0.2.4.dev18+gd22350d3 documentation</title>
   
   
   
@@ -491,7 +491,7 @@ Whilst if <em>Component A</em> is the <strong>root</strong> all components requi
 </section>
 <section id="schedule-possible-updates">
 <h3>Schedule possible updates<a class="headerlink" href="#schedule-possible-updates" title="Permalink to this heading">#</a></h3>
-<p>Next, we schedule updates for all components whos dependencies have been
+<p>Next, we schedule updates for all components whose dependencies have been
 resolved; Dependency resolution is established by checking whether any of their
 dependencies remain in <code class="docutils literal notranslate"><span class="pre">to_update</span></code>. In the example where <em>Component A</em> serves
 as the <strong>root</strong>, only <em>Component A</em> may have an update scheduled as all other
@@ -504,7 +504,7 @@ the updates of both <em>Component C</em> and <em>Component D</em> would be sched
 <section id="handle-responses">
 <h3>Handle responses<a class="headerlink" href="#handle-responses" title="Permalink to this heading">#</a></h3>
 <p>When a component update is completed and the corresponding response is
-recieved, the component can be removed from <code class="docutils literal notranslate"><span class="pre">to_update</span></code> and <a class="reference internal" href="#schedule-possible-updates-if-incomplete">schedule
+received, the component can be removed from <code class="docutils literal notranslate"><span class="pre">to_update</span></code> and <a class="reference internal" href="#schedule-possible-updates-if-incomplete">schedule
 possible updates if incomplete</a>.</p>
 </section>
 <section id="schedule-possible-updates-if-incomplete">

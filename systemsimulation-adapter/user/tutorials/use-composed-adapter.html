@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Using an Adapter &#8212; tickit 0.2.3.dev13+gae81dbcc documentation</title>
+    <title>Using an Adapter &#8212; tickit 0.2.4.dev18+gd22350d3 documentation</title>
   
   
   
@@ -468,14 +468,14 @@ device in the tickit framework.</p>
 <p>See the <a class="reference internal" href="create-a-device.html#creating-a-device"><span class="std std-ref">Creating a Device</span></a> how-to for a walk-through of creating the Amplifier
 device.</p>
 </div>
-<p>We will be using a composed adapter with a TCP server and the command interprerter.
+<p>We will be using a composed adapter with a TCP server and the command interpreter.
 For more information on adapters see <a class="reference internal" href="../explanations/adapters.html"><span class="doc">here</span></a>.</p>
 <section id="initialise-adapter">
 <h2>Initialise Adapter<a class="headerlink" href="#initialise-adapter" title="Permalink to this heading">#</a></h2>
 <p>We shall begin using the same <code class="docutils literal notranslate"><span class="pre">amp.py</span></code> file from the <code class="docutils literal notranslate"><span class="pre">Amplifier</span></code> device. In
-that file add a new <code class="docutils literal notranslate"><span class="pre">AmplifierAdapter</span></code> class which inherets <a class="reference internal" href="../reference/api.html#tickit.adapters.composed.ComposedAdapter" title="tickit.adapters.composed.ComposedAdapter"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ComposedAdapter</span></code></a>.
+that file add a new <code class="docutils literal notranslate"><span class="pre">AmplifierAdapter</span></code> class which inherits <a class="reference internal" href="../reference/api.html#tickit.adapters.composed.ComposedAdapter" title="tickit.adapters.composed.ComposedAdapter"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ComposedAdapter</span></code></a>.
 Within <code class="docutils literal notranslate"><span class="pre">AmplifierAdapter</span></code> we need to assign the <code class="docutils literal notranslate"><span class="pre">AmplifierDevice</span></code> as a class
-member, and initialise the the server and interprerter like so:</p>
+member, and initialise the server and interpreter like so:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tickit.adapters.composed</span> <span class="kn">import</span> <span class="n">ComposedAdapter</span>
 <span class="kn">from</span> <span class="nn">tickit.adapters.interpreters.command.command_interpreter</span> <span class="kn">import</span> <span class="n">CommandInterpreter</span>
 <span class="kn">from</span> <span class="nn">tickit.adapters.servers.tcp</span> <span class="kn">import</span> <span class="n">TcpServer</span>
@@ -509,7 +509,9 @@ amplification. To do this we register it as a <a class="reference internal" href
 sending <code class="docutils literal notranslate"><span class="pre">A?</span></code>. Since reading a device value will not alter the device state we
 shall set <code class="docutils literal notranslate"><span class="pre">interrupt</span></code> to <code class="docutils literal notranslate"><span class="pre">False</span></code>. We shall also specify that the byte encoded
 message should be decoded to a string prior to matching using the <code class="docutils literal notranslate"><span class="pre">utf-8</span></code> standard.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AmplifierAdapter</span><span class="p">(</span><span class="n">ComposedAdapter</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tickit.adapters.interpreters.command.regex_command</span> <span class="kn">import</span> <span class="n">RegexCommand</span>
+
+<span class="k">class</span> <span class="nc">AmplifierAdapter</span><span class="p">(</span><span class="n">ComposedAdapter</span><span class="p">):</span>
 
      <span class="o">...</span>
 
@@ -519,7 +521,7 @@ message should be decoded to a string prior to matching using the <code class="d
 </pre></div>
 </div>
 <p>We shall now add a method which sets a new value for the amplification when
-<code class="docutils literal notranslate"><span class="pre">A=(\d+\.?\d*)</span></code> is recieved, where <code class="docutils literal notranslate"><span class="pre">\d+\.?\d*</span></code> denotes a decimal number and the
+<code class="docutils literal notranslate"><span class="pre">A=(\d+\.?\d*)</span></code> is received, where <code class="docutils literal notranslate"><span class="pre">\d+\.?\d*</span></code> denotes a decimal number and the
 parentheses form the capture group from which the argument is extracted.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AmplifierAdapter</span><span class="p">(</span><span class="n">ComposedAdapter</span><span class="p">):</span>
 
@@ -530,7 +532,7 @@ parentheses form the capture group from which the argument is extracted.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">amplification</span> <span class="o">=</span> <span class="n">amplification</span>
 </pre></div>
 </div>
-<p>In its entirety your addapter should look as below.</p>
+<p>In its entirety your adapter should look as below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tickit.adapters.composed</span> <span class="kn">import</span> <span class="n">ComposedAdapter</span>
 <span class="kn">from</span> <span class="nn">tickit.adapters.interpreters.command.command_interpreter</span> <span class="kn">import</span> <span class="n">CommandInterpreter</span>
 <span class="kn">from</span> <span class="nn">tickit.adapters.interpreters.command.regex_command</span> <span class="kn">import</span> <span class="n">RegexCommand</span>
@@ -562,7 +564,7 @@ parentheses form the capture group from which the argument is extracted.</p>
 </div>
 </section>
 <section id="include-the-adapter">
-<h2>include the Adapter<a class="headerlink" href="#include-the-adapter" title="Permalink to this heading">#</a></h2>
+<h2>Include the Adapter<a class="headerlink" href="#include-the-adapter" title="Permalink to this heading">#</a></h2>
 <p>In order to now use this adapter to control our device we need to include it in
 our amplifier <a class="reference internal" href="../reference/api.html#tickit.core.components.component.ComponentConfig" title="tickit.core.components.component.ComponentConfig"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ComponentConfig</span></code></a>. To do this we simply add it to the arguments of
 <a class="reference internal" href="../reference/api.html#tickit.core.components.device_simulation.DeviceSimulation" title="tickit.core.components.device_simulation.DeviceSimulation"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DeviceSimulation</span></code></a>.</p>
@@ -600,7 +602,7 @@ Connected<span class="w"> </span>to<span class="w"> </span>localhost.
 Escape<span class="w"> </span>character<span class="w"> </span>is<span class="w"> </span><span class="se">\&#39;</span>^<span class="o">]</span><span class="se">\&#39;</span>.
 </pre></div>
 </div>
-<p>From this telnet client we can send various messages and recieve responses from our
+<p>From this telnet client we can send various messages and receive responses from our
 adapter. The only messages our adapter will recognise are <code class="docutils literal notranslate"><span class="pre">A?</span></code> and <code class="docutils literal notranslate"><span class="pre">A=</span></code>, so we
 enquire for the current amplification.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>A?
@@ -623,7 +625,7 @@ DEBUG:tickit.core.management.schedulers.base:Scheduler<span class="w"> </span>go
 DEBUG:tickit.core.components.component:sink<span class="w"> </span>got<span class="w"> </span>Input<span class="o">(</span><span class="nv">target</span><span class="o">=</span><span class="s1">&#39;sink&#39;</span>,<span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">0</span>,<span class="w"> </span><span class="nv">changes</span><span class="o">=</span>immutables.Map<span class="o">({</span><span class="s1">&#39;input&#39;</span>:<span class="w"> </span><span class="m">20</span>.0<span class="o">}))</span>
 DEBUG:tickit.devices.sink:Sunk<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input&#39;</span>:<span class="w"> </span><span class="m">20</span>.0<span class="o">}</span>
 DEBUG:tickit.core.management.schedulers.base:Scheduler<span class="w"> </span>got<span class="w"> </span>Output<span class="o">(</span><span class="nv">source</span><span class="o">=</span><span class="s1">&#39;sink&#39;</span>,<span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">0</span>,<span class="w"> </span><span class="nv">changes</span><span class="o">=</span>immutables.Map<span class="o">({})</span>,<span class="w"> </span><span class="nv">call_at</span><span class="o">=</span>None<span class="o">)</span>
-DEBUG:tickit.adapters.servers.tcp:Recieved<span class="w"> </span>b<span class="s1">&#39;A=4.4\r\n&#39;</span><span class="w"> </span>from<span class="w"> </span><span class="o">(</span><span class="s1">&#39;127.0.0.1&#39;</span>,<span class="w"> </span><span class="m">56930</span><span class="o">)</span>
+DEBUG:tickit.adapters.servers.tcp:Received<span class="w"> </span>b<span class="s1">&#39;A=4.4\r\n&#39;</span><span class="w"> </span>from<span class="w"> </span><span class="o">(</span><span class="s1">&#39;127.0.0.1&#39;</span>,<span class="w"> </span><span class="m">56930</span><span class="o">)</span>
 DEBUG:tickit.core.management.schedulers.base:Scheduler<span class="w"> </span>got<span class="w"> </span>Interrupt<span class="o">(</span><span class="nv">source</span><span class="o">=</span><span class="s1">&#39;amp&#39;</span><span class="o">)</span>
 DEBUG:tickit.core.management.schedulers.base:Scheduling<span class="w"> </span>amp<span class="w"> </span><span class="k">for</span><span class="w"> </span>wakeup<span class="w"> </span>at<span class="w"> </span><span class="m">17846862439</span>
 DEBUG:tickit.core.management.ticker:Doing<span class="w"> </span>tick<span class="w"> </span>@<span class="w"> </span><span class="m">17846862439</span>
@@ -634,11 +636,11 @@ DEBUG:tickit.devices.sink:Sunk<span class="w"> </span><span class="o">{</span><s
 DEBUG:tickit.core.management.schedulers.base:Scheduler<span class="w"> </span>got<span class="w"> </span>Output<span class="o">(</span><span class="nv">source</span><span class="o">=</span><span class="s1">&#39;sink&#39;</span>,<span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">17846862439</span>,<span class="w"> </span><span class="nv">changes</span><span class="o">=</span>immutables.Map<span class="o">({})</span>,<span class="w"> </span><span class="nv">call_at</span><span class="o">=</span>None<span class="o">)</span>
 </pre></div>
 </div>
-<p>Here we see the inital tick at time=0 which initalises the system. We see the
+<p>Here we see the initial tick at time=0 which initialises the system. We see the
 source providing a signal of 10, the amplifier getting the value of 10,
-amplifiying it to 20 and outputing it to the sink, which takes it. You then see
-the adapter interupting and changing the amplification to 4.4, continuting the
-same pattern but with the sink finally recieving a input signal of 44.</p>
+amplifying it to 20 and outputting it to the sink, which takes it. You then see
+the adapter interrupting and changing the amplification to 4.4, continuing the
+same pattern but with the sink finally receiving a input signal of 44.</p>
 </section>
 </section>
 
@@ -691,7 +693,7 @@ same pattern but with the sink finally recieving a input signal of 44.</p>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initialise-adapter">Initialise Adapter</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adapter-commands">Adapter Commands</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#include-the-adapter">include the Adapter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#include-the-adapter">Include the Adapter</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-adapter">Using the Adapter</a></li>
 </ul>
   </nav></div>

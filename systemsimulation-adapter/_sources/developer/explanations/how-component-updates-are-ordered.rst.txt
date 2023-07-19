@@ -36,7 +36,7 @@ Whilst if *Component A* is the **root** all components require an update.
 Schedule possible updates
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Next, we schedule updates for all components whos dependencies have been
+Next, we schedule updates for all components whose dependencies have been
 resolved; Dependency resolution is established by checking whether any of their
 dependencies remain in ``to_update``. In the example where *Component A* serves
 as the **root**, only *Component A* may have an update scheduled as all other
@@ -50,7 +50,7 @@ Handle responses
 ~~~~~~~~~~~~~~~~
 
 When a component update is completed and the corresponding response is
-recieved, the component can be removed from ``to_update`` and `schedule
+received, the component can be removed from ``to_update`` and `schedule
 possible updates if incomplete`_.
 
 Schedule possible updates if incomplete

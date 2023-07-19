@@ -113,7 +113,7 @@ With the following being emitted by the `MasterScheduler` process:
 
     Scheduler got Output(source='tramp_sink', time=0, changes=immutables.Map({}), call_in=None)
 
-After which the simulation should continue as expected, with relevent information
+After which the simulation should continue as expected, with relevant information
 produced by each of the processes.
 
 .. _MasterScheduler: <tickit.core.management.scheduling.master.MasterScheduler>

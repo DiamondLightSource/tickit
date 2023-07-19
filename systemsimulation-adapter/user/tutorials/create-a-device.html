@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Creating a Device &#8212; tickit 0.2.3.dev13+gae81dbcc documentation</title>
+    <title>Creating a Device &#8212; tickit 0.2.4.dev18+gd22350d3 documentation</title>
   
   
   
@@ -461,7 +461,7 @@ document.write(`
 <h1>Creating a Device<a class="headerlink" href="#creating-a-device" title="Permalink to this heading">#</a></h1>
 <p>This tutorial shows how to create a simple amplifier <a class="reference internal" href="../reference/api.html#tickit.core.device.Device" title="tickit.core.device.Device"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Device</span></code></a> for use in the tickit
 framework. This device will act as a simple amplifier which can multiply the signal
-recieved.</p>
+received.</p>
 <section id="device-class">
 <h2>Device Class<a class="headerlink" href="#device-class" title="Permalink to this heading">#</a></h2>
 <p>We shall begin by defining the amplifier class, which inherits <a class="reference internal" href="../reference/api.html#tickit.core.device.Device" title="tickit.core.device.Device"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Device</span></code></a>.</p>
@@ -521,12 +521,12 @@ here.</p>
 <section id="device-logic">
 <h2>Device Logic<a class="headerlink" href="#device-logic" title="Permalink to this heading">#</a></h2>
 <p>In order to have a signal to amplifier we will make the following small system
-where the amplifier recieves a signal from a <a class="reference internal" href="../reference/api.html#module-tickit.devices.source" title="tickit.devices.source"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">source</span></code></a> and outputs it to a <a class="reference internal" href="../reference/api.html#module-tickit.devices.sink" title="tickit.devices.sink"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">sink</span></code></a>.
+where the amplifier receives a signal from a <a class="reference internal" href="../reference/api.html#module-tickit.devices.source" title="tickit.devices.source"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">source</span></code></a> and outputs it to a <a class="reference internal" href="../reference/api.html#module-tickit.devices.sink" title="tickit.devices.sink"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">sink</span></code></a>.
 The <a class="reference internal" href="../reference/api.html#module-tickit.devices.sink" title="tickit.devices.sink"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">sink</span></code></a> and <a class="reference internal" href="../reference/api.html#module-tickit.devices.source" title="tickit.devices.source"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">source</span></code></a> are already available in <code class="docutils literal notranslate"><span class="pre">tickit.devices</span></code>.</p>
 <figure class="align-center">
 <img alt="../../_images/tickit-create-device-amplifier.svg" src="../../_images/tickit-create-device-amplifier.svg" /></figure>
 <p>The core logic of the device will be implemented in the <code class="docutils literal notranslate"><span class="pre">update</span></code> method, which
-recieves the simulation time and any Inputs into the device. We want to recieve
+receives the simulation time and any Inputs into the device. We want to receive
 an input signal from the source, amplify it, and output it to our sink. As such
 we define our inputs and outputs in the maps, and the line of logic in the <code class="docutils literal notranslate"><span class="pre">update</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">TypedDict</span>
@@ -555,7 +555,7 @@ we define our inputs and outputs in the maps, and the line of logic in the <code
 knows how to instantiate that Device. This will be defined in the same file as the
 device, and defines any default initial configuration values. As well as this, we
 overwrite the magic method <a class="reference internal" href="../reference/api.html#tickit.utils.singleton.Singleton.__call__" title="tickit.utils.singleton.Singleton.__call__"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a>, which returns a <a class="reference internal" href="../reference/api.html#tickit.core.components.device_simulation.DeviceSimulation" title="tickit.core.components.device_simulation.DeviceSimulation"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DeviceSimulation</span></code></a> object.
-This object takes the component name, as well as it’s device. We will return to this
+This object takes the component name, as well as its device. We will return to this
 if the device requires any adapters to control it externally.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 
@@ -582,7 +582,7 @@ if the device requires any adapters to control it externally.</p>
 <p>In order to use the device we must first create a simulation configuration yaml
 file. This file will be used to set up our simulation and will consist of: a
 <a class="reference internal" href="../reference/api.html#tickit.devices.source.Source" title="tickit.devices.source.Source"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Source</span></code></a>, named source, which will produce a constant input signal; our amplifier;
-and a <a class="reference internal" href="../reference/api.html#tickit.devices.sink.Sink" title="tickit.devices.sink.Sink"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Sink</span></code></a>, named sink, which will recieve the amplified signal.</p>
+and a <a class="reference internal" href="../reference/api.html#tickit.devices.sink.Sink" title="tickit.devices.sink.Sink"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Sink</span></code></a>, named sink, which will receive the amplified signal.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">tickit.devices.source.Source</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">source</span>
 <span class="w">    </span><span class="nt">inputs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
@@ -590,12 +590,12 @@ and a <a class="reference internal" href="../reference/api.html#tickit.devices.s
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">amp.Amplifier</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amp</span>
 <span class="w">    </span><span class="nt">inputs</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">initial_signal</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">source:value</span>
+<span class="w">      </span><span class="nt">initial_signal</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">source:value</span>
 <span class="w">    </span><span class="nt">initial_amplification</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.0</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">tickit.devices.sink.Sink</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sink</span>
 <span class="w">    </span><span class="nt">inputs</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">input</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amp:amplified_signal</span>
+<span class="w">      </span><span class="nt">input</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amp:amplified_signal</span>
 </pre></div>
 </div>
 <p>Where in <code class="docutils literal notranslate"><span class="pre">amp.Amplifier</span></code> <code class="docutils literal notranslate"><span class="pre">amp</span></code> is the name of the <code class="docutils literal notranslate"><span class="pre">.py</span></code> file the amplifier

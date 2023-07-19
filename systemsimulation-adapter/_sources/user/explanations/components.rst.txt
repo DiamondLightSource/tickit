@@ -33,32 +33,32 @@ System simulations can also contain their own system simulation components
 allowing for the construction of reasonably complex systems.
 
 System simulations can be nested inside other components in the config so that
-the master scheduler's wiring is correct, for example: 
+the master scheduler's wiring is correct, for example:
 
 .. code-block:: yaml
 
     - examples.devices.trampoline.RandomTrampoline:
-    name: random_trampoline
-    inputs: {}
-    callback_period: 10000000000
+        name: random_trampoline
+        inputs: {}
+        callback_period: 10000000000
     - tickit.core.components.system_simulation.SystemSimulation:
         name: internal_tickit
         inputs:
-        input_1: random_trampoline:output
+          input_1: random_trampoline:output
         components:
-        - tickit.devices.sink.Sink:
-            name: internal_sink
-            inputs:
+          - tickit.devices.sink.Sink:
+              name: internal_sink
+              inputs:
                 sink_1: external:input_1
-        - examples.devices.remote_controlled.RemoteControlled:
-            name: internal_tcp_controlled
-            inputs: {}
+          - examples.devices.remote_controlled.RemoteControlled:
+              name: internal_tcp_controlled
+              inputs: {}
         expose:
-        output_1: internal_tcp_controlled:observed
+          output_1: internal_tcp_controlled:observed
     - tickit.devices.sink.Sink:
         name: external_sink
         inputs:
-        sink_1: internal_tickit:output_1
+          sink_1: internal_tickit:output_1
 
 (See `SystemSimulationComponent`.)
 

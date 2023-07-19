@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>tickit &#8212; tickit 0.2.3.dev13+gae81dbcc documentation</title>
+    <title>tickit &#8212; tickit 0.2.4.dev18+gd22350d3 documentation</title>
   
   
   
@@ -405,11 +405,11 @@ orchestration of complex multi-device simulations.</p>
 <td><p><a class="reference external" href="https://dls-controls.github.io/tickit">https://dls-controls.github.io/tickit</a></p></td>
 </tr>
 <tr class="row-even"><td><p>Releases</p></td>
-<td><p><a class="github reference external" href="https://github.com/dls-controls/tickit-devices/releases">dls-controls/tickit-devices</a></p></td>
+<td><p><a class="github reference external" href="https://github.com/dls-controls/tickit/releases">dls-controls/tickit</a></p></td>
 </tr>
 </tbody>
 </table>
-<p>An example simulation consits of a simple counter and a sink. The counter
+<p>An example simulation consists of a simple counter and a sink. The counter
 increments up a given value and then passes this value to a sink.</p>
 <p>A simulation is defined using a yaml file, in which the graphing of the required
 components is denoted. This file defines a <strong>Counter</strong> device named <strong>counter</strong> and
@@ -424,11 +424,11 @@ to the input of <strong>counter_sink</strong>.</p>
 <span class="w">      </span><span class="nt">input</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">counter:_value</span>
 </pre></div>
 </div>
-<p>This file is executed to run the simultation.</p>
+<p>This file is executed to run the simulation.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>tickit<span class="w"> </span>all<span class="w"> </span>examples/configs/counter.yaml
 </pre></div>
 </div>
-<p>The simulation will output logs depicting the incerementing of the counter:</p>
+<p>The simulation will output logs depicting the incrementing of the counter:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>DEBUG:examples.devices.counter:Counter<span class="w"> </span>initialized<span class="w"> </span>with<span class="w"> </span><span class="nv">value</span><span class="w"> </span><span class="o">=</span>&gt;<span class="w"> </span><span class="m">0</span>
 DEBUG:asyncio:Using<span class="w"> </span>selector:<span class="w"> </span>EpollSelector
 DEBUG:tickit.core.management.ticker:Doing<span class="w"> </span>tick<span class="w"> </span>@<span class="w"> </span><span class="m">0</span>
