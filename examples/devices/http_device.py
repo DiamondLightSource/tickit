@@ -44,7 +44,7 @@ class IoBoxHttpAdapter(HttpAdapter):
 
 
 @pydantic_dataclass
-class ExampleHTTP(ComponentConfig):
+class ExampleHTTPDevice(ComponentConfig):
     """Example HTTP device."""
 
     host: str = "localhost"

@@ -23,15 +23,15 @@ to the input of **counter_sink**.
 
 .. code-block:: yaml
 
-    - examples.devices.counter.Counter:
-        name: counter
-        inputs: {}
-    - tickit.devices.sink.Sink:
-        name: counter_sink
-        inputs:
-          input:
-            component: counter
-            port: _value
+    - type: examples.devices.counter.Counter
+      name: counter
+      inputs: {}
+    - type: tickit.devices.sink.Sink
+      name: counter_sink
+      inputs:
+        input:
+          component: counter
+          port: _value
 
 
 This file is executed to run the simulation.

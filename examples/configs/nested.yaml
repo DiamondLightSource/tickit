@@ -19,7 +19,9 @@
       name: internal_tcp_controlled
       inputs: {}
   expose:
-    output_1: internal_tcp_controlled:observed
+    output_1:
+      component: internal_tcp_controlled
+      port: observed
 - type: tickit.devices.sink.Sink
   name: external_sink
   inputs:
