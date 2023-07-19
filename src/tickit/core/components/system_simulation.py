@@ -3,9 +3,6 @@ import logging
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Type
 
-from tickit.adapters.interpreters.command.command_interpreter import CommandInterpreter
-from tickit.adapters.servers.tcp import TcpServer
-from tickit.adapters.system_simulation_adapter import SystemSimulationAdapter
 from tickit.core.adapter import Adapter
 from tickit.core.components.component import BaseComponent, Component, ComponentConfig
 from tickit.core.components.system_simulation_view import SystemSimulationView
@@ -14,7 +11,6 @@ from tickit.core.management.schedulers.slave import SlaveScheduler
 from tickit.core.runner import run_all
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import Changes, ComponentID, ComponentPort, PortID, SimTime
-from tickit.utils.byte_format import ByteFormat
 from tickit.utils.topic_naming import output_topic
 
 LOGGER = logging.getLogger(__name__)
@@ -135,25 +131,4 @@ class SystemSimulation(ComponentConfig):
             name=self.name,
             components=self.components,
             expose=self.expose,
-        )
-
-
-@dataclass
-class SystemSimulationWithAdapter(ComponentConfig):
-    """Simulation of a nested set of components."""
-
-    name: ComponentID
-    inputs: Dict[PortID, ComponentPort]
-    components: List[ComponentConfig]
-    expose: Dict[PortID, ComponentPort]
-
-    def __call__(self) -> Component:  # noqa: D102
-        return SystemSimulationComponent(
-            name=self.name,
-            components=self.components,
-            expose=self.expose,
-            adapter=SystemSimulationAdapter(
-                TcpServer(host="localhost", port=25560, format=ByteFormat(b"%b\r\n")),
-                CommandInterpreter(),
-            ),
         )
