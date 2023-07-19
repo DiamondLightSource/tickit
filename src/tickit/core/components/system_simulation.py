@@ -5,13 +5,13 @@ from typing import Dict, List, Optional, Type
 
 from tickit.core.adapter import Adapter
 from tickit.core.components.component import BaseComponent, Component, ComponentConfig
-from tickit.core.components.system_simulation_view import SystemSimulationView
 from tickit.core.management.event_router import InverseWiring
 from tickit.core.management.schedulers.slave import SlaveScheduler
 from tickit.core.runner import run_all
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import Changes, ComponentID, ComponentPort, PortID, SimTime
 from tickit.utils.topic_naming import output_topic
+from tickit.views.system_simulation_view import SystemSimulationView
 
 LOGGER = logging.getLogger(__name__)
 

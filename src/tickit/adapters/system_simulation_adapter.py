@@ -8,9 +8,9 @@ from tickit.adapters.servers.tcp import TcpServer
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.components.system_simulation import SystemSimulationComponent
-from tickit.core.components.system_simulation_view import SystemSimulationView
 from tickit.core.typedefs import ComponentID, ComponentPort, PortID
 from tickit.utils.byte_format import ByteFormat
+from tickit.views.system_simulation_view import SystemSimulationView
 
 
 class SystemSimulationAdapter(ComposedAdapter[bytes, SystemSimulationView]):
