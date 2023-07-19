@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.adapters.interpreters.command.command_interpreter &#8212; tickit 0.2.4.dev6+gd6b04e25 documentation</title>
+    <title>tickit.adapters.interpreters.command.command_interpreter &#8212; tickit 0.2.4.dev6+g01eb17b6 documentation</title>
   
   
   
@@ -418,7 +418,16 @@ document.write(`
   <h1>Source code for tickit.adapters.interpreters.command.command_interpreter</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
 <span class="kn">from</span> <span class="nn">inspect</span> <span class="kn">import</span> <span class="n">getmembers</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">AnyStr</span><span class="p">,</span> <span class="n">AsyncIterable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">get_type_hints</span><span class="p">,</span> <span class="n">runtime_checkable</span><span class="p">,</span> <span class="n">Protocol</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">AnyStr</span><span class="p">,</span>
+    <span class="n">AsyncIterable</span><span class="p">,</span>
+    <span class="n">Optional</span><span class="p">,</span>
+    <span class="n">Protocol</span><span class="p">,</span>
+    <span class="n">Sequence</span><span class="p">,</span>
+    <span class="n">Tuple</span><span class="p">,</span>
+    <span class="n">get_type_hints</span><span class="p">,</span>
+    <span class="n">runtime_checkable</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">tickit.adapters.interpreters.utils</span> <span class="kn">import</span> <span class="n">wrap_as_async_iterable</span>
 <span class="kn">from</span> <span class="nn">tickit.core.adapter</span> <span class="kn">import</span> <span class="n">Adapter</span><span class="p">,</span> <span class="n">Interpreter</span>
