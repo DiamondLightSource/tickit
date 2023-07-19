@@ -3,11 +3,7 @@ from typing import List
 import yaml
 
 from tickit.core.components.component import ComponentConfig
-
-try:
-    from pydantic.v1 import parse_obj_as
-except ImportError:
-    from pydantic import parse_obj_as  # type: ignore[no-redef]
+from tickit.utils.compat.typing_compat import parse_obj_as
 
 
 def read_configs(config_path) -> List[ComponentConfig]:

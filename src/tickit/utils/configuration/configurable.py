@@ -2,24 +2,14 @@ from dataclasses import field
 from importlib import import_module
 from typing import Any, Callable, Literal, Optional, Type, Union
 
-try:
-    from pydantic.v1 import (
-        BaseConfig,
-        Field,
-        ValidationError,
-        create_model,
-        parse_obj_as,
-    )
-    from pydantic.v1.error_wrappers import ErrorWrapper
-except ImportError:
-    from pydantic import (  # type: ignore
-        BaseConfig,
-        Field,
-        ValidationError,
-        create_model,
-        parse_obj_as,
-    )
-    from pydantic.error_wrappers import ErrorWrapper  # type: ignore
+from tickit.utils.compat.typing_compat import (
+    BaseConfig,
+    ErrorWrapper,
+    Field,
+    ValidationError,
+    create_model,
+    parse_obj_as,
+)
 
 
 def as_tagged_union(
@@ -50,9 +40,9 @@ def _as_tagged_union(
 
     def _load_module_with_type(values: dict[str, str]) -> None:
         fullname = values.get(discriminator)
-        assert fullname
-        pkg, clsname = fullname.rsplit(".", maxsplit=1)
-        getattr(import_module(pkg), clsname)
+        if fullname:
+            pkg, clsname = fullname.rsplit(".", maxsplit=1)
+            getattr(import_module(pkg), clsname)
 
     def __init_subclass__(cls) -> None:
         super_cls._model = None
@@ -85,8 +75,8 @@ def _as_tagged_union(
                 __config__=config,
             )
         try:
-            assert cls._model
-            return cls._model(__root__=v).__root__
+            if cls._model:
+                return cls._model(__root__=v).__root__
         except ValidationError as e:
             for (
                 error

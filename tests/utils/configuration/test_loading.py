@@ -6,7 +6,7 @@ from mock.mock import mock_open
 
 from tickit.core.components.component import ComponentConfig
 from tickit.core.typedefs import ComponentID, ComponentPort, PortID
-from tickit.utils.compat.typing_compat import pydantic
+from tickit.utils.compat.typing_compat import pydantic_dataclass
 from tickit.utils.configuration.loading import read_configs
 
 
@@ -24,7 +24,7 @@ def patch_tagged_union_dict(mock_component_config_type) -> Iterable[Mock]:
         yield mock
 
 
-@pydantic.dataclasses.dataclass
+@pydantic_dataclass
 class MockConfig(ComponentConfig):
     pass
 

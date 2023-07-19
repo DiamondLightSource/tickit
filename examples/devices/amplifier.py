@@ -9,7 +9,7 @@ from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.byte_format import ByteFormat
-from tickit.utils.compat.typing_compat import pydantic
+from tickit.utils.compat.typing_compat import pydantic_dataclass
 
 
 class AmplifierDevice(Device):
@@ -88,7 +88,7 @@ class AmplifierAdapter(ComposedAdapter):
         self.device.amplification = amplification
 
 
-@pydantic.dataclasses.dataclass
+@pydantic_dataclass
 class Amplifier(ComponentConfig):
     """Amplifier you can set the amplification value of over TCP."""
 

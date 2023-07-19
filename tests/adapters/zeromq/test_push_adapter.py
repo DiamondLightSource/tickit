@@ -14,12 +14,7 @@ from tickit.adapters.zeromq.push_adapter import (
 )
 from tickit.core.adapter import RaiseInterrupt
 from tickit.core.device import Device
-
-try:
-    from pydantic.v1 import BaseModel
-except ImportError:
-    from pydantic import BaseModel  # type: ignore
-
+from tickit.utils.compat.typing_compat import BaseModel
 
 _HOST = "test.host"
 _PORT = 12345
