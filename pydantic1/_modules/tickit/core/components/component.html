@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.components.component &#8212; tickit 0.2.4.dev31+g4173d07e documentation</title>
+    <title>tickit.core.components.component &#8212; tickit 0.2.4.dev32+ged012a9a documentation</title>
   
   
   
@@ -439,12 +439,6 @@ document.write(`
 <span class="kn">from</span> <span class="nn">tickit.utils.compat.typing_compat</span> <span class="kn">import</span> <span class="n">pydantic</span>
 <span class="kn">from</span> <span class="nn">tickit.utils.configuration.configurable</span> <span class="kn">import</span> <span class="n">as_tagged_union</span>
 <span class="kn">from</span> <span class="nn">tickit.utils.topic_naming</span> <span class="kn">import</span> <span class="n">input_topic</span><span class="p">,</span> <span class="n">output_topic</span>
-
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">pydantic.v1</span> <span class="kn">import</span> <span class="n">validator</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">validator</span>  <span class="c1"># type: ignore</span>
-
 
 <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
