@@ -18,7 +18,7 @@ from tickit.core.typedefs import (
     SimTime,
     StopComponent,
 )
-from tickit.utils.compat.typing_compat import pydantic_dataclass
+from tickit.utils.compat.pydantic_compat import pydantic_dataclass
 from tickit.utils.configuration.configurable import as_tagged_union
 from tickit.utils.topic_naming import input_topic, output_topic
 

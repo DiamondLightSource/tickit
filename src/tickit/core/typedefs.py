@@ -3,12 +3,7 @@ from typing import Hashable, Iterator, Mapping, NewType, Optional
 
 from immutables import Map
 
-try:
-    from pydantic.v1 import root_validator
-    from pydantic.v1.dataclasses import dataclass as pydantic_dataclass
-except ImportError:
-    from pydantic import root_validator  # type: ignore
-    from pydantic.dataclasses import dataclass as pydantic_dataclass  # type: ignore
+from tickit.utils.compat.pydantic_compat import pydantic_dataclass, root_validator
 
 #: An identifier which specifies the component
 ComponentID = NewType("ComponentID", str)

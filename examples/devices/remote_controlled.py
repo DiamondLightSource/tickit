@@ -12,7 +12,8 @@ from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.byte_format import ByteFormat
-from tickit.utils.compat.typing_compat import TypedDict, pydantic_dataclass
+from tickit.utils.compat.pydantic_compat import pydantic_dataclass
+from tickit.utils.compat.typing_compat import TypedDict
 
 LOGGER = logging.getLogger(__name__)
 

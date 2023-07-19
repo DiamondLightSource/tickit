@@ -5,7 +5,7 @@ from tickit.adapters.interpreters.endpoints.http_endpoint import HttpEndpoint
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.devices.iobox import IoBoxDevice
-from tickit.utils.compat.typing_compat import pydantic_dataclass
+from tickit.utils.compat.pydantic_compat import pydantic_dataclass
 
 
 class IoBoxHttpAdapter(HttpAdapter):

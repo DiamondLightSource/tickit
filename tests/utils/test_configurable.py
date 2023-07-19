@@ -1,6 +1,6 @@
 from dataclasses import asdict
 
-from tickit.utils.compat.typing_compat import parse_obj_as, pydantic_dataclass
+from tickit.utils.compat.pydantic_compat import parse_obj_as, pydantic_dataclass
 from tickit.utils.configuration.configurable import as_tagged_union
 
 

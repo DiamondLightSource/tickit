@@ -2,7 +2,7 @@ from dataclasses import field
 from importlib import import_module
 from typing import Any, Callable, Literal, Optional, Type, Union
 
-from tickit.utils.compat.typing_compat import (
+from tickit.utils.compat.pydantic_compat import (
     BaseConfig,
     ErrorWrapper,
     Field,
