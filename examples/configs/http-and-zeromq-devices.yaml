@@ -4,4 +4,6 @@
 - examples.devices.zeromq_push_device.ExampleZeroMqPusher:
     name: zeromq-pusher
     inputs: 
-        updates: http-device:updates
+        updates:
+          component: http-device
+          port: updates

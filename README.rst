@@ -29,7 +29,9 @@ to the input of **counter_sink**.
     - tickit.devices.sink.Sink:
         name: counter_sink
         inputs:
-          input: counter:_value
+          input:
+            component: counter
+            port: _value
 
 
 This file is executed to run the simulation.

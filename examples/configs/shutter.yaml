@@ -5,10 +5,14 @@
 - type: examples.devices.shutter.Shutter
   name: shutter
   inputs:
-    flux: source:value
+    flux:
+      component: source
+      port: value
   default_position: 0.2
   initial_position: 0.24
 - type: tickit.devices.sink.Sink
   name: sink
   inputs:
-    flux: shutter:flux
+    flux:
+      component: shutter
+      port: flux

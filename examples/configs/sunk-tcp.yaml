@@ -5,4 +5,6 @@
 - type: tickit.devices.sink.Sink
   name: contr_sink
   inputs:
-    input: tcp_contr:observed
+    input:
+      component: tcp_contr
+      port: observed

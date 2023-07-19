@@ -5,9 +5,13 @@
 - type: examples.devices.amplifier.Amplifier
   name: amp
   inputs:
-    initial_signal: source:value
+    initial_signal:
+      component: source
+      port: value
   initial_amplification: 2
 - type: tickit.devices.sink.Sink
   name: sink
   inputs:
-    input: amp:amplified_signal
+    input:
+      component: amp
+      port: amplified_signal

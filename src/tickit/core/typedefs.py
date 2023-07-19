@@ -3,8 +3,6 @@ from typing import Hashable, Iterator, Mapping, NewType, Optional, Union
 
 from immutables import Map
 
-from tickit.utils.compat.pydantic_compat import pydantic_dataclass, root_validator
-
 #: An identifier which specifies the component
 ComponentID = NewType("ComponentID", str)
 #: An identifier which specifies the input/output port of a component
@@ -17,19 +15,12 @@ Changes = NewType("Changes", Map[PortID, Hashable])
 SimTime = NewType("SimTime", int)
 
 
-@pydantic_dataclass(frozen=True)
+@dataclass(frozen=True)
 class ComponentPort:
     """An immutable dataclass for custom (de)serialization of component - port pairs."""
 
     component: ComponentID
     port: PortID
-
-    @root_validator(pre=True)
-    def _split_inputs(cls, v):
-        if isinstance(v, str):
-            component, port = v.split(":")
-            return ComponentPort(ComponentID(component), PortID(port))
-        return v
 
     def __repr__(self) -> str:
         """A string representation of the object of format component:port.
