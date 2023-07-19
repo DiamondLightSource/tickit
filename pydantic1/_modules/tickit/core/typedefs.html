@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.typedefs &#8212; tickit 0.2.4.dev33+g11e42d4d documentation</title>
+    <title>tickit.core.typedefs &#8212; tickit 0.2.4.dev34+gfe114464 documentation</title>
   
   
   
@@ -421,12 +421,7 @@ document.write(`
 
 <span class="kn">from</span> <span class="nn">immutables</span> <span class="kn">import</span> <span class="n">Map</span>
 
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">pydantic.v1</span> <span class="kn">import</span> <span class="n">root_validator</span>
-    <span class="kn">from</span> <span class="nn">pydantic.v1.dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span> <span class="k">as</span> <span class="n">pydantic_dataclass</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">root_validator</span>  <span class="c1"># type: ignore</span>
-    <span class="kn">from</span> <span class="nn">pydantic.dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span> <span class="k">as</span> <span class="n">pydantic_dataclass</span>  <span class="c1"># type: ignore</span>
+<span class="kn">from</span> <span class="nn">tickit.utils.compat.pydantic_compat</span> <span class="kn">import</span> <span class="n">pydantic_dataclass</span><span class="p">,</span> <span class="n">root_validator</span>
 
 <span class="c1">#: An identifier which specifies the component</span>
 <span class="n">ComponentID</span> <span class="o">=</span> <span class="n">NewType</span><span class="p">(</span><span class="s2">&quot;ComponentID&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>

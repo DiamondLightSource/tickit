@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Creating a Device &#8212; tickit 0.2.4.dev33+g11e42d4d documentation</title>
+    <title>Creating a Device &#8212; tickit 0.2.4.dev34+gfe114464 documentation</title>
   
   
   
@@ -557,7 +557,7 @@ device, and defines any default initial configuration values. As well as this, w
 overwrite the magic method <a class="reference internal" href="../reference/api.html#tickit.utils.singleton.Singleton.__call__" title="tickit.utils.singleton.Singleton.__call__"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a>, which returns a <a class="reference internal" href="../reference/api.html#tickit.core.components.device_simulation.DeviceSimulation" title="tickit.core.components.device_simulation.DeviceSimulation"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DeviceSimulation</span></code></a> object.
 This object takes the component name, as well as its device. We will return to this
 if the device requires any adapters to control it externally.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tickit.utils.compat.typing_compat</span> <span class="kn">import</span> <span class="n">pydantic_dataclass</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tickit.utils.compat.pydantic_compat</span> <span class="kn">import</span> <span class="n">pydantic_dataclass</span>
 
 <span class="kn">from</span> <span class="nn">tickit.core.components.component</span> <span class="kn">import</span> <span class="n">Component</span><span class="p">,</span> <span class="n">ComponentConfig</span>
 <span class="kn">from</span> <span class="nn">tickit.core.components.device_simulation</span> <span class="kn">import</span> <span class="n">DeviceSimulation</span>
