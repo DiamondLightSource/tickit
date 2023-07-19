@@ -8,8 +8,8 @@ from tickit.core.typedefs import ComponentID
 class SystemSimulationView:
     """A view for providing inspection of system simulations.
 
-    Adapters may be applied to this view to allow direct communication and querying of
-    the given system simulation.
+    This view assumes the role of a device in that Adapters may use it allow direct
+    communication and querying of the given system simulation.
 
     Views must supply interfaces with the system simulation components and wiring in
     the format:
