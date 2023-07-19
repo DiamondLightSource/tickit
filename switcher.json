@@ -68,6 +68,10 @@
     "url": "https://dls-controls.github.io/tickit/pyright_errors/"
   },
   {
+    "version": "remove-typing-compat",
+    "url": "https://dls-controls.github.io/tickit/remove-typing-compat/"
+  },
+  {
     "version": "remove3.8",
     "url": "https://dls-controls.github.io/tickit/remove3.8/"
   },
