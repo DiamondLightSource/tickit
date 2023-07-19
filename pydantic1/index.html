@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>tickit &#8212; tickit 0.2.4.dev41+g66ec841b documentation</title>
+    <title>tickit &#8212; tickit 0.2.4.dev42+gf806ad60 documentation</title>
   
   
   
@@ -421,7 +421,9 @@ to the input of <strong>counter_sink</strong>.</p>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">tickit.devices.sink.Sink</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">counter_sink</span>
 <span class="w">    </span><span class="nt">inputs</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">input</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">counter:_value</span>
+<span class="w">      </span><span class="nt">input</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">component</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">counter</span>
+<span class="w">        </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">_value</span>
 </pre></div>
 </div>
 <p>This file is executed to run the simulation.</p>

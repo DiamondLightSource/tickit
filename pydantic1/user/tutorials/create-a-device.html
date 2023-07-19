@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Creating a Device &#8212; tickit 0.2.4.dev41+g66ec841b documentation</title>
+    <title>Creating a Device &#8212; tickit 0.2.4.dev42+gf806ad60 documentation</title>
   
   
   
@@ -590,12 +590,16 @@ and a <a class="reference internal" href="../reference/api.html#tickit.devices.s
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amp.Amplifier</span>
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amp</span>
 <span class="w">  </span><span class="nt">inputs</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">initial_signal</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">source:value</span>
+<span class="w">    </span><span class="nt">initial_signal</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">component</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">source</span>
+<span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">value</span>
 <span class="w">  </span><span class="nt">initial_amplification</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.0</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tickit.devices.sink.Sink</span>
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sink</span>
 <span class="w">  </span><span class="nt">inputs</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">input</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amp:amplified_signal</span>
+<span class="w">    </span><span class="nt">input</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">component</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amp</span>
+<span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amplified_signal</span>
 </pre></div>
 </div>
 <p>Where in <code class="docutils literal notranslate"><span class="pre">amp.Amplifier</span></code> <code class="docutils literal notranslate"><span class="pre">amp</span></code> is the name of the <code class="docutils literal notranslate"><span class="pre">.py</span></code> file the amplifier
