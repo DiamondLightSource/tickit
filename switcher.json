@@ -76,10 +76,6 @@
     "url": "https://dls-controls.github.io/tickit/systemsimulation-adapter/"
   },
   {
-    "version": "type_alias_for_message_types",
-    "url": "https://dls-controls.github.io/tickit/type_alias_for_message_types/"
-  },
-  {
     "version": "typed_dict_typing",
     "url": "https://dls-controls.github.io/tickit/typed_dict_typing/"
   },
