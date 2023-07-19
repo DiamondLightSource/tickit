@@ -99,7 +99,7 @@ class ShutterDevice(Device):
         return DeviceUpdate(self.Outputs(flux=output_flux), call_at)
 
 
-class ShutterAdapter(ComposedAdapter):
+class ShutterAdapter(ComposedAdapter[bytes, ShutterDevice]):
     """A toy composed adapter which gets shutter position and target and sets target."""
 
     device: ShutterDevice

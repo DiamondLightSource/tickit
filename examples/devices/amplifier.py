@@ -47,7 +47,7 @@ class AmplifierDevice(Device):
         return DeviceUpdate(self.Outputs(amplified_signal=amplified_value), None)
 
 
-class AmplifierAdapter(ComposedAdapter):
+class AmplifierAdapter(ComposedAdapter[bytes, AmplifierDevice]):
     """A composed adapter which gets and sets the value of amplification."""
 
     device: AmplifierDevice

@@ -54,7 +54,7 @@ class IsolatedBoxDevice(Device):
         self.value = value
 
 
-class IsolatedBoxTCPAdapter(ComposedAdapter):
+class IsolatedBoxTCPAdapter(ComposedAdapter[bytes, IsolatedBoxDevice]):
     """A composed adapter which allows getting and setting the value of the device."""
 
     device: IsolatedBoxDevice
