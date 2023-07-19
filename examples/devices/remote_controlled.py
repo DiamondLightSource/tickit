@@ -60,7 +60,7 @@ class RemoteControlledDevice(Device):
         return DeviceUpdate(self.Outputs(observed=self.observed), None)
 
 
-class RemoteControlledAdapter(ComposedAdapter[bytes]):
+class RemoteControlledAdapter(ComposedAdapter[bytes, RemoteControlledDevice]):
     """A trivial composed adapter which gets and sets device properties."""
 
     device: RemoteControlledDevice
@@ -232,5 +232,5 @@ class RemoteControlled(ComponentConfig):
         return DeviceSimulation(
             name=self.name,
             device=RemoteControlledDevice(),
-            adapters=[RemoteControlledAdapter(TcpServer())],
+            adapters=[RemoteControlledAdapter(TcpServer(format=self.format))],
         )
