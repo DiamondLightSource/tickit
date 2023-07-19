@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.adapters.httpadapter &#8212; tickit 0.2.4.dev18+gd22350d3 documentation</title>
+    <title>tickit.adapters.httpadapter &#8212; tickit 0.2.4.dev19+g9db8d1e8 documentation</title>
   
   
   
@@ -434,8 +434,8 @@ document.write(`
 <span class="n">D</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="HTTPAdapter"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.adapters.httpadapter.HTTPAdapter">[docs]</a><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">HTTPAdapter</span><span class="p">(</span><span class="n">Adapter</span><span class="p">[</span><span class="n">D</span><span class="p">]):</span>
+<div class="viewcode-block" id="HttpAdapter"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.adapters.httpadapter.HttpAdapter">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">HttpAdapter</span><span class="p">(</span><span class="n">Adapter</span><span class="p">[</span><span class="n">D</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An adapter implementation which delegates to a server and sets up endpoints.</span>
 
 <span class="sd">    An adapter implementation which delegates the hosting of an http requests to a</span>
@@ -448,7 +448,7 @@ document.write(`
     <span class="n">_stopped</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">_ready</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="HTTPAdapter.run_forever"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.adapters.httpadapter.HTTPAdapter.run_forever">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run_forever</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">D</span><span class="p">,</span> <span class="n">raise_interrupt</span><span class="p">:</span> <span class="n">RaiseInterrupt</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="HttpAdapter.run_forever"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.adapters.httpadapter.HttpAdapter.run_forever">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run_forever</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">D</span><span class="p">,</span> <span class="n">raise_interrupt</span><span class="p">:</span> <span class="n">RaiseInterrupt</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Runs the server continuously.&quot;&quot;&quot;</span>
         <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">run_forever</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">raise_interrupt</span><span class="p">)</span>
 
@@ -494,7 +494,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">site</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">TCPSite</span><span class="p">(</span><span class="n">runner</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
-<div class="viewcode-block" id="HTTPAdapter.endpoints"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.adapters.httpadapter.HTTPAdapter.endpoints">[docs]</a>    <span class="k">def</span> <span class="nf">endpoints</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">RouteDef</span><span class="p">]:</span>
+<div class="viewcode-block" id="HttpAdapter.endpoints"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.adapters.httpadapter.HttpAdapter.endpoints">[docs]</a>    <span class="k">def</span> <span class="nf">endpoints</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">RouteDef</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns list of endpoints.</span>
 
 <span class="sd">        Fetches the defined HTTP endpoints in the device adapter, parses them and</span>
