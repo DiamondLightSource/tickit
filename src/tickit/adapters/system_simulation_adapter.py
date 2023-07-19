@@ -37,3 +37,8 @@ class SystemSimulationAdapter(ComposedAdapter[bytes, SystemSimulationView]):
             ).encode("utf-8")
         else:
             return str(component).encode("utf-8")
+
+    @RegexCommand(r"wiring", False, "utf-8")
+    async def get_wiring(self) -> bytes:
+        """Returns the wiring object used by the nested scheduler."""
+        return str(self.device.get_wiring()).encode("utf-8")
