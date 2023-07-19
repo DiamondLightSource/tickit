@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>API &#8212; tickit 0.2.4.dev34+gfe114464 documentation</title>
+    <title>API &#8212; tickit 0.2.4.dev40+g3e2d6e69 documentation</title>
   
   
   
@@ -807,11 +807,11 @@ subclasses to facilitate automatic deserialization.</p>
 <dd><p>A base class for components, implementing state interface related methods.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tickit.core.components.component.BaseComponent.handle_input">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.typedefs.Input" title="tickit.core.typedefs.Input"><span class="pre">Input</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#tickit.core.typedefs.StopComponent" title="tickit.core.typedefs.StopComponent"><span class="pre">StopComponent</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/core/components/component.html#BaseComponent.handle_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.components.component.BaseComponent.handle_input" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.typedefs.Input" title="tickit.core.typedefs.Input"><span class="pre">Input</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#tickit.core.typedefs.StopComponent" title="tickit.core.typedefs.StopComponent"><span class="pre">StopComponent</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#tickit.core.typedefs.ComponentException" title="tickit.core.typedefs.ComponentException"><span class="pre">ComponentException</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/core/components/component.html#BaseComponent.handle_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.components.component.BaseComponent.handle_input" title="Permalink to this definition">#</a></dt>
 <dd><p>Call on_tick when an input is received.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>message</strong> (<em>Union</em><em>[</em><a class="reference internal" href="#tickit.core.typedefs.Input" title="tickit.core.typedefs.Input"><em>Input</em></a><em>, </em><a class="reference internal" href="#tickit.core.typedefs.StopComponent" title="tickit.core.typedefs.StopComponent"><em>StopComponent</em></a><em>]</em><em>)</em>) – An immutable data container for any
+<dd class="field-odd"><p><strong>message</strong> (<em>ComponentInput</em>) – An immutable data container for any
 message a component receives.</p>
 </dd>
 </dl>
@@ -1160,9 +1160,10 @@ indicating that a new wakeup has been added.</p>
 <dt class="sig sig-object py" id="tickit.core.management.schedulers.master.MasterScheduler.run_forever">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run_forever</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/core/management/schedulers/master.html#MasterScheduler.run_forever"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.management.schedulers.master.MasterScheduler.run_forever" title="Permalink to this definition">#</a></dt>
 <dd><p>Perform initial tick then continuously schedule ticks according to wakeups.</p>
-<p>An asynchronous method which initially performs setup and an initial tick in
-which all components are updated, subsequently ticks are performed as requested
-by components of the simulation according to the simulation speed.</p>
+<p>An asynchronous method which initially performs setup, sets the event to
+signify the simulation is running, and performs an initial tick in which all
+components are updated. Subsequent ticks are performed as requested by
+components of the simulation according to the simulation speed.</p>
 </dd></dl>
 
 <dl class="py method">

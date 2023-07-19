@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.components.component &#8212; tickit 0.2.4.dev34+gfe114464 documentation</title>
+    <title>tickit.core.components.component &#8212; tickit 0.2.4.dev40+g3e2d6e69 documentation</title>
   
   
   
@@ -421,13 +421,15 @@ document.write(`
 <span class="kn">import</span> <span class="nn">traceback</span>
 <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Type</span>
 
 <span class="kn">from</span> <span class="nn">tickit.core.state_interfaces.state_interface</span> <span class="kn">import</span> <span class="n">StateConsumer</span><span class="p">,</span> <span class="n">StateProducer</span>
 <span class="kn">from</span> <span class="nn">tickit.core.typedefs</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">Changes</span><span class="p">,</span>
     <span class="n">ComponentException</span><span class="p">,</span>
     <span class="n">ComponentID</span><span class="p">,</span>
+    <span class="n">ComponentInput</span><span class="p">,</span>
+    <span class="n">ComponentOutput</span><span class="p">,</span>
     <span class="n">ComponentPort</span><span class="p">,</span>
     <span class="n">Input</span><span class="p">,</span>
     <span class="n">Interrupt</span><span class="p">,</span>
@@ -493,14 +495,14 @@ document.write(`
 <div class="viewcode-block" id="BaseComponent"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.components.component.BaseComponent">[docs]</a><span class="k">class</span> <span class="nc">BaseComponent</span><span class="p">(</span><span class="n">Component</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A base class for components, implementing state interface related methods.&quot;&quot;&quot;</span>
 
-    <span class="n">state_consumer</span><span class="p">:</span> <span class="n">StateConsumer</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Input</span><span class="p">,</span> <span class="n">StopComponent</span><span class="p">]]</span>
-    <span class="n">state_producer</span><span class="p">:</span> <span class="n">StateProducer</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Interrupt</span><span class="p">,</span> <span class="n">Output</span><span class="p">,</span> <span class="n">ComponentException</span><span class="p">]]</span>
+    <span class="n">state_consumer</span><span class="p">:</span> <span class="n">StateConsumer</span><span class="p">[</span><span class="n">ComponentInput</span><span class="p">]</span>
+    <span class="n">state_producer</span><span class="p">:</span> <span class="n">StateProducer</span><span class="p">[</span><span class="n">ComponentOutput</span><span class="p">]</span>
 
-<div class="viewcode-block" id="BaseComponent.handle_input"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.components.component.BaseComponent.handle_input">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Input</span><span class="p">,</span> <span class="n">StopComponent</span><span class="p">]):</span>
+<div class="viewcode-block" id="BaseComponent.handle_input"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.components.component.BaseComponent.handle_input">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">ComponentInput</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Call on_tick when an input is received.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            message (Union[Input, StopComponent])): An immutable data container for any</span>
+<span class="sd">            message (ComponentInput): An immutable data container for any</span>
 <span class="sd">                message a component receives.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">Input</span><span class="p">):</span>
