@@ -22,12 +22,6 @@ from tickit.utils.compat.typing_compat import pydantic
 from tickit.utils.configuration.configurable import as_tagged_union
 from tickit.utils.topic_naming import input_topic, output_topic
 
-try:
-    from pydantic.v1 import validator
-except ImportError:
-    from pydantic import validator  # type: ignore
-
-
 LOGGER = logging.getLogger(__name__)
 
 
