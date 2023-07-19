@@ -1,5 +1,6 @@
 from tickit.adapters.composed import ComposedAdapter
 from tickit.adapters.interpreters.command.regex_command import RegexCommand
+from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.components.system_simulation_view import SystemSimulationView
 from tickit.core.typedefs import ComponentID
 
@@ -25,4 +26,14 @@ class SystemSimulationAdapter(ComposedAdapter[bytes, SystemSimulationView]):
         component = self.device._components.get(
             ComponentID(id), "ComponentID not recognised."
         )
-        return str(component).encode("utf-8")
+        if isinstance(component, DeviceSimulation):
+            return str(
+                f"ComponentID: {component.name}\n"
+                + f" device: {component.device.__class__.__name__}\n"
+                + " adapters: "
+                + f"{[adapter.__class__.__name__ for adapter in component.adapters]}\n"
+                + f" Inputs: {component.device_inputs}\n"
+                + f" last_outputs: {component.last_outputs}\n"
+            ).encode("utf-8")
+        else:
+            return str(component).encode("utf-8")
