@@ -17,7 +17,7 @@ D = TypeVar("D")
 
 
 @dataclass
-class HTTPAdapter(Adapter[D]):
+class HttpAdapter(Adapter[D]):
     """An adapter implementation which delegates to a server and sets up endpoints.
 
     An adapter implementation which delegates the hosting of an http requests to a
