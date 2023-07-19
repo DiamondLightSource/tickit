@@ -30,4 +30,6 @@ which outputs random numbers, and a sink taking that output as an input:
     - type: tickit.devices.sink.Sink
       name: tramp_sink
       inputs:
-        input: rand_tramp:output
+        input:
+          component: rand_tramp
+          port: output

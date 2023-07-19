@@ -44,21 +44,29 @@ the master scheduler's wiring is correct, for example:
     - type: tickit.core.components.system_simulation.SystemSimulation
       name: internal_tickit
       inputs:
-        input_1: random_trampoline:output
+        input_1:
+          component: random_trampoline
+          port: output
       components:
         - type: tickit.devices.sink.Sink
           name: internal_sink
           inputs:
-            sink_1: external:input_1
+            sink_1:
+              component: external
+              port: input_1
         - type: examples.devices.remote_controlled.RemoteControlled
           name: internal_tcp_controlled
           inputs: {}
       expose:
-        output_1: internal_tcp_controlled:observed
+        output_1:
+          component: internal_tcp_controlled
+          port: observed
     - type: tickit.devices.sink.Sink
       name: external_sink
       inputs:
-        sink_1: internal_tickit:output_1
+        sink_1:
+          component: internal_tickit
+          port: output_1
 
 (See `SystemSimulationComponent`.)
 
