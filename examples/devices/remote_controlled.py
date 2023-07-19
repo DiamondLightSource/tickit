@@ -1,7 +1,7 @@
 import asyncio
 import logging
 import struct
-from typing import AsyncIterable, Optional
+from typing import AsyncIterable, Optional, TypedDict
 
 from tickit.adapters.composed import ComposedAdapter
 from tickit.adapters.interpreters.command import CommandInterpreter, RegexCommand
@@ -13,7 +13,6 @@ from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.byte_format import ByteFormat
 from tickit.utils.compat.pydantic_compat import pydantic_dataclass
-from tickit.utils.compat.typing_compat import TypedDict
 
 LOGGER = logging.getLogger(__name__)
 

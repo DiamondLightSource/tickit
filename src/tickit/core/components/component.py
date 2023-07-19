@@ -3,13 +3,15 @@ import logging
 import traceback
 from abc import abstractmethod
 from dataclasses import dataclass
-from typing import Dict, Optional, Type, Union
+from typing import Dict, Optional, Type
 
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import (
     Changes,
     ComponentException,
     ComponentID,
+    ComponentInput,
+    ComponentOutput,
     ComponentPort,
     Input,
     Interrupt,
@@ -75,14 +77,14 @@ class ComponentConfig:
 class BaseComponent(Component):
     """A base class for components, implementing state interface related methods."""
 
-    state_consumer: StateConsumer[Union[Input, StopComponent]]
-    state_producer: StateProducer[Union[Interrupt, Output, ComponentException]]
+    state_consumer: StateConsumer[ComponentInput]
+    state_producer: StateProducer[ComponentOutput]
 
-    async def handle_input(self, message: Union[Input, StopComponent]):
+    async def handle_input(self, message: ComponentInput):
         """Call on_tick when an input is received.
 
         Args:
-            message (Union[Input, StopComponent])): An immutable data container for any
+            message (ComponentInput): An immutable data container for any
                 message a component receives.
         """
         if isinstance(message, Input):

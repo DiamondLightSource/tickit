@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Hashable, Iterator, Mapping, NewType, Optional
+from typing import Hashable, Iterator, Mapping, NewType, Optional, Union
 
 from immutables import Map
 
@@ -109,3 +109,7 @@ class ComponentException:
     source: ComponentID
     error: Exception
     traceback: str
+
+
+ComponentOutput = Union[Interrupt, Output, ComponentException]
+ComponentInput = Union[Input, StopComponent, ComponentException]

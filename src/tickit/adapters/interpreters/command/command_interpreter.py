@@ -1,10 +1,18 @@
 from abc import abstractmethod
 from inspect import getmembers
-from typing import AnyStr, AsyncIterable, Optional, Sequence, Tuple, get_type_hints
+from typing import (
+    AnyStr,
+    AsyncIterable,
+    Optional,
+    Protocol,
+    Sequence,
+    Tuple,
+    get_type_hints,
+    runtime_checkable,
+)
 
 from tickit.adapters.interpreters.utils import wrap_as_async_iterable
 from tickit.core.adapter import Adapter, Interpreter
-from tickit.utils.compat.typing_compat import Protocol, runtime_checkable
 
 
 @runtime_checkable
