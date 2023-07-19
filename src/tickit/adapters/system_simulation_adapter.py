@@ -1,8 +1,16 @@
+from dataclasses import dataclass
+from typing import Dict, List
+
 from tickit.adapters.composed import ComposedAdapter
+from tickit.adapters.interpreters.command.command_interpreter import CommandInterpreter
 from tickit.adapters.interpreters.command.regex_command import RegexCommand
+from tickit.adapters.servers.tcp import TcpServer
+from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
+from tickit.core.components.system_simulation import SystemSimulationComponent
 from tickit.core.components.system_simulation_view import SystemSimulationView
-from tickit.core.typedefs import ComponentID
+from tickit.core.typedefs import ComponentID, ComponentPort, PortID
+from tickit.utils.byte_format import ByteFormat
 
 
 class SystemSimulationAdapter(ComposedAdapter[bytes, SystemSimulationView]):
@@ -42,3 +50,24 @@ class SystemSimulationAdapter(ComposedAdapter[bytes, SystemSimulationView]):
     async def get_wiring(self) -> bytes:
         """Returns the wiring object used by the nested scheduler."""
         return str(self.device.get_wiring()).encode("utf-8")
+
+
+@dataclass
+class SystemSimulationWithAdapter(ComponentConfig):
+    """Simulation of a nested set of components with a composed adapter."""
+
+    name: ComponentID
+    inputs: Dict[PortID, ComponentPort]
+    components: List[ComponentConfig]
+    expose: Dict[PortID, ComponentPort]
+
+    def __call__(self) -> Component:  # noqa: D102
+        return SystemSimulationComponent(
+            name=self.name,
+            components=self.components,
+            expose=self.expose,
+            adapter=SystemSimulationAdapter(
+                TcpServer(host="localhost", port=25560, format=ByteFormat(b"%b\r\n")),
+                CommandInterpreter(),
+            ),
+        )
