@@ -1,5 +1,6 @@
 from typing import TypedDict
 
+import pydantic.v1.dataclasses
 from softioc import builder
 
 from tickit.adapters.composed import ComposedAdapter
@@ -12,7 +13,6 @@ from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.byte_format import ByteFormat
-import pydantic.v1.dataclasses
 
 
 class IsolatedBoxDevice(Device):

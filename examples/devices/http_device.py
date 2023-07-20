@@ -1,5 +1,5 @@
-from aiohttp import web
 import pydantic.v1.dataclasses
+from aiohttp import web
 
 from tickit.adapters.httpadapter import HttpAdapter
 from tickit.adapters.interpreters.endpoints.http_endpoint import HttpEndpoint

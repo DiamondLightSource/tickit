@@ -1,7 +1,7 @@
 from dataclasses import asdict
 
-from pydantic.v1 import parse_obj_as
 import pydantic.v1.dataclasses
+from pydantic.v1 import parse_obj_as
 
 from tickit.utils.configuration.tagged_union import as_tagged_union
 

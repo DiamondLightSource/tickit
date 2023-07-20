@@ -1,9 +1,9 @@
 from typing import Iterable
 
+import pydantic.v1.dataclasses
 import pytest
 from mock import Mock, create_autospec, patch
 from mock.mock import mock_open
-import pydantic.v1.dataclasses
 
 from tickit.core.components.component import ComponentConfig
 from tickit.core.typedefs import ComponentID, ComponentPort, PortID

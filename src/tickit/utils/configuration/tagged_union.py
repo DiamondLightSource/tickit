@@ -2,7 +2,7 @@ from dataclasses import field
 from importlib import import_module
 from typing import Any, Callable, Literal, Optional, Type, Union
 
-from pydantic.v1 import BaseConfig, parse_obj_as, create_model, Field, ValidationError
+from pydantic.v1 import BaseConfig, Field, ValidationError, create_model, parse_obj_as
 from pydantic.v1.error_wrappers import ErrorWrapper
 
 
@@ -72,7 +72,7 @@ def _as_tagged_union(
             if cls._model:
                 return cls._model(__root__=v).__root__
         except ValidationError as e:
-            for (err) in e.raw_errors:
+            for err in e.raw_errors:
                 # need in to remove redundant __root__ from error path
                 if isinstance(err, ErrorWrapper) and err.loc_tuple()[0] == "__root__":
                     err._loc = err.loc_tuple()[1:]
