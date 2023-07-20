@@ -9,14 +9,14 @@ from pydantic.v1.error_wrappers import ErrorWrapper
 def as_tagged_union(
     super_cls: Optional[Union[Type, Callable[[Type], Type]]] = None,
     *,
-    discriminator: str = "type",
+    discriminator: str = "_type",
     config: Optional[Type[BaseConfig]] = None,
 ) -> Union[Type, Callable[[Type], Type]]:
     def wrap(cls):
         return _as_tagged_union(cls, discriminator, config)
 
-    # Work out if the call was @discriminated_union_of_subclasses or
-    # @discriminated_union_of_subclasses(...)
+    # Work out if the call was @as_tagged_union or
+    # @as_tagged_union(...)
     if super_cls is None:
         return wrap
     else:
