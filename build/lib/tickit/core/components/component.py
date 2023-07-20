@@ -3,17 +3,13 @@ import logging
 import traceback
 from abc import abstractmethod
 from dataclasses import dataclass
-from typing import Dict, Optional, Type
-
-import pydantic.v1.dataclasses
+from typing import Dict, Optional, Type, Union
 
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import (
     Changes,
     ComponentException,
     ComponentID,
-    ComponentInput,
-    ComponentOutput,
     ComponentPort,
     Input,
     Interrupt,
@@ -28,7 +24,8 @@ from tickit.utils.topic_naming import input_topic, output_topic
 LOGGER = logging.getLogger(__name__)
 
 
-@dataclass
+@dataclass  # type: ignore
+@as_tagged_union
 class Component:
     """An interface for types which implement stand-alone simulation components.
 
@@ -57,8 +54,8 @@ class Component:
         """
 
 
+@dataclass  # type: ignore
 @as_tagged_union
-@pydantic.v1.dataclasses.dataclass
 class ComponentConfig:
     """A data container for component configuration.
 
@@ -78,14 +75,14 @@ class ComponentConfig:
 class BaseComponent(Component):
     """A base class for components, implementing state interface related methods."""
 
-    state_consumer: StateConsumer[ComponentInput]
-    state_producer: StateProducer[ComponentOutput]
+    state_consumer: StateConsumer[Union[Input, StopComponent]]
+    state_producer: StateProducer[Union[Interrupt, Output, ComponentException]]
 
-    async def handle_input(self, message: ComponentInput):
+    async def handle_input(self, message: Union[Input, StopComponent]):
         """Call on_tick when an input is received.
 
         Args:
-            message (ComponentInput): An immutable data container for any
+            message (Union[Input, StopComponent])): An immutable data container for any
                 message a component receives.
         """
         if isinstance(message, Input):

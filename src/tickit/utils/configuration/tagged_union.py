@@ -72,14 +72,10 @@ def _as_tagged_union(
             if cls._model:
                 return cls._model(__root__=v).__root__
         except ValidationError as e:
-            for (
-                error
-            ) in e.raw_errors:  # need in to remove redundant __root__ from error path
-                if (
-                    isinstance(error, ErrorWrapper)
-                    and error.loc_tuple()[0] == "__root__"
-                ):
-                    error._loc = error.loc_tuple()[1:]
+            for (err) in e.raw_errors:
+                # need in to remove redundant __root__ from error path
+                if isinstance(err, ErrorWrapper) and err.loc_tuple()[0] == "__root__":
+                    err._loc = err.loc_tuple()[1:]
 
             raise e
 
