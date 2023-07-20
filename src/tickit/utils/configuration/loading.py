@@ -1,37 +1,9 @@
-from importlib import import_module
-from typing import Any, Dict, List, Optional, Type
+from typing import List
 
 import yaml
-from apischema import deserialize
-from apischema.conversions import AnyConversion, Conversion
-from apischema.conversions.conversions import Conversion
-from apischema.conversions.converters import default_deserialization
+from pydantic.v1 import parse_obj_as
 
 from tickit.core.components.component import ComponentConfig
-from tickit.utils.configuration.configurable import is_tagged_union
-
-
-def importing_conversion(typ: Type) -> Optional[AnyConversion]:
-    """Create a conversion that imports the module of a ComponentConfig.
-
-    When a ComponentConfig is requested from a dict, take its fully qualified
-    name from the tagged union dict and import it before deserializing it
-    """
-    if is_tagged_union[typ]:
-
-        def conversion(d: Dict[str, Any]):
-            # We can't use the deserialization union above as the classes
-            # haven't been imported so won't appear in __subclasses__, so use a
-            # single element dict instead
-            assert len(d) == 1, d
-            fullname, args = list(d.items())[0]
-            pkg, clsname = fullname.rsplit(".", maxsplit=1)
-            cls = getattr(import_module(pkg), clsname)
-            return deserialize(cls, args, default_conversion=importing_conversion)
-
-        return Conversion(conversion, source=dict, target=typ)
-
-    return default_deserialization(typ)
 
 
 def read_configs(config_path) -> List[ComponentConfig]:
@@ -49,9 +21,4 @@ def read_configs(config_path) -> List[ComponentConfig]:
     """
     with open(config_path, "r") as config_file:
         yaml_struct = yaml.load(config_file, Loader=yaml.Loader)
-    configs = deserialize(
-        List[ComponentConfig],
-        yaml_struct,
-        default_conversion=importing_conversion,
-    )
-    return configs
+    return parse_obj_as(List[ComponentConfig], yaml_struct)

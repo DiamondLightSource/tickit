@@ -5,6 +5,8 @@ from abc import abstractmethod
 from dataclasses import dataclass
 from typing import Dict, Optional, Type
 
+import pydantic.v1.dataclasses
+
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import (
     Changes,
@@ -20,14 +22,13 @@ from tickit.core.typedefs import (
     SimTime,
     StopComponent,
 )
-from tickit.utils.configuration.configurable import as_tagged_union
+from tickit.utils.configuration.tagged_union import as_tagged_union
 from tickit.utils.topic_naming import input_topic, output_topic
 
 LOGGER = logging.getLogger(__name__)
 
 
-@dataclass  # type: ignore
-@as_tagged_union
+@dataclass
 class Component:
     """An interface for types which implement stand-alone simulation components.
 
@@ -56,8 +57,8 @@ class Component:
         """
 
 
-@dataclass  # type: ignore
 @as_tagged_union
+@pydantic.v1.dataclasses.dataclass
 class ComponentConfig:
     """A data container for component configuration.
 

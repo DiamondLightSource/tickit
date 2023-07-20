@@ -1,8 +1,11 @@
-- examples.devices.remote_controlled.RemoteControlled:
-    name: tcp_contr
-    inputs: {}
+- type: examples.devices.remote_controlled.RemoteControlled
+  name: tcp_contr
+  inputs: {}
+  format:
     format: "%b\r\n"
-- tickit.devices.sink.Sink:
-    name: contr_sink
-    inputs:
-      input: tcp_contr:observed
+- type: tickit.devices.sink.Sink
+  name: contr_sink
+  inputs:
+    input:
+      component: tcp_contr
+      port: observed

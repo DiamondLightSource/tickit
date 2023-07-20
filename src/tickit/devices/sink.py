@@ -1,6 +1,8 @@
 import logging
 from typing import Any, TypedDict
 
+import pydantic.v1.dataclasses
+
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
@@ -33,6 +35,7 @@ class SinkDevice(Device):
         return DeviceUpdate(SinkDevice.Outputs(), None)
 
 
+@pydantic.v1.dataclasses.dataclass
 class Sink(ComponentConfig):
     """Arbitrary value sink that logs the value."""
 

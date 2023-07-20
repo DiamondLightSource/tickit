@@ -13,7 +13,6 @@ from typing import (
 from typing_extensions import Protocol
 
 from tickit.core.device import Device
-from tickit.utils.configuration.configurable import as_tagged_union
 
 #: Message type
 T = TypeVar("T")
@@ -28,7 +27,6 @@ class RaiseInterrupt(Protocol):
         pass
 
 
-@as_tagged_union
 class Adapter:
     """An interface for types which implement device adapters."""
 
@@ -59,7 +57,6 @@ class Adapter:
         """A method which is called immediately after the device updates."""
 
 
-@as_tagged_union
 class Interpreter(ABC, Generic[T]):
     """An interface for types which handle messages received by an adapter."""
 
@@ -83,7 +80,6 @@ class Interpreter(ABC, Generic[T]):
         """
 
 
-@as_tagged_union
 class Server(Generic[T]):
     """An interface for types which implement an external messaging protocol."""
 

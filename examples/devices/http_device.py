@@ -1,5 +1,4 @@
-from dataclasses import dataclass
-
+import pydantic.v1.dataclasses
 from aiohttp import web
 
 from tickit.adapters.httpadapter import HttpAdapter
@@ -44,8 +43,8 @@ class IoBoxHttpAdapter(HttpAdapter):
         return web.json_response({address: value})
 
 
-@dataclass
-class ExampleHttpDevice(ComponentConfig):
+@pydantic.v1.dataclasses.dataclass
+class ExampleHTTPDevice(ComponentConfig):
     """Example HTTP device."""
 
     host: str = "localhost"
