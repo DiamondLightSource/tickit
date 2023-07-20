@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.components.component &#8212; tickit 0.2.4.dev43+g39888a26 documentation</title>
+    <title>tickit.core.components.component &#8212; tickit 0.2.4.dev52+g38e6e8ae documentation</title>
   
   
   
@@ -423,6 +423,8 @@ document.write(`
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Type</span>
 
+<span class="kn">import</span> <span class="nn">pydantic.v1.dataclasses</span>
+
 <span class="kn">from</span> <span class="nn">tickit.core.state_interfaces.state_interface</span> <span class="kn">import</span> <span class="n">StateConsumer</span><span class="p">,</span> <span class="n">StateProducer</span>
 <span class="kn">from</span> <span class="nn">tickit.core.typedefs</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">Changes</span><span class="p">,</span>
@@ -438,8 +440,7 @@ document.write(`
     <span class="n">SimTime</span><span class="p">,</span>
     <span class="n">StopComponent</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">tickit.utils.compat.pydantic_compat</span> <span class="kn">import</span> <span class="n">pydantic_dataclass</span>
-<span class="kn">from</span> <span class="nn">tickit.utils.configuration.configurable</span> <span class="kn">import</span> <span class="n">as_tagged_union</span>
+<span class="kn">from</span> <span class="nn">tickit.utils.configuration.tagged_union</span> <span class="kn">import</span> <span class="n">as_tagged_union</span>
 <span class="kn">from</span> <span class="nn">tickit.utils.topic_naming</span> <span class="kn">import</span> <span class="n">input_topic</span><span class="p">,</span> <span class="n">output_topic</span>
 
 <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -475,7 +476,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="ComponentConfig"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.components.component.ComponentConfig">[docs]</a><span class="nd">@as_tagged_union</span>
-<span class="nd">@pydantic_dataclass</span>
+<span class="nd">@pydantic</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
 <span class="k">class</span> <span class="nc">ComponentConfig</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A data container for component configuration.</span>
 

@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>API &#8212; tickit 0.2.4.dev43+g39888a26 documentation</title>
+    <title>API &#8212; tickit 0.2.4.dev52+g38e6e8ae documentation</title>
   
   
   
@@ -2813,41 +2813,13 @@ never requests a callback.</p>
 <dt class="sig sig-object py" id="tickit.utils.byte_format.ByteFormat">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.utils.byte_format.</span></span><span class="sig-name descname"><span class="pre">ByteFormat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)"><span class="pre">bytes</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/utils/byte_format.html#ByteFormat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.utils.byte_format.ByteFormat" title="Permalink to this definition">#</a></dt>
 <dd><p>An immutable dataclass for custom (de)serialization byte format strings.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="tickit.utils.byte_format.ByteFormat.serialize">
-<span class="sig-name descname"><span class="pre">serialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></span><a class="reference internal" href="../../_modules/tickit/utils/byte_format.html#ByteFormat.serialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.utils.byte_format.ByteFormat.serialize" title="Permalink to this definition">#</a></dt>
-<dd><p>An apischema-style serialization method which returns a utf-8 decoded string.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A utf-8 decoded string of the format.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tickit.utils.byte_format.ByteFormat.deserialize">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">deserialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tickit.utils.byte_format.ByteFormat" title="tickit.utils.byte_format.ByteFormat"><span class="pre">ByteFormat</span></a></span></span><a class="reference internal" href="../../_modules/tickit/utils/byte_format.html#ByteFormat.deserialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.utils.byte_format.ByteFormat.deserialize" title="Permalink to this definition">#</a></dt>
-<dd><p>An apischema-style deserialization method builds from a utf-8 encoded string.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The deserialized ByteFormat.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#tickit.utils.byte_format.ByteFormat" title="tickit.utils.byte_format.ByteFormat">ByteFormat</a></p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 </section>
-<span class="target" id="module-tickit.utils.configuration"></span><section id="module-tickit.utils.configuration.configurable">
-<span id="tickit-utils-configuration"></span><h4><code class="docutils literal notranslate"><span class="pre">tickit.utils.configuration</span></code><a class="headerlink" href="#module-tickit.utils.configuration.configurable" title="Permalink to this heading">#</a></h4>
-<section id="tickit-utils-configuration-configurable">
-<h5><code class="docutils literal notranslate"><span class="pre">tickit.utils.configuration.configurable</span></code><a class="headerlink" href="#tickit-utils-configuration-configurable" title="Permalink to this heading">#</a></h5>
+<span class="target" id="module-tickit.utils.configuration"></span><section id="module-tickit.utils.configuration.tagged_union">
+<span id="tickit-utils-configuration"></span><h4><code class="docutils literal notranslate"><span class="pre">tickit.utils.configuration</span></code><a class="headerlink" href="#module-tickit.utils.configuration.tagged_union" title="Permalink to this heading">#</a></h4>
+<section id="tickit-utils-configuration-tagged-union">
+<h5><code class="docutils literal notranslate"><span class="pre">tickit.utils.configuration.tagged_union</span></code><a class="headerlink" href="#tickit-utils-configuration-tagged-union" title="Permalink to this heading">#</a></h5>
 </section>
 <span class="target" id="module-tickit.utils.configuration.loading"></span><section id="tickit-utils-configuration-loading">
 <h5><code class="docutils literal notranslate"><span class="pre">tickit.utils.configuration.loading</span></code><a class="headerlink" href="#tickit-utils-configuration-loading" title="Permalink to this heading">#</a></h5>
@@ -3369,15 +3341,11 @@ required.</p>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tickit.utils.byte_format"><code class="docutils literal notranslate"><span class="pre">tickit.utils</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit-utils-byte-format"><code class="docutils literal notranslate"><span class="pre">tickit.utils.byte_format</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.utils.byte_format.ByteFormat"><code class="docutils literal notranslate"><span class="pre">ByteFormat</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.utils.byte_format.ByteFormat.serialize"><code class="docutils literal notranslate"><span class="pre">ByteFormat.serialize()</span></code></a></li>
-<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.utils.byte_format.ByteFormat.deserialize"><code class="docutils literal notranslate"><span class="pre">ByteFormat.deserialize()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.utils.byte_format.ByteFormat"><code class="docutils literal notranslate"><span class="pre">ByteFormat</span></code></a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tickit.utils.configuration.configurable"><code class="docutils literal notranslate"><span class="pre">tickit.utils.configuration</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit-utils-configuration-configurable"><code class="docutils literal notranslate"><span class="pre">tickit.utils.configuration.configurable</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tickit.utils.configuration.tagged_union"><code class="docutils literal notranslate"><span class="pre">tickit.utils.configuration</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit-utils-configuration-tagged-union"><code class="docutils literal notranslate"><span class="pre">tickit.utils.configuration.tagged_union</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit-utils-configuration-loading"><code class="docutils literal notranslate"><span class="pre">tickit.utils.configuration.loading</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.utils.configuration.loading.read_configs"><code class="docutils literal notranslate"><span class="pre">read_configs()</span></code></a></li>
 </ul>
