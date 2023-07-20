@@ -9,7 +9,7 @@ from pydantic.v1.error_wrappers import ErrorWrapper
 def as_tagged_union(
     super_cls: Optional[Union[Type, Callable[[Type], Type]]] = None,
     *,
-    discriminator: str = "_type",
+    discriminator: str = "type",
     config: Optional[Type[BaseConfig]] = None,
 ) -> Union[Type, Callable[[Type], Type]]:
     def wrap(cls):

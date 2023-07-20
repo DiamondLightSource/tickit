@@ -15,4 +15,4 @@ def test_byteformat_serializer(byte_format: ByteFormat):
 
 
 def test_validates_string_to_bytes(byte_format: ByteFormat):
-    assert byte_format == ByteFormat("%b/r/n")
+    assert byte_format == ByteFormat("%b/r/n")  # type: ignore
