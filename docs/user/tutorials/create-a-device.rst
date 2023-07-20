@@ -117,14 +117,13 @@ This object takes the component name, as well as its device. We will return to t
 if the device requires any adapters to control it externally.
 
 .. code-block:: python
-
-    from tickit.utils.compat.pydantic_compat import pydantic_dataclass
+    import pydantic.v1.dataclasses
 
     from tickit.core.components.component import Component, ComponentConfig
     from tickit.core.components.device_simulation import DeviceSimulation
 
 
-    @pydantic_dataclass
+    @pydantic.v1.dataclasses.dataclass
     class Amplifier(ComponentConfig):
         initial_amplification: float
 

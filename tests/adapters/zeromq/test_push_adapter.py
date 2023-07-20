@@ -6,6 +6,7 @@ import pytest
 import pytest_asyncio
 from mock import MagicMock, Mock
 from mock.mock import AsyncMock, create_autospec
+from pydantic.v1 import BaseModel
 
 from tickit.adapters.zeromq.push_adapter import (
     SocketFactory,
@@ -14,7 +15,6 @@ from tickit.adapters.zeromq.push_adapter import (
 )
 from tickit.core.adapter import RaiseInterrupt
 from tickit.core.device import Device
-from tickit.utils.compat.pydantic_compat import BaseModel
 
 _HOST = "test.host"
 _PORT = 12345

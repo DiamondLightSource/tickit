@@ -1,9 +1,9 @@
 from typing import List
 
 import yaml
+from pydantic.v1 import parse_obj_as
 
 from tickit.core.components.component import ComponentConfig
-from tickit.utils.compat.pydantic_compat import parse_obj_as
 
 
 def read_configs(config_path) -> List[ComponentConfig]:

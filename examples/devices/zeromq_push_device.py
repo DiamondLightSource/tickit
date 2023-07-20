@@ -1,6 +1,8 @@
 from dataclasses import field
 from typing import Optional, Set
 
+import pydantic.v1.dataclasses
+
 from tickit.adapters.zeromq.push_adapter import (
     SocketFactory,
     ZeroMqPushAdapter,
@@ -9,7 +11,6 @@ from tickit.adapters.zeromq.push_adapter import (
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.devices.iobox import IoBoxDevice
-from tickit.utils.compat.pydantic_compat import pydantic_dataclass
 
 
 class IoBoxZeroMqAdapter(ZeroMqPushAdapter):
@@ -34,7 +35,7 @@ class IoBoxZeroMqAdapter(ZeroMqPushAdapter):
             self.send_message([{address: value}])
 
 
-@pydantic_dataclass
+@pydantic.v1.dataclasses.dataclass
 class ExampleZeroMqPusher(ComponentConfig):
     """Device that can publish writes to its memory over a zeromq socket."""
 

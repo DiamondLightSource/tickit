@@ -1,6 +1,8 @@
 from random import random
 from typing import Optional, TypedDict
 
+import pydantic.v1.dataclasses
+
 from tickit.adapters.composed import ComposedAdapter
 from tickit.adapters.interpreters.command.command_interpreter import CommandInterpreter
 from tickit.adapters.interpreters.command.regex_command import RegexCommand
@@ -10,7 +12,6 @@ from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.byte_format import ByteFormat
-from tickit.utils.compat.pydantic_compat import pydantic_dataclass
 
 
 class ShutterDevice(Device):
@@ -153,7 +154,7 @@ class ShutterAdapter(ComposedAdapter):
         self.device.last_time = None
 
 
-@pydantic_dataclass
+@pydantic.v1.dataclasses.dataclass
 class Shutter(ComponentConfig):
     """Shutter you can open or close over TCP."""
 

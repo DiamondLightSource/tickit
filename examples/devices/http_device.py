@@ -1,11 +1,11 @@
 from aiohttp import web
+import pydantic.v1.dataclasses
 
 from tickit.adapters.httpadapter import HttpAdapter
 from tickit.adapters.interpreters.endpoints.http_endpoint import HttpEndpoint
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.devices.iobox import IoBoxDevice
-from tickit.utils.compat.pydantic_compat import pydantic_dataclass
 
 
 class IoBoxHttpAdapter(HttpAdapter):
@@ -43,7 +43,7 @@ class IoBoxHttpAdapter(HttpAdapter):
         return web.json_response({address: value})
 
 
-@pydantic_dataclass
+@pydantic.v1.dataclasses.dataclass
 class ExampleHTTPDevice(ComponentConfig):
     """Example HTTP device."""
 

@@ -2,14 +2,8 @@ from dataclasses import field
 from importlib import import_module
 from typing import Any, Callable, Literal, Optional, Type, Union
 
-from tickit.utils.compat.pydantic_compat import (
-    BaseConfig,
-    ErrorWrapper,
-    Field,
-    ValidationError,
-    create_model,
-    parse_obj_as,
-)
+from pydantic.v1 import BaseConfig, parse_obj_as, create_model, Field, ValidationError
+from pydantic.v1.error_wrappers import ErrorWrapper
 
 
 def as_tagged_union(

@@ -1,34 +1,36 @@
 from dataclasses import asdict
 
-from tickit.utils.compat.pydantic_compat import parse_obj_as, pydantic_dataclass
+from pydantic.v1 import parse_obj_as
+import pydantic.v1.dataclasses
+
 from tickit.utils.configuration.configurable import as_tagged_union
 
 
 @as_tagged_union
-@pydantic_dataclass
+@pydantic.v1.dataclasses.dataclass
 class MyBase:
     pass
 
 
-@pydantic_dataclass
+@pydantic.v1.dataclasses.dataclass
 class MyClass(MyBase):
     a: int
     b: str
 
 
-@pydantic_dataclass
+@pydantic.v1.dataclasses.dataclass
 class MyOtherClass(MyBase):
     a: int
     b: float
 
 
 @as_tagged_union
-@pydantic_dataclass
+@pydantic.v1.dataclasses.dataclass
 class Superclass:
     pass
 
 
-@pydantic_dataclass
+@pydantic.v1.dataclasses.dataclass
 class LoneSubclass(Superclass):
     pass
 
