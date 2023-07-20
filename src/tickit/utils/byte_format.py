@@ -1,15 +1,14 @@
-import pydantic.v1.dataclasses
-from pydantic.v1 import validator
+from pydantic.v1 import validator, BaseModel
 
 
-@pydantic.v1.dataclasses.dataclass
-class ByteFormat:
+class ByteFormat(BaseModel):
     """An immutable dataclass for custom (de)serialization byte format strings."""
-
+    class Config:
+        json_encoders = {bytes: lambda b: b.decode("utf-8")}
     format: bytes
 
-    def __str__(self):
-        return str({"format": self.format.decode("utf-8")})
+    def __init__(self, format: bytes):
+        super().__init__(format=format)
 
     @validator("format")
     def encode_string(cls, v):

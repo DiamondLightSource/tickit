@@ -8,15 +8,11 @@ def byte_format() -> ByteFormat:
     return ByteFormat(b"%b/r/n")
 
 
-def test_byte_format_constructor(byte_format: ByteFormat):
-    pass
-
-
 def test_byteformat_serializer(byte_format: ByteFormat):
-    serialized = byte_format.serialize()
-    assert "%b/r/n" == serialized
+    d = byte_format.json()
+    assert '{"format": "%b/r/n"}' == d
+    assert '{"format": b"%b/r/n"}' != d
 
 
-def test_byteformat_deserializer(byte_format: ByteFormat):
-    deserialized = byte_format.deserialize("%b/r/n")
-    assert ByteFormat(b"%b/r/n") == deserialized
+def test_validates_string_to_bytes(byte_format: ByteFormat):
+    assert byte_format == ByteFormat("%b/r/n")
