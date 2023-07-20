@@ -117,6 +117,7 @@ This object takes the component name, as well as its device. We will return to t
 if the device requires any adapters to control it externally.
 
 .. code-block:: python
+
     import pydantic.v1.dataclasses
 
     from tickit.core.components.component import Component, ComponentConfig

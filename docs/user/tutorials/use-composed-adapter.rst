@@ -100,7 +100,7 @@ In its entirety your adapter should look as below.
 
 
     class AmplifierAdapter(ComposedAdapter):
-    device: AmplifierDevice
+        device: AmplifierDevice
 
         def __init__(
             self,
