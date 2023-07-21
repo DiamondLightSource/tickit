@@ -55,8 +55,10 @@ outputs a current.
     class FemtoDevice(Device):
         """Electronic signal amplifier."""
 
-        Inputs: type = TypedDict("Inputs", {"input": float})
-        Outputs: type = TypedDict("Outputs", {"current": float})
+        class Inputs(TypedDict):
+            input: float
+        class Outputs(TypedDict):
+            current: float
 
         def __init__(
             self,
