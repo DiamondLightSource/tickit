@@ -31,10 +31,12 @@ class RegexCommand(Generic[AnyStr]):
         # regex type. The isinstance should narrow the AnyStr type but doesn't
         if isinstance(regex, str):
             if format is None:
-                raise ValueError("If regex is a string, format is required to decode input")
-            self.convert = lambda b: b.decode(format) # type: ignore
+                raise ValueError(
+                    "If regex is a string, format is required to decode input"
+                )
+            self.convert = lambda b: b.decode(format)  # type: ignore
         else:
-            self.convert = lambda b: b # type: ignore
+            self.convert = lambda b: b  # type: ignore
 
         self.pattern = compile(regex)
 
