@@ -8,6 +8,7 @@ from typing import (
     Tuple,
     Type,
     TypeVar,
+    Union,
     runtime_checkable,
 )
 from warnings import warn
