@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.utils.configuration.loading &#8212; tickit 0.2.4.dev9+gef04c6bc documentation</title>
+    <title>tickit.utils.configuration.loading &#8212; tickit 0.3.1.dev16+g76c35de3 documentation</title>
   
   
   
@@ -416,40 +416,12 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <h1>Source code for tickit.utils.configuration.loading</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">import_module</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Type</span>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
 
 <span class="kn">import</span> <span class="nn">yaml</span>
-<span class="kn">from</span> <span class="nn">apischema</span> <span class="kn">import</span> <span class="n">deserialize</span>
-<span class="kn">from</span> <span class="nn">apischema.conversions</span> <span class="kn">import</span> <span class="n">AnyConversion</span><span class="p">,</span> <span class="n">Conversion</span>
-<span class="kn">from</span> <span class="nn">apischema.conversions.conversions</span> <span class="kn">import</span> <span class="n">Conversion</span>
-<span class="kn">from</span> <span class="nn">apischema.conversions.converters</span> <span class="kn">import</span> <span class="n">default_deserialization</span>
+<span class="kn">from</span> <span class="nn">pydantic.v1</span> <span class="kn">import</span> <span class="n">parse_obj_as</span>
 
 <span class="kn">from</span> <span class="nn">tickit.core.components.component</span> <span class="kn">import</span> <span class="n">ComponentConfig</span>
-<span class="kn">from</span> <span class="nn">tickit.utils.configuration.configurable</span> <span class="kn">import</span> <span class="n">is_tagged_union</span>
-
-
-<div class="viewcode-block" id="importing_conversion"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.utils.configuration.loading.importing_conversion">[docs]</a><span class="k">def</span> <span class="nf">importing_conversion</span><span class="p">(</span><span class="n">typ</span><span class="p">:</span> <span class="n">Type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnyConversion</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a conversion that imports the module of a ComponentConfig.</span>
-
-<span class="sd">    When a ComponentConfig is requested from a dict, take its fully qualified</span>
-<span class="sd">    name from the tagged union dict and import it before deserializing it</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">is_tagged_union</span><span class="p">[</span><span class="n">typ</span><span class="p">]:</span>
-
-        <span class="k">def</span> <span class="nf">conversion</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
-            <span class="c1"># We can&#39;t use the deserialization union above as the classes</span>
-            <span class="c1"># haven&#39;t been imported so won&#39;t appear in __subclasses__, so use a</span>
-            <span class="c1"># single element dict instead</span>
-            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="n">d</span>
-            <span class="n">fullname</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">pkg</span><span class="p">,</span> <span class="n">clsname</span> <span class="o">=</span> <span class="n">fullname</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-            <span class="bp">cls</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">import_module</span><span class="p">(</span><span class="n">pkg</span><span class="p">),</span> <span class="n">clsname</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">deserialize</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">default_conversion</span><span class="o">=</span><span class="n">importing_conversion</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">Conversion</span><span class="p">(</span><span class="n">conversion</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="nb">dict</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">typ</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">default_deserialization</span><span class="p">(</span><span class="n">typ</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="read_configs"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.utils.configuration.loading.read_configs">[docs]</a><span class="k">def</span> <span class="nf">read_configs</span><span class="p">(</span><span class="n">config_path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">ComponentConfig</span><span class="p">]:</span>
@@ -467,12 +439,7 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">config_file</span><span class="p">:</span>
         <span class="n">yaml_struct</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">config_file</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">Loader</span><span class="p">)</span>
-    <span class="n">configs</span> <span class="o">=</span> <span class="n">deserialize</span><span class="p">(</span>
-        <span class="n">List</span><span class="p">[</span><span class="n">ComponentConfig</span><span class="p">],</span>
-        <span class="n">yaml_struct</span><span class="p">,</span>
-        <span class="n">default_conversion</span><span class="o">=</span><span class="n">importing_conversion</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="n">configs</span></div>
+    <span class="k">return</span> <span class="n">parse_obj_as</span><span class="p">(</span><span class="n">List</span><span class="p">[</span><span class="n">ComponentConfig</span><span class="p">],</span> <span class="n">yaml_struct</span><span class="p">)</span></div>
 </pre></div>
 
                 </article>

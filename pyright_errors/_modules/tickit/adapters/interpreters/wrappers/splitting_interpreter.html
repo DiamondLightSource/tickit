@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.adapters.interpreters.wrappers.splitting_interpreter &#8212; tickit 0.2.4.dev9+gef04c6bc documentation</title>
+    <title>tickit.adapters.interpreters.wrappers.splitting_interpreter &#8212; tickit 0.3.1.dev16+g76c35de3 documentation</title>
   
   
   
@@ -416,7 +416,7 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <h1>Source code for tickit.adapters.interpreters.wrappers.splitting_interpreter</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">re</span>
+<span></span><span class="kn">from</span> <span class="nn">re</span> <span class="kn">import</span> <span class="n">Pattern</span><span class="p">,</span> <span class="nb">compile</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">AnyStr</span><span class="p">,</span> <span class="n">AsyncIterable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
 
 <span class="kn">from</span> <span class="nn">tickit.adapters.interpreters.utils</span> <span class="kn">import</span> <span class="n">wrap_messages_as_async_iterator</span>
@@ -445,7 +445,7 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">interpreter</span><span class="p">:</span> <span class="n">Interpreter</span><span class="p">[</span><span class="n">AnyStr</span><span class="p">]</span> <span class="o">=</span> <span class="n">interpreter</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">message_delimiter</span><span class="p">:</span> <span class="n">AnyStr</span> <span class="o">=</span> <span class="n">message_delimiter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delimeter</span><span class="p">:</span> <span class="n">Pattern</span><span class="p">[</span><span class="n">AnyStr</span><span class="p">]</span> <span class="o">=</span> <span class="nb">compile</span><span class="p">(</span><span class="n">message_delimiter</span><span class="p">)</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">_handle_individual_messages</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">adapter</span><span class="p">:</span> <span class="n">Adapter</span><span class="p">,</span> <span class="n">individual_messages</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">AnyStr</span><span class="p">]</span>
@@ -507,7 +507,7 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">individual_messages</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">msg</span>
-            <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">message_delimiter</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">delimeter</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">msg</span>  <span class="c1"># Discard empty strings and None</span>
         <span class="p">]</span>
 

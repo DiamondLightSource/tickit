@@ -118,13 +118,13 @@ if the device requires any adapters to control it externally.
 
 .. code-block:: python
 
-    from dataclasses import dataclass
+    import pydantic.v1.dataclasses
 
     from tickit.core.components.component import Component, ComponentConfig
     from tickit.core.components.device_simulation import DeviceSimulation
 
 
-    @dataclass
+    @pydantic.v1.dataclasses.dataclass
     class Amplifier(ComponentConfig):
         initial_amplification: float
 
@@ -147,19 +147,23 @@ and a `Sink`, named sink, which will receive the amplified signal.
 
 .. code-block:: yaml
 
-    - tickit.devices.source.Source:
-        name: source
-        inputs: {}
-        value: 10.0
-    - amp.Amplifier:
-        name: amp
-        inputs:
-          initial_signal: source:value
-        initial_amplification: 2.0
-    - tickit.devices.sink.Sink:
-        name: sink
-        inputs:
-          input: amp:amplified_signal
+    - type: tickit.devices.source.Source
+      name: source
+      inputs: {}
+      value: 10.0
+    - type: amp.Amplifier
+      name: amp
+      inputs:
+        initial_signal:
+          component: source
+          port: value
+      initial_amplification: 2.0
+    - type: tickit.devices.sink.Sink
+      name: sink
+      inputs:
+        input:
+          component: amp
+          port: amplified_signal
 
 
 Where in ``amp.Amplifier`` ``amp`` is the name of the ``.py`` file the amplifier

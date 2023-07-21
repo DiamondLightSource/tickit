@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.management.schedulers.base &#8212; tickit 0.2.4.dev9+gef04c6bc documentation</title>
+    <title>tickit.core.management.schedulers.base &#8212; tickit 0.3.1.dev16+g76c35de3 documentation</title>
   
   
   
@@ -427,6 +427,8 @@ document.write(`
 <span class="kn">from</span> <span class="nn">tickit.core.typedefs</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">ComponentException</span><span class="p">,</span>
     <span class="n">ComponentID</span><span class="p">,</span>
+    <span class="n">ComponentInput</span><span class="p">,</span>
+    <span class="n">ComponentOutput</span><span class="p">,</span>
     <span class="n">Input</span><span class="p">,</span>
     <span class="n">Interrupt</span><span class="p">,</span>
     <span class="n">Output</span><span class="p">,</span>
@@ -485,9 +487,7 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">state_producer</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">input_topic</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">target</span><span class="p">),</span> <span class="nb">input</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="BaseScheduler.handle_message"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.handle_message">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_message</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Interrupt</span><span class="p">,</span> <span class="n">Output</span><span class="p">,</span> <span class="n">ComponentException</span><span class="p">]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="BaseScheduler.handle_message"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.handle_message">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">ComponentOutput</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle messages received by the state consumer.</span>
 
 <span class="sd">        An asynchronous callback which handles Interrupt, Output and ComponentException</span>
@@ -518,15 +518,13 @@ document.write(`
 <span class="sd">        producer to produce component inputs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ticker</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_wiring</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_component</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">state_consumer</span><span class="p">:</span> <span class="n">StateConsumer</span><span class="p">[</span>
-            <span class="n">Union</span><span class="p">[</span><span class="n">Interrupt</span><span class="p">,</span> <span class="n">Output</span><span class="p">,</span> <span class="n">ComponentException</span><span class="p">]</span>
-        <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_consumer_cls</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle_message</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state_consumer</span><span class="p">:</span> <span class="n">StateConsumer</span><span class="p">[</span><span class="n">ComponentOutput</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_consumer_cls</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle_message</span>
+        <span class="p">)</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">state_consumer</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span>
             <span class="p">{</span><span class="n">output_topic</span><span class="p">(</span><span class="n">component</span><span class="p">)</span> <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ticker</span><span class="o">.</span><span class="n">components</span><span class="p">}</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">state_producer</span><span class="p">:</span> <span class="n">StateProducer</span><span class="p">[</span>
-            <span class="n">Union</span><span class="p">[</span><span class="n">Input</span><span class="p">,</span> <span class="n">StopComponent</span><span class="p">,</span> <span class="n">ComponentException</span><span class="p">]</span>
-        <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_producer_cls</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state_producer</span><span class="p">:</span> <span class="n">StateProducer</span><span class="p">[</span><span class="n">ComponentInput</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_producer_cls</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="BaseScheduler.add_wakeup"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.add_wakeup">[docs]</a>    <span class="k">def</span> <span class="nf">add_wakeup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component</span><span class="p">:</span> <span class="n">ComponentID</span><span class="p">,</span> <span class="n">when</span><span class="p">:</span> <span class="n">SimTime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds a wakeup to the mapping.</span>

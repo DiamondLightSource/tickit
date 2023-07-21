@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Creating a Device &#8212; tickit 0.2.4.dev9+gef04c6bc documentation</title>
+    <title>Creating a Device &#8212; tickit 0.3.1.dev16+g76c35de3 documentation</title>
   
   
   
@@ -557,13 +557,13 @@ device, and defines any default initial configuration values. As well as this, w
 overwrite the magic method <a class="reference internal" href="../reference/api.html#tickit.utils.singleton.Singleton.__call__" title="tickit.utils.singleton.Singleton.__call__"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a>, which returns a <a class="reference internal" href="../reference/api.html#tickit.core.components.device_simulation.DeviceSimulation" title="tickit.core.components.device_simulation.DeviceSimulation"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DeviceSimulation</span></code></a> object.
 This object takes the component name, as well as its device. We will return to this
 if the device requires any adapters to control it externally.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pydantic.v1.dataclasses</span>
 
 <span class="kn">from</span> <span class="nn">tickit.core.components.component</span> <span class="kn">import</span> <span class="n">Component</span><span class="p">,</span> <span class="n">ComponentConfig</span>
 <span class="kn">from</span> <span class="nn">tickit.core.components.device_simulation</span> <span class="kn">import</span> <span class="n">DeviceSimulation</span>
 
 
-<span class="nd">@dataclass</span>
+<span class="nd">@pydantic</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
 <span class="k">class</span> <span class="nc">Amplifier</span><span class="p">(</span><span class="n">ComponentConfig</span><span class="p">):</span>
     <span class="n">initial_amplification</span><span class="p">:</span> <span class="nb">float</span>
 
@@ -583,19 +583,23 @@ if the device requires any adapters to control it externally.</p>
 file. This file will be used to set up our simulation and will consist of: a
 <a class="reference internal" href="../reference/api.html#tickit.devices.source.Source" title="tickit.devices.source.Source"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Source</span></code></a>, named source, which will produce a constant input signal; our amplifier;
 and a <a class="reference internal" href="../reference/api.html#tickit.devices.sink.Sink" title="tickit.devices.sink.Sink"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Sink</span></code></a>, named sink, which will receive the amplified signal.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">tickit.devices.source.Source</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">source</span>
-<span class="w">    </span><span class="nt">inputs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.0</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">amp.Amplifier</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amp</span>
-<span class="w">    </span><span class="nt">inputs</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">initial_signal</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">source:value</span>
-<span class="w">    </span><span class="nt">initial_amplification</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.0</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">tickit.devices.sink.Sink</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sink</span>
-<span class="w">    </span><span class="nt">inputs</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">input</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amp:amplified_signal</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tickit.devices.source.Source</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">source</span>
+<span class="w">  </span><span class="nt">inputs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<span class="w">  </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.0</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amp.Amplifier</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amp</span>
+<span class="w">  </span><span class="nt">inputs</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">initial_signal</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">component</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">source</span>
+<span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">value</span>
+<span class="w">  </span><span class="nt">initial_amplification</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.0</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tickit.devices.sink.Sink</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sink</span>
+<span class="w">  </span><span class="nt">inputs</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">input</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">component</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amp</span>
+<span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amplified_signal</span>
 </pre></div>
 </div>
 <p>Where in <code class="docutils literal notranslate"><span class="pre">amp.Amplifier</span></code> <code class="docutils literal notranslate"><span class="pre">amp</span></code> is the name of the <code class="docutils literal notranslate"><span class="pre">.py</span></code> file the amplifier
