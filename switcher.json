@@ -56,10 +56,6 @@
     "url": "https://dls-controls.github.io/tickit/add_integration_tests/"
   },
   {
-    "version": "pydantic1",
-    "url": "https://dls-controls.github.io/tickit/pydantic1/"
-  },
-  {
     "version": "pyright_errors",
     "url": "https://dls-controls.github.io/tickit/pyright_errors/"
   },
