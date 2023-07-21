@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.adapters.interpreters.command.regex_command &#8212; tickit 0.3.1.dev16+gee66671f documentation</title>
+    <title>tickit.adapters.interpreters.command.regex_command &#8212; tickit 0.3.1.dev16+g30c6a290 documentation</title>
   
   
   
@@ -448,7 +448,7 @@ document.write(`
         <span class="c1"># The type checking fails here as it can&#39;t determine that the return type matches the</span>
         <span class="c1"># regex type. The isinstance should narrow the AnyStr type but doesn&#39;t</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="k">if</span> <span class="nb">format</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">format</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                     <span class="s2">&quot;If regex is a string, format is required to decode input&quot;</span>
                 <span class="p">)</span>
