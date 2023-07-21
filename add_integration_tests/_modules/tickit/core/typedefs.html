@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.typedefs &#8212; tickit 0.2.4.dev14+gcbd43988 documentation</title>
+    <title>tickit.core.typedefs &#8212; tickit 0.3.1.dev12+g07c9be7c documentation</title>
   
   
   
@@ -419,7 +419,6 @@ document.write(`
 <span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Hashable</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">NewType</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">from</span> <span class="nn">apischema</span> <span class="kn">import</span> <span class="n">deserializer</span><span class="p">,</span> <span class="n">serializer</span>
 <span class="kn">from</span> <span class="nn">immutables</span> <span class="kn">import</span> <span class="n">Map</span>
 
 <span class="c1">#: An identifier which specifies the component</span>
@@ -448,31 +447,6 @@ document.write(`
 <span class="sd">            str: A string representation of the object of format component:port.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s2">&quot;:&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">component</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">))</span>
-
-<div class="viewcode-block" id="ComponentPort.serialize"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.typedefs.ComponentPort.serialize">[docs]</a>    <span class="nd">@serializer</span>
-    <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a string of component:port.</span>
-
-<span class="sd">        An apischema serialization method which returns a string of component:port.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            str: The serialized ComponentPort, in format component:port.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="ComponentPort.deserialize"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.typedefs.ComponentPort.deserialize">[docs]</a>    <span class="nd">@deserializer</span>
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ComponentPort&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Builds a ComponentPort from a string of component:port.</span>
-
-<span class="sd">        An apischema deserialization method which builds a ComponentPort from a string</span>
-<span class="sd">        of component:port.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            ComponentPort: The deserialized ComponentPort.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">component</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">ComponentPort</span><span class="p">(</span><span class="n">ComponentID</span><span class="p">(</span><span class="n">component</span><span class="p">),</span> <span class="n">PortID</span><span class="p">(</span><span class="n">port</span><span class="p">))</span></div>
 
     <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;An iterator which returns (component, port).</span>

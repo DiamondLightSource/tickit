@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.devices.source &#8212; tickit 0.2.4.dev14+gcbd43988 documentation</title>
+    <title>tickit.devices.source &#8212; tickit 0.3.1.dev12+g07c9be7c documentation</title>
   
   
   
@@ -417,8 +417,9 @@ document.write(`
                   
   <h1>Source code for tickit.devices.source</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">TypedDict</span>
+
+<span class="kn">import</span> <span class="nn">pydantic.v1.dataclasses</span>
 
 <span class="kn">from</span> <span class="nn">tickit.core.components.component</span> <span class="kn">import</span> <span class="n">Component</span><span class="p">,</span> <span class="n">ComponentConfig</span>
 <span class="kn">from</span> <span class="nn">tickit.core.components.device_simulation</span> <span class="kn">import</span> <span class="n">DeviceSimulation</span>
@@ -460,7 +461,7 @@ document.write(`
         <span class="k">return</span> <span class="n">DeviceUpdate</span><span class="p">(</span><span class="n">SourceDevice</span><span class="o">.</span><span class="n">Outputs</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="Source"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.devices.source.Source">[docs]</a><span class="nd">@dataclass</span>
+<div class="viewcode-block" id="Source"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.devices.source.Source">[docs]</a><span class="nd">@pydantic</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
 <span class="k">class</span> <span class="nc">Source</span><span class="p">(</span><span class="n">ComponentConfig</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Source of a fixed value.&quot;&quot;&quot;</span>
 

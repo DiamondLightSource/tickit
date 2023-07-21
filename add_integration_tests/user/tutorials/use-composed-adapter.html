@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Using an Adapter &#8212; tickit 0.2.4.dev14+gcbd43988 documentation</title>
+    <title>Using an Adapter &#8212; tickit 0.3.1.dev12+g07c9be7c documentation</title>
   
   
   
@@ -541,7 +541,7 @@ parentheses form the capture group from which the argument is extracted.</p>
 
 
 <span class="k">class</span> <span class="nc">AmplifierAdapter</span><span class="p">(</span><span class="n">ComposedAdapter</span><span class="p">):</span>
-<span class="n">device</span><span class="p">:</span> <span class="n">AmplifierDevice</span>
+    <span class="n">device</span><span class="p">:</span> <span class="n">AmplifierDevice</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -568,7 +568,7 @@ parentheses form the capture group from which the argument is extracted.</p>
 <p>In order to now use this adapter to control our device we need to include it in
 our amplifier <a class="reference internal" href="../reference/api.html#tickit.core.components.component.ComponentConfig" title="tickit.core.components.component.ComponentConfig"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ComponentConfig</span></code></a>. To do this we simply add it to the arguments of
 <a class="reference internal" href="../reference/api.html#tickit.core.components.device_simulation.DeviceSimulation" title="tickit.core.components.device_simulation.DeviceSimulation"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DeviceSimulation</span></code></a>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@dataclass</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@pydantic</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
 <span class="k">class</span> <span class="nc">Amplifier</span><span class="p">(</span><span class="n">ComponentConfig</span><span class="p">):</span>
     <span class="n">initial_amplification</span><span class="p">:</span> <span class="nb">int</span>
 
