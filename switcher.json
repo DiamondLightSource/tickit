@@ -4,64 +4,56 @@
     "url": "https://dls-controls.github.io/tickit/master/"
   },
   {
-    "version": "v0.1",
-    "url": "https://dls-controls.github.io/tickit/v0.1/"
-  },
-  {
-    "version": "0.3.0",
-    "url": "https://dls-controls.github.io/tickit/0.3.0/"
-  },
-  {
-    "version": "0.2.3",
-    "url": "https://dls-controls.github.io/tickit/0.2.3/"
-  },
-  {
-    "version": "0.2.2",
-    "url": "https://dls-controls.github.io/tickit/0.2.2/"
-  },
-  {
-    "version": "0.2.1",
-    "url": "https://dls-controls.github.io/tickit/0.2.1/"
-  },
-  {
-    "version": "0.2.0",
-    "url": "https://dls-controls.github.io/tickit/0.2.0/"
-  },
-  {
-    "version": "0.1.1-pre5",
-    "url": "https://dls-controls.github.io/tickit/0.1.1-pre5/"
-  },
-  {
-    "version": "0.1.1-pre4",
-    "url": "https://dls-controls.github.io/tickit/0.1.1-pre4/"
-  },
-  {
-    "version": "0.1.1-pre3",
-    "url": "https://dls-controls.github.io/tickit/0.1.1-pre3/"
-  },
-  {
-    "version": "0.1.1-pre2",
-    "url": "https://dls-controls.github.io/tickit/0.1.1-pre2/"
-  },
-  {
-    "version": "0.1.1-pre",
-    "url": "https://dls-controls.github.io/tickit/0.1.1-pre/"
+    "version": "0.1",
+    "url": "https://dls-controls.github.io/tickit/0.1/"
   },
   {
     "version": "0.1.1",
     "url": "https://dls-controls.github.io/tickit/0.1.1/"
   },
   {
-    "version": "0.1",
-    "url": "https://dls-controls.github.io/tickit/0.1/"
+    "version": "0.1.1-pre",
+    "url": "https://dls-controls.github.io/tickit/0.1.1-pre/"
+  },
+  {
+    "version": "0.1.1-pre2",
+    "url": "https://dls-controls.github.io/tickit/0.1.1-pre2/"
+  },
+  {
+    "version": "0.1.1-pre3",
+    "url": "https://dls-controls.github.io/tickit/0.1.1-pre3/"
+  },
+  {
+    "version": "0.1.1-pre4",
+    "url": "https://dls-controls.github.io/tickit/0.1.1-pre4/"
+  },
+  {
+    "version": "0.1.1-pre5",
+    "url": "https://dls-controls.github.io/tickit/0.1.1-pre5/"
+  },
+  {
+    "version": "0.2.0",
+    "url": "https://dls-controls.github.io/tickit/0.2.0/"
+  },
+  {
+    "version": "0.2.1",
+    "url": "https://dls-controls.github.io/tickit/0.2.1/"
+  },
+  {
+    "version": "0.2.2",
+    "url": "https://dls-controls.github.io/tickit/0.2.2/"
+  },
+  {
+    "version": "0.2.3",
+    "url": "https://dls-controls.github.io/tickit/0.2.3/"
+  },
+  {
+    "version": "0.3.0",
+    "url": "https://dls-controls.github.io/tickit/0.3.0/"
   },
   {
     "version": "add_integration_tests",
     "url": "https://dls-controls.github.io/tickit/add_integration_tests/"
-  },
-  {
-    "version": "component_ui",
-    "url": "https://dls-controls.github.io/tickit/component_ui/"
   },
   {
     "version": "pydantic1",
@@ -94,5 +86,9 @@
   {
     "version": "typing_extensions",
     "url": "https://dls-controls.github.io/tickit/typing_extensions/"
+  },
+  {
+    "version": "v0.1",
+    "url": "https://dls-controls.github.io/tickit/v0.1/"
   }
 ]
