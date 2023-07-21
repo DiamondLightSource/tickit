@@ -32,8 +32,10 @@ maps as members. As such we shall put in the following boilerplate.
 
     class AmplifierDevice(Device):
 
-    Inputs: type = TypedDict("Inputs", {})
-    Outputs: type = TypedDict("Outputs", {})
+    class Inputs(TypedDict):
+        ...
+    class Outputs(TypedDict):
+        ...
 
     def __init__(self) -> None:
 
@@ -59,8 +61,10 @@ here.
 
     class AmplifierDevice(Device):
 
-    Inputs: type = TypedDict("Inputs", {})
-    Outputs: type = TypedDict("Outputs", {})
+    class Inputs(TypedDict):
+        ...
+    class Outputs(TypedDict):
+        ...
 
     def __init__(self, initial_amplification: float = 2) -> None:
             self.amplification = initial_amplification
@@ -95,8 +99,10 @@ we define our inputs and outputs in the maps, and the line of logic in the ``upd
 
     class AmplifierDevice(Device):
 
-        Inputs: type = TypedDict("Inputs", {"initial_signal":float})
-        Outputs: type = TypedDict("Outputs", {"amplified_signal":float})
+        class Inputs(TypedDict):
+            initial_signal: float
+        class Outputs(TypedDict):
+            amplified_signal: float
 
         def __init__(self, initial_amplification: float = 2.0) -> None:
             self.amplification = initial_amplification

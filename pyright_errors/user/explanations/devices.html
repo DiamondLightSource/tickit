@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Devices &#8212; tickit 0.3.1.dev16+g76c35de3 documentation</title>
+    <title>Devices &#8212; tickit 0.3.1.dev17+g0d9989c6 documentation</title>
   
   
   
@@ -471,9 +471,11 @@ values and requests to be called back for an update sometime later.</p>
 <span class="sd">&quot;&quot;&quot;A trivial toy device which produced a random output and requests a callback.&quot;&quot;&quot;</span>
 
     <span class="c1">#: An empty typed mapping of device inputs</span>
-    <span class="n">Inputs</span><span class="p">:</span> <span class="nb">type</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Inputs&quot;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="k">class</span> <span class="nc">Inputs</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+        <span class="o">...</span>
     <span class="c1">#: A typed mapping containing the &#39;output&#39; output value</span>
-    <span class="n">Outputs</span><span class="p">:</span> <span class="nb">type</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Outputs&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">})</span>
+    <span class="k">class</span> <span class="nc">Outputs</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+        <span class="n">output</span><span class="p">:</span> <span class="nb">int</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback_period</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1e9</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">callback_period</span> <span class="o">=</span> <span class="n">SimTime</span><span class="p">(</span><span class="n">callback_period</span><span class="p">)</span>
