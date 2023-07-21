@@ -101,7 +101,6 @@ async def adapter_task(
         [adapter_running, adapter_ready], return_when=asyncio.tasks.FIRST_COMPLETED
     )
 
-    # if the adapter_running task is in done, then we extract that exception and raise it;
     if adapter_running in done:
         exception = adapter_running.exception()
         if exception is not None:
