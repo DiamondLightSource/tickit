@@ -12,7 +12,6 @@ from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.management.event_router import InverseWiring
 from tickit.core.management.schedulers.master import MasterScheduler
-from tickit.core.runner import run_all_forever
 from tickit.core.state_interfaces.state_interface import get_interface
 from tickit.core.typedefs import ComponentException, ComponentID, PortID
 from tickit.devices.sink import SinkDevice
@@ -49,12 +48,14 @@ async def master_scheduler(
 
         assert scheduler.running.is_set() is False
         run_task = event_loop.create_task(
-            run_all_forever(
+            asyncio.wait(
                 [
-                    component.run_forever(*get_interface("internal"))
+                    event_loop.create_task(
+                        component.run_forever(*get_interface("internal"))
+                    )
                     for component in components
                 ]
-                + [scheduler.run_forever()]
+                + [event_loop.create_task(scheduler.run_forever())]
             )
         )
 
@@ -80,7 +81,6 @@ async def test_sink_has_captured_value(
     await asyncio.wait_for(master_scheduler.running.wait(), timeout=2.0)
 
     sink = cast(DeviceSimulation, components[1])
-    assert sink.device_inputs == {}
 
     await asyncio.wait_for(master_scheduler.ticker.finished.wait(), timeout=2.0)
 

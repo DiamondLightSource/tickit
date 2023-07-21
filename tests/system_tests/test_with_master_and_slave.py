@@ -11,7 +11,6 @@ from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.components.system_simulation import SystemSimulationComponent
 from tickit.core.management.event_router import InverseWiring
 from tickit.core.management.schedulers.master import MasterScheduler
-from tickit.core.runner import run_all_forever
 from tickit.core.state_interfaces.state_interface import get_interface
 from tickit.core.typedefs import ComponentException, ComponentID, PortID
 from tickit.utils.configuration.loading import read_configs
@@ -43,12 +42,14 @@ async def master_scheduler(
 
     assert scheduler.running.is_set() is False
     run_task = event_loop.create_task(
-        run_all_forever(
+        asyncio.wait(
             [
-                component.run_forever(*get_interface("internal"))
+                event_loop.create_task(
+                    component.run_forever(*get_interface("internal"))
+                )
                 for component in components
             ]
-            + [scheduler.run_forever()]
+            + [event_loop.create_task(scheduler.run_forever())]
         )
     )
 
