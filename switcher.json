@@ -56,6 +56,10 @@
     "url": "https://dls-controls.github.io/tickit/0.1/"
   },
   {
+    "version": "fix-hanging-http-tests",
+    "url": "https://dls-controls.github.io/tickit/fix-hanging-http-tests/"
+  },
+  {
     "version": "pyright_errors",
     "url": "https://dls-controls.github.io/tickit/pyright_errors/"
   },
