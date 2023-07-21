@@ -49,7 +49,9 @@ class JoiningInterpreter(Interpreter[AnyStr]):
                 An asynchronous iterable containing a single reply message.
         """
         response_list = [response async for response in responses]
-        response = self.response_delimiter.join(response_list)
+        # type checking AnyStr.join doesn't work for some reason
+        # https://github.com/microsoft/pyright/issues/5556
+        response = self.response_delimiter.join(response_list)  # type: ignore
         return wrap_as_async_iterator(response)
 
     async def handle(
