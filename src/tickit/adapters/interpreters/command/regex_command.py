@@ -1,6 +1,6 @@
 from dataclasses import InitVar, dataclass, field
-from typing import AnyStr, Callable, Generic, Optional, Sequence
 from re import Pattern, compile
+from typing import AnyStr, Callable, Generic, Optional, Sequence
 
 
 @dataclass
