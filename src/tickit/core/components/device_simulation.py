@@ -8,7 +8,6 @@ from immutables import Map
 from tickit.core.adapter import Adapter
 from tickit.core.components.component import BaseComponent
 from tickit.core.device import Device, DeviceUpdate
-from tickit.core.runner import run_all
 from tickit.core.state_interfaces import StateConsumer, StateProducer
 from tickit.core.typedefs import Changes, ComponentID, SimTime, State
 
@@ -38,10 +37,10 @@ class DeviceSimulation(BaseComponent):
         self, state_consumer: Type[StateConsumer], state_producer: Type[StateProducer]
     ) -> None:
         """Set up state interfaces, run adapters and blocks until any complete."""
-        self._tasks = run_all(
-            adapter.run_forever(self.device, self.raise_interrupt)
+        self._tasks = [
+            asyncio.create_task(adapter.run_forever(self.device, self.raise_interrupt))
             for adapter in self.adapters
-        )
+        ]
 
         await super().run_forever(state_consumer, state_producer)
         if self._tasks:

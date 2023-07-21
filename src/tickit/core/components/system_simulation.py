@@ -53,10 +53,10 @@ class SystemSimulationComponent(BaseComponent):
             self.expose,
             self.raise_interrupt,
         )
-        self._tasks = run_all(
-            component().run_forever(state_consumer, state_producer)
+        self._tasks = [
+            asyncio.create_task(component().run_forever(state_consumer, state_producer))
             for component in self.components
-        ) + run_all([self.scheduler.run_forever()])
+        ] + [asyncio.create_task(self.scheduler.run_forever())]
         await super().run_forever(state_consumer, state_producer)
         if self._tasks:
             await asyncio.wait(self._tasks)
