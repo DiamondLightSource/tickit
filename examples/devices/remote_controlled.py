@@ -1,8 +1,9 @@
 import asyncio
 import logging
 import struct
-from dataclasses import dataclass
 from typing import AsyncIterable, Optional, TypedDict
+
+import pydantic.v1.dataclasses
 
 from tickit.adapters.composed import ComposedAdapter
 from tickit.adapters.interpreters.command import CommandInterpreter, RegexCommand
@@ -222,7 +223,7 @@ class RemoteControlledAdapter(ComposedAdapter[bytes]):
             yield f"Observed is {self.device.observed}".encode("utf-8")
 
 
-@dataclass
+@pydantic.v1.dataclasses.dataclass
 class RemoteControlled(ComponentConfig):
     """Thing you can poke over TCP."""
 

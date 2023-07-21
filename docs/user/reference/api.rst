@@ -286,10 +286,10 @@ This is the internal API reference for tickit
         ``tickit.utils.configuration``
         ------------------------------
 
-        .. automodule:: tickit.utils.configuration.configurable
+        .. automodule:: tickit.utils.configuration.tagged_union
             :members:
 
-            ``tickit.utils.configuration.configurable``
+            ``tickit.utils.configuration.tagged_union``
             -------------------------------------------
 
         .. automodule:: tickit.utils.configuration.loading

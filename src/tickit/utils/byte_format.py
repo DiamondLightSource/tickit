@@ -1,29 +1,19 @@
-from dataclasses import dataclass
-
-from apischema import deserializer, serializer
+from pydantic.v1 import BaseModel, validator
 
 
-@dataclass(frozen=True)
-class ByteFormat:
+class ByteFormat(BaseModel):
     """An immutable dataclass for custom (de)serialization byte format strings."""
+
+    class Config:
+        json_encoders = {bytes: lambda b: b.decode("utf-8")}
 
     format: bytes
 
-    @serializer
-    def serialize(self) -> str:
-        """An apischema serialization method which returns a utf-8 decoded string.
+    def __init__(self, format: bytes):
+        super().__init__(format=format)
 
-        Returns:
-            str: A utf-8 decoded string of the format.
-        """
-        return self.format.decode("utf-8")
-
-    @deserializer
-    @staticmethod
-    def deserialize(data: str) -> "ByteFormat":
-        """An apischema deserialization method builds from a utf-8 encoded string.
-
-        Returns:
-            ByteFormat: The deserialized ByteFormat.
-        """
-        return ByteFormat(data.encode("utf-8"))
+    @validator("format")
+    def encode_string(cls, v):
+        if isinstance(v, str):
+            v = v.encode("utf-8")
+        return v

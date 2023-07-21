@@ -23,11 +23,13 @@ which outputs random numbers, and a sink taking that output as an input:
 
 .. code-block:: yaml
 
-    - examples.devices.trampoline.RandomTrampoline:
-        name: rand_tramp
-        inputs: {}
-        callback_period: 1000000000
-    - tickit.devices.sink.Sink:
-        name: tramp_sink
-        inputs:
-          input: rand_tramp:output
+    - type: examples.devices.trampoline.RandomTrampoline
+      name: rand_tramp
+      inputs: {}
+      callback_period: 1000000000
+    - type: tickit.devices.sink.Sink
+      name: tramp_sink
+      inputs:
+        input:
+          component: rand_tramp
+          port: output
