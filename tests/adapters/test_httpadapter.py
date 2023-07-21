@@ -91,14 +91,26 @@ async def adapter_task(
     mock_device: Device,
     event_loop: asyncio.BaseEventLoop,
 ):
-    task = event_loop.create_task(
+    adapter_running = event_loop.create_task(
         adapter.run_forever(mock_device, mock_raise_interrupt)
     )
-    await adapter.wait_until_ready()
-    yield task
+    adapter_ready = event_loop.create_task(adapter.wait_until_ready())
+
+    # either wait until the task has an exception or it's ready.
+    done, _ = await asyncio.wait(
+        [adapter_running, adapter_ready], return_when=asyncio.tasks.FIRST_COMPLETED
+    )
+
+    # if the adapter_running task is in done, then we extract that exception and raise it;
+    if adapter_running in done:
+        exception = adapter_running.exception()
+        if exception is not None:
+            raise exception
+
+    yield adapter_running
     await adapter.stop()
-    await asyncio.wait_for(task, timeout=10.0)
-    assert task.done()
+    await asyncio.wait_for(adapter_running, timeout=10.0)
+    assert adapter_running.done()
 
 
 @pytest_asyncio.fixture
