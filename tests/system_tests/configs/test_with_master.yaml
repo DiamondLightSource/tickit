@@ -1,0 +1,10 @@
+- type: tickit.devices.source.Source
+  name: source  
+  inputs: {}
+  value: 42
+- type: tickit.devices.sink.Sink
+  name: sink
+  inputs:
+    input: 
+      component: source
+      port: value
