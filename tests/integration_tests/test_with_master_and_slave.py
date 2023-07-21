@@ -1,5 +1,3 @@
-"""just a test for me to figure out how this all works..."""
-
 import asyncio
 from asyncio import AbstractEventLoop
 from pathlib import Path
@@ -17,17 +15,6 @@ from tickit.core.runner import run_all_forever
 from tickit.core.state_interfaces.state_interface import get_interface
 from tickit.core.typedefs import ComponentException, ComponentID, PortID
 from tickit.utils.configuration.loading import read_configs
-
-
-@pytest.fixture
-def event_loop():
-    """Manage instance of event loop for runner test cases."""
-    try:
-        loop = asyncio.get_running_loop()
-    except RuntimeError:
-        loop = asyncio.new_event_loop()
-    yield loop
-    loop.close()
 
 
 @pytest_asyncio.fixture

@@ -1,5 +1,3 @@
-"""just a test for me to figure out how this all works..."""
-
 import asyncio
 from asyncio import AbstractEventLoop
 from pathlib import Path

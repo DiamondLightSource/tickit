@@ -1,8 +1,7 @@
 import logging
-
 from typing import TypedDict
-import pydantic.v1.dataclasses
 
+import pydantic.v1.dataclasses
 
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
