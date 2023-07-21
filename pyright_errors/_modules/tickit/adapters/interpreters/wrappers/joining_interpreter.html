@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.adapters.interpreters.wrappers.joining_interpreter &#8212; tickit 0.3.1.dev17+g0d9989c6 documentation</title>
+    <title>tickit.adapters.interpreters.wrappers.joining_interpreter &#8212; tickit 0.3.1.dev16+gee66671f documentation</title>
   
   
   
@@ -467,9 +467,8 @@ document.write(`
 <span class="sd">                An asynchronous iterable containing a single reply message.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">response_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">response</span> <span class="k">async</span> <span class="k">for</span> <span class="n">response</span> <span class="ow">in</span> <span class="n">responses</span><span class="p">]</span>
-        <span class="c1"># type checking AnyStr.join doesn&#39;t work for some reason - potentially down to handling</span>
-        <span class="c1"># of buffer types in pre-3.12 versions of python</span>
-        <span class="c1"># https://github.com/python/typeshed/issues/10224</span>
+        <span class="c1"># type checking AnyStr.join doesn&#39;t work for some reason</span>
+        <span class="c1"># https://github.com/microsoft/pyright/issues/5556</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_delimiter</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">response_list</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
         <span class="k">return</span> <span class="n">wrap_as_async_iterator</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
 
