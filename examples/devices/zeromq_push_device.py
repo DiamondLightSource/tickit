@@ -1,3 +1,4 @@
+import asyncio
 from dataclasses import field
 from typing import Optional, Set
 
@@ -32,7 +33,7 @@ class IoBoxZeroMqAdapter(ZeroMqPushAdapter):
     def after_update(self):
         for address in self._addresses_to_publish:
             value = self.device.read(address)
-            _ = self.send_message([{address: value}])
+            asyncio.create_task(self.send_message([{address: value}]))
 
 
 @pydantic.v1.dataclasses.dataclass
