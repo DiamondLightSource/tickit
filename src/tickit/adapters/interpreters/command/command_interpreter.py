@@ -2,7 +2,7 @@ from abc import abstractmethod
 from inspect import getmembers
 from typing import (
     AnyStr,
-    AsyncIterable,
+    AsyncIterator,
     Optional,
     Protocol,
     Sequence,
@@ -11,7 +11,7 @@ from typing import (
     runtime_checkable,
 )
 
-from tickit.adapters.interpreters.utils import wrap_as_async_iterable
+from tickit.adapters.interpreters.utils import wrap_as_async_iterator
 from tickit.core.adapter import Adapter, Interpreter
 
 
@@ -48,26 +48,15 @@ class CommandInterpreter(Interpreter[AnyStr]):
     called with the parsed arguments.
     """
 
-    @staticmethod
-    async def unknown_command() -> AsyncIterable[bytes]:
-        """An asynchronous iterable of containing a single unknown command reply.
-
-        Returns:
-            AsyncIterable[bytes]:
-                An asynchronous iterable of containing a single unknown command reply:
-                "Request does not match any known command".
-        """
-        yield b"Request does not match any known command"
-
     async def handle(
         self, adapter: Adapter, message: AnyStr
-    ) -> Tuple[AsyncIterable[AnyStr], bool]:
+    ) -> Tuple[AsyncIterator[AnyStr], bool]:
         """Matches the message to an adapter command and calls the corresponding method.
 
         An asynchronous method which handles a message by attempting to match the
         message against each of the registered commands, if a match is found the
         corresponding command is called and its reply is returned with an asynchronous
-        iterable wrapper if required. If no match is found the unknown command message
+        iterator wrapper if required. If no match is found the unknown command message
         is returned with no request for interrupt.
 
         Args:
@@ -75,8 +64,8 @@ class CommandInterpreter(Interpreter[AnyStr]):
             message (bytes): The message to be handled.
 
         Returns:
-            Tuple[AsyncIterable[Union[str, bytes]], bool]:
-                A tuple of the asynchronous iterable of reply messages and a flag
+            Tuple[AsyncIterator[Union[str, bytes]], bool]:
+                A tuple of the asynchronous iterator of reply messages and a flag
                 indicating whether an interrupt should be raised by the adapter.
         """
         for _, method in getmembers(adapter):
@@ -91,8 +80,16 @@ class CommandInterpreter(Interpreter[AnyStr]):
                 for arg, argtype in zip(args, get_type_hints(method).values())
             )
             resp = await method(*args)
-            if not isinstance(resp, AsyncIterable):
-                resp = wrap_as_async_iterable(resp)
+            if not isinstance(resp, AsyncIterator):
+                resp = wrap_as_async_iterator(resp)
             return resp, command.interrupt
-        resp = CommandInterpreter.unknown_command()
-        return resp, False
+
+        msg = "Request does not match any known command"
+        # This is a pain but the message needs to match the input message
+        # TODO: Fix command interpreters' handling of bytes vs str
+        if isinstance(message, bytes):
+            resp = wrap_as_async_iterator(msg.encode("utf-8"))
+            return resp, False
+        else:
+            resp = wrap_as_async_iterator(msg)
+            return resp, False

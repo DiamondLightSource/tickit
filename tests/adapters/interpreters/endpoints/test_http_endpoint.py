@@ -1,5 +1,7 @@
 import pytest
 from aiohttp import web
+from aiohttp.web_response import StreamResponse
+from mock import Mock
 
 from tickit.adapters.interpreters.endpoints.http_endpoint import HttpEndpoint
 
@@ -27,8 +29,8 @@ def test_http_endpoint_registers_put_endpoint():
     assert isinstance(TestAdapter.test_endpoint.__endpoint__, HttpEndpoint)
 
 
-def fake_endpoint(request: web.Request):
-    pass
+async def fake_endpoint(request: web.Request) -> StreamResponse:
+    return Mock()
 
 
 @pytest.mark.parametrize(

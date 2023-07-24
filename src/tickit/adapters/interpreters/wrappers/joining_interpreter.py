@@ -1,6 +1,6 @@
 from typing import AnyStr, AsyncIterable, Tuple
 
-from tickit.adapters.interpreters.utils import wrap_as_async_iterable
+from tickit.adapters.interpreters.utils import wrap_as_async_iterator
 from tickit.core.adapter import Adapter, Interpreter
 
 
@@ -49,8 +49,10 @@ class JoiningInterpreter(Interpreter[AnyStr]):
                 An asynchronous iterable containing a single reply message.
         """
         response_list = [response async for response in responses]
-        response = self.response_delimiter.join(response_list)
-        return wrap_as_async_iterable(response)
+        # type checking AnyStr.join doesn't work for some reason
+        # https://github.com/microsoft/pyright/issues/5556
+        response = self.response_delimiter.join(response_list)  # type: ignore
+        return wrap_as_async_iterator(response)
 
     async def handle(
         self, adapter: Adapter, message: AnyStr

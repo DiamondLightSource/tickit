@@ -1,9 +1,9 @@
-import re
-from dataclasses import dataclass
+from dataclasses import InitVar, dataclass, field
+from re import Pattern, compile
 from typing import AnyStr, Callable, Generic, Optional, Sequence
 
 
-@dataclass(frozen=True)
+@dataclass
 class RegexCommand(Generic[AnyStr]):
     """A decorator to register an adapter method as a regex parsed command.
 
@@ -20,9 +20,26 @@ class RegexCommand(Generic[AnyStr]):
             A decorator which registers the adapter method as a message handler.
     """
 
-    regex: AnyStr
+    regex: InitVar[AnyStr]
     interrupt: bool = False
-    format: Optional[str] = None
+    format: InitVar[Optional[str]] = None
+    pattern: Pattern[AnyStr] = field(init=False)
+    convert: Callable[[bytes], AnyStr] = field(init=False)
+
+    def __post_init__(self, regex: AnyStr, format: Optional[str]):
+        # The type checking fails here as it can't determine that the return
+        # type matches the regex type. The isinstance should narrow the AnyStr
+        # type but doesn't
+        if isinstance(regex, str):
+            if format is None:
+                raise ValueError(
+                    "If regex is a string, format is required to decode input"
+                )
+            self.convert = lambda b: b.decode(format)  # type: ignore
+        else:
+            self.convert = lambda b: b  # type: ignore
+
+        self.pattern = compile(regex)
 
     def __call__(self, func: Callable) -> Callable:
         """A decorator which registers the adapter method as a message handler.
@@ -51,9 +68,8 @@ class RegexCommand(Generic[AnyStr]):
                 If a full match is found a sequence of function arguments is returned,
                 otherwise the method returns None.
         """
-        message = data.decode(self.format, "ignore").strip() if self.format else data
-        if isinstance(message, type(self.regex)):
-            match = re.fullmatch(self.regex, message)
-            if match:
-                return match.groups()
+        message = self.convert(data)
+        match = self.pattern.fullmatch(message)
+        if match:
+            return match.groups()
         return None

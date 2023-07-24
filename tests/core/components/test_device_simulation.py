@@ -88,7 +88,7 @@ async def test_device_simulation_run_forever_method(
     ) as mock_all:
         mock_all.return_value = [asyncio.create_task(asyncio.sleep(0))]
         await device_simulation.run_forever(
-            mock_state_consumer_type, mock_state_producer_type
+            mock_state_consumer_type, mock_state_producer_type  # type: ignore
         )
         patch_asyncio_wait.assert_awaited_once_with(mock_all.return_value)
 

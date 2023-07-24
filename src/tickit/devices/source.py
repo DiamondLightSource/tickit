@@ -15,9 +15,12 @@ class SourceDevice(Device):
     """A simple device which produces a pre-configured value."""
 
     #: An empty typed mapping of device inputs
-    Inputs: TypedDict = TypedDict("Inputs", {})
+    class Inputs(TypedDict):
+        ...
+
     #: A typed mapping containing the 'value' output value
-    Outputs: TypedDict = TypedDict("Outputs", {"value": Any})
+    class Outputs(TypedDict):
+        value: Any
 
     def __init__(self, value: Any) -> None:
         """A constructor of the source, which takes the pre-configured output value.

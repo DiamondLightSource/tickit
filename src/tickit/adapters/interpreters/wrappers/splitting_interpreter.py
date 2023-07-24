@@ -1,7 +1,7 @@
-import re
+from re import Pattern, compile
 from typing import AnyStr, AsyncIterable, List, Tuple
 
-from tickit.adapters.interpreters.utils import wrap_messages_as_async_iterable
+from tickit.adapters.interpreters.utils import wrap_messages_as_async_iterator
 from tickit.core.adapter import Adapter, Interpreter
 
 
@@ -27,7 +27,7 @@ class SplittingInterpreter(Interpreter[AnyStr]):
         """
         super().__init__()
         self.interpreter: Interpreter[AnyStr] = interpreter
-        self.message_delimiter: AnyStr = message_delimiter
+        self.delimeter: Pattern[AnyStr] = compile(message_delimiter)
 
     async def _handle_individual_messages(
         self, adapter: Adapter, individual_messages: List[AnyStr]
@@ -62,10 +62,11 @@ class SplittingInterpreter(Interpreter[AnyStr]):
         responses = [
             response
             for response_gen in individual_responses
-            async for response in response_gen
+            # type checking can't figure out the return types of zip(*args)
+            async for response in response_gen  # type: ignore
         ]
 
-        resp = wrap_messages_as_async_iterable(responses)
+        resp = wrap_messages_as_async_iterator(responses)
         interrupt = any(individual_interrupts)
         return resp, interrupt
 
@@ -88,7 +89,7 @@ class SplittingInterpreter(Interpreter[AnyStr]):
         """
         individual_messages = [
             msg
-            for msg in re.split(self.message_delimiter, message)
+            for msg in self.delimeter.split(message)
             if msg  # Discard empty strings and None
         ]
 

@@ -12,7 +12,7 @@ def regex_command(regex: AnyStr, interrupt: bool, format: Optional[str]):
 
 def test_regex_command_registers_command():
     class TestAdapter:
-        @RegexCommand("test")
+        @RegexCommand("test", format="utf-8")
         def test_method():
             pass
 

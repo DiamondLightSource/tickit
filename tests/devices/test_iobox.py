@@ -29,6 +29,7 @@ def test_writes_pending_until_update(box: IoBoxDevice[int, Any]) -> None:
 def test_outputs_change(box: IoBoxDevice[int, Any]) -> None:
     box.write(4, "foo")
     update = box.update(SimTime(0), {})
+    assert "updates" in update.outputs
     assert update.outputs["updates"] == [(4, "foo")]
 
 
@@ -37,6 +38,7 @@ def test_outputs_only_last_changes(box: IoBoxDevice[int, Any]) -> None:
     box.update(SimTime(0), {})
     box.write(3, "bar")
     update = box.update(SimTime(0), {})
+    assert "updates" in update.outputs
     assert update.outputs["updates"] == [(3, "bar")]
 
 
@@ -47,4 +49,5 @@ def test_writes_input(box: IoBoxDevice[int, Any]) -> None:
 
 def test_propagates_input(box: IoBoxDevice[int, Any]) -> None:
     update = box.update(SimTime(0), {"updates": [(4, "foo")]})
+    assert "updates" in update.outputs
     assert update.outputs["updates"] == [(4, "foo")]

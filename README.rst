@@ -79,8 +79,11 @@ it increments.
     class CounterDevice(Device):
         """A simple device which increments a value."""
 
-        Inputs: TypedDict = TypedDict("Inputs", {})
-        Outputs: TypedDict = TypedDict("Outputs", {"value":int})
+        class Inputs(TypedDict):
+            ...
+
+        class Outputs(TypedDict):
+            value: int
 
         def __init__(self, initial_value: int = 0, callback_period: int = int(1e9)) -> None:
             self._value = initial_value

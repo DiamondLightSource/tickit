@@ -73,14 +73,15 @@ class EpicsAdapter(Adapter):
 
     def load_records_without_DTYP_fields(self):
         """Load records from database file without DTYP fields."""
-        with open(self.db_file, "rb") as inp:
-            with NamedTemporaryFile(suffix=".db", delete=False) as out:
-                for line in inp.readlines():
-                    if not re.match(rb"\s*field\s*\(\s*DTYP", line):
-                        out.write(line)
+        if self.db_file:
+            with open(self.db_file, "rb") as inp:
+                with NamedTemporaryFile(suffix=".db", delete=False) as out:
+                    for line in inp.readlines():
+                        if not re.match(rb"\s*field\s*\(\s*DTYP", line):
+                            out.write(line)
 
-        softioc.dbLoadDatabase(out.name, substitutions=f"device={self.ioc_name}")
-        os.unlink(out.name)
+            softioc.dbLoadDatabase(out.name, substitutions=f"device={self.ioc_name}")
+            os.unlink(out.name)
 
     async def run_forever(
         self, device: Device, raise_interrupt: RaiseInterrupt

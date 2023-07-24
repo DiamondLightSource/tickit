@@ -48,7 +48,9 @@ def _as_tagged_union(
         # be identified when deserializing.
         cls.__annotations__ = {
             **getattr(cls, "__annotations__", {}),
-            discriminator: Literal[cls_name],
+            # Literal is supposed to only accept literal strings but we need to
+            # set it dynamically
+            discriminator: Literal[cls_name],  # type: ignore
         }
         setattr(cls, discriminator, field(default=cls_name, repr=False))
 

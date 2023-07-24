@@ -57,7 +57,7 @@ def mock_socket_factory(
 
 
 @pytest.fixture
-def zeromq_adapter(mock_socket_factory: aiozmq.ZmqStream) -> ZeroMqPushAdapter:
+def zeromq_adapter(mock_socket_factory: SocketFactory) -> ZeroMqPushAdapter:
     return ZeroMqPushAdapter(
         host=_HOST,
         port=_PORT,
