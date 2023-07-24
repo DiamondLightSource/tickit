@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.adapters.interpreters.command.regex_command &#8212; tickit 0.3.1.dev16+g30c6a290 documentation</title>
+    <title>tickit.adapters.interpreters.command.regex_command &#8212; tickit 0.3.1.dev17+ga7dc12d1 documentation</title>
   
   
   
@@ -445,8 +445,9 @@ document.write(`
     <span class="n">convert</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">bytes</span><span class="p">],</span> <span class="n">AnyStr</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">regex</span><span class="p">:</span> <span class="n">AnyStr</span><span class="p">,</span> <span class="nb">format</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
-        <span class="c1"># The type checking fails here as it can&#39;t determine that the return type matches the</span>
-        <span class="c1"># regex type. The isinstance should narrow the AnyStr type but doesn&#39;t</span>
+        <span class="c1"># The type checking fails here as it can&#39;t determine that the return</span>
+        <span class="c1"># type matches the regex type. The isinstance should narrow the AnyStr</span>
+        <span class="c1"># type but doesn&#39;t</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">format</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
