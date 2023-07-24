@@ -27,8 +27,9 @@ class RegexCommand(Generic[AnyStr]):
     convert: Callable[[bytes], AnyStr] = field(init=False)
 
     def __post_init__(self, regex: AnyStr, format: Optional[str]):
-        # The type checking fails here as it can't determine that the return type matches the
-        # regex type. The isinstance should narrow the AnyStr type but doesn't
+        # The type checking fails here as it can't determine that the return
+        # type matches the regex type. The isinstance should narrow the AnyStr
+        # type but doesn't
         if isinstance(regex, str):
             if format is None:
                 raise ValueError(
