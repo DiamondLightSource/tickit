@@ -90,5 +90,9 @@
   {
     "version": "unpin-click",
     "url": "https://dls-controls.github.io/tickit/unpin-click/"
+  },
+  {
+    "version": "zmq_task",
+    "url": "https://dls-controls.github.io/tickit/zmq_task/"
   }
 ]
