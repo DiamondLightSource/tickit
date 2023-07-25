@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>tickit &#8212; tickit 0.3.1.dev4+gacb6db24 documentation</title>
+    <title>tickit &#8212; tickit 0.3.1.dev8+g539d44d1 documentation</title>
   
   
   
@@ -462,8 +462,11 @@ it increments.</p>
 <span class="k">class</span> <span class="nc">CounterDevice</span><span class="p">(</span><span class="n">Device</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A simple device which increments a value.&quot;&quot;&quot;</span>
 
-    <span class="n">Inputs</span><span class="p">:</span> <span class="n">TypedDict</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Inputs&quot;</span><span class="p">,</span> <span class="p">{})</span>
-    <span class="n">Outputs</span><span class="p">:</span> <span class="n">TypedDict</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Outputs&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span><span class="nb">int</span><span class="p">})</span>
+    <span class="k">class</span> <span class="nc">Inputs</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+        <span class="o">...</span>
+
+    <span class="k">class</span> <span class="nc">Outputs</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+        <span class="n">value</span><span class="p">:</span> <span class="nb">int</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_value</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">callback_period</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1e9</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">initial_value</span>

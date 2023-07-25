@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>API &#8212; tickit 0.3.1.dev4+gacb6db24 documentation</title>
+    <title>API &#8212; tickit 0.3.1.dev8+g539d44d1 documentation</title>
   
   
   
@@ -2014,7 +2014,7 @@ framework, if the topic does not yet exist it should be created.</p>
 <dt class="sig sig-object py" id="tickit.core.state_interfaces.state_interface.StateInterface">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.core.state_interfaces.state_interface.</span></span><span class="sig-name descname"><span class="pre">StateInterface</span></span><a class="headerlink" href="#tickit.core.state_interfaces.state_interface.StateInterface" title="Permalink to this definition">#</a></dt>
 <dd><p>The union of StateConsumer and StateProducer</p>
-<p>alias of TypeVar(‘StateInterface’, ~tickit.core.state_interfaces.state_interface.StateConsumer, ~tickit.core.state_interfaces.state_interface.StateProducer)</p>
+<p>alias of TypeVar(‘StateInterface’, bound=<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference internal" href="#tickit.core.state_interfaces.state_interface.StateConsumer" title="tickit.core.state_interfaces.state_interface.StateConsumer"><code class="xref py py-class docutils literal notranslate"><span class="pre">StateConsumer</span></code></a>, <a class="reference internal" href="#tickit.core.state_interfaces.state_interface.StateProducer" title="tickit.core.state_interfaces.state_interface.StateProducer"><code class="xref py py-class docutils literal notranslate"><span class="pre">StateProducer</span></code></a>])</p>
 </dd></dl>
 
 <dl class="py function">
@@ -2149,28 +2149,13 @@ otherwise None.</p>
 commands registered against adapter methods, if a match is found the method is
 called with the parsed arguments.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="tickit.adapters.interpreters.command.command_interpreter.CommandInterpreter.unknown_command">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unknown_command</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.AsyncIterable" title="(in Python v3.11)"><span class="pre">AsyncIterable</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/tickit/adapters/interpreters/command/command_interpreter.html#CommandInterpreter.unknown_command"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.interpreters.command.command_interpreter.CommandInterpreter.unknown_command" title="Permalink to this definition">#</a></dt>
-<dd><p>An asynchronous iterable of containing a single unknown command reply.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>An asynchronous iterable of containing a single unknown command reply:
-“Request does not match any known command”.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>AsyncIterable[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)">bytes</a>]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="tickit.adapters.interpreters.command.command_interpreter.CommandInterpreter.handle">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.adapter.Adapter" title="tickit.core.adapter.Adapter"><span class="pre">Adapter</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AnyStr</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.11)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.AsyncIterable" title="(in Python v3.11)"><span class="pre">AsyncIterable</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/tickit/adapters/interpreters/command/command_interpreter.html#CommandInterpreter.handle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.interpreters.command.command_interpreter.CommandInterpreter.handle" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.adapter.Adapter" title="tickit.core.adapter.Adapter"><span class="pre">Adapter</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AnyStr</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.11)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.AsyncIterator" title="(in Python v3.11)"><span class="pre">AsyncIterator</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/tickit/adapters/interpreters/command/command_interpreter.html#CommandInterpreter.handle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.interpreters.command.command_interpreter.CommandInterpreter.handle" title="Permalink to this definition">#</a></dt>
 <dd><p>Matches the message to an adapter command and calls the corresponding method.</p>
 <p>An asynchronous method which handles a message by attempting to match the
 message against each of the registered commands, if a match is found the
 corresponding command is called and its reply is returned with an asynchronous
-iterable wrapper if required. If no match is found the unknown command message
+iterator wrapper if required. If no match is found the unknown command message
 is returned with no request for interrupt.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2180,11 +2165,11 @@ is returned with no request for interrupt.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A tuple of the asynchronous iterable of reply messages and a flag
+<dd class="field-even"><p>A tuple of the asynchronous iterator of reply messages and a flag
 indicating whether an interrupt should be raised by the adapter.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tuple[AsyncIterable[Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)">bytes</a>]], <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a>]</p>
+<dd class="field-odd"><p>Tuple[AsyncIterator[Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)">bytes</a>]], <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2196,7 +2181,7 @@ indicating whether an interrupt should be raised by the adapter.</p>
 <h6><code class="docutils literal notranslate"><span class="pre">tickit.adapters.interpreters.command.regex_command</span></code><a class="headerlink" href="#tickit-adapters-interpreters-command-regex-command" title="Permalink to this heading">#</a></h6>
 <dl class="py class">
 <dt class="sig sig-object py" id="tickit.adapters.interpreters.command.regex_command.RegexCommand">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.adapters.interpreters.command.regex_command.</span></span><span class="sig-name descname"><span class="pre">RegexCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">regex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AnyStr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interrupt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/adapters/interpreters/command/regex_command.html#RegexCommand"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.interpreters.command.regex_command.RegexCommand" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.adapters.interpreters.command.regex_command.</span></span><span class="sig-name descname"><span class="pre">RegexCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">regex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dataclasses.InitVar</span><span class="p"><span class="pre">[</span></span><span class="pre">AnyStr</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interrupt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dataclasses.InitVar</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tickit/adapters/interpreters/command/regex_command.html#RegexCommand"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.adapters.interpreters.command.regex_command.RegexCommand" title="Permalink to this definition">#</a></dt>
 <dd><p>A decorator to register an adapter method as a regex parsed command.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2708,21 +2693,9 @@ but can be customised in code by implementing on_db_load.</p>
 <dt class="sig sig-object py" id="tickit.devices.sink.SinkDevice">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.devices.sink.</span></span><span class="sig-name descname"><span class="pre">SinkDevice</span></span><a class="reference internal" href="../../_modules/tickit/devices/sink.html#SinkDevice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.devices.sink.SinkDevice" title="Permalink to this definition">#</a></dt>
 <dd><p>A simple device which can take any input and produces no output.</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="tickit.devices.sink.SinkDevice.Inputs">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Inputs</span></span><a class="headerlink" href="#tickit.devices.sink.SinkDevice.Inputs" title="Permalink to this definition">#</a></dt>
-<dd><p>A typed mapping containing the ‘input’ input value</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="tickit.devices.sink.SinkDevice.Outputs">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Outputs</span></span><a class="headerlink" href="#tickit.devices.sink.SinkDevice.Outputs" title="Permalink to this definition">#</a></dt>
-<dd><p>An empty typed mapping of device outputs</p>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="tickit.devices.sink.SinkDevice.update">
-<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.typedefs.SimTime" title="tickit.core.typedefs.SimTime"><span class="pre">SimTime</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.devices.sink.SinkDevice.Inputs" title="tickit.devices.sink.Inputs"><span class="pre">Inputs</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tickit.core.device.DeviceUpdate" title="tickit.core.device.DeviceUpdate"><span class="pre">DeviceUpdate</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#tickit.devices.sink.SinkDevice.Outputs" title="tickit.devices.sink.Outputs"><span class="pre">Outputs</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/tickit/devices/sink.html#SinkDevice.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.devices.sink.SinkDevice.update" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.typedefs.SimTime" title="tickit.core.typedefs.SimTime"><span class="pre">SimTime</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Inputs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tickit.core.device.DeviceUpdate" title="tickit.core.device.DeviceUpdate"><span class="pre">DeviceUpdate</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Outputs</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/tickit/devices/sink.html#SinkDevice.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.devices.sink.SinkDevice.update" title="Permalink to this definition">#</a></dt>
 <dd><p>The update method which logs the inputs and produces no outputs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2736,7 +2709,7 @@ but can be customised in code by implementing on_db_load.</p>
 requests a callback.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#tickit.core.device.DeviceUpdate" title="tickit.core.device.DeviceUpdate">DeviceUpdate</a>[<a class="reference internal" href="#tickit.devices.sink.SinkDevice.Outputs" title="tickit.devices.sink.SinkDevice.Outputs">Outputs</a>]</p>
+<dd class="field-odd"><p><a class="reference internal" href="#tickit.core.device.DeviceUpdate" title="tickit.core.device.DeviceUpdate">DeviceUpdate</a>[Outputs]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2762,21 +2735,9 @@ requests a callback.</p>
 <dd class="field-odd"><p><strong>value</strong> (<em>Any</em>) – A pre-configured output value.</p>
 </dd>
 </dl>
-<dl class="py class">
-<dt class="sig sig-object py" id="tickit.devices.source.SourceDevice.Inputs">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Inputs</span></span><a class="headerlink" href="#tickit.devices.source.SourceDevice.Inputs" title="Permalink to this definition">#</a></dt>
-<dd><p>An empty typed mapping of device inputs</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="tickit.devices.source.SourceDevice.Outputs">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Outputs</span></span><a class="headerlink" href="#tickit.devices.source.SourceDevice.Outputs" title="Permalink to this definition">#</a></dt>
-<dd><p>A typed mapping containing the ‘value’ output value</p>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="tickit.devices.source.SourceDevice.update">
-<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.typedefs.SimTime" title="tickit.core.typedefs.SimTime"><span class="pre">SimTime</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.devices.source.SourceDevice.Inputs" title="tickit.devices.source.Inputs"><span class="pre">Inputs</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tickit.core.device.DeviceUpdate" title="tickit.core.device.DeviceUpdate"><span class="pre">DeviceUpdate</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#tickit.devices.source.SourceDevice.Outputs" title="tickit.devices.source.Outputs"><span class="pre">Outputs</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/tickit/devices/source.html#SourceDevice.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.devices.source.SourceDevice.update" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tickit.core.typedefs.SimTime" title="tickit.core.typedefs.SimTime"><span class="pre">SimTime</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Inputs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tickit.core.device.DeviceUpdate" title="tickit.core.device.DeviceUpdate"><span class="pre">DeviceUpdate</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Outputs</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/tickit/devices/source.html#SourceDevice.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.devices.source.SourceDevice.update" title="Permalink to this definition">#</a></dt>
 <dd><p>The update method which produces the pre-configured output value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2790,7 +2751,7 @@ requests a callback.</p>
 never requests a callback.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#tickit.core.device.DeviceUpdate" title="tickit.core.device.DeviceUpdate">DeviceUpdate</a>[<a class="reference internal" href="#tickit.devices.source.SourceDevice.Outputs" title="tickit.devices.source.SourceDevice.Outputs">Outputs</a>]</p>
+<dd class="field-odd"><p><a class="reference internal" href="#tickit.core.device.DeviceUpdate" title="tickit.core.device.DeviceUpdate">DeviceUpdate</a>[Outputs]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -3209,7 +3170,6 @@ required.</p>
 </ul>
 </li>
 <li class="toc-h7 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.interpreters.command.command_interpreter.CommandInterpreter"><code class="docutils literal notranslate"><span class="pre">CommandInterpreter</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h8 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.interpreters.command.command_interpreter.CommandInterpreter.unknown_command"><code class="docutils literal notranslate"><span class="pre">CommandInterpreter.unknown_command()</span></code></a></li>
 <li class="toc-h8 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.adapters.interpreters.command.command_interpreter.CommandInterpreter.handle"><code class="docutils literal notranslate"><span class="pre">CommandInterpreter.handle()</span></code></a></li>
 </ul>
 </li>
@@ -3319,8 +3279,6 @@ required.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tickit.devices.sink"><code class="docutils literal notranslate"><span class="pre">tickit.devices</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit-devices-sink"><code class="docutils literal notranslate"><span class="pre">tickit.devices.sink</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.devices.sink.SinkDevice"><code class="docutils literal notranslate"><span class="pre">SinkDevice</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.devices.sink.SinkDevice.Inputs"><code class="docutils literal notranslate"><span class="pre">SinkDevice.Inputs</span></code></a></li>
-<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.devices.sink.SinkDevice.Outputs"><code class="docutils literal notranslate"><span class="pre">SinkDevice.Outputs</span></code></a></li>
 <li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.devices.sink.SinkDevice.update"><code class="docutils literal notranslate"><span class="pre">SinkDevice.update()</span></code></a></li>
 </ul>
 </li>
@@ -3329,8 +3287,6 @@ required.</p>
 </li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit-devices-source"><code class="docutils literal notranslate"><span class="pre">tickit.devices.source</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.devices.source.SourceDevice"><code class="docutils literal notranslate"><span class="pre">SourceDevice</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.devices.source.SourceDevice.Inputs"><code class="docutils literal notranslate"><span class="pre">SourceDevice.Inputs</span></code></a></li>
-<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.devices.source.SourceDevice.Outputs"><code class="docutils literal notranslate"><span class="pre">SourceDevice.Outputs</span></code></a></li>
 <li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.devices.source.SourceDevice.update"><code class="docutils literal notranslate"><span class="pre">SourceDevice.update()</span></code></a></li>
 </ul>
 </li>

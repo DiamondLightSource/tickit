@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.adapters.interpreters.command.command_interpreter &#8212; tickit 0.3.1.dev4+gacb6db24 documentation</title>
+    <title>tickit.adapters.interpreters.command.command_interpreter &#8212; tickit 0.3.1.dev8+g539d44d1 documentation</title>
   
   
   
@@ -420,7 +420,7 @@ document.write(`
 <span class="kn">from</span> <span class="nn">inspect</span> <span class="kn">import</span> <span class="n">getmembers</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">AnyStr</span><span class="p">,</span>
-    <span class="n">AsyncIterable</span><span class="p">,</span>
+    <span class="n">AsyncIterator</span><span class="p">,</span>
     <span class="n">Optional</span><span class="p">,</span>
     <span class="n">Protocol</span><span class="p">,</span>
     <span class="n">Sequence</span><span class="p">,</span>
@@ -429,7 +429,7 @@ document.write(`
     <span class="n">runtime_checkable</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">tickit.adapters.interpreters.utils</span> <span class="kn">import</span> <span class="n">wrap_as_async_iterable</span>
+<span class="kn">from</span> <span class="nn">tickit.adapters.interpreters.utils</span> <span class="kn">import</span> <span class="n">wrap_as_async_iterator</span>
 <span class="kn">from</span> <span class="nn">tickit.core.adapter</span> <span class="kn">import</span> <span class="n">Adapter</span><span class="p">,</span> <span class="n">Interpreter</span>
 
 
@@ -466,26 +466,15 @@ document.write(`
 <span class="sd">    called with the parsed arguments.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="CommandInterpreter.unknown_command"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.adapters.interpreters.command.command_interpreter.CommandInterpreter.unknown_command">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">unknown_command</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">AsyncIterable</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;An asynchronous iterable of containing a single unknown command reply.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            AsyncIterable[bytes]:</span>
-<span class="sd">                An asynchronous iterable of containing a single unknown command reply:</span>
-<span class="sd">                &quot;Request does not match any known command&quot;.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">yield</span> <span class="sa">b</span><span class="s2">&quot;Request does not match any known command&quot;</span></div>
-
 <div class="viewcode-block" id="CommandInterpreter.handle"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.adapters.interpreters.command.command_interpreter.CommandInterpreter.handle">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">adapter</span><span class="p">:</span> <span class="n">Adapter</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">AnyStr</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">AsyncIterable</span><span class="p">[</span><span class="n">AnyStr</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">AsyncIterator</span><span class="p">[</span><span class="n">AnyStr</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Matches the message to an adapter command and calls the corresponding method.</span>
 
 <span class="sd">        An asynchronous method which handles a message by attempting to match the</span>
 <span class="sd">        message against each of the registered commands, if a match is found the</span>
 <span class="sd">        corresponding command is called and its reply is returned with an asynchronous</span>
-<span class="sd">        iterable wrapper if required. If no match is found the unknown command message</span>
+<span class="sd">        iterator wrapper if required. If no match is found the unknown command message</span>
 <span class="sd">        is returned with no request for interrupt.</span>
 
 <span class="sd">        Args:</span>
@@ -493,8 +482,8 @@ document.write(`
 <span class="sd">            message (bytes): The message to be handled.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Tuple[AsyncIterable[Union[str, bytes]], bool]:</span>
-<span class="sd">                A tuple of the asynchronous iterable of reply messages and a flag</span>
+<span class="sd">            Tuple[AsyncIterator[Union[str, bytes]], bool]:</span>
+<span class="sd">                A tuple of the asynchronous iterator of reply messages and a flag</span>
 <span class="sd">                indicating whether an interrupt should be raised by the adapter.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">method</span> <span class="ow">in</span> <span class="n">getmembers</span><span class="p">(</span><span class="n">adapter</span><span class="p">):</span>
@@ -509,11 +498,19 @@ document.write(`
                 <span class="k">for</span> <span class="n">arg</span><span class="p">,</span> <span class="n">argtype</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">get_type_hints</span><span class="p">(</span><span class="n">method</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
             <span class="p">)</span>
             <span class="n">resp</span> <span class="o">=</span> <span class="k">await</span> <span class="n">method</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="n">AsyncIterable</span><span class="p">):</span>
-                <span class="n">resp</span> <span class="o">=</span> <span class="n">wrap_as_async_iterable</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="n">AsyncIterator</span><span class="p">):</span>
+                <span class="n">resp</span> <span class="o">=</span> <span class="n">wrap_as_async_iterator</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">resp</span><span class="p">,</span> <span class="n">command</span><span class="o">.</span><span class="n">interrupt</span>
-        <span class="n">resp</span> <span class="o">=</span> <span class="n">CommandInterpreter</span><span class="o">.</span><span class="n">unknown_command</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">resp</span><span class="p">,</span> <span class="kc">False</span></div></div>
+
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Request does not match any known command&quot;</span>
+        <span class="c1"># This is a pain but the message needs to match the input message</span>
+        <span class="c1"># TODO: Fix command interpreters&#39; handling of bytes vs str</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+            <span class="n">resp</span> <span class="o">=</span> <span class="n">wrap_as_async_iterator</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">resp</span><span class="p">,</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">resp</span> <span class="o">=</span> <span class="n">wrap_as_async_iterator</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">resp</span><span class="p">,</span> <span class="kc">False</span></div></div>
 </pre></div>
 
                 </article>

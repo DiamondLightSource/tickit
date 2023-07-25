@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.state_interfaces.state_interface &#8212; tickit 0.3.1.dev4+gacb6db24 documentation</title>
+    <title>tickit.core.state_interfaces.state_interface &#8212; tickit 0.3.1.dev8+g539d44d1 documentation</title>
   
   
   
@@ -426,6 +426,7 @@ document.write(`
     <span class="n">Tuple</span><span class="p">,</span>
     <span class="n">Type</span><span class="p">,</span>
     <span class="n">TypeVar</span><span class="p">,</span>
+    <span class="n">Union</span><span class="p">,</span>
     <span class="n">runtime_checkable</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">warnings</span> <span class="kn">import</span> <span class="n">warn</span>
@@ -491,8 +492,7 @@ document.write(`
 
 
 <span class="c1">#: The union of StateConsumer and StateProducer</span>
-<span class="n">StateInterface</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;StateInterface&quot;</span><span class="p">,</span> <span class="n">StateConsumer</span><span class="p">,</span> <span class="n">StateProducer</span><span class="p">)</span>
-
+<span class="n">StateInterface</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;StateInterface&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">Union</span><span class="p">[</span><span class="n">StateConsumer</span><span class="p">,</span> <span class="n">StateProducer</span><span class="p">])</span>
 
 <span class="n">consumers</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">StateConsumer</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 <span class="n">producers</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">StateProducer</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
