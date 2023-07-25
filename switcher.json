@@ -60,6 +60,10 @@
     "url": "https://dls-controls.github.io/tickit/fix-hanging-http-tests/"
   },
   {
+    "version": "move-to-pyright",
+    "url": "https://dls-controls.github.io/tickit/move-to-pyright/"
+  },
+  {
     "version": "pyright_errors",
     "url": "https://dls-controls.github.io/tickit/pyright_errors/"
   },
