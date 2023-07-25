@@ -8,7 +8,6 @@ import pydantic.v1.dataclasses
 from tickit.core.components.component import BaseComponent, Component, ComponentConfig
 from tickit.core.management.event_router import InverseWiring
 from tickit.core.management.schedulers.slave import SlaveScheduler
-from tickit.core.runner import run_all
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import Changes, ComponentID, ComponentPort, PortID, SimTime
 from tickit.utils.topic_naming import output_topic
@@ -53,10 +52,10 @@ class SystemSimulationComponent(BaseComponent):
             self.expose,
             self.raise_interrupt,
         )
-        self._tasks = run_all(
-            component().run_forever(state_consumer, state_producer)
+        self._tasks = [
+            asyncio.create_task(component().run_forever(state_consumer, state_producer))
             for component in self.components
-        ) + run_all([self.scheduler.run_forever()])
+        ] + [asyncio.create_task(self.scheduler.run_forever())]
         await super().run_forever(state_consumer, state_producer)
         if self._tasks:
             await asyncio.wait(self._tasks)
