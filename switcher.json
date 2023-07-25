@@ -86,9 +86,5 @@
   {
     "version": "v0.1",
     "url": "https://dls-controls.github.io/tickit/v0.1/"
-  },
-  {
-    "version": "zmq_task",
-    "url": "https://dls-controls.github.io/tickit/zmq_task/"
   }
 ]
