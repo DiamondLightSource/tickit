@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.adapters.interpreters.wrappers.joining_interpreter &#8212; tickit 0.3.1.dev2+g7ac692fd documentation</title>
+    <title>tickit.adapters.interpreters.wrappers.joining_interpreter &#8212; tickit 0.3.1.dev5+g28c3f0e8 documentation</title>
   
   
   
@@ -418,7 +418,7 @@ document.write(`
   <h1>Source code for tickit.adapters.interpreters.wrappers.joining_interpreter</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">AnyStr</span><span class="p">,</span> <span class="n">AsyncIterable</span><span class="p">,</span> <span class="n">Tuple</span>
 
-<span class="kn">from</span> <span class="nn">tickit.adapters.interpreters.utils</span> <span class="kn">import</span> <span class="n">wrap_as_async_iterable</span>
+<span class="kn">from</span> <span class="nn">tickit.adapters.interpreters.utils</span> <span class="kn">import</span> <span class="n">wrap_as_async_iterator</span>
 <span class="kn">from</span> <span class="nn">tickit.core.adapter</span> <span class="kn">import</span> <span class="n">Adapter</span><span class="p">,</span> <span class="n">Interpreter</span>
 
 
@@ -467,8 +467,10 @@ document.write(`
 <span class="sd">                An asynchronous iterable containing a single reply message.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">response_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">response</span> <span class="k">async</span> <span class="k">for</span> <span class="n">response</span> <span class="ow">in</span> <span class="n">responses</span><span class="p">]</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_delimiter</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">response_list</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">wrap_as_async_iterable</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+        <span class="c1"># type checking AnyStr.join doesn&#39;t work for some reason</span>
+        <span class="c1"># https://github.com/microsoft/pyright/issues/5556</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_delimiter</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">response_list</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="k">return</span> <span class="n">wrap_as_async_iterator</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
 
 <div class="viewcode-block" id="JoiningInterpreter.handle"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.adapters.interpreters.wrappers.joining_interpreter.JoiningInterpreter.handle">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">adapter</span><span class="p">:</span> <span class="n">Adapter</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">AnyStr</span>

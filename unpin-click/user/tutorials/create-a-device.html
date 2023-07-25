@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Creating a Device &#8212; tickit 0.3.1.dev2+g7ac692fd documentation</title>
+    <title>Creating a Device &#8212; tickit 0.3.1.dev5+g28c3f0e8 documentation</title>
   
   
   
@@ -482,8 +482,10 @@ maps as members. As such we shall put in the following boilerplate.</p>
 
 <span class="k">class</span> <span class="nc">AmplifierDevice</span><span class="p">(</span><span class="n">Device</span><span class="p">):</span>
 
-<span class="n">Inputs</span><span class="p">:</span> <span class="n">TypedDict</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Inputs&quot;</span><span class="p">,</span> <span class="p">{})</span>
-<span class="n">Outputs</span><span class="p">:</span> <span class="n">TypedDict</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Outputs&quot;</span><span class="p">,</span> <span class="p">{})</span>
+<span class="k">class</span> <span class="nc">Inputs</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">Outputs</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+    <span class="o">...</span>
 
 <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
@@ -506,8 +508,10 @@ here.</p>
 
 <span class="k">class</span> <span class="nc">AmplifierDevice</span><span class="p">(</span><span class="n">Device</span><span class="p">):</span>
 
-<span class="n">Inputs</span><span class="p">:</span> <span class="n">TypedDict</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Inputs&quot;</span><span class="p">,</span> <span class="p">{})</span>
-<span class="n">Outputs</span><span class="p">:</span> <span class="n">TypedDict</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Outputs&quot;</span><span class="p">,</span> <span class="p">{})</span>
+<span class="k">class</span> <span class="nc">Inputs</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+    <span class="o">...</span>
+<span class="k">class</span> <span class="nc">Outputs</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+    <span class="o">...</span>
 
 <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_amplification</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">amplification</span> <span class="o">=</span> <span class="n">initial_amplification</span>
@@ -537,8 +541,10 @@ we define our inputs and outputs in the maps, and the line of logic in the <code
 
 <span class="k">class</span> <span class="nc">AmplifierDevice</span><span class="p">(</span><span class="n">Device</span><span class="p">):</span>
 
-    <span class="n">Inputs</span><span class="p">:</span> <span class="n">TypedDict</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Inputs&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;initial_signal&quot;</span><span class="p">:</span><span class="nb">float</span><span class="p">})</span>
-    <span class="n">Outputs</span><span class="p">:</span> <span class="n">TypedDict</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Outputs&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;amplified_signal&quot;</span><span class="p">:</span><span class="nb">float</span><span class="p">})</span>
+    <span class="k">class</span> <span class="nc">Inputs</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+        <span class="n">initial_signal</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="k">class</span> <span class="nc">Outputs</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+        <span class="n">amplified_signal</span><span class="p">:</span> <span class="nb">float</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_amplification</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">amplification</span> <span class="o">=</span> <span class="n">initial_amplification</span>

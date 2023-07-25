@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.devices.source &#8212; tickit 0.3.1.dev2+g7ac692fd documentation</title>
+    <title>tickit.devices.source &#8212; tickit 0.3.1.dev5+g28c3f0e8 documentation</title>
   
   
   
@@ -433,9 +433,12 @@ document.write(`
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A simple device which produces a pre-configured value.&quot;&quot;&quot;</span>
 
     <span class="c1">#: An empty typed mapping of device inputs</span>
-    <span class="n">Inputs</span><span class="p">:</span> <span class="n">TypedDict</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Inputs&quot;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="k">class</span> <span class="nc">Inputs</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+        <span class="o">...</span>
+
     <span class="c1">#: A typed mapping containing the &#39;value&#39; output value</span>
-    <span class="n">Outputs</span><span class="p">:</span> <span class="n">TypedDict</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;Outputs&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">Any</span><span class="p">})</span>
+    <span class="k">class</span> <span class="nc">Outputs</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+        <span class="n">value</span><span class="p">:</span> <span class="n">Any</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;A constructor of the source, which takes the pre-configured output value.</span>
