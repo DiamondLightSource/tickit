@@ -1,5 +1,4 @@
-import asyncio
-from typing import AsyncGenerator, Iterable
+from typing import Iterable
 
 import pytest
 from immutables import Map
@@ -52,15 +51,6 @@ def patch_asyncio_wait() -> Iterable[Mock]:
 
 
 @pytest.fixture
-async def patch_run_all() -> AsyncGenerator[Mock, None]:
-    with patch(
-        "tickit.core.components.device_simulation.run_all", autospec=True
-    ) as mock:
-        mock.return_value = [asyncio.create_task(asyncio.sleep(0))]
-        yield mock
-
-
-@pytest.fixture
 def device_simulation(
     source: SourceDevice,
     mock_adapter: Adapter,
@@ -83,14 +73,10 @@ async def test_device_simulation_run_forever_method(
     mock_state_consumer_type: Mock,
     patch_asyncio_wait: Mock,
 ):
-    with patch(
-        "tickit.core.components.device_simulation.run_all", autospec=True
-    ) as mock_all:
-        mock_all.return_value = [asyncio.create_task(asyncio.sleep(0))]
-        await device_simulation.run_forever(
-            mock_state_consumer_type, mock_state_producer_type  # type: ignore
-        )
-        patch_asyncio_wait.assert_awaited_once_with(mock_all.return_value)
+    await device_simulation.run_forever(
+        mock_state_consumer_type, mock_state_producer_type  # type: ignore
+    )
+    patch_asyncio_wait.assert_awaited_once()
 
     changes = Changes(Map({PortID("foo"): 43}))
     await device_simulation.on_tick(SimTime(1), changes)
