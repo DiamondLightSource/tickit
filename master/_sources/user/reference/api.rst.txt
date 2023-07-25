@@ -31,12 +31,7 @@ This is the internal API reference for tickit
         ``tickit.core.device``
         ----------------------
     
-    .. automodule:: tickit.core.runner
-        :members:
 
-        ``tickit.core.runner``
-        ----------------------
-    
     .. automodule:: tickit.core.typedefs
         :members:
 

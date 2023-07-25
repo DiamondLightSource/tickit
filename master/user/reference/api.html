@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>API &#8212; tickit 0.3.1.dev6+g76c00325 documentation</title>
+    <title>API &#8212; tickit 0.3.1.dev7+g8a457e58 documentation</title>
   
   
   
@@ -616,42 +616,6 @@ called again.</p>
 </dl>
 </dd></dl>
 
-</dd></dl>
-
-</section>
-<span class="target" id="module-tickit.core.runner"></span><section id="tickit-core-runner">
-<h4><code class="docutils literal notranslate"><span class="pre">tickit.core.runner</span></code><a class="headerlink" href="#tickit-core-runner" title="Permalink to this heading">#</a></h4>
-<dl class="py function">
-<dt class="sig sig-object py" id="tickit.core.runner.run_all">
-<span class="sig-prename descclassname"><span class="pre">tickit.core.runner.</span></span><span class="sig-name descname"><span class="pre">run_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">awaitables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterable" title="(in Python v3.11)"><span class="pre">Iterable</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Awaitable" title="(in Python v3.11)"><span class="pre">Awaitable</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Task</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/tickit/core/runner.html#run_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.runner.run_all" title="Permalink to this definition">#</a></dt>
-<dd><p>Asynchronously runs the run_forever method of each lifetime runnable.</p>
-<p>Creates and runs an asyncio task for the run_forever method of each lifetime
-runnable. Calls to the run_forever method are wrapped with an error handler.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>awaitables</strong> – An iterable of awaitable objects.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A list of asyncio tasks for the awaitables.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List[<a class="reference external" href="https://docs.python.org/3/library/asyncio-task.html#asyncio.Task" title="(in Python v3.11)">asyncio.Task</a>]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="tickit.core.runner.run_all_forever">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tickit.core.runner.</span></span><span class="sig-name descname"><span class="pre">run_all_forever</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">awaitables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterable" title="(in Python v3.11)"><span class="pre">Iterable</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Awaitable" title="(in Python v3.11)"><span class="pre">Awaitable</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../_modules/tickit/core/runner.html#run_all_forever"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tickit.core.runner.run_all_forever" title="Permalink to this definition">#</a></dt>
-<dd><p>Asynchronously runs the run_forever method of each lifetime runnable.</p>
-<p>Creates and runs an asyncio task for the run_forever method of each lifetime
-runnable. Calls to the run_forever method are wrapped with an error handler.
-This function blocks until all run_forever methods have completed.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>awaitables</strong> – An iterable of awaitable objects.</p>
-</dd>
-</dl>
 </dd></dl>
 
 </section>
@@ -2954,11 +2918,6 @@ required.</p>
 <li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.device.Device.update"><code class="docutils literal notranslate"><span class="pre">Device.update()</span></code></a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit-core-runner"><code class="docutils literal notranslate"><span class="pre">tickit.core.runner</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.runner.run_all"><code class="docutils literal notranslate"><span class="pre">run_all()</span></code></a></li>
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit.core.runner.run_all_forever"><code class="docutils literal notranslate"><span class="pre">run_all_forever()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tickit-core-typedefs"><code class="docutils literal notranslate"><span class="pre">tickit.core.typedefs</span></code></a><ul class="nav section-nav flex-column">

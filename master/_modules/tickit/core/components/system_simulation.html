@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.components.system_simulation &#8212; tickit 0.3.1.dev6+g76c00325 documentation</title>
+    <title>tickit.core.components.system_simulation &#8212; tickit 0.3.1.dev7+g8a457e58 documentation</title>
   
   
   
@@ -426,7 +426,6 @@ document.write(`
 <span class="kn">from</span> <span class="nn">tickit.core.components.component</span> <span class="kn">import</span> <span class="n">BaseComponent</span><span class="p">,</span> <span class="n">Component</span><span class="p">,</span> <span class="n">ComponentConfig</span>
 <span class="kn">from</span> <span class="nn">tickit.core.management.event_router</span> <span class="kn">import</span> <span class="n">InverseWiring</span>
 <span class="kn">from</span> <span class="nn">tickit.core.management.schedulers.slave</span> <span class="kn">import</span> <span class="n">SlaveScheduler</span>
-<span class="kn">from</span> <span class="nn">tickit.core.runner</span> <span class="kn">import</span> <span class="n">run_all</span>
 <span class="kn">from</span> <span class="nn">tickit.core.state_interfaces.state_interface</span> <span class="kn">import</span> <span class="n">StateConsumer</span><span class="p">,</span> <span class="n">StateProducer</span>
 <span class="kn">from</span> <span class="nn">tickit.core.typedefs</span> <span class="kn">import</span> <span class="n">Changes</span><span class="p">,</span> <span class="n">ComponentID</span><span class="p">,</span> <span class="n">ComponentPort</span><span class="p">,</span> <span class="n">PortID</span><span class="p">,</span> <span class="n">SimTime</span>
 <span class="kn">from</span> <span class="nn">tickit.utils.topic_naming</span> <span class="kn">import</span> <span class="n">output_topic</span>
@@ -471,10 +470,10 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">expose</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">raise_interrupt</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span> <span class="o">=</span> <span class="n">run_all</span><span class="p">(</span>
-            <span class="n">component</span><span class="p">()</span><span class="o">.</span><span class="n">run_forever</span><span class="p">(</span><span class="n">state_consumer</span><span class="p">,</span> <span class="n">state_producer</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">component</span><span class="p">()</span><span class="o">.</span><span class="n">run_forever</span><span class="p">(</span><span class="n">state_consumer</span><span class="p">,</span> <span class="n">state_producer</span><span class="p">))</span>
             <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span>
-        <span class="p">)</span> <span class="o">+</span> <span class="n">run_all</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">run_forever</span><span class="p">()])</span>
+        <span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">run_forever</span><span class="p">())]</span>
         <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">run_forever</span><span class="p">(</span><span class="n">state_consumer</span><span class="p">,</span> <span class="n">state_producer</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="p">:</span>
             <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="p">)</span></div>
