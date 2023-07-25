@@ -27,8 +27,6 @@ class HttpEndpoint(Generic[AnyStr]):
     method: str
     interrupt: bool = False
 
-    # Type signature can become more specific if support is dropped for
-    # Python 3.7, see https://github.com/python/mypy/issues/708
     def __call__(self, func: Callable) -> Callable:
         """Decorate a function for HTTP routing.
 
