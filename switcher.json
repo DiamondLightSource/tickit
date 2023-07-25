@@ -64,10 +64,6 @@
     "url": "https://dls-controls.github.io/tickit/systemsimulation-adapter/"
   },
   {
-    "version": "typed_dict_typing",
-    "url": "https://dls-controls.github.io/tickit/typed_dict_typing/"
-  },
-  {
     "version": "typing_extensions",
     "url": "https://dls-controls.github.io/tickit/typing_extensions/"
   },
