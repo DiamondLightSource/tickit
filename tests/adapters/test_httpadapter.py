@@ -106,6 +106,8 @@ async def adapter_task(
         if exception is not None:
             raise exception
 
+        raise Exception("adapter.run_forever should not finish without an exception")
+
     yield adapter_running
     await adapter.stop()
     await asyncio.wait_for(adapter_running, timeout=10.0)
