@@ -18,7 +18,6 @@ from tickit.core.device import Device
 T = TypeVar("T")
 
 
-# https://github.com/python/mypy/issues/708#issuecomment-647124281
 class RaiseInterrupt(Protocol):
     """A raise_interrupt function that should be passed to `Adapter`."""
 
