@@ -1,6 +1,5 @@
 import asyncio
 import logging
-from dataclasses import dataclass
 from inspect import getmembers
 from typing import Awaitable, Callable, Iterable, Optional, Tuple
 
@@ -8,8 +7,7 @@ from aiohttp import web
 from aiohttp.web_routedef import RouteDef
 
 from tickit.adapters.interpreters.endpoints.http_endpoint import HttpEndpoint
-from tickit.core.adapter import RaiseInterrupt, AdapterIo
-from tickit.core.device import Device
+from tickit.core.adapter import AdapterIo, RaiseInterrupt
 
 LOGGER = logging.getLogger(__name__)
 
