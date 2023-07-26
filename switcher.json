@@ -56,8 +56,8 @@
     "url": "https://dls-controls.github.io/tickit/0.1/"
   },
   {
-    "version": "remove-runner",
-    "url": "https://dls-controls.github.io/tickit/remove-runner/"
+    "version": "fix-regex",
+    "url": "https://dls-controls.github.io/tickit/fix-regex/"
   },
   {
     "version": "split-interpreter-empty-strings",
