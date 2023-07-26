@@ -61,43 +61,43 @@ class AdapterContainer(Generic[A]):
         self.adapter.after_update()
 
 
-# class Interpreter(ABC, Generic[T]):
-#     """An interface for types which handle messages received by an adapter."""
+class Interpreter(ABC, Generic[T]):
+    """An interface for types which handle messages received by an adapter."""
 
-#     @abstractmethod
-#     async def handle(
-#         self, adapter: Adapter, message: T
-#     ) -> Tuple[AsyncIterable[T], bool]:
-#         """An asynchronous method which handles messages received by an adapter.
+    @abstractmethod
+    async def handle(
+        self, adapter: AdapterIo, message: T
+    ) -> Tuple[AsyncIterable[T], bool]:
+        """An asynchronous method which handles messages received by an adapter.
 
-#         An asynchronous method which handles messages received by an adapter, replies
-#         are sent as an asynchronous iterable to support setting of continuous readback,
-#         stand alone replies should be wrapped in an asynchronous iterable of length one.
+        An asynchronous method which handles messages received by an adapter, replies
+        are sent as an asynchronous iterable to support setting of continuous readback,
+        stand alone replies should be wrapped in an asynchronous iterable of length one.
 
-#         Args:
-#             adapter (Adapter): The adapter which is delegating message handling.
-#             message (T): The message received by the adapter.
+        Args:
+            adapter (Adapter): The adapter which is delegating message handling.
+            message (T): The message received by the adapter.
 
-#         Returns:
-#             Tuple[AsyncIterable[T], bool]: A tuple containing both an asynchronous
-#                 iterable of reply messages and an interrupt flag.
-#         """
+        Returns:
+            Tuple[AsyncIterable[T], bool]: A tuple containing both an asynchronous
+                iterable of reply messages and an interrupt flag.
+        """
 
 
-# class Server(Generic[T]):
-#     """An interface for types which implement an external messaging protocol."""
+class Server(Generic[T]):
+    """An interface for types which implement an external messaging protocol."""
 
-#     async def run_forever(
-#         self,
-#         on_connect: Callable[[], AsyncIterable[Optional[T]]],
-#         handler: Callable[[T], Awaitable[AsyncIterable[Optional[T]]]],
-#     ) -> None:
-#         """An asynchronous method allowing indefinite running of core server logic.
+    async def run_forever(
+        self,
+        on_connect: Callable[[], AsyncIterable[Optional[T]]],
+        handler: Callable[[T], Awaitable[AsyncIterable[Optional[T]]]],
+    ) -> None:
+        """An asynchronous method allowing indefinite running of core server logic.
 
-#         Args:
-#             on_connect (Callable[[], AsyncIterable[Optional[T]]]): An asynchronous
-#                 iterable of messages to be sent once a client connects.
-#             handler (Callable[[T], Awaitable[AsyncIterable[Optional[T]]]]): An
-#                 asynchronous method used to handle received messages, returning an
-#                 asynchronous iterable of replies.
-#         """
+        Args:
+            on_connect (Callable[[], AsyncIterable[Optional[T]]]): An asynchronous
+                iterable of messages to be sent once a client connects.
+            handler (Callable[[T], Awaitable[AsyncIterable[Optional[T]]]]): An
+                asynchronous method used to handle received messages, returning an
+                asynchronous iterable of replies.
+        """
