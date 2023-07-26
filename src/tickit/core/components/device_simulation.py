@@ -5,7 +5,7 @@ from typing import Awaitable, Callable, Dict, Hashable, List, Mapping, Type, cas
 
 from immutables import Map
 
-from tickit.core.adapter import Adapter
+from tickit.core.adapter import AdapterContainer
 from tickit.core.components.component import BaseComponent
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.state_interfaces import StateConsumer, StateProducer
@@ -28,7 +28,7 @@ class DeviceSimulation(BaseComponent):
 
     name: ComponentID
     device: Device
-    adapters: List[Adapter] = field(default_factory=list)
+    adapters: List[AdapterContainer] = field(default_factory=list)
     last_outputs: State = field(init=False, default_factory=lambda: State({}))
     device_inputs: Dict[str, Hashable] = field(init=False, default_factory=dict)
     _tasks: List[asyncio.Task] = field(default_factory=list)
@@ -38,7 +38,7 @@ class DeviceSimulation(BaseComponent):
     ) -> None:
         """Set up state interfaces, run adapters and blocks until any complete."""
         self._tasks = [
-            asyncio.create_task(adapter.run_forever(self.device, self.raise_interrupt))
+            asyncio.create_task(adapter.run_forever(self.raise_interrupt))
             for adapter in self.adapters
         ]
 

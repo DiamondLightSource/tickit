@@ -1,8 +1,9 @@
 import pydantic.v1.dataclasses
 from aiohttp import web
 
-from tickit.adapters.httpadapter import HttpAdapter
+from tickit.adapters.httpadapter import HttpAdapter, HttpIo
 from tickit.adapters.interpreters.endpoints.http_endpoint import HttpEndpoint
+from tickit.core.adapter import AdapterContainer
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.devices.iobox import IoBoxDevice
@@ -11,7 +12,10 @@ from tickit.devices.iobox import IoBoxDevice
 class IoBoxHttpAdapter(HttpAdapter):
     """An adapter for an IoBox that allows reads and writes via REST calls"""
 
-    device: IoBoxDevice
+    io_box: IoBoxDevice
+
+    def __init__(self, io_box: IoBoxDevice) -> None:
+        self.io_box = io_box
 
     @HttpEndpoint.put("/memory/{address}", interrupt=True)
     async def write_to_address(self, request: web.Request) -> web.Response:
@@ -25,7 +29,7 @@ class IoBoxHttpAdapter(HttpAdapter):
         """
         address = request.match_info["address"]
         new_value = (await request.json())["value"]
-        self.device.write(address, new_value)
+        self.io_box.write(address, new_value)
         return web.json_response({address: new_value})
 
     @HttpEndpoint.get("/memory/{address}")
@@ -39,20 +43,30 @@ class IoBoxHttpAdapter(HttpAdapter):
             web.Response: [description]
         """
         address = request.match_info["address"]
-        value = self.device.read(address)
+        value = self.io_box.read(address)
         return web.json_response({address: value})
 
 
 @pydantic.v1.dataclasses.dataclass
-class ExampleHTTPDevice(ComponentConfig):
+class ExampleHttpDevice(ComponentConfig):
     """Example HTTP device."""
 
     host: str = "localhost"
     port: int = 8080
 
     def __call__(self) -> Component:  # noqa: D102
+        device = IoBoxDevice()
+        adapters = [
+            AdapterContainer(
+                IoBoxHttpAdapter(device),
+                HttpIo(
+                    self.host,
+                    self.port,
+                ),
+            )
+        ]
         return DeviceSimulation(
             name=self.name,
-            device=IoBoxDevice(),
-            adapters=[IoBoxHttpAdapter(self.host, self.port)],
+            device=device,
+            adapters=adapters,
         )

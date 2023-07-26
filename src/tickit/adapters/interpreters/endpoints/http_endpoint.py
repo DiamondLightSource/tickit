@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import AnyStr, Awaitable, Callable, Generic
+from typing import AnyStr, Awaitable, Callable, Generic, Optional
 
 from aiohttp import web
 from aiohttp.web_response import StreamResponse
@@ -26,6 +26,7 @@ class HttpEndpoint(Generic[AnyStr]):
     path: str
     method: str
     interrupt: bool = False
+    func: Optional[Callable[[web.Request], web.Response]] = None
 
     def __call__(self, func: Callable) -> Callable:
         """Decorate a function for HTTP routing.
