@@ -1,8 +1,9 @@
 import pydantic.v1.dataclasses
 from typing_extensions import TypedDict
 
+from tickit.adapters.interpreters.command.command_interpreter import CommandInterpreter
 from tickit.adapters.interpreters.command.regex_command import RegexCommand
-from tickit.adapters.tcpadapter import TcpAdapter, TcpIo
+from tickit.adapters.io.tcp_io import TcpIo
 from tickit.core.adapter import AdapterContainer
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
@@ -48,7 +49,7 @@ class AmplifierDevice(Device):
         return DeviceUpdate(self.Outputs(amplified_signal=amplified_value), None)
 
 
-class AmplifierAdapter(TcpAdapter):
+class AmplifierAdapter(CommandInterpreter):
     """A composed adapter which gets and sets the value of amplification."""
 
     device: AmplifierDevice
