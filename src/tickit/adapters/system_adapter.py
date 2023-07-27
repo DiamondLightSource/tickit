@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from typing import Dict, List, Union
 
 import pydantic.v1.dataclasses
