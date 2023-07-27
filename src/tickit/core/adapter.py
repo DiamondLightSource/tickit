@@ -1,14 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import (
-    Any,
-    AsyncIterable,
-    Awaitable,
-    Callable,
-    Generic,
-    Optional,
-    Tuple,
-    TypeVar,
-)
+from typing import AsyncIterable, Generic, Tuple, TypeVar
 
 from typing_extensions import Protocol
 
@@ -76,23 +67,4 @@ class Interpreter(ABC, Generic[T]):
         Returns:
             Tuple[AsyncIterable[T], bool]: A tuple containing both an asynchronous
                 iterable of reply messages and an interrupt flag.
-        """
-
-
-class Server(Generic[T]):
-    """An interface for types which implement an external messaging protocol."""
-
-    async def run_forever(
-        self,
-        on_connect: Callable[[], AsyncIterable[Optional[T]]],
-        handler: Callable[[T], Awaitable[AsyncIterable[Optional[T]]]],
-    ) -> None:
-        """An asynchronous method allowing indefinite running of core server logic.
-
-        Args:
-            on_connect (Callable[[], AsyncIterable[Optional[T]]]): An asynchronous
-                iterable of messages to be sent once a client connects.
-            handler (Callable[[T], Awaitable[AsyncIterable[Optional[T]]]]): An
-                asynchronous method used to handle received messages, returning an
-                asynchronous iterable of replies.
         """
