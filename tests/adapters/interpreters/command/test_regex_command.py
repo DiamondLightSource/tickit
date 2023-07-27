@@ -45,6 +45,8 @@ def test_regex_command_parse_unmatched_returns_none(
         ),
         (b"\\x01", False, None, b"\x01", tuple()),
         (b"\\x01(.)", False, None, b"\x01\x02", (b"\x02",)),
+        (r"Test\((\d)\)", False, "utf-8", "Test(4)\n".encode("utf-8"), ("4",)),
+        (r"Test\((\d)\)", False, "utf-8", "Test(3)\r\n".encode("utf-8"), ("3",)),
     ],
 )
 def test_regex_command_parse_match_returns_args(

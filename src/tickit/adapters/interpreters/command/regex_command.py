@@ -35,7 +35,7 @@ class RegexCommand(Generic[AnyStr]):
                 raise ValueError(
                     "If regex is a string, format is required to decode input"
                 )
-            self.convert = lambda b: b.decode(format)  # type: ignore
+            self.convert = lambda b: b.decode(format).strip()  # type: ignore
         else:
             self.convert = lambda b: b  # type: ignore
 
