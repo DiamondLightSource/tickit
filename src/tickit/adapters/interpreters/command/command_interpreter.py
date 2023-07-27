@@ -43,16 +43,43 @@ class Command(Protocol):
 
 
 class CommandInterpreter(Interpreter[AnyStr]):
-    """An interpreter which routes to commands registered to adapter methods.
+    """TcpAdapter: But actually this is the interpereter.
+
+    An interpreter which routes to commands registered to adapter methods.
 
     An interpreter which attempts to parse messages according to the parse method of
     commands registered against adapter methods, if a match is found the method is
     called with the parsed arguments.
     """
 
-    async def handle(
-        self, adapter: Adapter, message: AnyStr
-    ) -> Tuple[AsyncIterator[AnyStr], bool]:
+    _byte_format: ByteFormat = ByteFormat(b"%b")
+
+    @property
+    def byte_format(self) -> ByteFormat:
+        return self._byte_format
+
+    def after_update(self) -> None:
+        ...
+
+    async def handle_message(
+        self,
+        message: AnyStr,
+        raise_interrupt: RaiseInterrupt,
+    ) -> AsyncIterable[Optional[AnyStr]]:
+        """Delegates message handling to the interpreter, raises interrupt if requested.
+
+        Args:
+            message (T): The message from the server to be handled.
+
+        Returns:
+            AsyncIterable[Optional[T]]: An asynchronous iterable of reply messages.
+        """
+        reply, interrupt = await self.handle(message)
+        if interrupt:
+            await raise_interrupt()
+        return reply
+
+    async def handle(self, message: AnyStr) -> Tuple[AsyncIterator[AnyStr], bool]:
         """Matches the message to an adapter command and calls the corresponding method.
 
         An asynchronous method which handles a message by attempting to match the
@@ -70,7 +97,7 @@ class CommandInterpreter(Interpreter[AnyStr]):
                 A tuple of the asynchronous iterator of reply messages and a flag
                 indicating whether an interrupt should be raised by the adapter.
         """
-        for _, method in getmembers(adapter):
+        for _, method in getmembers(self):
             command = getattr(method, "__command__", None)
             if command is None:
                 continue
@@ -95,3 +122,12 @@ class CommandInterpreter(Interpreter[AnyStr]):
         else:
             resp = wrap_as_async_iterator(msg)
             return resp, False
+
+    async def on_connect(self) -> AsyncIterable[Optional[AnyStr]]:
+        """Overridable asynchronous iterable which yields messages on client connection.
+
+        Returns:
+            AsyncIterable[Optional[T]]: An asynchronous iterable of messages.
+        """
+        if False:
+            yield None
