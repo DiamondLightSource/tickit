@@ -5,14 +5,16 @@ from typing import Awaitable, Callable, Iterable, Optional, Tuple
 from aiohttp import web
 from aiohttp.web_routedef import RouteDef
 
+from tickit.adapters.interpreters.endpoints.endpoint_interpreter import (
+    HttpEndpointInterpreter,
+)
 from tickit.adapters.interpreters.endpoints.http_endpoint import HttpEndpoint
-from tickit.adapters.interpreters.endpoints.http_interpreter import HttpInterpreter
 from tickit.core.adapter import AdapterIo, RaiseInterrupt
 
 LOGGER = logging.getLogger(__name__)
 
 
-class HttpIo(AdapterIo[HttpInterpreter]):
+class HttpIo(AdapterIo[HttpEndpointInterpreter]):
     host: str
     port: int
 
@@ -30,7 +32,7 @@ class HttpIo(AdapterIo[HttpInterpreter]):
         self._ready = None
 
     async def setup(
-        self, adapter: HttpInterpreter, raise_interrupt: RaiseInterrupt
+        self, adapter: HttpEndpointInterpreter, raise_interrupt: RaiseInterrupt
     ) -> None:
         self._ensure_stopped_event().clear()
         endpoints = adapter.get_endpoints()
