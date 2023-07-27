@@ -5,6 +5,7 @@ from typing import Dict, List, Optional, Type
 
 import pydantic.v1.dataclasses
 
+from tickit.adapters.system_adapter import BaseSystemSimulationAdapter
 from tickit.core.adapter import AdapterContainer
 from tickit.core.components.component import BaseComponent, Component, ComponentConfig
 from tickit.core.management.event_router import InverseWiring
@@ -34,7 +35,7 @@ class SystemSimulationComponent(BaseComponent):
     #: corresponding output of an internal component.
     expose: Dict[PortID, ComponentPort]
 
-    adapter: Optional[AdapterContainer] = None
+    adapter: Optional[AdapterContainer[BaseSystemSimulationAdapter]] = None
 
     _tasks: List[asyncio.Task] = field(default_factory=list)
 
@@ -63,8 +64,7 @@ class SystemSimulationComponent(BaseComponent):
         ] + [asyncio.create_task(self.scheduler.run_forever())]
 
         if self.adapter:
-            self.adapter.adapter._components = components
-            self.adapter.adapter._wiring = self.scheduler._wiring
+            self.adapter.adapter.setup_adapter(components, self.scheduler._wiring)
             self._tasks.append(
                 asyncio.create_task(self.adapter.run_forever(self.raise_interrupt))
             )

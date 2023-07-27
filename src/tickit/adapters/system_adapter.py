@@ -1,34 +1,42 @@
-from typing import Dict, List, Union
-
-import pydantic.v1.dataclasses
+from typing import Dict, Union
 
 from tickit.adapters.interpreters.command.command_interpreter import CommandInterpreter
 from tickit.adapters.interpreters.command.regex_command import RegexCommand
-from tickit.adapters.io.tcp_io import TcpIo
-from tickit.core.adapter import AdapterContainer
-from tickit.core.components.component import BaseComponent, Component, ComponentConfig
+from tickit.core.components.component import BaseComponent, Component
 from tickit.core.components.device_simulation import DeviceSimulation
-from tickit.core.components.system_simulation import SystemSimulationComponent
 from tickit.core.management.event_router import InverseWiring, Wiring
-from tickit.core.typedefs import ComponentID, ComponentPort, PortID
+from tickit.core.typedefs import ComponentID
 from tickit.utils.byte_format import ByteFormat
 
 
-class SystemSimulationAdapter(CommandInterpreter):
-    """Network adapter for a generic system simulation.
+class BaseSystemSimulationAdapter:
+    """A common base adapter for system simulation adapters.
 
-    Can be used to query the system simulation component for a list of the
-    ComponentID's for the components in the system and given a specific ID, the details
-    of that component.
+    They should be able to use any interpreter available.
     """
 
     _components: Dict[ComponentID, Component]
     _wiring: Union[Wiring, InverseWiring]
 
-    _byte_format: ByteFormat = ByteFormat(b"%b\r\n")
+    def setup_adapter(
+        self,
+        components: Dict[ComponentID, Component],
+        wiring: Union[Wiring, InverseWiring],
+    ) -> None:
+        self._components = components
+        self._wiring = wiring
 
-    def __init__(self) -> None:
-        super().__init__()
+
+class SystemSimulationAdapter(BaseSystemSimulationAdapter, CommandInterpreter):
+    """Network adapter for a generic system simulation.
+
+    Network adapter for a generic system simulation using a command interpreter. This
+    Can be used to query the system simulation component for a list of the
+    ComponentID's for the components in the system and given a specific ID, the details
+    of that component.
+    """
+
+    _byte_format: ByteFormat = ByteFormat(b"%b\r\n")
 
     @RegexCommand(r"ids", False, "utf-8")
     async def get_component_ids(self) -> bytes:
@@ -69,24 +77,3 @@ class SystemSimulationAdapter(CommandInterpreter):
             return str("ComponentID not recognised, No interupt raised.").encode(
                 "utf-8"
             )
-
-
-@pydantic.v1.dataclasses.dataclass
-class SystemSimulationWithAdapter(ComponentConfig):
-    """Simulation of a nested set of components with a composed adapter."""
-
-    name: ComponentID
-    inputs: Dict[PortID, ComponentPort]
-    components: List[ComponentConfig]
-    expose: Dict[PortID, ComponentPort]
-
-    def __call__(self) -> Component:  # noqa: D102
-        return SystemSimulationComponent(
-            name=self.name,
-            components=self.components,
-            expose=self.expose,
-            adapter=AdapterContainer(
-                SystemSimulationAdapter(),
-                TcpIo(host="localhost", port=25560),
-            ),
-        )
