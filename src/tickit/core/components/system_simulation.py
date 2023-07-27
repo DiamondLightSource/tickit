@@ -1,10 +1,11 @@
 import asyncio
 import logging
 from dataclasses import dataclass, field
-from typing import Dict, List, Type
+from typing import Dict, List, Optional, Type
 
 import pydantic.v1.dataclasses
 
+from tickit.core.adapter import AdapterContainer
 from tickit.core.components.component import BaseComponent, Component, ComponentConfig
 from tickit.core.management.event_router import InverseWiring
 from tickit.core.management.schedulers.slave import SlaveScheduler
@@ -33,6 +34,8 @@ class SystemSimulationComponent(BaseComponent):
     #: corresponding output of an internal component.
     expose: Dict[PortID, ComponentPort]
 
+    adapter: Optional[AdapterContainer] = None
+
     _tasks: List[asyncio.Task] = field(default_factory=list)
 
     async def run_forever(
@@ -52,11 +55,22 @@ class SystemSimulationComponent(BaseComponent):
             self.expose,
             self.raise_interrupt,
         )
+        components = {config.name: config() for config in self.components}
+
         self._tasks = [
-            asyncio.create_task(component().run_forever(state_consumer, state_producer))
-            for component in self.components
+            asyncio.create_task(component.run_forever(state_consumer, state_producer))
+            for component in components.values()
         ] + [asyncio.create_task(self.scheduler.run_forever())]
+
+        if self.adapter:
+            self.adapter.adapter._components = components
+            self.adapter.adapter._wiring = self.scheduler._wiring
+            self._tasks.append(
+                asyncio.create_task(self.adapter.run_forever(self.raise_interrupt))
+            )
+
         await super().run_forever(state_consumer, state_producer)
+
         if self._tasks:
             await asyncio.wait(self._tasks)
 
