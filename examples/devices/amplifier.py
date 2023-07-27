@@ -1,10 +1,9 @@
 import pydantic.v1.dataclasses
 from typing_extensions import TypedDict
 
-from tickit.adapters.composed import ComposedAdapter
-from tickit.adapters.interpreters.command.command_interpreter import CommandInterpreter
 from tickit.adapters.interpreters.command.regex_command import RegexCommand
-from tickit.adapters.servers.tcp import TcpServer
+from tickit.adapters.tcpadapter import TcpAdapter, TcpIo
+from tickit.core.adapter import AdapterContainer
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
@@ -49,28 +48,15 @@ class AmplifierDevice(Device):
         return DeviceUpdate(self.Outputs(amplified_signal=amplified_value), None)
 
 
-class AmplifierAdapter(ComposedAdapter):
+class AmplifierAdapter(TcpAdapter):
     """A composed adapter which gets and sets the value of amplification."""
 
     device: AmplifierDevice
+    _byte_format: ByteFormat = ByteFormat(b"%b\r\n")
 
-    def __init__(
-        self,
-        host: str = "localhost",
-        port: int = 25565,
-    ) -> None:
-        """Instantiate a composed amplifier adapter with a configured TCP server.
-
-        Args:
-            host (Optional[str]): The host address of the TcpServer. Defaults to
-                "localhost".
-            port (Optional[int]): The bound port of the TcpServer. Defaults to 25565.
-
-        """
-        super().__init__(
-            TcpServer(host, port, ByteFormat(b"%b\r\n")),
-            CommandInterpreter(),
-        )
+    def __init__(self, device: AmplifierDevice) -> None:
+        super().__init__()
+        self.device = device
 
     @RegexCommand(r"A\?", False, "utf-8")
     async def get_amplification(self) -> bytes:
@@ -96,12 +82,24 @@ class Amplifier(ComponentConfig):
     """Amplifier you can set the amplification value of over TCP."""
 
     initial_amplification: int
+    host: str = "localhost"
+    port: int = 25565
 
     def __call__(self) -> Component:  # noqa: D102
+        device = AmplifierDevice(
+            initial_amplification=self.initial_amplification,
+        )
+        adapters = [
+            AdapterContainer(
+                AmplifierAdapter(device),
+                TcpIo(
+                    self.host,
+                    self.port,
+                ),
+            )
+        ]
         return DeviceSimulation(
             name=self.name,
-            device=AmplifierDevice(
-                initial_amplification=self.initial_amplification,
-            ),
-            adapters=[AmplifierAdapter()],
+            device=device,
+            adapters=adapters,
         )

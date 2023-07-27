@@ -67,7 +67,7 @@ class DeviceSimulation(BaseComponent):
             SimTime(time), self.device_inputs
         )
         for adapter in self.adapters:
-            adapter.after_update()
+            adapter.adapter.after_update()
         out_changes = Changes(
             Map(
                 {

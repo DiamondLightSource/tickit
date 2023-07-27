@@ -2,6 +2,7 @@ from abc import abstractmethod
 from inspect import getmembers
 from typing import (
     AnyStr,
+    AsyncIterable,
     AsyncIterator,
     Optional,
     Protocol,
@@ -12,7 +13,8 @@ from typing import (
 )
 
 from tickit.adapters.interpreters.utils import wrap_as_async_iterator
-from tickit.core.adapter import Adapter, Interpreter
+from tickit.core.adapter import Interpreter, RaiseInterrupt
+from tickit.utils.byte_format import ByteFormat
 
 
 @runtime_checkable

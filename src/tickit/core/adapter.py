@@ -12,8 +12,6 @@ from typing import (
 
 from typing_extensions import Protocol
 
-from tickit.core.device import Device
-
 #: Message type
 T = TypeVar("T")
 
@@ -38,7 +36,7 @@ class AdapterIo(ABC, Generic[A]):
 
 
 class AdapterContainer(Generic[A]):
-    """This Is a container for an object specific interface and the required functional io."""
+    """A container for an object specific interface and the required functional io."""
 
     adapter: A
     io: AdapterIo
@@ -56,9 +54,6 @@ class AdapterContainer(Generic[A]):
         """
 
         await self.io.setup(self.adapter, raise_interrupt)
-
-    def after_update(self) -> None:
-        self.adapter.after_update()
 
 
 class Interpreter(ABC, Generic[T]):
