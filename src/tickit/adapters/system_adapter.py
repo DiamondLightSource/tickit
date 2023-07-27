@@ -7,7 +7,7 @@ from tickit.adapters.interpreters.command.command_interpreter import CommandInte
 from tickit.adapters.interpreters.command.regex_command import RegexCommand
 from tickit.adapters.io.tcp_io import TcpIo
 from tickit.core.adapter import AdapterContainer
-from tickit.core.components.component import Component, ComponentConfig
+from tickit.core.components.component import BaseComponent, Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.components.system_simulation import SystemSimulationComponent
 from tickit.core.management.event_router import InverseWiring, Wiring
@@ -32,12 +32,12 @@ class SystemSimulationAdapter(CommandInterpreter):
         super().__init__()
 
     @RegexCommand(r"ids", False, "utf-8")
-    async def get_cpt_ids(self) -> bytes:
+    async def get_component_ids(self) -> bytes:
         """Returns a list of ids for all the components in the system simulation."""
         return str(self._components.keys()).encode("utf-8")
 
     @RegexCommand(r"id=(\w+)", False, "utf-8")
-    async def get_cpt_info(self, id: str) -> bytes:
+    async def get_component_info(self, id: str) -> bytes:
         """Returns the component info of the given id."""
         component = self._components.get(ComponentID(id), "ComponentID not recognised.")
 
@@ -57,6 +57,19 @@ class SystemSimulationAdapter(CommandInterpreter):
     async def get_wiring(self) -> bytes:
         """Returns the wiring object used by the nested scheduler."""
         return str(self._wiring).encode("utf-8")
+
+    @RegexCommand(r"interrupt=(\w+)", False, "utf-8")
+    async def raise_component_interrupt(self, id: str) -> bytes:
+        """Returns the component info of the given id."""
+        component = self._components.get(ComponentID(id), None)
+
+        if isinstance(component, BaseComponent):
+            await component.raise_interrupt()
+            return str(f"Raised Interupt in {component.name}").encode("utf-8")
+        else:
+            return str("ComponentID not recognised, No interupt raised.").encode(
+                "utf-8"
+            )
 
 
 @pydantic.v1.dataclasses.dataclass
