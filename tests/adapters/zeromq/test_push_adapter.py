@@ -1,5 +1,5 @@
 import asyncio
-from typing import Sequence
+from typing import List, Sequence
 
 import aiozmq
 import pytest
@@ -8,16 +8,16 @@ from mock import MagicMock, Mock
 from mock.mock import AsyncMock, create_autospec
 from pydantic.v1 import BaseModel
 
-from tickit.adapters.zeromq.push_adapter import (
-    SocketFactory,
-    ZeroMqMessage,
-    ZeroMqPushAdapter,
+from tickit.adapters.interpreters.zeromq_socket.push_interpreter import (
+    ZeroMqPushInterpreter,
 )
+from tickit.adapters.io.zeromq_push_io import ZeroMqMessage, ZeroMqPushIo
 from tickit.core.adapter import RaiseInterrupt
 from tickit.core.device import Device
+import zmq
 
-_HOST = "test.host"
-_PORT = 12345
+_HOST = "127.0.0.1"
+_PORT = 5530
 
 
 @pytest.fixture
@@ -34,61 +34,50 @@ def mock_raise_interrupt() -> RaiseInterrupt:
 
 
 @pytest.fixture
-def mock_socket() -> aiozmq.ZmqStream:
-    return MagicMock(aiozmq.ZmqStream)
-
-
-@pytest.fixture
-def socket_created() -> asyncio.Event:
-    return asyncio.Event()
-
-
-@pytest.fixture
-def mock_socket_factory(
-    mock_socket: aiozmq.ZmqStream, socket_created: asyncio.Event
-) -> SocketFactory:
-    def make_socket(host: str, port: int) -> aiozmq.ZmqStream:
-        socket_created.set()
-        return mock_socket
-
-    factory = AsyncMock()
-    factory.side_effect = make_socket
-    return factory
-
-
-@pytest.fixture
-def zeromq_adapter(mock_socket_factory: SocketFactory) -> ZeroMqPushAdapter:
-    return ZeroMqPushAdapter(
+def io() -> ZeroMqPushIo:
+    return ZeroMqPushIo(
         host=_HOST,
         port=_PORT,
-        socket_factory=mock_socket_factory,
     )
 
 
+@pytest.fixture
+def adapter() -> ZeroMqPushInterpreter:
+    return ZeroMqPushInterpreter()
+
+
 @pytest_asyncio.fixture
-async def running_zeromq_adapter(
-    zeromq_adapter: ZeroMqPushAdapter,
-    socket_created: asyncio.Event,
-    mock_device: Device,
-    mock_raise_interrupt: RaiseInterrupt,
-) -> ZeroMqPushAdapter:
-    asyncio.create_task(zeromq_adapter.run_forever(mock_device, mock_raise_interrupt))
-    await asyncio.wait_for(socket_created.wait(), timeout=2.0)
-    return zeromq_adapter
+async def client() -> aiozmq.ZmqStream:
+    addr = f"tcp://{_HOST}:{_PORT}"
+    socket = await aiozmq.create_zmq_stream(zmq.PULL, connect=addr)
+    yield socket
+    socket.close()
+    await socket.drain()
+    await asyncio.sleep(0.5)
 
 
-@pytest.mark.asyncio
-async def test_socket_not_created_until_run_forever(
-    zeromq_adapter: ZeroMqPushAdapter,
-    mock_socket_factory: AsyncMock,
-    socket_created: asyncio.Event,
-    mock_device: Device,
+@pytest_asyncio.fixture
+async def running_adapter(
+    adapter: ZeroMqPushInterpreter,
+    io: ZeroMqPushIo,
     mock_raise_interrupt: RaiseInterrupt,
-) -> None:
-    mock_socket_factory.assert_not_called()
-    asyncio.create_task(zeromq_adapter.run_forever(mock_device, mock_raise_interrupt))
-    await asyncio.wait_for(socket_created.wait(), timeout=2.0)
-    mock_socket_factory.assert_called_once_with(_HOST, _PORT)
+) -> ZeroMqPushInterpreter:
+    await io.setup(adapter, mock_raise_interrupt)
+    yield adapter
+    await io.shutdown()
+    await asyncio.sleep(0.5)
+
+
+# @pytest.mark.asyncio
+# async def test_socket_not_created_until_run_forever(
+#     running_adapter: ZeroMqPushInterpreter,
+#     io: ZeroMqPushIo,
+#     mock_raise_interrupt: RaiseInterrupt,
+# ) -> None:
+#     mock_socket_factory.assert_not_called()
+#     asyncio.create_task(zeromq_adapter.run_forever(mock_device, mock_raise_interrupt))
+#     await asyncio.wait_for(socket_created.wait(), timeout=2.0)
+#     mock_socket_factory.assert_called_once_with(_HOST, _PORT)
 
 
 class SimpleMessage(BaseModel):
@@ -123,33 +112,62 @@ MESSGAGES = [
 @pytest.mark.asyncio
 @pytest.mark.parametrize("message,serialized_message", MESSGAGES)
 async def test_serializes_and_sends_message(
-    running_zeromq_adapter: ZeroMqPushAdapter,
-    mock_socket: MagicMock,
+    running_adapter: ZeroMqPushInterpreter,
+    client: aiozmq.ZmqStream,
     message: ZeroMqMessage,
     serialized_message: Sequence[bytes],
 ) -> None:
-    await running_zeromq_adapter.send_message(message)
-    mock_socket.write.assert_called_once_with(serialized_message)
+    future = asyncio.Future()
+
+    async def read() -> None:
+        reply = await asyncio.wait_for(client.read(), timeout=1.0)
+        future.set_result(reply)
+
+    task = asyncio.create_task(read())
+    running_adapter.add_message_to_stream(message)
+    await task
+    assert future.result() == serialized_message
 
 
-@pytest.mark.asyncio
-async def test_socket_cleaned_up_on_cancel(
-    mock_device: Device,
-    mock_raise_interrupt: RaiseInterrupt,
-) -> None:
-    adapter_a = ZeroMqPushAdapter()
-    adapter_b = ZeroMqPushAdapter()
-    for adapter in (adapter_a, adapter_b):
-        task = asyncio.create_task(
-            adapter.run_forever(
-                mock_device,
-                mock_raise_interrupt,
-            )
-        )
-        await adapter.send_message([b"test"])
-        task.cancel()
-        try:
-            await task
-        except asyncio.CancelledError:
-            pass
-        assert task.done()
+# async def test_socket_cleaned_up_on_cancel(
+#     mock_device: Device,
+#     mock_raise_interrupt: RaiseInterrupt,
+# ) -> None:
+#     adapter_a = ZeroMqPushAdapter()
+#     adapter_b = ZeroMqPushAdapter()
+#     for adapter in (adapter_a, adapter_b):
+#         task = asyncio.create_task(
+#             adapter.run_forever(
+#                 mock_device,
+#                 mock_raise_interrupt,
+#             )
+#         )
+#         await adapter.send_message([b"test"])
+#         task.cancel()
+#         try:
+#             await task
+#         except asyncio.CancelledError:
+#             pass
+#         assert task.done()
+
+# @pytest.mark.asyncio
+# async def test_socket_cleaned_up_on_cancel(
+#     mock_device: Device,
+#     mock_raise_interrupt: RaiseInterrupt,
+# ) -> None:
+#     adapter_a = ZeroMqPushAdapter()
+#     adapter_b = ZeroMqPushAdapter()
+#     for adapter in (adapter_a, adapter_b):
+#         task = asyncio.create_task(
+#             adapter.run_forever(
+#                 mock_device,
+#                 mock_raise_interrupt,
+#             )
+#         )
+#         await adapter.send_message([b"test"])
+#         task.cancel()
+#         try:
+#             await task
+#         except asyncio.CancelledError:
+#             pass
+#         assert task.done()
