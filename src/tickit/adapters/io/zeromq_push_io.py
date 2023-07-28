@@ -16,8 +16,10 @@ import aiozmq
 import zmq
 from pydantic.v1 import BaseModel
 
-from tickit.core.adapter import Adapter, RaiseInterrupt
-from tickit.core.device import Device
+from tickit.adapters.interpreters.zeromq_socket.push_interpreter import (
+    ZeroMqPushInterpreter,
+)
+from tickit.core.adapter import AdapterIo, RaiseInterrupt
 
 LOGGER = logging.getLogger(__name__)
 
@@ -46,8 +48,8 @@ async def create_zmq_push_socket(host: str, port: int) -> aiozmq.ZmqStream:
     return await aiozmq.create_zmq_stream(zmq.PUSH, connect=addr, bind=addr)
 
 
-class ZeroMqPushAdapter(Adapter):
-    """An adapter for a ZeroMQ data stream."""
+class ZeroMqPushIo(AdapterIo[ZeroMqPushInterpreter]):
+    """Io for a ZeroMQ data stream."""
 
     _host: str
     _port: int
@@ -69,20 +71,24 @@ class ZeroMqPushAdapter(Adapter):
         self._socket_factory = socket_factory
         self._socket_lock = asyncio.Lock()
 
-    async def run_forever(
-        self,
-        device: Device,
-        raise_interrupt: RaiseInterrupt,
+    async def setup(
+        self, adapter: ZeroMqPushInterpreter, raise_interrupt: RaiseInterrupt
     ) -> None:
-        """Runs the ZeroMQ adapter continuously."""
-        await super().run_forever(device, raise_interrupt)
-
         try:
             await self._ensure_socket()
+            asyncio.create_task(self.send_messages_forever(adapter))
         except asyncio.CancelledError:
-            if self._socket is not None:
-                self._socket.close()
-                await self._socket.drain()
+            await self.shutdown()
+
+    async def shutdown(self) -> None:
+        if self._socket is not None:
+            self._socket.close()
+            await self._socket.drain()
+
+    async def send_messages_forever(self, adapter: ZeroMqPushInterpreter) -> None:
+        while True:
+            message = await adapter.next_message()
+            await self.send_message(message)
 
     def send_message_sequence_soon(
         self,
