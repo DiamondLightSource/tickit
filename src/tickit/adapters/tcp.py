@@ -42,7 +42,7 @@ class Command(Protocol):
         pass
 
 
-class CommandInterpreter(Interpreter[AnyStr]):
+class CommandAdapter(Interpreter[AnyStr]):
     """TcpAdapter: But actually this is the interpereter.
 
     An interpreter which routes to commands registered to adapter methods.
