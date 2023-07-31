@@ -1,9 +1,12 @@
 import pydantic.v1.dataclasses
+from softioc import builder
 from typing_extensions import TypedDict
 
-from tickit.adapters.interpreters.command.command_interpreter import CommandInterpreter
-from tickit.adapters.interpreters.command.regex_command import RegexCommand
+from tickit.adapters.epics import EpicsAdapter
+from tickit.adapters.io.epics_io import EpicsIo
 from tickit.adapters.io.tcp_io import TcpIo
+from tickit.adapters.specs.regex_command import RegexCommand
+from tickit.adapters.tcp import CommandAdapter
 from tickit.core.adapter import AdapterContainer
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
@@ -48,9 +51,15 @@ class AmplifierDevice(Device):
         amplified_value = inputs["initial_signal"] * self.amplification
         return DeviceUpdate(self.Outputs(amplified_signal=amplified_value), None)
 
+    def set_amplification(self, value: float) -> None:
+        self.amplification = value
 
-class AmplifierAdapter(CommandInterpreter):
-    """A composed adapter which gets and sets the value of amplification."""
+    def get_amplification(self) -> float:
+        return self.amplification
+
+
+class AmplifierAdapter(CommandAdapter):
+    """A TCP adapter which gets and sets the value of amplification."""
 
     device: AmplifierDevice
     _byte_format: ByteFormat = ByteFormat(b"%b\r\n")
@@ -78,6 +87,36 @@ class AmplifierAdapter(CommandInterpreter):
         self.device.amplification = amplification
 
 
+class AmplifierEpicsAdapter(EpicsAdapter):
+    """A EPICS adapter which gets and sets the value of amplification."""
+
+    device: AmplifierDevice
+
+    def __init__(self, device: AmplifierDevice) -> None:
+        super().__init__()
+        self.device = device
+
+    async def callback(self, value) -> None:
+        """Device callback function.
+
+        Args:
+            value (float): The value to set the device to.
+        """
+        self.device.set_amplification(value)
+        await self.interrupt()
+
+    def on_db_load(self) -> None:
+        """Customises records that have been loaded in to suit the simulation."""
+        builder.aOut(
+            "VALUE",
+            initial_value=self.device.amplification,
+            on_update=self.callback,
+        )
+        self.link_input_on_interrupt(
+            builder.aIn("VALUE_RBV"), self.device.get_amplification
+        )
+
+
 @pydantic.v1.dataclasses.dataclass
 class Amplifier(ComponentConfig):
     """Amplifier you can set the amplification value of over TCP."""
@@ -97,7 +136,11 @@ class Amplifier(ComponentConfig):
                     self.host,
                     self.port,
                 ),
-            )
+            ),
+            AdapterContainer(
+                AmplifierEpicsAdapter(device),
+                EpicsIo("AMP_IOC"),
+            ),
         ]
         return DeviceSimulation(
             name=self.name,
