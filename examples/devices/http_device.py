@@ -1,18 +1,16 @@
 import pydantic.v1.dataclasses
 from aiohttp import web
 
-from tickit.adapters.interpreters.endpoints.endpoint_interpreter import (
-    HttpEndpointInterpreter,
-)
-from tickit.adapters.interpreters.endpoints.http_endpoint import HttpEndpoint
+from tickit.adapters.http import HttpAdapter
 from tickit.adapters.io.http_io import HttpIo
+from tickit.adapters.specs.http_endpoint import HttpEndpoint
 from tickit.core.adapter import AdapterContainer
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.devices.iobox import IoBoxDevice
 
 
-class IoBoxHttpAdapter(HttpEndpointInterpreter):
+class IoBoxHttpAdapter(HttpAdapter):
     """An adapter for an IoBox that allows reads and writes via REST calls"""
 
     io_box: IoBoxDevice
