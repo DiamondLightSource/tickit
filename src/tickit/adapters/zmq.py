@@ -17,7 +17,7 @@ ZeroMqMessage = Sequence[_SerializableMessagePart]
 # SocketFactory = Callable[[], Awaitable[aiozmq.ZmqStream]]
 
 
-class ZeroMqPushInterpreter:
+class ZeroMqPushAdapter:
     """Device interface for the Zmq push adapter."""
 
     _message_queue: Optional[asyncio.Queue]

@@ -16,9 +16,7 @@ import aiozmq
 import zmq
 from pydantic.v1 import BaseModel
 
-from tickit.adapters.interpreters.zeromq_socket.push_interpreter import (
-    ZeroMqPushInterpreter,
-)
+from tickit.adapters.zmq import ZeroMqPushAdapter
 from tickit.core.adapter import AdapterIo, RaiseInterrupt
 
 LOGGER = logging.getLogger(__name__)
@@ -48,7 +46,7 @@ async def create_zmq_push_socket(host: str, port: int) -> aiozmq.ZmqStream:
     return await aiozmq.create_zmq_stream(zmq.PUSH, connect=addr, bind=addr)
 
 
-class ZeroMqPushIo(AdapterIo[ZeroMqPushInterpreter]):
+class ZeroMqPushIo(AdapterIo[ZeroMqPushAdapter]):
     """Io for a ZeroMQ data stream."""
 
     _host: str
@@ -72,7 +70,7 @@ class ZeroMqPushIo(AdapterIo[ZeroMqPushInterpreter]):
         self._socket_lock = asyncio.Lock()
 
     async def setup(
-        self, adapter: ZeroMqPushInterpreter, raise_interrupt: RaiseInterrupt
+        self, adapter: ZeroMqPushAdapter, raise_interrupt: RaiseInterrupt
     ) -> None:
         try:
             await self._ensure_socket()
@@ -85,7 +83,7 @@ class ZeroMqPushIo(AdapterIo[ZeroMqPushInterpreter]):
             self._socket.close()
             await self._socket.drain()
 
-    async def send_messages_forever(self, adapter: ZeroMqPushInterpreter) -> None:
+    async def send_messages_forever(self, adapter: ZeroMqPushAdapter) -> None:
         while True:
             message = await adapter.next_message()
             await self.send_message(message)
