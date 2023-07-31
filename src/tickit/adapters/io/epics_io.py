@@ -5,18 +5,15 @@ from typing import Any, Callable, Dict, Optional
 
 from softioc import builder, softioc
 
+from tickit.adapters.epics import EpicsAdapter, InputRecord
 from tickit.adapters.epicsadapter.ioc_manager import (
     notify_adapter_ready,
     register_adapter,
 )
-from tickit.adapters.interpreters.epics.epics_interpreter import (
-    EpicsInterpreter,
-    InputRecord,
-)
 from tickit.core.adapter import AdapterIo, RaiseInterrupt
 
 
-class EpicsIo(AdapterIo[EpicsInterpreter]):
+class EpicsIo(AdapterIo[EpicsAdapter]):
     """Epics io."""
 
     interrupt_records: Dict[InputRecord, Callable[[], Any]] = {}
@@ -33,7 +30,7 @@ class EpicsIo(AdapterIo[EpicsInterpreter]):
         self.ioc_num = register_adapter()
 
     async def setup(
-        self, adapter: EpicsInterpreter, raise_interrupt: RaiseInterrupt
+        self, adapter: EpicsAdapter, raise_interrupt: RaiseInterrupt
     ) -> None:
         self.interrupt_records = adapter.interrupt_records
         adapter.interrupt = raise_interrupt
