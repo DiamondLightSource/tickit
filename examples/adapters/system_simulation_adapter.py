@@ -1,12 +1,15 @@
 from typing import Dict, Union
 
+from examples.devices.amplifier import AmplifierDevice
 from tickit.adapters.interpreters.command.command_interpreter import CommandInterpreter
-from tickit.adapters.interpreters.command.regex_command import RegexCommand
+from tickit.adapters.specs.regex_command import RegexCommand
 from tickit.core.components.component import BaseComponent, Component
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.management.event_router import InverseWiring, Wiring
 from tickit.core.typedefs import ComponentID
 from tickit.utils.byte_format import ByteFormat
+
+# this is an example.
 
 
 class BaseSystemSimulationAdapter:
@@ -73,6 +76,22 @@ class SystemSimulationAdapter(BaseSystemSimulationAdapter, CommandInterpreter):
         if isinstance(component, BaseComponent):
             await component.raise_interrupt()
             return str(f"Raised Interupt in {component.name}").encode("utf-8")
+        else:
+            return str("ComponentID not recognised, No interupt raised.").encode(
+                "utf-8"
+            )
+
+    @RegexCommand(r"ch=(\w+)", False, "utf-8")
+    async def change_amp(self, id: str) -> bytes:
+        """Returns the component info of the given id."""
+        component = self._components.get(ComponentID(id), None)
+
+        if isinstance(component, BaseComponent):
+            if isinstance(component, DeviceSimulation):
+                if isinstance(component.device, AmplifierDevice):
+                    component.device.amplification = 77
+                    await component.raise_interrupt()
+                    return str(f"Raised Interupt in {component.name}").encode("utf-8")
         else:
             return str("ComponentID not recognised, No interupt raised.").encode(
                 "utf-8"
