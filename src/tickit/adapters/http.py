@@ -1,10 +1,10 @@
 from inspect import getmembers
 from typing import Callable, Iterable, Tuple
 
-from tickit.adapters.interpreters.endpoints.http_endpoint import HttpEndpoint
+from tickit.adapters.specs.http_endpoint import HttpEndpoint
 
 
-class HttpEndpointInterpreter:
+class HttpAdapter:
     def get_endpoints(self) -> Iterable[Tuple[HttpEndpoint, Callable]]:
         """Returns list of endpoints.
 
