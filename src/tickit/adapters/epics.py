@@ -21,7 +21,7 @@ class OutputRecord:
     name: str
 
 
-class EpicsInterpreter:
+class EpicsAdapter:
     interrupt_records: Dict[InputRecord, Callable[[], Any]] = {}
     interrupt: RaiseInterrupt
 
