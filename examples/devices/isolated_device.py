@@ -3,11 +3,11 @@ from typing import TypedDict
 import pydantic.v1.dataclasses
 from softioc import builder
 
-from tickit.adapters.composed import ComposedAdapter
-from tickit.adapters.epicsadapter.adapter import EpicsAdapter
-from tickit.adapters.interpreters.command.command_interpreter import CommandInterpreter
-from tickit.adapters.interpreters.command.regex_command import RegexCommand
-from tickit.adapters.servers.tcp import TcpServer
+from tickit.adapters.epics import EpicsAdapter
+from tickit.adapters.io import EpicsIo, TcpIo
+from tickit.adapters.specs.regex_command import RegexCommand
+from tickit.adapters.tcp import CommandAdapter
+from tickit.core.adapter import AdapterContainer
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
@@ -57,28 +57,18 @@ class IsolatedBoxDevice(Device):
         self.value = value
 
 
-class IsolatedBoxTCPAdapter(ComposedAdapter):
+class IsolatedBoxTCPAdapter(CommandAdapter):
     """A composed adapter which allows getting and setting the value of the device."""
 
     device: IsolatedBoxDevice
+    _byte_format: ByteFormat = ByteFormat(b"%b\r\n")
 
     def __init__(
         self,
-        host: str = "localhost",
-        port: int = 25565,
+        device: IsolatedBoxDevice,
     ) -> None:
-        """Instantiate a composed adapter with a configured TCP server.
-
-        Args:
-            host (Optional[str]): The host address of the TcpServer. Defaults to
-                "localhost".
-            port (Optional[int]): The bound port of the TcpServer. Defaults to 25565.
-
-        """
-        super().__init__(
-            TcpServer(host, port, ByteFormat(b"%b\r\n")),
-            CommandInterpreter(),
-        )
+        super().__init__()
+        self.device = device
 
     @RegexCommand(r"v\?", False, "utf-8")
     async def get_value(self) -> bytes:
@@ -104,6 +94,10 @@ class IsolatedBoxEpicsAdapter(EpicsAdapter):
 
     device: IsolatedBoxDevice
 
+    def __init__(self, device: IsolatedBoxDevice) -> None:
+        super().__init__()
+        self.device = device
+
     async def callback(self, value) -> None:
         """Device callback function.
 
@@ -111,7 +105,7 @@ class IsolatedBoxEpicsAdapter(EpicsAdapter):
             value (float): The value to set the device to.
         """
         self.device.set_value(value)
-        await self.raise_interrupt()
+        await self.interrupt()
 
     def on_db_load(self) -> None:
         """Customises records that have been loaded in to suit the simulation."""
@@ -127,19 +121,26 @@ class IsolatedBox(ComponentConfig):
     port: int
     ioc_name: str
     host: str = "localhost"
-    db_file_path: str = "src/../examples/devices/isolated_record.db"
 
     def __call__(self) -> Component:  # noqa: D102
+        device = IsolatedBoxDevice(
+            initial_value=self.initial_value,
+        )
+        adapters = [
+            AdapterContainer(
+                IsolatedBoxTCPAdapter(device),
+                TcpIo(
+                    self.host,
+                    self.port,
+                ),
+            ),
+            AdapterContainer(
+                IsolatedBoxEpicsAdapter(device),
+                EpicsIo("ISOLATED_IOC"),
+            ),
+        ]
         return DeviceSimulation(
             name=self.name,
-            device=IsolatedBoxDevice(
-                initial_value=self.initial_value,
-            ),
-            adapters=[
-                IsolatedBoxTCPAdapter(host=self.host, port=self.port),
-                IsolatedBoxEpicsAdapter(
-                    db_file=self.db_file_path,
-                    ioc_name=self.ioc_name,
-                ),
-            ],
+            device=device,
+            adapters=adapters,
         )
