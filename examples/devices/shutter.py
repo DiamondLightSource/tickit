@@ -3,10 +3,10 @@ from typing import Optional, TypedDict
 
 import pydantic.v1.dataclasses
 
-from tickit.adapters.composed import ComposedAdapter
-from tickit.adapters.interpreters.command.command_interpreter import CommandInterpreter
-from tickit.adapters.interpreters.command.regex_command import RegexCommand
-from tickit.adapters.servers.tcp import TcpServer
+from tickit.adapters.io.tcp_io import TcpIo
+from tickit.adapters.specs.regex_command import RegexCommand
+from tickit.adapters.tcp import CommandAdapter
+from tickit.core.adapter import AdapterContainer
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
@@ -103,30 +103,16 @@ class ShutterDevice(Device):
         return DeviceUpdate(self.Outputs(flux=output_flux), call_at)
 
 
-class ShutterAdapter(ComposedAdapter):
+class ShutterAdapter(CommandAdapter):
     """A toy composed adapter which gets shutter position and target and sets target."""
 
     device: ShutterDevice
 
-    def __init__(
-        self,
-        host: str = "localhost",
-        port: int = 25565,
-    ) -> None:
-        """A Shutter which instantiates a TcpServer with configured host and port.
+    _byte_format: ByteFormat = ByteFormat(b"%b\r\n")
 
-        Args:
-            device (Device): The device which this adapter is attached to
-            raise_interrupt (Callable): A callback to request that the device is
-                updated immediately.
-            host (Optional[str]): The host address of the TcpServer. Defaults to
-                "localhost".
-            port (Optional[int]): The bound port of the TcpServer. Defaults to 25565.
-        """
-        super().__init__(
-            TcpServer(host, port, ByteFormat(b"%b\r\n")),
-            CommandInterpreter(),
-        )
+    def __init__(self, device: ShutterDevice) -> None:
+        super().__init__()
+        self.device = device
 
     @RegexCommand(r"P\?", False, "utf-8")
     async def get_position(self) -> bytes:
@@ -167,11 +153,21 @@ class Shutter(ComponentConfig):
     port: int = 25565
 
     def __call__(self) -> Component:  # noqa: D102
+        device = ShutterDevice(
+            default_position=self.default_position,
+            initial_position=self.initial_position,
+        )
+        adapters = [
+            AdapterContainer(
+                ShutterAdapter(device),
+                TcpIo(
+                    self.host,
+                    self.port,
+                ),
+            )
+        ]
         return DeviceSimulation(
             name=self.name,
-            device=ShutterDevice(
-                default_position=self.default_position,
-                initial_position=self.initial_position,
-            ),
-            adapters=[ShutterAdapter(host=self.host, port=self.port)],
+            device=device,
+            adapters=adapters,
         )
