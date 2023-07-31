@@ -5,8 +5,9 @@ from typing import Any, Callable, Dict, Optional
 
 from softioc import builder, softioc
 
-from tickit.adapters.epics import EpicsAdapter, InputRecord
-from tickit.adapters.epicsadapter.ioc_manager import (
+from tickit.adapters.epics import (
+    EpicsAdapter,
+    InputRecord,
     notify_adapter_ready,
     register_adapter,
 )
