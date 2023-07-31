@@ -1,9 +1,8 @@
 import asyncio
 from typing import Any, AsyncIterable, Iterable, Mapping, Optional, Sequence, Union
 
-from pydantic import BaseModel
 import zmq
-
+from pydantic import BaseModel
 
 _MessagePart = Union[bytes, zmq.Frame, memoryview]
 _SerializableMessagePart = Union[
