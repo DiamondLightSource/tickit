@@ -3,14 +3,14 @@ import logging
 from asyncio.streams import StreamReader, StreamWriter
 from typing import AsyncIterable, Awaitable, Callable, List, Optional
 
-from tickit.adapters.interpreters.command.command_interpreter import CommandInterpreter
+from tickit.adapters.tcp import CommandAdapter
 from tickit.core.adapter import AdapterIo, RaiseInterrupt
 from tickit.utils.byte_format import ByteFormat
 
 LOGGER = logging.getLogger(__name__)
 
 
-class TcpIo(AdapterIo[CommandInterpreter]):
+class TcpIo(AdapterIo[CommandAdapter]):
     host: str
     port: int
 
@@ -19,7 +19,7 @@ class TcpIo(AdapterIo[CommandInterpreter]):
         self.port = port
 
     async def setup(
-        self, adapter: CommandInterpreter, raise_interrupt: RaiseInterrupt
+        self, adapter: CommandAdapter, raise_interrupt: RaiseInterrupt
     ) -> None:
         handle = self._generate_handle_function(
             adapter.on_connect,
