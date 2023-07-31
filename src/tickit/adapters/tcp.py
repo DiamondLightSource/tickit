@@ -12,7 +12,7 @@ from typing import (
     runtime_checkable,
 )
 
-from tickit.adapters.interpreters.utils import wrap_as_async_iterator
+from tickit.adapters.utils import wrap_as_async_iterator
 from tickit.core.adapter import Interpreter, RaiseInterrupt
 from tickit.utils.byte_format import ByteFormat
 
