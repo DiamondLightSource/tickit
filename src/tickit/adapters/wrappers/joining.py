@@ -1,32 +1,32 @@
 from typing import AnyStr, AsyncIterable, Tuple
 
 from tickit.adapters.utils import wrap_as_async_iterator
-from tickit.core.adapter import Adapter, Interpreter
+from tickit.core.adapter import Interpreter
 
 
 class JoiningWrapper(Interpreter[AnyStr]):
-    """A wrapper for an interpreter that combines responses.
+    """A wrapper for an adapter that combines responses.
 
-    An interpreter wrapper class that takes the wrapped interpreter's response(s) to a
+    An adapter wrapper class that takes the wrapped adapters's response(s) to a
     message and combines them into a single response.
     """
 
     def __init__(
         self,
-        interpreter: Interpreter[AnyStr],
+        adapter: Interpreter[AnyStr],
         response_delimiter: AnyStr,
     ) -> None:
         """A decorator for an interpreter that combines multiple responses into one.
 
         Args:
-            interpreter (Interpreter): The interpreter responding to a message.
+            adapter (Interpreter): The adapter responding to a message.
             response_delimiter (AnyStr): The delimiter separating the responses to the
                 individual responses when they are combined into a single response
                 message.
 
         """
         super().__init__()
-        self.interpreter: Interpreter[AnyStr] = interpreter
+        self.adapter: Interpreter[AnyStr] = adapter
         self.response_delimiter: AnyStr = response_delimiter
 
     async def _combine_responses(
@@ -34,7 +34,7 @@ class JoiningWrapper(Interpreter[AnyStr]):
     ) -> AsyncIterable[AnyStr]:
         """Combines results from handling multiple messages.
 
-        Takes the responses from when the wrapped interpreter handles multiple messages
+        Takes the responses from when the wrapped adapter handles multiple messages
         and returns an appropriate composite response and interrupt. The composite
         response is the concatenation of each of the individual responses, the
         composite interrupt is a logical inclusive 'or' of all of the individual
@@ -54,9 +54,7 @@ class JoiningWrapper(Interpreter[AnyStr]):
         response = self.response_delimiter.join(response_list)  # type: ignore
         return wrap_as_async_iterator(response)
 
-    async def handle(
-        self, adapter: Adapter, message: AnyStr
-    ) -> Tuple[AsyncIterable[AnyStr], bool]:
+    async def handle(self, message: AnyStr) -> Tuple[AsyncIterable[AnyStr], bool]:
         """Merges the responses from an interpreter into a single message.
 
         Individual responses to the message are combined into a single response and
@@ -71,6 +69,6 @@ class JoiningWrapper(Interpreter[AnyStr]):
                 A tuple of the asynchronous iterable of a single reply message and a
                 flag indicating whether an interrupt should be raised by the adapter.
         """
-        responses, interrupt = await self.interpreter.handle(adapter, message)
+        responses, interrupt = await self.adapter.handle(message)
         resp = await self._combine_responses(responses)
         return resp, interrupt

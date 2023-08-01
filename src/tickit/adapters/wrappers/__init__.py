@@ -1,9 +1,5 @@
-from tickit.adapters.interpreters.wrappers.beheading_interpreter import (
-    BeheadingInterpreter,
-)
-from tickit.adapters.interpreters.wrappers.joining_interpreter import JoiningInterpreter
-from tickit.adapters.interpreters.wrappers.splitting_interpreter import (
-    SplittingInterpreter,
-)
+from .beheading import BeheadingWrapper
+from .joining import JoiningWrapper
+from .splitting import SplittingWrapper
 
-__all__ = ["BeheadingInterpreter", "SplittingInterpreter", "JoiningInterpreter"]
+__all__ = ["SplittingWrapper", "BeheadingWrapper", "JoiningWrapper"]
