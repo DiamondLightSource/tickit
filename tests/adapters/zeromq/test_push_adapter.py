@@ -1,20 +1,18 @@
 import asyncio
-from typing import List, Sequence
+from typing import Sequence
 
 import aiozmq
 import pytest
 import pytest_asyncio
-from mock import MagicMock, Mock
-from mock.mock import AsyncMock, create_autospec
+import zmq
+from mock import Mock
+from mock.mock import create_autospec
 from pydantic.v1 import BaseModel
 
-from tickit.adapters.interpreters.zeromq_socket.push_interpreter import (
-    ZeroMqPushInterpreter,
-)
 from tickit.adapters.io.zeromq_push_io import ZeroMqMessage, ZeroMqPushIo
+from tickit.adapters.zmq import ZeroMqPushAdapter
 from tickit.core.adapter import RaiseInterrupt
 from tickit.core.device import Device
-import zmq
 
 _HOST = "127.0.0.1"
 _PORT = 5530
@@ -42,8 +40,8 @@ def io() -> ZeroMqPushIo:
 
 
 @pytest.fixture
-def adapter() -> ZeroMqPushInterpreter:
-    return ZeroMqPushInterpreter()
+def adapter() -> ZeroMqPushAdapter:
+    return ZeroMqPushAdapter()
 
 
 @pytest_asyncio.fixture
@@ -58,10 +56,10 @@ async def client() -> aiozmq.ZmqStream:
 
 @pytest_asyncio.fixture
 async def running_adapter(
-    adapter: ZeroMqPushInterpreter,
+    adapter: ZeroMqPushAdapter,
     io: ZeroMqPushIo,
     mock_raise_interrupt: RaiseInterrupt,
-) -> ZeroMqPushInterpreter:
+) -> ZeroMqPushAdapter:
     await io.setup(adapter, mock_raise_interrupt)
     yield adapter
     await io.shutdown()
@@ -70,7 +68,7 @@ async def running_adapter(
 
 # @pytest.mark.asyncio
 # async def test_socket_not_created_until_run_forever(
-#     running_adapter: ZeroMqPushInterpreter,
+#     running_adapter: ZeroMqPushAdapter,
 #     io: ZeroMqPushIo,
 #     mock_raise_interrupt: RaiseInterrupt,
 # ) -> None:
@@ -112,7 +110,7 @@ MESSGAGES = [
 @pytest.mark.asyncio
 @pytest.mark.parametrize("message,serialized_message", MESSGAGES)
 async def test_serializes_and_sends_message(
-    running_adapter: ZeroMqPushInterpreter,
+    running_adapter: ZeroMqPushAdapter,
     client: aiozmq.ZmqStream,
     message: ZeroMqMessage,
     serialized_message: Sequence[bytes],
