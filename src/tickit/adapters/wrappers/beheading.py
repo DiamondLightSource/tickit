@@ -3,7 +3,7 @@ from typing import AnyStr, AsyncIterable, Tuple
 from tickit.core.adapter import Adapter, Interpreter
 
 
-class BeheadingInterpreter(Interpreter[AnyStr]):
+class BeheadingWrapper(Interpreter[AnyStr]):
     """A wrapper for an interpreter which strips a header from a message.
 
     An interpreter wrapper that takes a message, strips off a header of a fixed size

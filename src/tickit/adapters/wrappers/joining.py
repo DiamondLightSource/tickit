@@ -1,10 +1,10 @@
 from typing import AnyStr, AsyncIterable, Tuple
 
-from tickit.adapters.interpreters.utils import wrap_as_async_iterator
+from tickit.adapters.utils import wrap_as_async_iterator
 from tickit.core.adapter import Adapter, Interpreter
 
 
-class JoiningInterpreter(Interpreter[AnyStr]):
+class JoiningWrapper(Interpreter[AnyStr]):
     """A wrapper for an interpreter that combines responses.
 
     An interpreter wrapper class that takes the wrapped interpreter's response(s) to a
