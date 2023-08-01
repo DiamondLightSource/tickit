@@ -1,7 +1,7 @@
 from re import Pattern, compile
-from typing import AnyStr, AsyncIterable, List, Tuple
+from typing import AnyStr, AsyncIterable, List, Tuple, AsyncIterator
 
-from tickit.adapters.interpreters.utils import wrap_messages_as_async_iterator
+from tickit.adapters.utils import wrap_messages_as_async_iterator
 from tickit.core.adapter import Adapter, Interpreter
 
 
@@ -30,11 +30,10 @@ class SplittingInterpreter(Interpreter[AnyStr]):
         self.delimeter: Pattern[AnyStr] = compile(message_delimiter)
 
     async def _handle_individual_messages(
-        self, adapter: Adapter, individual_messages: List[AnyStr]
+        self, individual_messages: List[AnyStr]
     ) -> List[Tuple[AsyncIterable[AnyStr], bool]]:
         results = [
-            await self.interpreter.handle(adapter, message)
-            for message in individual_messages
+            await self.interpreter.handle(message) for message in individual_messages
         ]
         return results
 
@@ -70,9 +69,7 @@ class SplittingInterpreter(Interpreter[AnyStr]):
         interrupt = any(individual_interrupts)
         return resp, interrupt
 
-    async def handle(
-        self, adapter: Adapter, message: AnyStr
-    ) -> Tuple[AsyncIterable[AnyStr], bool]:
+    async def handle(self, message: AnyStr) -> Tuple[AsyncIterable[AnyStr], bool]:
         """Splits a message and passes the resulting sub-messages on to an interpreter.
 
         Splits a given message and passes the resulting sub-messages on to an
@@ -93,6 +90,6 @@ class SplittingInterpreter(Interpreter[AnyStr]):
             if msg  # Discard empty strings and None
         ]
 
-        results = await self._handle_individual_messages(adapter, individual_messages)
+        results = await self._handle_individual_messages(individual_messages)
 
         return await self._collect_responses(results)

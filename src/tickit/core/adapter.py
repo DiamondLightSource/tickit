@@ -51,9 +51,7 @@ class Interpreter(ABC, Generic[T]):
     """An interface for types which handle messages received by an adapter."""
 
     @abstractmethod
-    async def handle(
-        self, adapter: AdapterIo, message: T
-    ) -> Tuple[AsyncIterable[T], bool]:
+    async def handle(self, message: T) -> Tuple[AsyncIterable[T], bool]:
         """An asynchronous method which handles messages received by an adapter.
 
         An asynchronous method which handles messages received by an adapter, replies
