@@ -171,22 +171,22 @@ This is the internal API reference for tickit
             -------------------------------------
         
 
-    .. automodule:: tickit.adapters.specs
+    .. automodule:: tickit.adapters.specifications
 
-        ``tickit.adapters.specs``
-        -------------------------
+        ``tickit.adapters.specifications``
+        ----------------------------------
 
-        .. automodule:: tickit.adapters.specs.http_endpoint
+        .. automodule:: tickit.adapters.specifications.http_endpoint
             :members:
 
-            ``tickit.adapters.specs.http_endpoint``
-            ---------------------------------------
+            ``tickit.adapters.specifications.http_endpoint``
+            ------------------------------------------------
 
-        .. automodule:: tickit.adapters.specs.regex_command
+        .. automodule:: tickit.adapters.specifications.regex_command
             :members:
 
-            ``tickit.adapters.specs.regex_command``
-            ---------------------------------------
+            ``tickit.adapters.specifications.regex_command``
+            ------------------------------------------------
 
 
     .. automodule:: tickit.adapters.epics
