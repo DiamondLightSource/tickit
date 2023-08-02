@@ -15,7 +15,11 @@ from tickit.core.adapter import AdapterIo, RaiseInterrupt
 
 
 class EpicsIo(AdapterIo[EpicsAdapter]):
-    """Epics io."""
+    """An AdapterIo implementation which acts as an EPICS IOC.
+
+    This is optionally initialised from an EPICS database (db) file
+    but can be customised in code by implementing on_db_load in EpicsAdapter.
+    """
 
     interrupt_records: Dict[InputRecord, Callable[[], Any]] = {}
 

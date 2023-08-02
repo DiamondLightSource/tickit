@@ -13,6 +13,12 @@ LOGGER = logging.getLogger(__name__)
 
 
 class HttpIo(AdapterIo[HttpAdapter]):
+    """An AdapterIo implementation which delegates to a server and sets up endpoints.
+
+    An AdapterIo implementation which delegates the hosting of an http requests to a
+    server and sets up the endpoints for said server from a HttpAdapter.
+    """
+
     host: str
     port: int
 

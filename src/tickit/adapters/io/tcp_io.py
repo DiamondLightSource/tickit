@@ -11,6 +11,12 @@ LOGGER = logging.getLogger(__name__)
 
 
 class TcpIo(AdapterIo[CommandAdapter]):
+    """An AdapterIo implementation which delegates to a tcp server.
+
+    An AdapterIo implementation which delegates the hosting of an external messaging
+    protocol to a server and utilises message handling from a CommandAdapter.
+    """
+
     host: str
     port: int
 

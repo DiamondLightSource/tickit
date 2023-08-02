@@ -47,7 +47,7 @@ async def create_zmq_push_socket(host: str, port: int) -> aiozmq.ZmqStream:
 
 
 class ZeroMqPushIo(AdapterIo[ZeroMqPushAdapter]):
-    """Io for a ZeroMQ data stream."""
+    """AdapterIo for a ZeroMQ data stream."""
 
     _host: str
     _port: int
