@@ -13,7 +13,7 @@ from tickit.devices.iobox import IoBoxDevice
 
 
 class IoBoxZeroMqAdapter(ZeroMqPushAdapter):
-    """An Eiger adapter which parses the commands sent to the HTTP server."""
+    """An ZMQ adapter which publishes writes to the devices memory."""
 
     device: IoBoxDevice[str, int]
     _addresses_to_publish: Set[str]

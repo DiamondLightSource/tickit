@@ -1,7 +1,7 @@
-- type: examples.devices.http_device.ExampleHttpDevice
+- type: examples.adapters.http_adapter.ExampleHttpDevice
   name: http-device
   inputs: {}
-- type: examples.devices.zeromq_push_device.ExampleZeroMqPusher
+- type: examples.adapters.zeromq_push_adapter.ExampleZeroMqPusher
   name: zeromq-pusher
   inputs:
       updates:
