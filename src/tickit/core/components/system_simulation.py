@@ -5,7 +5,7 @@ from typing import Dict, List, Optional, Type
 
 import pydantic.v1.dataclasses
 
-from tickit.adapters.system_adapter import BaseSystemSimulationAdapter
+from tickit.adapters.system import BaseSystemSimulationAdapter
 from tickit.core.adapter import AdapterContainer
 from tickit.core.components.component import BaseComponent, Component, ComponentConfig
 from tickit.core.management.event_router import InverseWiring
