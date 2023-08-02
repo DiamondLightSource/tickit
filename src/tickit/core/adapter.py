@@ -8,7 +8,7 @@ T = TypeVar("T")
 
 
 class RaiseInterrupt(Protocol):
-    """A raise_interrupt function that should be passed to `Adapter`."""
+    """A raise_interrupt function that should be passed the adapter."""
 
     async def __call__(self) -> None:
         """The actual call signature."""
@@ -19,7 +19,7 @@ A = TypeVar("A")
 
 
 class AdapterIo(ABC, Generic[A]):
-    """Demand adapter io objects have a setup method for an adapter object."""
+    """Io logic with a setup method for an adapter object."""
 
     @abstractmethod
     async def setup(self, adapter: A, raise_interrupt: RaiseInterrupt) -> None:
@@ -27,7 +27,7 @@ class AdapterIo(ABC, Generic[A]):
 
 
 class AdapterContainer(Generic[A]):
-    """A container for an object specific interface and the required functional io."""
+    """A container for an object specific adapter and the required functional io."""
 
     adapter: A
     io: AdapterIo
