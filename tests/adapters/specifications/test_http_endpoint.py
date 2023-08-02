@@ -3,7 +3,7 @@ from aiohttp import web
 from aiohttp.web_response import StreamResponse
 from mock import Mock
 
-from tickit.adapters.interpreters.endpoints.http_endpoint import HttpEndpoint
+from tickit.adapters.specifications import HttpEndpoint
 
 
 @pytest.fixture

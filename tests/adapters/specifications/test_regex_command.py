@@ -2,7 +2,7 @@ from typing import AnyStr, Optional, Tuple
 
 import pytest
 
-from tickit.adapters.interpreters.command import RegexCommand
+from tickit.adapters.specifications import RegexCommand
 
 
 @pytest.fixture
