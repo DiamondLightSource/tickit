@@ -2,8 +2,8 @@ from typing import Dict, List
 
 import pydantic.v1.dataclasses
 
+from examples.adapters.system_simulation_adapter import SystemSimulationAdapter
 from tickit.adapters.io.tcp_io import TcpIo
-from tickit.adapters.system_adapter import SystemSimulationAdapter
 from tickit.core.adapter import AdapterContainer
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.system_simulation import SystemSimulationComponent
@@ -11,8 +11,8 @@ from tickit.core.typedefs import ComponentID, ComponentPort, PortID
 
 
 @pydantic.v1.dataclasses.dataclass
-class SystemSimulationWithAdapter(ComponentConfig):
-    """Simulation of a nested set of components with a composed adapter."""
+class NestedAmplifierWithAdapter(ComponentConfig):
+    """Simulation of a nested amplifier with a CommandAdapter."""
 
     name: ComponentID
     inputs: Dict[PortID, ComponentPort]

@@ -1,42 +1,19 @@
-from typing import Dict, Union
-
-from examples.devices.amplifier import AmplifierDevice
-from tickit.adapters.interpreters.command.command_interpreter import CommandInterpreter
 from tickit.adapters.specs.regex_command import RegexCommand
-from tickit.core.components.component import BaseComponent, Component
+from tickit.adapters.system import BaseSystemSimulationAdapter
+from tickit.adapters.tcp import CommandAdapter
+from tickit.core.components.component import BaseComponent
 from tickit.core.components.device_simulation import DeviceSimulation
-from tickit.core.management.event_router import InverseWiring, Wiring
 from tickit.core.typedefs import ComponentID
 from tickit.utils.byte_format import ByteFormat
 
-# this is an example.
 
-
-class BaseSystemSimulationAdapter:
-    """A common base adapter for system simulation adapters.
-
-    They should be able to use any interpreter available.
-    """
-
-    _components: Dict[ComponentID, Component]
-    _wiring: Union[Wiring, InverseWiring]
-
-    def setup_adapter(
-        self,
-        components: Dict[ComponentID, Component],
-        wiring: Union[Wiring, InverseWiring],
-    ) -> None:
-        self._components = components
-        self._wiring = wiring
-
-
-class SystemSimulationAdapter(BaseSystemSimulationAdapter, CommandInterpreter):
+class SystemSimulationAdapter(BaseSystemSimulationAdapter, CommandAdapter):
     """Network adapter for a generic system simulation.
 
-    Network adapter for a generic system simulation using a command interpreter. This
-    Can be used to query the system simulation component for a list of the
-    ComponentID's for the components in the system and given a specific ID, the details
-    of that component.
+    Network adapter for a generic system simulation using a CommandAdapter. This
+    Can be used to query the SystemSimulationComponent for a list of ID's of the
+    components it contains; to provide the details of a component given its ID; and
+    to return the wiring map of the components.
     """
 
     _byte_format: ByteFormat = ByteFormat(b"%b\r\n")
@@ -70,28 +47,12 @@ class SystemSimulationAdapter(BaseSystemSimulationAdapter, CommandInterpreter):
 
     @RegexCommand(r"interrupt=(\w+)", False, "utf-8")
     async def raise_component_interrupt(self, id: str) -> bytes:
-        """Returns the component info of the given id."""
+        """Raises an interrupt in the component of the given id."""
         component = self._components.get(ComponentID(id), None)
 
         if isinstance(component, BaseComponent):
             await component.raise_interrupt()
             return str(f"Raised Interupt in {component.name}").encode("utf-8")
-        else:
-            return str("ComponentID not recognised, No interupt raised.").encode(
-                "utf-8"
-            )
-
-    @RegexCommand(r"ch=(\w+)", False, "utf-8")
-    async def change_amp(self, id: str) -> bytes:
-        """Returns the component info of the given id."""
-        component = self._components.get(ComponentID(id), None)
-
-        if isinstance(component, BaseComponent):
-            if isinstance(component, DeviceSimulation):
-                if isinstance(component.device, AmplifierDevice):
-                    component.device.amplification = 77
-                    await component.raise_interrupt()
-                    return str(f"Raised Interupt in {component.name}").encode("utf-8")
         else:
             return str("ComponentID not recognised, No interupt raised.").encode(
                 "utf-8"

@@ -3,7 +3,7 @@
   inputs: {}
   value: 10.0
 
-- type: tickit.adapters.sysim.SystemSimulationWithAdapter
+- type: examples.adapters.system_simulation_adapter_config.NestedAmplifierWithAdapter
   name: nested-amp
   inputs:
     input_1:
