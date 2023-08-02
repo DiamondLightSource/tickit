@@ -7,9 +7,10 @@ from aiohttp import web
 from mock import Mock
 from mock.mock import create_autospec
 
-from tickit.adapters.httpadapter import HttpAdapter
-from tickit.adapters.interpreters.endpoints.http_endpoint import HttpEndpoint
-from tickit.core.adapter import RaiseInterrupt
+from tickit.adapters.http import HttpAdapter
+from tickit.adapters.io.http_io import HttpIo
+from tickit.adapters.specifications import HttpEndpoint
+from tickit.core.adapter import AdapterContainer, RaiseInterrupt
 from tickit.core.device import Device
 
 ISSUE_LINK = "https://github.com/dls-controls/tickit/issues/111"
@@ -79,49 +80,54 @@ class ExampleAdapter(HttpAdapter):
 
 
 @pytest.fixture
-def adapter() -> HttpAdapter:
+def adapter_container() -> AdapterContainer:
     http_adapter = ExampleAdapter()
-    return http_adapter
+    http_io = HttpIo()
+    return AdapterContainer(http_adapter, http_io)
 
 
 @pytest_asyncio.fixture
 async def adapter_task(
-    adapter: HttpAdapter,
+    adapter_container: AdapterContainer,
     mock_raise_interrupt: RaiseInterrupt,
     mock_device: Device,
     event_loop: asyncio.BaseEventLoop,
 ):
-    adapter_running = event_loop.create_task(
-        adapter.run_forever(mock_device, mock_raise_interrupt)
+    adapter_container_running = event_loop.create_task(
+        adapter_container.run_forever(mock_raise_interrupt)
     )
-    adapter_ready = event_loop.create_task(adapter.wait_until_ready())
+
+    adapter_container_ready = event_loop.create_task(
+        adapter_container.io.wait_until_ready()
+    )
 
     # either wait until the task has an exception or it's ready.
     done, _ = await asyncio.wait(
-        [adapter_running, adapter_ready], return_when=asyncio.tasks.FIRST_COMPLETED
+        [adapter_container_running, adapter_container_ready],
+        return_when=asyncio.tasks.FIRST_COMPLETED,
     )
 
-    if adapter_running in done:
-        exception = adapter_running.exception()
+    if adapter_container_running in done:
+        exception = adapter_container_running.exception()
         if exception is not None:
             raise exception
 
         raise Exception("adapter.run_forever should not finish without an exception")
 
-    yield adapter_running
-    await adapter.stop()
-    await asyncio.wait_for(adapter_running, timeout=10.0)
-    assert adapter_running.done()
+    yield adapter_container_running
+    await adapter_container.io.stop()
+    await asyncio.wait_for(adapter_container_running, timeout=10.0)
+    assert adapter_container_running.done()
 
 
 @pytest_asyncio.fixture
-async def adapter_url(adapter_task: asyncio.Task, adapter: HttpAdapter):
-    yield f"http://localhost:{adapter.port}"
+async def adapter_url(adapter_task: asyncio.Task, adapter_container: AdapterContainer):
+    yield f"http://localhost:{adapter_container.io.port}"
 
 
 @pytest.mark.asyncio
 async def test_shuts_down_server_on_cancel(
-    adapter: HttpAdapter,
+    adapter_container: AdapterContainer,
     adapter_task: asyncio.Task,
     adapter_url: str,
 ):
@@ -141,7 +147,7 @@ async def test_shuts_down_server_on_cancel(
 
 @pytest.mark.asyncio
 async def test_stop_is_idempotent(
-    adapter: HttpAdapter,
+    adapter_container: AdapterContainer,
     adapter_task: asyncio.Task,
     adapter_url: str,
     mock_raise_interrupt: RaiseInterrupt,
@@ -150,7 +156,7 @@ async def test_stop_is_idempotent(
     # First ensure the server is working, then stop it and
     # ensure it is no longer working
     await assert_server_is_up(adapter_url)
-    await adapter.stop()
+    await adapter_container.io.stop()
     await adapter_task
     assert adapter_task.done()
     await assert_server_is_down(adapter_url)
@@ -158,16 +164,15 @@ async def test_stop_is_idempotent(
     for i in range(2):
         # Then start it again and check it is working
         new_task = asyncio.create_task(
-            adapter.run_forever(
-                mock_device,
+            adapter_container.run_forever(
                 mock_raise_interrupt,
             )
         )
-        await adapter.wait_until_ready()
+        await adapter_container.io.wait_until_ready()
         await assert_server_is_up(adapter_url)
 
         # Finally stop it one more time and check it is stopped
-        await adapter.stop()
+        await adapter_container.io.stop()
         await new_task
         assert new_task.done()
         await assert_server_is_down(adapter_url)
