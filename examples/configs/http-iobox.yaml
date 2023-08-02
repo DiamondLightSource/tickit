@@ -1,0 +1,3 @@
+- type: examples.adapters.http_adapter.ExampleHttpDevice
+  name: http-device
+  inputs: {}
