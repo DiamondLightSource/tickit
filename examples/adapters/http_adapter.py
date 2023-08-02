@@ -3,7 +3,7 @@ from aiohttp import web
 
 from tickit.adapters.http import HttpAdapter
 from tickit.adapters.io.http_io import HttpIo
-from tickit.adapters.specs.http_endpoint import HttpEndpoint
+from tickit.adapters.specifications import HttpEndpoint
 from tickit.core.adapter import AdapterContainer
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation

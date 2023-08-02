@@ -1,7 +1,7 @@
 from inspect import getmembers
 from typing import Callable, Iterable, Tuple
 
-from tickit.adapters.specs.http_endpoint import HttpEndpoint
+from tickit.adapters.specifications import HttpEndpoint
 
 
 class HttpAdapter:
