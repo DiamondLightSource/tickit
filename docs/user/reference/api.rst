@@ -141,108 +141,84 @@ This is the internal API reference for tickit
     ``tickit.adapters``
     -------------------
 
-    .. automodule:: tickit.adapters.interpreters
+    .. automodule:: tickit.adapters.io
 
-        ``tickit.adapters.interpreters``
-        --------------------------------
+        ``tickit.adapters.io``
+        ----------------------
 
-        .. automodule:: tickit.adapters.interpreters.command
-
-            ``tickit.adapters.interpreters.command``
-            ----------------------------------------
-
-            .. automodule:: tickit.adapters.interpreters.command.command_interpreter
-                :members:
-
-                ``tickit.adapters.interpreters.command.command_interpreter``
-                ------------------------------------------------------------
-
-            .. automodule:: tickit.adapters.interpreters.command.regex_command
-                :members:
-
-                ``tickit.adapters.interpreters.command.regex_command``
-                ------------------------------------------------------
-
-
-        .. automodule:: tickit.adapters.interpreters.endpoints
-
-            ``tickit.adapters.interpreters.endpoints``
-            ------------------------------------------
-
-            .. automodule:: tickit.adapters.interpreters.endpoints.http_endpoint
-                :members:
-
-                ``tickit.adapters.interpreters.endpoints.http_endpoint``
-                --------------------------------------------------------
-
-        
-        .. automodule:: tickit.adapters.interpreters.wrappers
-
-            ``tickit.adapters.interpreters.wrappers``
-            -----------------------------------------
-
-            .. automodule:: tickit.adapters.interpreters.wrappers.beheading_interpreter
-                :members:
-
-                ``tickit.adapters.interpreters.wrappers.beheading_interpreter``
-                ---------------------------------------------------------------
-
-            .. automodule:: tickit.adapters.interpreters.wrappers.joining_interpreter
-                :members:
-
-                ``tickit.adapters.interpreters.wrappers.joining_interpreter``
-                -------------------------------------------------------------
-            
-            .. automodule:: tickit.adapters.interpreters.wrappers.splitting_interpreter
-                :members:
-
-                ``tickit.adapters.interpreters.wrappers.splitting_interpreter``
-                ---------------------------------------------------------------
-
-
-    .. automodule:: tickit.adapters.servers
-
-        ``tickit.adapters.servers``
-        ---------------------------
-
-        .. automodule:: tickit.adapters.servers.tcp
+        .. automodule:: tickit.adapters.io.tcp_io
             :members:
 
-            ``tickit.adapters.servers.tcp``
+            ``tickit.adapters.io.tcp_io``
+            -----------------------------
+
+        .. automodule:: tickit.adapters.io.http_io
+            :members:
+
+            ``tickit.adapters.io.http_io``
+            ------------------------------
+        
+        .. automodule:: tickit.adapters.io.epics_io
+            :members:
+
+            ``tickit.adapters.io.epics_io``
             -------------------------------
-
-
-    .. automodule:: tickit.adapters.composed
-        :members:
         
-        ``tickit.adapters.composed``
-        ----------------------------
-
-
-    .. automodule:: tickit.adapters.httpadapter
-        :members:
-        
-        ``tickit.adapters.httpadapter``
-        -------------------------------
-
-
-    .. automodule:: tickit.adapters.zeromq.push_adapter
-        :members:
-        
-        ``tickit.adapters.zeromq.push_adapter``
-        ---------------------------------------
-
-
-    .. automodule:: tickit.adapters.epicsadapter
-
-        ``tickit.adapters.epicsadapter``
-        --------------------------------
-
-        .. automodule:: tickit.adapters.epicsadapter.adapter
+        .. automodule:: tickit.adapters.io.zeromq_push_io
             :members:
 
-            ``tickit.adapters.epicsadapter.adapter``
-            ----------------------------------------
+            ``tickit.adapters.io.zeromq_push_io``
+            -------------------------------------
+        
+
+    .. automodule:: tickit.adapters.specs
+
+        ``tickit.adapters.specs``
+        -------------------------
+
+        .. automodule:: tickit.adapters.specs.http_endpoint
+            :members:
+
+            ``tickit.adapters.specs.http_endpoint``
+            ---------------------------------------
+
+        .. automodule:: tickit.adapters.specs.regex_command
+            :members:
+
+            ``tickit.adapters.specs.regex_command``
+            ---------------------------------------
+
+
+    .. automodule:: tickit.adapters.epics
+        :members:
+        
+        ``tickit.adapters.epics``
+        -------------------------
+
+    .. automodule:: tickit.adapters.http
+        :members:
+        
+        ``tickit.adapters.http``
+        ------------------------
+
+    
+    .. automodule:: tickit.adapters.tcp
+        :members:
+        
+        ``tickit.adapters.tcp``
+        -----------------------
+    
+    .. automodule:: tickit.adapters.zmq
+        :members:
+        
+        ``tickit.adapters.zmq``
+        -----------------------
+
+    .. automodule:: tickit.adapters.system
+        :members:
+        
+        ``tickit.adapters.system``
+        --------------------------
 
 
 
