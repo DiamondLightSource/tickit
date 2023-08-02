@@ -5,6 +5,8 @@ from tickit.adapters.specs.http_endpoint import HttpEndpoint
 
 
 class HttpAdapter:
+    """An adapter interface for the HttpIo."""
+
     def get_endpoints(self) -> Iterable[Tuple[HttpEndpoint, Callable]]:
         """Returns list of endpoints.
 

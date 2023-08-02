@@ -18,7 +18,7 @@ ZeroMqMessage = Sequence[_SerializableMessagePart]
 
 
 class ZeroMqPushAdapter:
-    """Device interface for the Zmq push adapter."""
+    """An adapter interface for the ZeroMqPushIo."""
 
     _message_queue: Optional[asyncio.Queue]
 

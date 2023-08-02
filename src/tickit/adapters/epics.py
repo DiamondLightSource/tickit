@@ -88,6 +88,8 @@ class OutputRecord:
 
 
 class EpicsAdapter:
+    """An adapter interface for the EpicsIo."""
+
     interrupt_records: Dict[InputRecord, Callable[[], Any]] = {}
     interrupt: RaiseInterrupt
 
