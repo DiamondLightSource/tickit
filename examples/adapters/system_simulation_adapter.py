@@ -1,4 +1,4 @@
-from tickit.adapters.specs.regex_command import RegexCommand
+from tickit.adapters.specifications import RegexCommand
 from tickit.adapters.system import BaseSystemSimulationAdapter
 from tickit.adapters.tcp import CommandAdapter
 from tickit.core.components.component import BaseComponent

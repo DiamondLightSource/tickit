@@ -5,7 +5,7 @@ from softioc import builder
 
 from tickit.adapters.epics import EpicsAdapter
 from tickit.adapters.io import EpicsIo, TcpIo
-from tickit.adapters.specs.regex_command import RegexCommand
+from tickit.adapters.specifications import RegexCommand
 from tickit.adapters.tcp import CommandAdapter
 from tickit.core.adapter import AdapterContainer
 from tickit.core.components.component import Component, ComponentConfig
