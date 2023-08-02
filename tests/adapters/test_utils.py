@@ -1,6 +1,6 @@
 import pytest
 
-from tickit.adapters.interpreters.utils import (
+from tickit.adapters.utils import (
     wrap_as_async_iterator,
     wrap_messages_as_async_iterator,
 )
