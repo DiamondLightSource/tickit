@@ -43,11 +43,9 @@ class Command(Protocol):
 
 
 class CommandAdapter(Interpreter[AnyStr]):
-    """TcpAdapter: But actually this is the interpereter.
+    """An adapter which routes to commands registered to adapter methods.
 
-    An interpreter which routes to commands registered to adapter methods.
-
-    An interpreter which attempts to parse messages according to the parse method of
+    An adapter which attempts to parse messages according to the parse method of
     commands registered against adapter methods, if a match is found the method is
     called with the parsed arguments.
     """
@@ -66,7 +64,7 @@ class CommandAdapter(Interpreter[AnyStr]):
         message: AnyStr,
         raise_interrupt: RaiseInterrupt,
     ) -> AsyncIterable[Optional[AnyStr]]:
-        """Delegates message handling to the interpreter, raises interrupt if requested.
+        """Delegates message handling to the adapter, raises interrupt if requested.
 
         Args:
             message (T): The message from the server to be handled.
