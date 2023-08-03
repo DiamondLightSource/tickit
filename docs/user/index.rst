@@ -30,7 +30,6 @@ side-bar.
             :maxdepth: 1
 
             how-to/use-epics-adapter
-            how-to/use-command-wrappers
 
         +++
 
