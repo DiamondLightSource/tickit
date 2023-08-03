@@ -145,7 +145,7 @@ async def running_zeromq_adapter(
     return zeromq_adapter_container
 
 
-@pytest.mark.skip  # having this (even skipped) causes test_socket_cleaned_up_on_cancel to error
+@pytest.mark.skip  # having this (even skipped) causes test_socket_cleaned_up_on_cancel to error # noqa: E501,
 @pytest.mark.asyncio
 @pytest.mark.parametrize("message,serialized_message", MESSGAGES)
 async def test_serializes_and_sends_message(

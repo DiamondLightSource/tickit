@@ -96,7 +96,7 @@ async def test_device_simulation_run_forever_method(
     changes = Changes(Map({PortID("foo"): 43}))
     await device_simulation.on_tick(SimTime(1), changes)
 
-    device_simulation.adapters[0].adapter.after_update.assert_called_once()  # type: ignore
+    device_simulation.adapters[0].adapter.after_update.assert_called_once()  # type: ignore # noqa: E501,
     assert device_simulation.last_outputs == {"value": 42}
     device_simulation.state_producer.produce.assert_awaited_once_with(  # type: ignore
         "tickit-test_device_simulation-out",

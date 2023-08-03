@@ -106,7 +106,7 @@ async def test_db_file_not_specified(
 
     await epics_container.run_forever(mock_raise_interrupt)
 
-    epics_container.io.load_records_without_DTYP_fields.assert_not_called()  # type: ignore
+    epics_container.io.load_records_without_DTYP_fields.assert_not_called()  # type: ignore # noqa: E501,
 
 
 @pytest.mark.asyncio
@@ -122,4 +122,4 @@ async def test_db_load_called_if_file_specified(
 
     await epics_container.run_forever(mock_raise_interrupt)
 
-    epics_container.io.load_records_without_DTYP_fields.assert_called_once()  # type: ignore
+    epics_container.io.load_records_without_DTYP_fields.assert_called_once()  # type: ignore # noqa: E501,
