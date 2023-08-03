@@ -1,10 +1,13 @@
 import asyncio
+from typing import Sequence
 
 import aiozmq
 import pytest
+import pytest_asyncio
 from mock import AsyncMock, MagicMock, Mock
+from pydantic.v1 import BaseModel
 
-from tickit.adapters.io.zeromq_push_io import SocketFactory, ZeroMqPushIo
+from tickit.adapters.io.zeromq_push_io import SocketFactory, ZeroMqMessage, ZeroMqPushIo
 from tickit.adapters.zmq import ZeroMqPushAdapter
 from tickit.core.adapter import AdapterContainer, RaiseInterrupt
 
@@ -100,3 +103,56 @@ async def test_socket_cleaned_up_on_cancel(
         except asyncio.CancelledError:
             pass
         assert task.done()
+
+
+class SimpleMessage(BaseModel):
+    foo: int
+    bar: str
+
+
+class SubMessage(BaseModel):
+    baz: bool
+
+
+class NestedMessage(BaseModel):
+    foo: int
+    bar: SubMessage
+
+
+MESSGAGES = [
+    ([b"foo"], [b"foo"]),
+    (["foo"], [b'"foo"']),
+    ([b"foo", b"bar"], [b"foo", b"bar"]),
+    ([b"foo", "bar"], [b"foo", b'"bar"']),
+    ([{"foo": 1, "bar": "baz"}], [b'{"foo": 1, "bar": "baz"}']),
+    ([{"foo": 1, "bar": {"baz": False}}], [b'{"foo": 1, "bar": {"baz": false}}']),
+    ([SimpleMessage(foo=1, bar="baz")], [b'{"foo": 1, "bar": "baz"}']),
+    (
+        [NestedMessage(foo=1, bar=SubMessage(baz=False))],
+        [b'{"foo": 1, "bar": {"baz": false}}'],
+    ),
+]
+
+
+@pytest_asyncio.fixture
+async def running_zeromq_adapter(
+    zeromq_adapter_container: AdapterContainer,
+    socket_created: asyncio.Event,
+    mock_raise_interrupt: RaiseInterrupt,
+) -> AdapterContainer:
+    asyncio.create_task(zeromq_adapter_container.run_forever(mock_raise_interrupt))
+    await asyncio.wait_for(socket_created.wait(), timeout=2.0)
+    return zeromq_adapter_container
+
+
+@pytest.mark.skip  # having this (even skipped) causes test_socket_cleaned_up_on_cancel to error
+@pytest.mark.asyncio
+@pytest.mark.parametrize("message,serialized_message", MESSGAGES)
+async def test_serializes_and_sends_message(
+    running_zeromq_adapter: AdapterContainer,
+    mock_socket: MagicMock,
+    message: ZeroMqMessage,
+    serialized_message: Sequence[bytes],
+) -> None:
+    await running_zeromq_adapter.io.send_message(message)
+    mock_socket.write.assert_called_once_with(serialized_message)
