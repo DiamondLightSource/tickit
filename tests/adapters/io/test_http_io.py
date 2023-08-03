@@ -97,6 +97,8 @@ async def adapter_task(
         adapter_container.run_forever(mock_raise_interrupt)
     )
 
+    assert isinstance(adapter_container.io, HttpIo)
+
     adapter_container_ready = event_loop.create_task(
         adapter_container.io.wait_until_ready()
     )
@@ -122,6 +124,7 @@ async def adapter_task(
 
 @pytest_asyncio.fixture
 async def adapter_url(adapter_task: asyncio.Task, adapter_container: AdapterContainer):
+    assert isinstance(adapter_container.io, HttpIo)
     yield f"http://localhost:{adapter_container.io.port}"
 
 
@@ -156,6 +159,7 @@ async def test_stop_is_idempotent(
     # First ensure the server is working, then stop it and
     # ensure it is no longer working
     await assert_server_is_up(adapter_url)
+    assert isinstance(adapter_container.io, HttpIo)
     await adapter_container.io.stop()
     await adapter_task
     assert adapter_task.done()

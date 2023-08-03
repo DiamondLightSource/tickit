@@ -96,6 +96,7 @@ async def test_socket_cleaned_up_on_cancel(
                 mock_raise_interrupt,
             )
         )
+        assert isinstance(container.io, ZeroMqPushIo)
         await container.io.send_message([b"test"])
         task.cancel()
         try:
@@ -154,5 +155,6 @@ async def test_serializes_and_sends_message(
     message: ZeroMqMessage,
     serialized_message: Sequence[bytes],
 ) -> None:
+    assert isinstance(running_zeromq_adapter.io, ZeroMqPushIo)
     await running_zeromq_adapter.io.send_message(message)
     mock_socket.write.assert_called_once_with(serialized_message)
