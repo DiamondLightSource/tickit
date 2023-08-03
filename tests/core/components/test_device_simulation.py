@@ -2,9 +2,11 @@ from typing import Iterable
 
 import pytest
 from immutables import Map
-from mock import AsyncMock, Mock, create_autospec, patch
+from mock import AsyncMock, MagicMock, Mock, create_autospec, patch
 
-from tickit.core.adapter import Adapter
+from tickit.adapters.io.tcp_io import TcpIo
+from tickit.adapters.tcp import CommandAdapter
+from tickit.core.adapter import AdapterContainer
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import (
@@ -26,8 +28,21 @@ def source() -> SourceDevice:
 
 
 @pytest.fixture
-def mock_adapter() -> Mock:
-    return create_autospec(Adapter)
+def adapter() -> CommandAdapter:
+    adapter = CommandAdapter()
+    adapter.after_update = MagicMock()
+    return adapter
+
+
+@pytest.fixture
+def io() -> TcpIo:
+    return create_autospec(TcpIo)
+
+
+@pytest.fixture
+def adapter_container(adapter: CommandAdapter, io: TcpIo) -> AdapterContainer:
+    container = AdapterContainer(adapter, io)
+    return container
 
 
 @pytest.fixture
@@ -53,12 +68,12 @@ def patch_asyncio_wait() -> Iterable[Mock]:
 @pytest.fixture
 def device_simulation(
     source: SourceDevice,
-    mock_adapter: Adapter,
+    adapter_container: AdapterContainer,
 ) -> DeviceSimulation:
     return DeviceSimulation(
         name=ComponentID("test_device_simulation"),
         device=source,
-        adapters=[mock_adapter],
+        adapters=[adapter_container],
     )
 
 
@@ -81,7 +96,7 @@ async def test_device_simulation_run_forever_method(
     changes = Changes(Map({PortID("foo"): 43}))
     await device_simulation.on_tick(SimTime(1), changes)
 
-    device_simulation.adapters[0].after_update.assert_called_once()  # type: ignore
+    device_simulation.adapters[0].adapter.after_update.assert_called_once()  # type: ignore
     assert device_simulation.last_outputs == {"value": 42}
     device_simulation.state_producer.produce.assert_awaited_once_with(  # type: ignore
         "tickit-test_device_simulation-out",
