@@ -1,7 +1,7 @@
 from typing import Dict
 
 import pytest
-from mock import Mock, MagicMock, mock_open, patch
+from mock import MagicMock, Mock, mock_open, patch
 
 from tickit.adapters.epics import EpicsAdapter
 from tickit.adapters.io.epics_io import EpicsIo
