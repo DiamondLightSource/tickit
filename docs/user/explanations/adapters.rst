@@ -7,7 +7,7 @@ Adapters allow us to influence the device from outside the simulation, such as
 using a TCP client to alter a parameter on a device. A device may have multiple
 adapters simultaneously.
 
-Adapters are implemented within `AdapterContainers` and these containers are added
+Adapters are implemented within `AdapterContainer` and these containers are added
 to the device or system simulations. An AdapterContainer simply takes an adapter and
 an appropriate `AdapterIo`. When the container is run, it sets up the io with the 
 specific adapter.
