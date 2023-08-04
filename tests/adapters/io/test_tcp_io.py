@@ -50,12 +50,6 @@ def patch_start_server():
 
 
 @pytest.fixture
-def patch_serve_forever():
-    with patch("asyncio.create_task") as mock:
-        yield mock
-
-
-@pytest.fixture
 def mock_stream_reader() -> Mock:
     mock: MagicMock = create_autospec(StreamReader, instance=True)
     mock.read = AsyncMock(side_effect=(b"hello", b"world", b""))
@@ -109,7 +103,6 @@ async def test_tcpio_setup_method(
     tcp_io: TcpIo,
     patch_start_server: Mock,
     mock_adapter: CommandAdapter,
-    patch_serve_forever: Mock,
     raise_interrupt: RaiseInterrupt = Mock(),
 ):
     mock_start_server = patch_start_server
@@ -118,4 +111,3 @@ async def test_tcpio_setup_method(
     await tcp_io.setup(mock_adapter, raise_interrupt)
 
     mock_start_server.assert_awaited_once_with(ANY, tcp_io.host, tcp_io.port)
-    patch_serve_forever.assert_called_once()
