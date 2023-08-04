@@ -7,33 +7,28 @@ Adapters allow us to influence the device from outside the simulation, such as
 using a TCP client to alter a parameter on a device. A device may have multiple
 adapters simultaneously.
 
-There are four adapters included in the framework:
+Adapters are implemented within `AdapterContainers` and these containers are added
+to the device or system simulations. An AdapterContainer simply takes an adapter and
+an appropriate `AdapterIo`. When the container is run, it sets up the io with the 
+specific adapter.
 
-#. `Composed adapter`_
+- The Adapter contains the device specific interface for a given io type.
+- The `AdapterIo` contains IO logic which is agnositc to the details of the device.
+
+There are four adapter types included in the framework:
+
+#. `Command adapter`_
 #. `ZMQ adapter`_
 #. `HTTP adapter`_
 #. `EPICS adapter`_
 
-Composed adapter
+
+Command adapter
 ----------------
-The composed adapter acts to implement a server and an interpreter. It delegates
-the hosting of an external messaging protocol to a server and message handling
-to an interpreter.
-
-Tickit currently includes one server implementation, a TCP server, and one
-interpreter, the command interpreter.
-
-The command interpreter is a generic interpreter which identifies commands from
-incoming messages. Commands are defined via decoration of adapter methods and
-the only such command type currently is a `RegexCommand`. This matches incoming
-messages to regex patterns and processes the command appropriately.
-
-Tickit also includes three interpreter wrappers for the command interpreter.
-These wrap the command interpreter to allow for more complex message handling
-and can be used with the composed adapter in the same way.
-
-Users may implement their own servers and interpreters and then use the composed
-adapter to utilise them for the device.
+The command adapter identifies and handles commands from incoming messages and is 
+utilised with `TcpIo`. Commands are defined via decoration of adapter methods and the
+only such command type currently is a `RegexCommand`. This matches incoming messages to
+regex patterns and processes the command appropriately.
 
 
 ZMQ adapter
@@ -43,7 +38,7 @@ An adapter for use on a ZeroMQ data stream.
 
 HTTP adapter
 ------------
-An adapter that hosts an HTTP server, e.g. for devices with REST APIs.
+An adapter that utilises HTTP endpoints for the `HttpIo`.
 
 
 EPICS adapter
