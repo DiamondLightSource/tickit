@@ -45,6 +45,7 @@ side-bar.
             explanations/components
             explanations/devices
             explanations/adapters
+            explanations/system-simulation-adapters
             explanations/wiring
             explanations/glossary
 
