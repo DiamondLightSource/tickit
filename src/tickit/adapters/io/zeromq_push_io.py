@@ -1,38 +1,22 @@
 import asyncio
 import json
 import logging
-from typing import (
-    Any,
-    Iterable,
-    Mapping,
-    Optional,
-    Protocol,
-    Sequence,
-    Union,
-    runtime_checkable,
-)
+from typing import Iterable, Optional, Protocol, runtime_checkable
 
 import aiozmq
 import zmq
 from pydantic.v1 import BaseModel
 
-from tickit.adapters.zmq import ZeroMqPushAdapter
+from tickit.adapters.zmq import (
+    ZeroMqMessage,
+    ZeroMqPushAdapter,
+    _MessagePart,
+    _SerializableMessagePart,
+    _ZeroMqInternalMessage,
+)
 from tickit.core.adapter import AdapterIo, RaiseInterrupt
 
 LOGGER = logging.getLogger(__name__)
-
-
-_MessagePart = Union[bytes, zmq.Frame, memoryview]
-_SerializableMessagePart = Union[
-    _MessagePart,
-    str,
-    Mapping[str, Any],
-    BaseModel,
-]
-
-_ZeroMqInternalMessage = Sequence[_MessagePart]
-ZeroMqMessage = Sequence[_SerializableMessagePart]
-# SocketFactory = Callable[[], Awaitable[aiozmq.ZmqStream]]
 
 
 @runtime_checkable

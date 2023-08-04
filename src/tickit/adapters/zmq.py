@@ -1,7 +1,20 @@
 import asyncio
-from typing import Optional
+from typing import Any, Mapping, Optional, Sequence, Union
 
-from tickit.adapters.io.zeromq_push_io import ZeroMqMessage
+import zmq
+from pydantic.v1 import BaseModel
+
+_MessagePart = Union[bytes, zmq.Frame, memoryview]
+_SerializableMessagePart = Union[
+    _MessagePart,
+    str,
+    Mapping[str, Any],
+    BaseModel,
+]
+
+_ZeroMqInternalMessage = Sequence[_MessagePart]
+ZeroMqMessage = Sequence[_SerializableMessagePart]
+# SocketFactory = Callable[[], Awaitable[aiozmq.ZmqStream]]
 
 
 class ZeroMqPushAdapter:
