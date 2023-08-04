@@ -35,12 +35,20 @@ component:
         ioc_name: str = "FEMTO"
 
         def __call__(self) -> Component:  # noqa: D102
+            device=FemtoDevice(
+                initial_gain=self.initial_gain,
+                initial_current=self.initial_current,
+                )
+            adapters = [
+                AdapterContainer(
+                    FemtoAdapter(device),
+                    EpicsIo(self.ioc_name),
+                ),
+            ]
             return DeviceSimulation(
                 name=self.name,
-                device=FemtoDevice(
-                    initial_gain=self.initial_gain, initial_current=self.initial_current
-                ),
-                adapters=[FemtoAdapter(db_file=self.db_file, ioc_name=self.ioc_name)],
+                device=device,
+                adapters=adapters,
             )
 
 
@@ -110,13 +118,17 @@ to reflect that, we must override the epics adapter function ``on_db_load``.
 
         device: FemtoDevice
 
+        def __init__(self, device: AmplifierDevice) -> None:
+            super().__init__()
+            self.device = device
+
         async def callback(self, value) -> None:
             """Device callback function.
             Args:
                 value (float): The value to set the gain to.
             """
             self.device.set_gain(value)
-            await self.raise_interrupt()
+            await self.interrupt()
 
         def on_db_load(self) -> None:
             """Customises records that have been loaded in to suit the simulation."""
