@@ -1,5 +1,5 @@
 import asyncio
-from typing import Sequence
+from typing import AsyncGenerator, Sequence
 
 import aiozmq
 import pytest
@@ -46,13 +46,15 @@ def mock_socket_factory(
     return factory
 
 
-@pytest.fixture
-def io(mock_socket_factory: AsyncMock) -> ZeroMqPushIo:
-    return ZeroMqPushIo(
+@pytest_asyncio.fixture
+async def io(mock_socket_factory: AsyncMock) -> AsyncGenerator[ZeroMqPushIo, None]:
+    io = ZeroMqPushIo(
         host=_HOST,
         port=_PORT,
         socket_factory=mock_socket_factory,
     )
+    yield io
+    await io.shutdown()
 
 
 @pytest.fixture
@@ -79,31 +81,6 @@ async def test_socket_not_created_until_run_forever(
     asyncio.create_task(zeromq_adapter_container.run_forever(mock_raise_interrupt))
     await asyncio.wait_for(socket_created.wait(), timeout=2.0)
     mock_socket_factory.assert_called_once_with(_HOST, _PORT)
-
-
-@pytest.mark.asyncio
-async def test_socket_cleaned_up_on_cancel(
-    adapter: ZeroMqPushAdapter,
-    io: ZeroMqPushIo,
-    mock_raise_interrupt: RaiseInterrupt,
-) -> None:
-    adapter_a = AdapterContainer(adapter, io)
-    adapter_b = AdapterContainer(adapter, io)
-
-    for container in (adapter_a, adapter_b):
-        task = asyncio.create_task(
-            container.run_forever(
-                mock_raise_interrupt,
-            )
-        )
-        assert isinstance(container.io, ZeroMqPushIo)
-        await container.io.send_message([b"test"])
-        task.cancel()
-        try:
-            await task
-        except asyncio.CancelledError:
-            pass
-        assert task.done()
 
 
 class SimpleMessage(BaseModel):
@@ -146,7 +123,6 @@ async def running_zeromq_adapter(
     return zeromq_adapter_container
 
 
-@pytest.mark.skip  # having this (even skipped) causes test_socket_cleaned_up_on_cancel to error # noqa: E501,
 @pytest.mark.asyncio
 @pytest.mark.parametrize("message,serialized_message", MESSGAGES)
 async def test_serializes_and_sends_message(
@@ -158,3 +134,28 @@ async def test_serializes_and_sends_message(
     assert isinstance(running_zeromq_adapter.io, ZeroMqPushIo)
     await running_zeromq_adapter.io.send_message(message)
     mock_socket.write.assert_called_once_with(serialized_message)
+
+
+@pytest.mark.asyncio
+async def test_socket_cleaned_up_on_cancel(
+    adapter: ZeroMqPushAdapter,
+    io: ZeroMqPushIo,
+    mock_raise_interrupt: RaiseInterrupt,
+) -> None:
+    adapter_a = AdapterContainer(adapter, io)
+    adapter_b = AdapterContainer(adapter, io)
+
+    for container in (adapter_a, adapter_b):
+        task = asyncio.create_task(
+            container.run_forever(
+                mock_raise_interrupt,
+            )
+        )
+        assert isinstance(container.io, ZeroMqPushIo)
+        await container.io.send_message([b"test"])
+        task.cancel()
+        try:
+            await task
+        except asyncio.CancelledError:
+            pass
+        assert task.done()

@@ -38,6 +38,7 @@ class ZeroMqPushIo(AdapterIo[ZeroMqPushAdapter]):
     _socket: Optional[aiozmq.ZmqStream]
     _socket_factory: SocketFactory
     _socket_lock: asyncio.Lock
+    _task: Optional[asyncio.Task]
 
     def __init__(
         self,
@@ -52,17 +53,20 @@ class ZeroMqPushIo(AdapterIo[ZeroMqPushAdapter]):
         self._socket = None
         self._socket_factory = socket_factory
         self._socket_lock = asyncio.Lock()
+        self._task = None
 
     async def setup(
         self, adapter: ZeroMqPushAdapter, raise_interrupt: RaiseInterrupt
     ) -> None:
         try:
             await self._ensure_socket()
-            asyncio.create_task(self.send_messages_forever(adapter))
+            self._task = asyncio.create_task(self.send_messages_forever(adapter))
         except asyncio.CancelledError:
             await self.shutdown()
 
     async def shutdown(self) -> None:
+        if self._task:
+            self._task.cancel()
         if self._socket is not None:
             self._socket.close()
             await self._socket.drain()
