@@ -4,52 +4,41 @@ Using an Adapter
 This tutorial shows how to use a simple adapter to externally interact with a
 device in the tickit framework.
 
-We will use a `ComposedAdapter` which will act as a simple TCP interface to the
+We will use a `CommandAdapter` which will act as a simple TCP interface to the
 ``Amplifier`` device we created in the previous how-to.
 
 .. seealso::
     See the `Creating a Device` how-to for a walk-through of creating the Amplifier
     device.
 
-We will be using a composed adapter with a TCP server and the command interpreter.
 For more information on adapters see :doc:`here<../explanations/adapters>`.
 
 Initialise Adapter
 ------------------
 
-We shall begin using the same ``amp.py`` file from the ``Amplifier`` device. In
-that file add a new ``AmplifierAdapter`` class which inherits `ComposedAdapter`.
-Within ``AmplifierAdapter`` we need to assign the ``AmplifierDevice`` as a class
-member, and initialise the server and interpreter like so:
+We shall begin using the same ``amplifier.py`` file from the ``Amplifier`` device. In
+that file add a new ``AmplifierAdapter`` class which inherits `CommandAdapter`.
+
 
 .. code-block:: python
 
-    from tickit.adapters.composed import ComposedAdapter
-    from tickit.adapters.interpreters.command.command_interpreter import CommandInterpreter
-    from tickit.adapters.servers.tcp import TcpServer
+    from tickit.adapters.tcp import CommandAdapter
     from tickit.utils.byte_format import ByteFormat
 
 
-    class AmplifierAdapter(ComposedAdapter):
+    class AmplifierAdapter(CommandAdapter):
         device: AmplifierDevice
 
-        def __init__(
-            self,
-            host: str = "localhost",
-            port: int = 25565,
-        ) -> None:
-            super().__init__(
-                TcpServer(host, port, ByteFormat(b"%b\r\n")),
-                CommandInterpreter(),
-            )
+        def __init__(self, device: AmplifierDevice) -> None:
+            super().__init__()
+            self.device = device
 
 
 Adapter Commands
 ----------------
 
 Now we have an adapter for our device, we need to tell it how to identify commands.
-When using the `CommandInterpreter`, commands may be registered by decorating an
-adapter method with a command register.
+Commands are registered by decorating an adapter method with a command register.
 
 We shall create two methods, one which returns the current amplification of the
 device, and another which sets a new value for the amplification.
@@ -62,9 +51,9 @@ message should be decoded to a string prior to matching using the ``utf-8`` stan
 
 .. code-block:: python
 
-    from tickit.adapters.interpreters.command.regex_command import RegexCommand
+    from tickit.adapters.specifications import RegexCommand
 
-    class AmplifierAdapter(ComposedAdapter):
+    class AmplifierAdapter(CommandAdapter):
 
          ...
 
@@ -79,7 +68,7 @@ parentheses form the capture group from which the argument is extracted.
 
 .. code-block:: python
 
-    class AmplifierAdapter(ComposedAdapter):
+    class AmplifierAdapter(CommandAdapter):
 
         ...
 
@@ -88,29 +77,23 @@ parentheses form the capture group from which the argument is extracted.
             self.device.amplification = amplification
 
 
-In its entirety your adapter should look as below.
+We also optionally want to have messages formatted more nicely so can set the
+``_byte_format`` to something slightly more readable. In its entirety your
+adapter should look as below.
 
 .. code-block:: python
 
-    from tickit.adapters.composed import ComposedAdapter
-    from tickit.adapters.interpreters.command.command_interpreter import CommandInterpreter
-    from tickit.adapters.interpreters.command.regex_command import RegexCommand
-    from tickit.adapters.servers.tcp import TcpServer
+    from tickit.adapters.tcp import CommandAdapter
     from tickit.utils.byte_format import ByteFormat
+    from tickit.adapters.specifications import RegexCommand
 
-
-    class AmplifierAdapter(ComposedAdapter):
+    class AmplifierAdapter(CommandAdapter):
         device: AmplifierDevice
+        _byte_format: ByteFormat = ByteFormat(b"%b\r\n")
 
-        def __init__(
-            self,
-            host: str = "localhost",
-            port: int = 25565,
-        ) -> None:
-            super().__init__(
-                TcpServer(host, port, ByteFormat(b"%b\r\n")),
-                CommandInterpreter(),
-            )
+        def __init__(self, device: AmplifierDevice) -> None:
+            super().__init__()
+            self.device = device
 
         @RegexCommand(r"A\?", False, "utf-8")
         async def get_amplification(self) -> bytes:
@@ -125,22 +108,36 @@ Include the Adapter
 -------------------
 
 In order to now use this adapter to control our device we need to include it in
-our amplifier `ComponentConfig`. To do this we simply add it to the arguments of
-`DeviceSimulation`.
+our amplifier `ComponentConfig`. To do this we first construct an `AdapterContainer`
+with our ``AmplifierAdapter`` and the appropriate `AdapterIo`. In this case `TcpIo`.
+Once this is done we simply add it to the arguments of `DeviceSimulation`. 
 
 .. code-block:: python
 
     @pydantic.v1.dataclasses.dataclass
     class Amplifier(ComponentConfig):
-        initial_amplification: int
+        """Amplifier you can set the amplification value of over TCP."""
 
-        def __call__(self) -> Component:
+        initial_amplification: int
+        host: str = "localhost"
+        port: int = 25565
+
+        def __call__(self) -> Component:  # noqa: D102
+            device = AmplifierDevice(
+                initial_amplification=self.initial_amplification,
+            )
+            adapters = [
+                AdapterContainer(
+                    AmplifierAdapter(device),
+                    TcpIo(
+                        self.host,
+                        self.port,
+                    )
+            ]
             return DeviceSimulation(
                 name=self.name,
-                device=AmplifierDevice(
-                    initial_amplification=self.initial_amplification,
-                ),
-                adapters=[AmplifierAdapter()],
+                device=device,
+                adapters=adapters,
             )
 
 It is possible to add many adapters to a device, for example a composed and an epics
@@ -154,7 +151,7 @@ The simulation can be run the same as before using the yaml.
 
 .. code-block:: bash
 
-    python -m tickit all amp_conf.yaml
+    python -m tickit all amplifier.yaml
 
 Additionally, we will start a telnet client which communicates with the TcpServer of
 the adapter, this may be performed by running the following command:

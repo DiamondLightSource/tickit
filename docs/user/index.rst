@@ -17,7 +17,7 @@ side-bar.
             tutorials/running-a-simulation
             tutorials/creating-a-simulation
             tutorials/create-a-device
-            tutorials/use-composed-adapter
+            tutorials/use-command-adapter
 
         +++
 
