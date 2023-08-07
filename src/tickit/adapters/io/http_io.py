@@ -22,8 +22,8 @@ class HttpIo(AdapterIo[HttpAdapter]):
     host: str
     port: int
 
-    _stopped: Optional[asyncio.Event] = None
-    _ready: Optional[asyncio.Event] = None
+    _stopped: Optional[asyncio.Event]
+    _ready: Optional[asyncio.Event]
 
     def __init__(
         self,
