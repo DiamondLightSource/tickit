@@ -88,12 +88,11 @@ simulation component, which is wired to a sink.
 
 .. code-block:: yaml
 
-    - type: tickit.devices.source.Source
+  - type: tickit.devices.source.Source
     name: source
     inputs: {}
     value: 10.0
-
-    - type: examples.adapters.system_simulation_adapter_config.NestedAmplifierWithAdapter
+  - type: examples.adapters.system_simulation_adapter_config.NestedAmplifierWithAdapter
     name: nested-amp
     inputs:
         input_1:
@@ -111,8 +110,7 @@ simulation component, which is wired to a sink.
         output_1:
         component: amp
         port: amplified_signal
-
-    - type: tickit.devices.sink.Sink
+  - type: tickit.devices.sink.Sink
     name: external_sink
     inputs:
         sink_1:
