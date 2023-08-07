@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 
 
@@ -7,9 +6,9 @@
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Creating a Device &#8212; tickit 0.3.1.dev8+gbd673a8d documentation</title>
+    <title>Creating a Device &#8212; tickit 0.3.1.dev9+g606686f4 documentation</title>
   
   
   
@@ -29,21 +28,21 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
-    <script src="../../_static/clipboard.min.js"></script>
-    <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/design-tabs.js"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=17b92a39"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=30646c52"></script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'user/tutorials/create-a-device';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://dls-controls.github.io/tickit/switcher.json';
@@ -52,7 +51,7 @@
     <link rel="icon" href="../../_static/tickit-logo.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Using an Adapter" href="use-composed-adapter.html" />
+    <link rel="next" title="Using an Adapter" href="use-command-adapter.html" />
     <link rel="prev" title="Creating a Simulation" href="creating-a-simulation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -380,12 +379,11 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="running-a-simulation.html">Running a Simulation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="creating-a-simulation.html">Creating a Simulation</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Creating a Device</a></li>
-<li class="toctree-l1"><a class="reference internal" href="use-composed-adapter.html">Using an Adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="use-command-adapter.html">Using an Adapter</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">How-to Guides</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../how-to/use-epics-adapter.html">Create a Device with an EPICS Interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../how-to/use-command-wrappers.html">Use Command Interpreter Wrappers</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Explanations</span></p>
 <ul class="nav bd-sidenav">
@@ -393,6 +391,7 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../explanations/components.html">Simulation Components</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../explanations/devices.html">Devices</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../explanations/adapters.html">Adapters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanations/system-simulation-adapters.html">System Simulation Adapters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../explanations/wiring.html">Wiring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../explanations/glossary.html">Glossary</a></li>
 </ul>
@@ -593,7 +592,7 @@ and a <a class="reference internal" href="../reference/api.html#tickit.devices.s
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">source</span>
 <span class="w">  </span><span class="nt">inputs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
 <span class="w">  </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.0</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amp.Amplifier</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amplifier.Amplifier</span>
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amp</span>
 <span class="w">  </span><span class="nt">inputs</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">initial_signal</span><span class="p">:</span>
@@ -608,7 +607,7 @@ and a <a class="reference internal" href="../reference/api.html#tickit.devices.s
 <span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amplified_signal</span>
 </pre></div>
 </div>
-<p>Where in <code class="docutils literal notranslate"><span class="pre">amp.Amplifier</span></code> <code class="docutils literal notranslate"><span class="pre">amp</span></code> is the name of the <code class="docutils literal notranslate"><span class="pre">.py</span></code> file the amplifier
+<p>Where in <code class="docutils literal notranslate"><span class="pre">amplifier.Amplifier</span></code> <code class="docutils literal notranslate"><span class="pre">amplifier</span></code> is the name of the <code class="docutils literal notranslate"><span class="pre">.py</span></code> file the amplifier
 is written in, and Amplifier is the name of the <a class="reference internal" href="../reference/api.html#tickit.core.components.component.ComponentConfig" title="tickit.core.components.component.ComponentConfig"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ComponentConfig</span></code></a> for the amplifier.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
@@ -616,7 +615,7 @@ is written in, and Amplifier is the name of the <a class="reference internal" hr
 configurations.</p>
 </div>
 <p>Finally, to run the simulation:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>tickit<span class="w"> </span>all<span class="w"> </span>amp_conf.yaml
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>tickit<span class="w"> </span>all<span class="w"> </span>amplifier.yaml
 </pre></div>
 </div>
 <p>Once run, we expect to see an output akin to:</p>
@@ -642,7 +641,7 @@ in a single or across multiple processes.</p>
 <section id="interact-with-the-device">
 <h2>Interact with the device<a class="headerlink" href="#interact-with-the-device" title="Permalink to this heading">#</a></h2>
 <p>Now we have a device it is likely we want to interact with it. This can be achieved
-externally using adapters. A guide on how to do this can be found <a class="reference internal" href="use-composed-adapter.html"><span class="doc">here.</span></a></p>
+externally using adapters. A guide on how to do this can be found <a class="reference internal" href="use-command-adapter.html"><span class="doc">here.</span></a></p>
 </section>
 </section>
 
@@ -667,7 +666,7 @@ externally using adapters. A guide on how to do this can be found <a class="refe
       </div>
     </a>
     <a class="right-next"
-       href="use-composed-adapter.html"
+       href="use-command-adapter.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
