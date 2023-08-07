@@ -30,7 +30,7 @@ class AdapterContainer(Generic[A]):
     """A container for an object specific adapter and the required functional io."""
 
     adapter: A
-    io: AdapterIo
+    io: AdapterIo[A]
 
     def __init__(self, adapter: A, io: AdapterIo) -> None:
         self.adapter = adapter
