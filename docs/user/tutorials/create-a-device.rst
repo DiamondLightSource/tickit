@@ -157,7 +157,7 @@ and a `Sink`, named sink, which will receive the amplified signal.
       name: source
       inputs: {}
       value: 10.0
-    - type: amp.Amplifier
+    - type: amplifier.Amplifier
       name: amp
       inputs:
         initial_signal:
@@ -172,7 +172,7 @@ and a `Sink`, named sink, which will receive the amplified signal.
           port: amplified_signal
 
 
-Where in ``amp.Amplifier`` ``amp`` is the name of the ``.py`` file the amplifier
+Where in ``amplifier.Amplifier`` ``amplifier`` is the name of the ``.py`` file the amplifier
 is written in, and Amplifier is the name of the `ComponentConfig` for the amplifier.
 
 .. seealso::
@@ -184,7 +184,7 @@ Finally, to run the simulation:
 
 .. code-block:: bash
 
-    python -m tickit all amp_conf.yaml
+    python -m tickit all amplifier.yaml
 
 Once run, we expect to see an output akin to:
 
@@ -213,4 +213,4 @@ Interact with the device
 ------------------------
 
 Now we have a device it is likely we want to interact with it. This can be achieved
-externally using adapters. A guide on how to do this can be found :doc:`here.<use-composed-adapter>`
+externally using adapters. A guide on how to do this can be found :doc:`here.<use-command-adapter>`

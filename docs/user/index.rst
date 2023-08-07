@@ -17,7 +17,7 @@ side-bar.
             tutorials/running-a-simulation
             tutorials/creating-a-simulation
             tutorials/create-a-device
-            tutorials/use-composed-adapter
+            tutorials/use-command-adapter
 
         +++
 
@@ -30,7 +30,6 @@ side-bar.
             :maxdepth: 1
 
             how-to/use-epics-adapter
-            how-to/use-command-wrappers
 
         +++
 
@@ -46,6 +45,7 @@ side-bar.
             explanations/components
             explanations/devices
             explanations/adapters
+            explanations/system-simulation-adapters
             explanations/wiring
             explanations/glossary
 

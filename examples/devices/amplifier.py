@@ -1,10 +1,13 @@
 import pydantic.v1.dataclasses
+from softioc import builder
 from typing_extensions import TypedDict
 
-from tickit.adapters.composed import ComposedAdapter
-from tickit.adapters.interpreters.command.command_interpreter import CommandInterpreter
-from tickit.adapters.interpreters.command.regex_command import RegexCommand
-from tickit.adapters.servers.tcp import TcpServer
+from tickit.adapters.epics import EpicsAdapter
+from tickit.adapters.io.epics_io import EpicsIo
+from tickit.adapters.io.tcp_io import TcpIo
+from tickit.adapters.specifications import RegexCommand
+from tickit.adapters.tcp import CommandAdapter
+from tickit.core.adapter import AdapterContainer
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
@@ -48,29 +51,22 @@ class AmplifierDevice(Device):
         amplified_value = inputs["initial_signal"] * self.amplification
         return DeviceUpdate(self.Outputs(amplified_signal=amplified_value), None)
 
+    def set_amplification(self, value: float) -> None:
+        self.amplification = value
 
-class AmplifierAdapter(ComposedAdapter):
-    """A composed adapter which gets and sets the value of amplification."""
+    def get_amplification(self) -> float:
+        return self.amplification
+
+
+class AmplifierAdapter(CommandAdapter):
+    """A TCP adapter which gets and sets the value of amplification."""
 
     device: AmplifierDevice
+    _byte_format: ByteFormat = ByteFormat(b"%b\r\n")
 
-    def __init__(
-        self,
-        host: str = "localhost",
-        port: int = 25565,
-    ) -> None:
-        """Instantiate a composed amplifier adapter with a configured TCP server.
-
-        Args:
-            host (Optional[str]): The host address of the TcpServer. Defaults to
-                "localhost".
-            port (Optional[int]): The bound port of the TcpServer. Defaults to 25565.
-
-        """
-        super().__init__(
-            TcpServer(host, port, ByteFormat(b"%b\r\n")),
-            CommandInterpreter(),
-        )
+    def __init__(self, device: AmplifierDevice) -> None:
+        super().__init__()
+        self.device = device
 
     @RegexCommand(r"A\?", False, "utf-8")
     async def get_amplification(self) -> bytes:
@@ -91,17 +87,63 @@ class AmplifierAdapter(ComposedAdapter):
         self.device.amplification = amplification
 
 
+class AmplifierEpicsAdapter(EpicsAdapter):
+    """A EPICS adapter which gets and sets the value of amplification."""
+
+    device: AmplifierDevice
+
+    def __init__(self, device: AmplifierDevice) -> None:
+        super().__init__()
+        self.device = device
+
+    async def callback(self, value) -> None:
+        """Device callback function.
+
+        Args:
+            value (float): The value to set the device to.
+        """
+        self.device.set_amplification(value)
+        await self.interrupt()
+
+    def on_db_load(self) -> None:
+        """Customises records that have been loaded in to suit the simulation."""
+        builder.aOut(
+            "VALUE",
+            initial_value=self.device.amplification,
+            on_update=self.callback,
+        )
+        self.link_input_on_interrupt(
+            builder.aIn("VALUE_RBV"), self.device.get_amplification
+        )
+
+
 @pydantic.v1.dataclasses.dataclass
 class Amplifier(ComponentConfig):
     """Amplifier you can set the amplification value of over TCP."""
 
     initial_amplification: int
+    host: str = "localhost"
+    port: int = 25565
 
     def __call__(self) -> Component:  # noqa: D102
+        device = AmplifierDevice(
+            initial_amplification=self.initial_amplification,
+        )
+        adapters = [
+            AdapterContainer(
+                AmplifierAdapter(device),
+                TcpIo(
+                    self.host,
+                    self.port,
+                ),
+            ),
+            AdapterContainer(
+                AmplifierEpicsAdapter(device),
+                EpicsIo("AMP_IOC"),
+            ),
+        ]
         return DeviceSimulation(
             name=self.name,
-            device=AmplifierDevice(
-                initial_amplification=self.initial_amplification,
-            ),
-            adapters=[AmplifierAdapter()],
+            device=device,
+            adapters=adapters,
         )

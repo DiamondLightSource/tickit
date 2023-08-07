@@ -1,0 +1,30 @@
+- type: tickit.devices.source.Source
+  name: source
+  inputs: {}
+  value: 10.0
+
+- type: examples.adapters.system_simulation_adapter_config.NestedAmplifierWithAdapter
+  name: nested-amp
+  inputs:
+    input_1:
+      component: source
+      port: value
+  components:
+    - type: examples.devices.amplifier.Amplifier
+      name: amp
+      inputs:
+        initial_signal:
+          component: external
+          port: input_1
+      initial_amplification: 2
+  expose:
+    output_1:
+      component: amp
+      port: amplified_signal
+
+- type: tickit.devices.sink.Sink
+  name: external_sink
+  inputs:
+    sink_1:
+      component: nested-amp
+      port: output_1

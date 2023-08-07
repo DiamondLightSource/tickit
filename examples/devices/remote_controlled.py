@@ -5,10 +5,10 @@ from typing import AsyncIterable, Optional, TypedDict
 
 import pydantic.v1.dataclasses
 
-from tickit.adapters.composed import ComposedAdapter
-from tickit.adapters.interpreters.command import CommandInterpreter, RegexCommand
-from tickit.adapters.servers.tcp import TcpServer
-from tickit.core.adapter import Server
+from tickit.adapters.io.tcp_io import TcpIo
+from tickit.adapters.specifications import RegexCommand
+from tickit.adapters.tcp import CommandAdapter
+from tickit.core.adapter import AdapterContainer
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceSimulation
 from tickit.core.device import Device, DeviceUpdate
@@ -64,28 +64,16 @@ class RemoteControlledDevice(Device):
         return DeviceUpdate(self.Outputs(observed=self.observed), None)
 
 
-class RemoteControlledAdapter(ComposedAdapter[bytes]):
+class RemoteControlledAdapter(CommandAdapter):
     """A trivial composed adapter which gets and sets device properties."""
 
     device: RemoteControlledDevice
+    _byte_format: ByteFormat = ByteFormat(b"%b\r\n")
 
-    def __init__(
-        self,
-        server: Server,
-    ) -> None:
-        """A constructor of the Shutter adapter, which builds the configured server.
-
-        Args:
-            device (Device): The device which this adapter is attached to.
-            raise_interrupt (Callable): A callback to request that the device is
-                updated immediately.
-            server (Server): The immutable data container used to configure a
-                server.
-        """
-        super().__init__(
-            server,
-            CommandInterpreter(),
-        )
+    def __init__(self, device: RemoteControlledDevice, format: ByteFormat) -> None:
+        super().__init__()
+        self.device = device
+        self._byte_format = format
 
     async def on_connect(self) -> AsyncIterable[Optional[bytes]]:
         """Continiously sends the unobserved value to the client.
@@ -230,11 +218,24 @@ class RemoteControlledAdapter(ComposedAdapter[bytes]):
 class RemoteControlled(ComponentConfig):
     """Thing you can poke over TCP."""
 
-    format: ByteFormat = ByteFormat(b"%b\r\n")
+    format: ByteFormat
 
     def __call__(self) -> Component:  # noqa: D102
+        device = RemoteControlledDevice()
+        adapters = [
+            AdapterContainer(
+                RemoteControlledAdapter(
+                    device,
+                    format=self.format,
+                ),
+                TcpIo(
+                    host="localhost",
+                    port=25565,
+                ),
+            )
+        ]
         return DeviceSimulation(
             name=self.name,
-            device=RemoteControlledDevice(),
-            adapters=[RemoteControlledAdapter(TcpServer())],
+            device=device,
+            adapters=adapters,
         )
