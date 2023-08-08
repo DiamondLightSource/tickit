@@ -38,6 +38,7 @@ class HttpIo(AdapterIo[HttpAdapter]):
     async def setup(
         self, adapter: HttpAdapter, raise_interrupt: RaiseInterrupt
     ) -> None:
+        adapter.interrupt = raise_interrupt
         self._ensure_stopped_event().clear()
         endpoints = adapter.get_endpoints()
         await self._start_server(endpoints, raise_interrupt)
