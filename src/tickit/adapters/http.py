@@ -2,10 +2,13 @@ from inspect import getmembers
 from typing import Callable, Iterable, Tuple
 
 from tickit.adapters.specifications import HttpEndpoint
+from tickit.core.adapter import RaiseInterrupt
 
 
 class HttpAdapter:
     """An adapter interface for the HttpIo."""
+
+    interrupt: RaiseInterrupt
 
     def get_endpoints(self) -> Iterable[Tuple[HttpEndpoint, Callable]]:
         """Returns list of endpoints.
