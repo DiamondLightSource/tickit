@@ -60,6 +60,10 @@
     "url": "https://dls-controls.github.io/tickit/0.1/"
   },
   {
+    "version": "http-interrupt",
+    "url": "https://dls-controls.github.io/tickit/http-interrupt/"
+  },
+  {
     "version": "split-interpreter-empty-strings",
     "url": "https://dls-controls.github.io/tickit/split-interpreter-empty-strings/"
   },
