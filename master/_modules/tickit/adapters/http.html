@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.adapters.http &#8212; tickit 0.3.1.dev9+g606686f4 documentation</title>
+    <title>tickit.adapters.http &#8212; tickit 0.4.1.dev1+g52325c7d documentation</title>
   
   
   
@@ -36,7 +36,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=17b92a39"></script>
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=499798d9"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -419,10 +419,13 @@ document.write(`
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Tuple</span>
 
 <span class="kn">from</span> <span class="nn">tickit.adapters.specifications</span> <span class="kn">import</span> <span class="n">HttpEndpoint</span>
+<span class="kn">from</span> <span class="nn">tickit.core.adapter</span> <span class="kn">import</span> <span class="n">RaiseInterrupt</span>
 
 
 <div class="viewcode-block" id="HttpAdapter"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.adapters.http.HttpAdapter">[docs]</a><span class="k">class</span> <span class="nc">HttpAdapter</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An adapter interface for the HttpIo.&quot;&quot;&quot;</span>
+
+    <span class="n">interrupt</span><span class="p">:</span> <span class="n">RaiseInterrupt</span>
 
 <div class="viewcode-block" id="HttpAdapter.get_endpoints"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.adapters.http.HttpAdapter.get_endpoints">[docs]</a>    <span class="k">def</span> <span class="nf">get_endpoints</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">HttpEndpoint</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns list of endpoints.</span>
