@@ -8,6 +8,10 @@
     "url": "https://dls-controls.github.io/tickit/v0.1/"
   },
   {
+    "version": "0.4.1",
+    "url": "https://dls-controls.github.io/tickit/0.4.1/"
+  },
+  {
     "version": "0.4.0",
     "url": "https://dls-controls.github.io/tickit/0.4.0/"
   },
@@ -58,10 +62,6 @@
   {
     "version": "0.1",
     "url": "https://dls-controls.github.io/tickit/0.1/"
-  },
-  {
-    "version": "http-interrupt",
-    "url": "https://dls-controls.github.io/tickit/http-interrupt/"
   },
   {
     "version": "split-interpreter-empty-strings",
