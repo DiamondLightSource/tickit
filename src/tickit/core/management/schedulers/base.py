@@ -15,6 +15,7 @@ from tickit.core.typedefs import (
     Interrupt,
     Output,
     SimTime,
+    Skip,
     StopComponent,
 )
 from tickit.utils.topic_naming import input_topic, output_topic
@@ -69,24 +70,37 @@ class BaseScheduler:
         """
         await self.state_producer.produce(input_topic(input.target), input)
 
+    async def skip_component(self, skip: Skip) -> None:
+        """Sends a message to itself that a given component update has been skipped.
+
+        Args:
+            skip (Skip): The Skip information to be included in the message sent to the
+                scheduler.
+        """
+        await self.state_producer.produce(output_topic(skip.source), skip)
+
     async def handle_message(self, message: ComponentOutput) -> None:
         """Handle messages received by the state consumer.
 
-        An asynchronous callback which handles Interrupt, Output and ComponentException
-        messages received by the state consumer. For Outputs, changes are propagated
-        and wakeups scheduled if required. For interrupts handling is deferred. For
-        exceptions, a StopComponent message is produced to each component in the system
-        to facilitate shut down.
+        An asynchronous callback which handles Interrupt, Output, ComponentException
+        and Skip messages received by the state consumer. For Outputs, changes are
+        propagated and wakeups scheduled if required. Skips are also propgated. For
+        interrupts handling is deferred. For exceptions, a StopComponent message is
+        produced to each component in the system to facilitate shut down.
 
         Args:
-            message (Union[Interrupt, Output, ComponentException]): An Interrupt,
+            message (Union[Interrupt, Output, ComponentException, Skip]): An Interrupt,
                 Output or ComponentException received by the state consumer.
         """
-        LOGGER.debug(f"Scheduler ({type(self).__name__}) got {message}")
+        if not isinstance(message, Skip):
+            LOGGER.debug(f"Scheduler ({type(self).__name__}) got {message}")
+
         if isinstance(message, Output):
             await self.ticker.propagate(message)
             if message.call_at is not None:
                 self.add_wakeup(message.source, message.call_at)
+        elif isinstance(message, Skip):
+            await self.ticker.propagate(message)
         elif isinstance(message, Interrupt):
             await self.schedule_interrupt(message.source)
         elif isinstance(message, ComponentException):
@@ -99,14 +113,16 @@ class BaseScheduler:
         subscribed to the output topics of each component in the system, a state
         producer to produce component inputs.
         """
-        self.ticker = Ticker(self._wiring, self.update_component)
+        self.ticker = Ticker(self._wiring, self.update_component, self.skip_component)
         self.state_consumer: StateConsumer[ComponentOutput] = self._state_consumer_cls(
             self.handle_message
         )
         await self.state_consumer.subscribe(
             {output_topic(component) for component in self.ticker.components}
         )
-        self.state_producer: StateProducer[ComponentInput] = self._state_producer_cls()
+        self.state_producer: StateProducer[
+            Union[ComponentInput, Skip]
+        ] = self._state_producer_cls()
 
     def add_wakeup(self, component: ComponentID, when: SimTime) -> None:
         """Adds a wakeup to the mapping.
