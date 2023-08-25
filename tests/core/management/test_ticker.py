@@ -15,6 +15,7 @@ from tickit.core.typedefs import (
     Output,
     PortID,
     SimTime,
+    Skip,
 )
 
 
@@ -79,6 +80,25 @@ async def test_ticker_schedule_possible_updates_passes_inputs(ticker: Ticker):
             ComponentID("Out1"), SimTime(42), Changes(Map({PortID("TestChange"): 3.14}))
         )
     )
+
+
+@pytest.mark.asyncio
+async def test_ticker_schedule_possible_updates_skips_components_with_no_input_changes(
+    ticker: Ticker,
+):
+    ticker.time = SimTime(10)
+    ticker.roots = set()
+    ticker.to_update = {ComponentID("Mid1"): None, ComponentID("In1"): None}
+    ticker.inputs = defaultdict(dict, {ComponentID("Mid1"): {}})
+    ticker.update_component = AsyncMock()
+    ticker.skip_component = AsyncMock()
+
+    await ticker.schedule_possible_updates()
+
+    ticker.skip_component.assert_called_once_with(
+        Skip(ComponentID("Mid1"), SimTime(10), Changes(Map()))
+    )
+    ticker.update_component.assert_not_called()
 
 
 @pytest.mark.asyncio
