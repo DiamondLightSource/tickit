@@ -64,6 +64,10 @@
     "url": "https://dls-controls.github.io/tickit/0.1/"
   },
   {
+    "version": "remove-broken-links",
+    "url": "https://dls-controls.github.io/tickit/remove-broken-links/"
+  },
+  {
     "version": "split-interpreter-empty-strings",
     "url": "https://dls-controls.github.io/tickit/split-interpreter-empty-strings/"
   },
