@@ -84,7 +84,7 @@ class BaseScheduler:
 
         An asynchronous callback which handles Interrupt, Output, ComponentException
         and Skip messages received by the state consumer. For Outputs, changes are
-        propagated and wakeups scheduled if required. Skips are also propgated. For
+        propagated and wakeups scheduled if required. Skips are also propagated. For
         interrupts handling is deferred. For exceptions, a StopComponent message is
         produced to each component in the system to facilitate shut down.
 
