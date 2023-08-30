@@ -79,7 +79,7 @@ class BaseScheduler:
         """
         await self.state_producer.produce(output_topic(skip.source), skip)
 
-    async def handle_message(self, message: ComponentOutput) -> None:
+    async def handle_message(self, message: Union[ComponentOutput, Skip]) -> None:
         """Handle messages received by the state consumer.
 
         An asynchronous callback which handles Interrupt, Output, ComponentException
@@ -89,7 +89,7 @@ class BaseScheduler:
         produced to each component in the system to facilitate shut down.
 
         Args:
-            message (Union[Interrupt, Output, ComponentException, Skip]): An Interrupt,
+            message (Union[ComponentOutput, Skip]): An Interrupt,
                 Output or ComponentException received by the state consumer.
         """
         if not isinstance(message, Skip):
