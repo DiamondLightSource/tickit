@@ -31,7 +31,7 @@ for implementing this.
 Nested Amplifier Example
 ------------------------
 
-The following system adapter is a simple `CommandAdapter`. This Can be used to query the
+The following system adapter is a simple ``CommandAdapter``. This Can be used to query the
 SystemSimulationComponent for a list of ID's of the components it contains; and to
 return the wiring map of the components.
 
@@ -51,7 +51,7 @@ return the wiring map of the components.
             """Returns the wiring object used by the nested scheduler."""
             return str(self._wiring).encode("utf-8")
 
-To use this adapter we would need to put it in an adapter container with TcpIo and
+To use this adapter we would need to put it in an adapter container with ``TcpIo`` and
 assign it as an argument in the SystemSimulationComponent.
 
 .. code-block:: python

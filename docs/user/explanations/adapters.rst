@@ -26,8 +26,8 @@ There are four adapter types included in the framework:
 Command adapter
 ----------------
 The command adapter identifies and handles commands from incoming messages and is 
-utilised with `TcpIo`. Commands are defined via decoration of adapter methods and the
-only such command type currently is a `RegexCommand`. This matches incoming messages to
+utilised with ``TcpIo``. Commands are defined via decoration of adapter methods and the
+only such command type currently is a ``RegexCommand``. This matches incoming messages to
 regex patterns and processes the command appropriately.
 
 
@@ -38,7 +38,7 @@ An adapter for use on a ZeroMQ data stream.
 
 HTTP adapter
 ------------
-An adapter that utilises HTTP endpoints for the `HttpIo`.
+An adapter that utilises HTTP endpoints for the ``HttpIo``.
 
 
 EPICS adapter

@@ -4,7 +4,7 @@ Using an Adapter
 This tutorial shows how to use a simple adapter to externally interact with a
 device in the tickit framework.
 
-We will use a `CommandAdapter` which will act as a simple TCP interface to the
+We will use a ``CommandAdapter`` which will act as a simple TCP interface to the
 ``Amplifier`` device we created in the previous how-to.
 
 .. seealso::
@@ -17,7 +17,7 @@ Initialise Adapter
 ------------------
 
 We shall begin using the same ``amplifier.py`` file from the ``Amplifier`` device. In
-that file add a new ``AmplifierAdapter`` class which inherits `CommandAdapter`.
+that file add a new ``AmplifierAdapter`` class which inherits ``CommandAdapter``.
 
 
 .. code-block:: python
@@ -44,7 +44,7 @@ We shall create two methods, one which returns the current amplification of the
 device, and another which sets a new value for the amplification.
 
 We shall begin by creating a method which returns the current value of the
-amplification. To do this we register it as a `RegexCommand` which is called by
+amplification. To do this we register it as a ``RegexCommand`` which is called by
 sending ``A?``. Since reading a device value will not alter the device state we
 shall set ``interrupt`` to ``False``. We shall also specify that the byte encoded
 message should be decoded to a string prior to matching using the ``utf-8`` standard.
@@ -109,7 +109,7 @@ Include the Adapter
 
 In order to now use this adapter to control our device we need to include it in
 our amplifier `ComponentConfig`. To do this we first construct an `AdapterContainer`
-with our ``AmplifierAdapter`` and the appropriate `AdapterIo`. In this case `TcpIo`.
+with our ``AmplifierAdapter`` and the appropriate `AdapterIo`. In this case ``TcpIo``.
 Once this is done we simply add it to the arguments of `DeviceSimulation`. 
 
 .. code-block:: python
