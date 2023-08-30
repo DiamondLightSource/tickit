@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.devices.sink &#8212; tickit 0.4.2.dev1+g04a0c477 documentation</title>
+    <title>tickit.devices.iobox &#8212; tickit 0.4.2.dev1+g04a0c477 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=30646c52"></script>
     <script src="../../../_static/design-tabs.js?v=36754332"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tickit/devices/sink';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tickit/devices/iobox';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://dls-controls.github.io/tickit/switcher.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'master';
@@ -397,7 +397,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">tickit.devices.sink</li>
+    <li class="breadcrumb-item active" aria-current="page">tickit.devices.iobox</li>
   </ul>
 </nav>
 </div>
@@ -414,11 +414,12 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <h1>Source code for tickit.devices.sink</h1><div class="highlight"><pre>
+  <h1>Source code for tickit.devices.iobox</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">TypedDict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Generic</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">TypedDict</span><span class="p">,</span> <span class="n">TypeVar</span>
 
 <span class="kn">import</span> <span class="nn">pydantic.v1.dataclasses</span>
+<span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">NotRequired</span>
 
 <span class="kn">from</span> <span class="nn">tickit.core.components.component</span> <span class="kn">import</span> <span class="n">Component</span><span class="p">,</span> <span class="n">ComponentConfig</span>
 <span class="kn">from</span> <span class="nn">tickit.core.components.device_simulation</span> <span class="kn">import</span> <span class="n">DeviceSimulation</span>
@@ -427,50 +428,136 @@ document.write(`
 
 <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
+<span class="n">A</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
+<span class="n">V</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;V&quot;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="SinkDevice">
-<a class="viewcode-back" href="../../../user/reference/api.html#tickit.devices.sink.SinkDevice">[docs]</a>
-<span class="k">class</span> <span class="nc">SinkDevice</span><span class="p">(</span><span class="n">Device</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A simple device which can take any input and produces no output.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="IoBoxDevice">
+<a class="viewcode-back" href="../../../user/reference/api.html#tickit.devices.iobox.IoBoxDevice">[docs]</a>
+<span class="k">class</span> <span class="nc">IoBoxDevice</span><span class="p">(</span><span class="n">Device</span><span class="p">,</span> <span class="n">Generic</span><span class="p">[</span><span class="n">A</span><span class="p">,</span> <span class="n">V</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A simple device which can take and store key-value pairs from both</span>
+<span class="sd">    network adapters and the ticket graph.</span>
+
+<span class="sd">    Adapters should write values to the device via device.write(addr, value)</span>
+<span class="sd">    or device[addr] = value. The writes will be pending until the scheduler</span>
+<span class="sd">    interrupts the device. For example:</span>
+
+<span class="sd">    ```python</span>
+<span class="sd">    device[foo]</span>
+<span class="sd">    &gt;&gt; 5</span>
+<span class="sd">    device[foo] = 6</span>
+<span class="sd">    device[foo]</span>
+<span class="sd">    &gt;&gt; 5</span>
+<span class="sd">    interrupt()</span>
+<span class="sd">    device[foo]</span>
+<span class="sd">    &gt;&gt; 6</span>
+<span class="sd">    ```</span>
+
+<span class="sd">    Linked devices can send values to be written via inputs and receive changes</span>
+<span class="sd">    via outputs. For example:</span>
+<span class="sd">    ```python</span>
+<span class="sd">    update = box.update(SimTime(0), {&quot;updates&quot;: [(4, &quot;foo&quot;)]})</span>
+<span class="sd">    assert update.outputs[&quot;updates&quot;] == [(4, &quot;foo&quot;)]</span>
+<span class="sd">    &gt;&gt; 6</span>
+<span class="sd">    ```</span>
+
+<span class="sd">    The two modes of I/O may used independently, optionally and interoperably.</span>
+
+<span class="sd">    This device is useful for simulating a basic block of memory.</span>
+<span class="sd">    The envisioned use of this class is where you wish to simulate a network</span>
+<span class="sd">    interface but the internal hardware logic is either not needed or very simple.</span>
+<span class="sd">    A custom adapter can be made for the network interface and can simply</span>
+<span class="sd">    read and write to an IoBox.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1">#: A typed mapping containing the &#39;input&#39; input value</span>
     <span class="k">class</span> <span class="nc">Inputs</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
-        <span class="nb">input</span><span class="p">:</span> <span class="n">Any</span>
+        <span class="n">updates</span><span class="p">:</span> <span class="n">NotRequired</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span>
 
-    <span class="c1">#: An empty typed mapping of device outputs</span>
+    <span class="c1">#: A typed mapping of device outputs</span>
     <span class="k">class</span> <span class="nc">Outputs</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
-        <span class="o">...</span>
+        <span class="n">updates</span><span class="p">:</span> <span class="n">NotRequired</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span>
 
-<div class="viewcode-block" id="SinkDevice.update">
-<a class="viewcode-back" href="../../../user/reference/api.html#tickit.devices.sink.SinkDevice.update">[docs]</a>
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">SimTime</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">Inputs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeviceUpdate</span><span class="p">[</span><span class="n">Outputs</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The update method which logs the inputs and produces no outputs.</span>
+    <span class="n">_memory</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">A</span><span class="p">,</span> <span class="n">V</span><span class="p">]</span>
+    <span class="n">_change_buffer</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">A</span><span class="p">,</span> <span class="n">V</span><span class="p">]]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># noqa: D107</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_memory</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_change_buffer</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="IoBoxDevice.write">
+<a class="viewcode-back" href="../../../user/reference/api.html#tickit.devices.iobox.IoBoxDevice.write">[docs]</a>
+    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">:</span> <span class="n">A</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">V</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write a value to an address.</span>
+
+<span class="sd">        The value will only make it into memory when update() is called</span>
+<span class="sd">        e.g. by an interrupt.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            time (SimTime): The current simulation time (in nanoseconds).</span>
-<span class="sd">            inputs (State): A mapping of inputs to the device and their values.</span>
+<span class="sd">            addr (A): Address to store value</span>
+<span class="sd">            value (V): Value to store</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_change_buffer</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">addr</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="IoBoxDevice.read">
+<a class="viewcode-back" href="../../../user/reference/api.html#tickit.devices.iobox.IoBoxDevice.read">[docs]</a>
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">:</span> <span class="n">A</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">V</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read a value from an address.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            addr (A): Address to find value</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            DeviceUpdate[Outputs]:</span>
-<span class="sd">                The produced update event which never contains any changes, and never</span>
-<span class="sd">                requests a callback.</span>
+<span class="sd">            V: Value at address</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If no value stored at address</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sunk </span><span class="si">{</span><span class="w"> </span><span class="p">{</span><span class="n">k</span><span class="p">:</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">inputs</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span><span class="w"> </span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">DeviceUpdate</span><span class="p">(</span><span class="n">SinkDevice</span><span class="o">.</span><span class="n">Outputs</span><span class="p">(),</span> <span class="kc">None</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_memory</span><span class="p">[</span><span class="n">addr</span><span class="p">]</span></div>
+
+
+    <span class="c1"># As well as read and write, can use device[addr] and device[addr] = &quot;foo&quot;</span>
+    <span class="fm">__getitem__</span> <span class="o">=</span> <span class="n">read</span>
+    <span class="fm">__setitem__</span> <span class="o">=</span> <span class="n">write</span>
+
+<div class="viewcode-block" id="IoBoxDevice.update">
+<a class="viewcode-back" href="../../../user/reference/api.html#tickit.devices.iobox.IoBoxDevice.update">[docs]</a>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">SimTime</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">Inputs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeviceUpdate</span><span class="p">[</span><span class="n">Outputs</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write all pending values to their addresses.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            time (SimTime): (Simulated) time at which this is called</span>
+<span class="sd">            inputs (Inputs): Inputs to this device, may contain addresses</span>
+<span class="sd">                and values to update</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            DeviceUpdate[Outputs]: Outputs and update, may contain addresses</span>
+<span class="sd">                and values that have been updated, either via inputs or</span>
+<span class="sd">                an adapter</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_change_buffer</span> <span class="o">+=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;updates&quot;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="n">updates</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">_change_buffer</span><span class="p">:</span>
+            <span class="n">addr</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_change_buffer</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_memory</span><span class="p">[</span><span class="n">addr</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="n">updates</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">addr</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">DeviceUpdate</span><span class="p">(</span><span class="n">IoBoxDevice</span><span class="o">.</span><span class="n">Outputs</span><span class="p">(</span><span class="n">updates</span><span class="o">=</span><span class="n">updates</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span></div>
 </div>
 
 
 
-<div class="viewcode-block" id="Sink">
-<a class="viewcode-back" href="../../../user/reference/api.html#tickit.devices.sink.Sink">[docs]</a>
+<div class="viewcode-block" id="IoBox">
+<a class="viewcode-back" href="../../../user/reference/api.html#tickit.devices.iobox.IoBox">[docs]</a>
 <span class="nd">@pydantic</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
-<span class="k">class</span> <span class="nc">Sink</span><span class="p">(</span><span class="n">ComponentConfig</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Arbitrary value sink that logs the value.&quot;&quot;&quot;</span>
+<span class="k">class</span> <span class="nc">IoBox</span><span class="p">(</span><span class="n">ComponentConfig</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Arbitrary box of key-value pairs.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Component</span><span class="p">:</span>  <span class="c1"># noqa: D102</span>
         <span class="k">return</span> <span class="n">DeviceSimulation</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="n">device</span><span class="o">=</span><span class="n">SinkDevice</span><span class="p">(),</span>
+            <span class="n">device</span><span class="o">=</span><span class="n">IoBoxDevice</span><span class="p">(),</span>
         <span class="p">)</span></div>
 
 </pre></div>

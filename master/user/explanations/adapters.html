@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Adapters &#8212; tickit 0.4.1.dev1+g52325c7d documentation</title>
+    <title>Adapters &#8212; tickit 0.4.2.dev1+g04a0c477 documentation</title>
   
   
   
@@ -37,9 +37,9 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=499798d9"></script>
+    <script src="../../_static/documentation_options.js?v=66b59a6c"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=30646c52"></script>
     <script src="../../_static/design-tabs.js?v=36754332"></script>
@@ -457,7 +457,7 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="adapters">
-<h1>Adapters<a class="headerlink" href="#adapters" title="Permalink to this heading">#</a></h1>
+<h1>Adapters<a class="headerlink" href="#adapters" title="Link to this heading">#</a></h1>
 <p>Adapters are user implemented classes associated with a device which facilitate
 interactions between that device and components external to the simulation.
 Adapters allow us to influence the device from outside the simulation, such as
@@ -479,22 +479,22 @@ specific adapter.</p>
 <li><p><a class="reference internal" href="#epics-adapter">EPICS adapter</a></p></li>
 </ol>
 <section id="command-adapter">
-<h2>Command adapter<a class="headerlink" href="#command-adapter" title="Permalink to this heading">#</a></h2>
+<h2>Command adapter<a class="headerlink" href="#command-adapter" title="Link to this heading">#</a></h2>
 <p>The command adapter identifies and handles commands from incoming messages and is
-utilised with <a class="reference internal" href="../reference/api.html#tickit.adapters.io.tcp_io.TcpIo" title="tickit.adapters.io.tcp_io.TcpIo"><code class="xref any py py-class docutils literal notranslate"><span class="pre">TcpIo</span></code></a>. Commands are defined via decoration of adapter methods and the
-only such command type currently is a <a class="reference internal" href="../reference/api.html#tickit.adapters.specifications.regex_command.RegexCommand" title="tickit.adapters.specifications.regex_command.RegexCommand"><code class="xref any py py-class docutils literal notranslate"><span class="pre">RegexCommand</span></code></a>. This matches incoming messages to
+utilised with <code class="docutils literal notranslate"><span class="pre">TcpIo</span></code>. Commands are defined via decoration of adapter methods and the
+only such command type currently is a <code class="docutils literal notranslate"><span class="pre">RegexCommand</span></code>. This matches incoming messages to
 regex patterns and processes the command appropriately.</p>
 </section>
 <section id="zmq-adapter">
-<h2>ZMQ adapter<a class="headerlink" href="#zmq-adapter" title="Permalink to this heading">#</a></h2>
+<h2>ZMQ adapter<a class="headerlink" href="#zmq-adapter" title="Link to this heading">#</a></h2>
 <p>An adapter for use on a ZeroMQ data stream.</p>
 </section>
 <section id="http-adapter">
-<h2>HTTP adapter<a class="headerlink" href="#http-adapter" title="Permalink to this heading">#</a></h2>
-<p>An adapter that utilises HTTP endpoints for the <a class="reference internal" href="../reference/api.html#tickit.adapters.io.http_io.HttpIo" title="tickit.adapters.io.http_io.HttpIo"><code class="xref any py py-class docutils literal notranslate"><span class="pre">HttpIo</span></code></a>.</p>
+<h2>HTTP adapter<a class="headerlink" href="#http-adapter" title="Link to this heading">#</a></h2>
+<p>An adapter that utilises HTTP endpoints for the <code class="docutils literal notranslate"><span class="pre">HttpIo</span></code>.</p>
 </section>
 <section id="epics-adapter">
-<h2>EPICS adapter<a class="headerlink" href="#epics-adapter" title="Permalink to this heading">#</a></h2>
+<h2>EPICS adapter<a class="headerlink" href="#epics-adapter" title="Link to this heading">#</a></h2>
 <p>An adapter implementation that acts as an EPICS IOC. It utilises pythonSoftIOC
 create an IOC in the process which hosts PVs which can be linked to attributes
 on the device.</p>

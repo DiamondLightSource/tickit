@@ -136,96 +136,16 @@ This is the internal API reference for tickit
             ------------------------------------------------
 
 
-.. automodule:: tickit.adapters
-
-    ``tickit.adapters``
-    -------------------
-
-    .. automodule:: tickit.adapters.io
-
-        ``tickit.adapters.io``
-        ----------------------
-
-        .. automodule:: tickit.adapters.io.tcp_io
-            :members:
-
-            ``tickit.adapters.io.tcp_io``
-            -----------------------------
-
-        .. automodule:: tickit.adapters.io.http_io
-            :members:
-
-            ``tickit.adapters.io.http_io``
-            ------------------------------
-        
-        .. automodule:: tickit.adapters.io.epics_io
-            :members:
-
-            ``tickit.adapters.io.epics_io``
-            -------------------------------
-        
-        .. automodule:: tickit.adapters.io.zeromq_push_io
-            :members:
-
-            ``tickit.adapters.io.zeromq_push_io``
-            -------------------------------------
-        
-
-    .. automodule:: tickit.adapters.specifications
-
-        ``tickit.adapters.specifications``
-        ----------------------------------
-
-        .. automodule:: tickit.adapters.specifications.http_endpoint
-            :members:
-
-            ``tickit.adapters.specifications.http_endpoint``
-            ------------------------------------------------
-
-        .. automodule:: tickit.adapters.specifications.regex_command
-            :members:
-
-            ``tickit.adapters.specifications.regex_command``
-            ------------------------------------------------
-
-
-    .. automodule:: tickit.adapters.epics
-        :members:
-        
-        ``tickit.adapters.epics``
-        -------------------------
-
-    .. automodule:: tickit.adapters.http
-        :members:
-        
-        ``tickit.adapters.http``
-        ------------------------
-
-    
-    .. automodule:: tickit.adapters.tcp
-        :members:
-        
-        ``tickit.adapters.tcp``
-        -----------------------
-    
-    .. automodule:: tickit.adapters.zmq
-        :members:
-        
-        ``tickit.adapters.zmq``
-        -----------------------
-
-    .. automodule:: tickit.adapters.system
-        :members:
-        
-        ``tickit.adapters.system``
-        --------------------------
-
-
-
 .. automodule:: tickit.devices
 
     ``tickit.devices``
     ------------------
+
+    .. automodule:: tickit.devices.iobox
+        :members:
+
+        ``tickit.devices.iobox``
+        ------------------------
 
     .. automodule:: tickit.devices.sink
         :members:

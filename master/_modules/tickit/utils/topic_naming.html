@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.utils.topic_naming &#8212; tickit 0.4.1.dev1+g52325c7d documentation</title>
+    <title>tickit.utils.topic_naming &#8212; tickit 0.4.2.dev1+g04a0c477 documentation</title>
   
   
   
@@ -36,9 +36,9 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=499798d9"></script>
+    <script src="../../../_static/documentation_options.js?v=66b59a6c"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=30646c52"></script>
     <script src="../../../_static/design-tabs.js?v=36754332"></script>
@@ -418,7 +418,9 @@ document.write(`
 <span></span><span class="kn">from</span> <span class="nn">tickit.core.typedefs</span> <span class="kn">import</span> <span class="n">ComponentID</span>
 
 
-<div class="viewcode-block" id="valid_component_id"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.utils.topic_naming.valid_component_id">[docs]</a><span class="k">def</span> <span class="nf">valid_component_id</span><span class="p">(</span><span class="n">component</span><span class="p">:</span> <span class="n">ComponentID</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="valid_component_id">
+<a class="viewcode-back" href="../../../user/reference/api.html#tickit.utils.topic_naming.valid_component_id">[docs]</a>
+<span class="k">def</span> <span class="nf">valid_component_id</span><span class="p">(</span><span class="n">component</span><span class="p">:</span> <span class="n">ComponentID</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks the validity of a ComponentID for generating a topic name.</span>
 
 <span class="sd">    Args:</span>
@@ -431,7 +433,10 @@ document.write(`
         <span class="k">raise</span> <span class="ne">ValueError</span></div>
 
 
-<div class="viewcode-block" id="output_topic"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.utils.topic_naming.output_topic">[docs]</a><span class="k">def</span> <span class="nf">output_topic</span><span class="p">(</span><span class="n">component</span><span class="p">:</span> <span class="n">ComponentID</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+<div class="viewcode-block" id="output_topic">
+<a class="viewcode-back" href="../../../user/reference/api.html#tickit.utils.topic_naming.output_topic">[docs]</a>
+<span class="k">def</span> <span class="nf">output_topic</span><span class="p">(</span><span class="n">component</span><span class="p">:</span> <span class="n">ComponentID</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates the output topic name for a given component.</span>
 
 <span class="sd">    Args:</span>
@@ -445,7 +450,10 @@ document.write(`
     <span class="k">return</span> <span class="s2">&quot;tickit-&quot;</span> <span class="o">+</span> <span class="n">component</span> <span class="o">+</span> <span class="s2">&quot;-out&quot;</span></div>
 
 
-<div class="viewcode-block" id="input_topic"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.utils.topic_naming.input_topic">[docs]</a><span class="k">def</span> <span class="nf">input_topic</span><span class="p">(</span><span class="n">component</span><span class="p">:</span> <span class="n">ComponentID</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+<div class="viewcode-block" id="input_topic">
+<a class="viewcode-back" href="../../../user/reference/api.html#tickit.utils.topic_naming.input_topic">[docs]</a>
+<span class="k">def</span> <span class="nf">input_topic</span><span class="p">(</span><span class="n">component</span><span class="p">:</span> <span class="n">ComponentID</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates returns the input topic name for a given component.</span>
 
 <span class="sd">    Args:</span>
@@ -457,6 +465,7 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">valid_component_id</span><span class="p">(</span><span class="n">component</span><span class="p">)</span>
     <span class="k">return</span> <span class="s2">&quot;tickit-&quot;</span> <span class="o">+</span> <span class="n">component</span> <span class="o">+</span> <span class="s2">&quot;-in&quot;</span></div>
+
 </pre></div>
 
                 </article>
