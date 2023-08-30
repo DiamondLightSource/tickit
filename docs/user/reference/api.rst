@@ -141,6 +141,12 @@ This is the internal API reference for tickit
     ``tickit.devices``
     ------------------
 
+    .. automodule:: tickit.devices.iobox
+        :members:
+
+        ``tickit.devices.iobox``
+        ------------------------
+
     .. automodule:: tickit.devices.sink
         :members:
 
