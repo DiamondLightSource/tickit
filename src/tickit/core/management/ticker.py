@@ -16,7 +16,15 @@ from typing import (
 from immutables import Map
 
 from tickit.core.management.event_router import EventRouter, InverseWiring, Wiring
-from tickit.core.typedefs import Changes, ComponentID, Input, Output, PortID, SimTime
+from tickit.core.typedefs import (
+    Changes,
+    ComponentID,
+    Input,
+    Output,
+    PortID,
+    SimTime,
+    Skip,
+)
 
 LOGGER = logging.getLogger(__name__)
 
@@ -32,6 +40,7 @@ class Ticker:
         self,
         wiring: Union[Wiring, InverseWiring],
         update_component: Callable[[Input], Coroutine[Any, Any, None]],
+        skip_component: Callable[[Skip], Coroutine[Any, Any, None]],
     ) -> None:
         """Ticker constructor which creates an event router and performs initial setup.
 
@@ -45,6 +54,7 @@ class Ticker:
         """
         self.event_router = EventRouter(wiring)
         self.update_component = update_component
+        self.skip_component = skip_component
         self.to_update: Dict[ComponentID, Optional[asyncio.Task]] = dict()
         self.finished: asyncio.Event = asyncio.Event()
 
@@ -108,7 +118,7 @@ class Ticker:
             )
 
         updating: Dict[ComponentID, asyncio.Task] = dict()
-        skipping: Set[ComponentID] = set()
+
         for component, task in self.to_update.items():
             if task is not None or required_dependencies(component):
                 continue
@@ -116,17 +126,27 @@ class Ticker:
                 updating[component] = asyncio.create_task(
                     self.update_component(
                         Input(
-                            component, self.time, Changes(Map(self.inputs[component]))
+                            component,
+                            self.time,
+                            Changes(Map(self.inputs[component])),
                         )
                     )
                 )
             else:
-                skipping.add(component)
-        self.to_update.update(updating)
-        for component in skipping:
-            del self.to_update[component]
+                LOGGER.debug(f"Skipping {component}")
+                updating[component] = asyncio.create_task(
+                    self.skip_component(
+                        Skip(
+                            source=component,
+                            time=self.time,
+                            changes=Changes(Map()),
+                        )
+                    )
+                )
 
-    async def propagate(self, output: Output) -> None:
+        self.to_update.update(updating)
+
+    async def propagate(self, output: Union[Output, Skip]) -> None:
         """Propagates the output of an updated component.
 
         An asynchronous message which propagates the output of an updated component by

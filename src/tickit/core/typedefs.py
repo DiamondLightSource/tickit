@@ -79,6 +79,26 @@ class Output:
 
 
 @dataclass(frozen=True)
+class Skip:
+    """An immutable data container for skipping Component Updates.
+
+    This mimics a Component output but is produced and consumed by the scheduler for
+    situations where a components inputs has not changed, therefore does not need
+    updating but this skipping needs to propgate through the graph.
+
+    Args:
+        source: The Component whos update will be skipped
+        time: The simulation time at which the component skipping is to be handled.
+        changes: The changes to the component outputs, which will always be an empty
+            map.
+    """
+
+    source: ComponentID
+    time: SimTime
+    changes: Changes
+
+
+@dataclass(frozen=True)
 class Interrupt:
     """An immutable data container for scheduling Component interrupts.
 
