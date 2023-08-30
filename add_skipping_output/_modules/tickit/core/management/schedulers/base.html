@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.management.schedulers.base &#8212; tickit 0.4.2.dev7+g3de73efa documentation</title>
+    <title>tickit.core.management.schedulers.base &#8212; tickit 0.4.2.dev8+gd1fae45a documentation</title>
   
   
   
@@ -36,7 +36,7 @@
   <link rel="preload" as="script" href="../../../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script src="../../../../../_static/documentation_options.js?v=15969d96"></script>
+    <script src="../../../../../_static/documentation_options.js?v=2a871941"></script>
     <script src="../../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -509,7 +509,7 @@ document.write(`
 
 <div class="viewcode-block" id="BaseScheduler.handle_message">
 <a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.handle_message">[docs]</a>
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">ComponentOutput</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">ComponentOutput</span><span class="p">,</span> <span class="n">Skip</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle messages received by the state consumer.</span>
 
 <span class="sd">        An asynchronous callback which handles Interrupt, Output, ComponentException</span>
@@ -519,7 +519,7 @@ document.write(`
 <span class="sd">        produced to each component in the system to facilitate shut down.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            message (Union[Interrupt, Output, ComponentException, Skip]): An Interrupt,</span>
+<span class="sd">            message (Union[ComponentOutput, Skip]): An Interrupt,</span>
 <span class="sd">                Output or ComponentException received by the state consumer.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">Skip</span><span class="p">):</span>
