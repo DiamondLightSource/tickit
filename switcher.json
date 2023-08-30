@@ -8,6 +8,10 @@
     "url": "https://dls-controls.github.io/tickit/v0.1/"
   },
   {
+    "version": "0.4.2",
+    "url": "https://dls-controls.github.io/tickit/0.4.2/"
+  },
+  {
     "version": "0.4.1",
     "url": "https://dls-controls.github.io/tickit/0.4.1/"
   },
@@ -62,10 +66,6 @@
   {
     "version": "0.1",
     "url": "https://dls-controls.github.io/tickit/0.1/"
-  },
-  {
-    "version": "add_skipping_output",
-    "url": "https://dls-controls.github.io/tickit/add_skipping_output/"
   },
   {
     "version": "split-interpreter-empty-strings",
