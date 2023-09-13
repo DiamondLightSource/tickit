@@ -6,7 +6,7 @@ from tickit.adapters.io.http_io import HttpIo
 from tickit.adapters.specifications import HttpEndpoint
 from tickit.core.adapter import AdapterContainer
 from tickit.core.components.component import Component, ComponentConfig
-from tickit.core.components.device_simulation import DeviceComponent
+from tickit.core.components.device_component import DeviceComponent
 from tickit.devices.iobox import IoBoxDevice
 
 

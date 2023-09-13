@@ -131,7 +131,7 @@ async def test_running_only_scheduler(
 @pytest_asyncio.fixture
 async def patch_component_run_forever() -> AsyncGenerator:
     with patch(
-        "tickit.core.components.device_simulation.DeviceComponent.run_forever",
+        "tickit.core.components.device_component.DeviceComponent.run_forever",
         autospec=True,
     ) as mock:
         mock.return_value = asyncio.create_task(asyncio.sleep(1))

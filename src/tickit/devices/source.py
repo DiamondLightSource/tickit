@@ -4,7 +4,7 @@ from typing import Any, TypedDict
 import pydantic.v1.dataclasses
 
 from tickit.core.components.component import Component, ComponentConfig
-from tickit.core.components.device_simulation import DeviceComponent
+from tickit.core.components.device_component import DeviceComponent
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 

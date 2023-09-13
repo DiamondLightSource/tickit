@@ -50,10 +50,10 @@ This is the internal API reference for tickit
             ``tickit.core.components.component``
             ------------------------------------
 
-        .. automodule:: tickit.core.components.device_simulation
+        .. automodule:: tickit.core.components.device_component
             :members:
 
-            ``tickit.core.components.device_simulation``
+            ``tickit.core.components.device_component``
             --------------------------------------------
 
         .. automodule:: tickit.core.components.system_simulation

@@ -127,7 +127,7 @@ if the device requires any adapters to control it externally.
     import pydantic.v1.dataclasses
 
     from tickit.core.components.component import Component, ComponentConfig
-    from tickit.core.components.device_simulation import DeviceComponent
+    from tickit.core.components.device_component import DeviceComponent
 
 
     @pydantic.v1.dataclasses.dataclass

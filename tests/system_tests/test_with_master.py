@@ -9,7 +9,7 @@ import pytest_asyncio
 from mock import create_autospec
 
 from tickit.core.components.component import Component, ComponentConfig
-from tickit.core.components.device_simulation import DeviceComponent
+from tickit.core.components.device_component import DeviceComponent
 from tickit.core.management.event_router import InverseWiring
 from tickit.core.management.schedulers.master import MasterScheduler
 from tickit.core.state_interfaces.state_interface import get_interface

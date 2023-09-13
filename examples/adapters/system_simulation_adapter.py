@@ -2,7 +2,7 @@ from tickit.adapters.specifications import RegexCommand
 from tickit.adapters.system import BaseSystemSimulationAdapter
 from tickit.adapters.tcp import CommandAdapter
 from tickit.core.components.component import BaseComponent
-from tickit.core.components.device_simulation import DeviceComponent
+from tickit.core.components.device_component import DeviceComponent
 from tickit.core.typedefs import ComponentID
 from tickit.utils.byte_format import ByteFormat
 

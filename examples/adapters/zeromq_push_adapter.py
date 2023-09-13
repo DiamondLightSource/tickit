@@ -8,7 +8,7 @@ from tickit.adapters.io.zeromq_push_io import ZeroMqPushIo, create_zmq_push_sock
 from tickit.adapters.zmq import ZeroMqPushAdapter
 from tickit.core.adapter import AdapterContainer
 from tickit.core.components.component import Component, ComponentConfig
-from tickit.core.components.device_simulation import DeviceComponent
+from tickit.core.components.device_component import DeviceComponent
 from tickit.devices.iobox import IoBoxDevice
 
 

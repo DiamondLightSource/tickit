@@ -7,7 +7,7 @@ from mock import AsyncMock, MagicMock, Mock, create_autospec, patch
 from tickit.adapters.io.tcp_io import TcpIo
 from tickit.adapters.tcp import CommandAdapter
 from tickit.core.adapter import AdapterContainer
-from tickit.core.components.device_simulation import DeviceComponent
+from tickit.core.components.device_component import DeviceComponent
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import (
     Changes,
@@ -60,7 +60,7 @@ def mock_state_consumer_type() -> Mock:
 @pytest.fixture
 def patch_asyncio_wait() -> Iterable[Mock]:
     with patch(
-        "tickit.core.components.device_simulation.asyncio.wait", autospec=True
+        "tickit.core.components.device_component.asyncio.wait", autospec=True
     ) as mock:
         yield mock
 
