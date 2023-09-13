@@ -14,7 +14,7 @@ device and any adapters for that device.
     :align: center
 
 
-(See `DeviceSimulation`.)
+(See `DeviceComponent`.)
 
 
 System Simulation
@@ -80,5 +80,5 @@ A simulation containing both types of component will look something like this:
 
 
 
-.. _DeviceSimulation: <tickit.core.device_simulation.DeviceSimulation>
+.. _DeviceSimulation: <tickit.core.device_simulation.DeviceComponent>
 .. _SystemSimulationComponent: <tickit.core.system_simulation.SystemSimulationComponent>

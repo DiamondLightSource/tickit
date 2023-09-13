@@ -110,7 +110,7 @@ Include the Adapter
 In order to now use this adapter to control our device we need to include it in
 our amplifier `ComponentConfig`. To do this we first construct an `AdapterContainer`
 with our ``AmplifierAdapter`` and the appropriate `AdapterIo`. In this case ``TcpIo``.
-Once this is done we simply add it to the arguments of `DeviceSimulation`. 
+Once this is done we simply add it to the arguments of `DeviceComponent`. 
 
 .. code-block:: python
 
@@ -134,7 +134,7 @@ Once this is done we simply add it to the arguments of `DeviceSimulation`.
                         self.port,
                     )
             ]
-            return DeviceSimulation(
+            return DeviceComponent(
                 name=self.name,
                 device=device,
                 adapters=adapters,

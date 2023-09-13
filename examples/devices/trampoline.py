@@ -5,7 +5,7 @@ from typing import TypedDict
 import pydantic.v1.dataclasses
 
 from tickit.core.components.component import Component, ComponentConfig
-from tickit.core.components.device_simulation import DeviceSimulation
+from tickit.core.components.device_simulation import DeviceComponent
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 
@@ -105,7 +105,7 @@ class RandomTrampoline(ComponentConfig):
     callback_period: int = int(1e9)
 
     def __call__(self) -> Component:  # noqa: D102
-        return DeviceSimulation(
+        return DeviceComponent(
             name=self.name,
             device=RandomTrampolineDevice(callback_period=self.callback_period),
         )

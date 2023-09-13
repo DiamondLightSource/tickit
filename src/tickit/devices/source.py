@@ -4,7 +4,7 @@ from typing import Any, TypedDict
 import pydantic.v1.dataclasses
 
 from tickit.core.components.component import Component, ComponentConfig
-from tickit.core.components.device_simulation import DeviceSimulation
+from tickit.core.components.device_simulation import DeviceComponent
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 
@@ -53,7 +53,7 @@ class Source(ComponentConfig):
     value: Any
 
     def __call__(self) -> Component:  # noqa: D102
-        return DeviceSimulation(
+        return DeviceComponent(
             name=self.name,
             device=SourceDevice(self.value),
         )

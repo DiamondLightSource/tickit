@@ -18,7 +18,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 @dataclass
-class DeviceSimulation(BaseComponent):
+class DeviceComponent(BaseComponent):
     """A component containing a device and the corresponding adapters.
 
     A component which thinly wraps a device and the corresponding adapters, this

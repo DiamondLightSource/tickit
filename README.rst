@@ -71,7 +71,7 @@ it increments.
         """Simple counting device."""
 
         def __call__(self) -> Component:  # noqa: D102
-            return DeviceSimulation(
+            return DeviceComponent(
                 name=self.name,
                 device=CounterDevice(),
                 )

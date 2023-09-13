@@ -9,7 +9,7 @@ import pytest_asyncio
 from mock import create_autospec
 
 from tickit.core.components.component import Component, ComponentConfig
-from tickit.core.components.device_simulation import DeviceSimulation
+from tickit.core.components.device_simulation import DeviceComponent
 from tickit.core.management.event_router import InverseWiring
 from tickit.core.management.schedulers.master import MasterScheduler
 from tickit.core.state_interfaces.state_interface import get_interface
@@ -80,7 +80,7 @@ async def test_sink_has_captured_value(
 ):
     await asyncio.wait_for(master_scheduler.running.wait(), timeout=2.0)
 
-    sink = cast(DeviceSimulation, components[1])
+    sink = cast(DeviceComponent, components[1])
 
     await asyncio.wait_for(master_scheduler.ticker.finished.wait(), timeout=2.0)
 

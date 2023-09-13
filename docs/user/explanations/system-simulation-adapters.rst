@@ -2,7 +2,7 @@ System Simulation Adapters
 ==========================
 
 Adapters may also be used with system simulations (`SystemSimulationComponent`),
-as well as with devices (`DeviceSimulation`). This would allow you, for example, to
+as well as with devices (`DeviceComponent`). This would allow you, for example, to
 query what device components are inside the system simulation component, and how they
 are wired together.
 
