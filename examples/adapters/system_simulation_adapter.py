@@ -11,7 +11,7 @@ class SystemSimulationAdapter(BaseSystemSimulationAdapter, CommandAdapter):
     """Network adapter for a generic system simulation.
 
     Network adapter for a generic system simulation using a CommandAdapter. This
-    Can be used to query the SystemSimulationComponent for a list of ID's of the
+    Can be used to query the SystemComponent for a list of ID's of the
     components it contains; to provide the details of a component given its ID; and
     to return the wiring map of the components.
     """

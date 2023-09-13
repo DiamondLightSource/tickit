@@ -35,7 +35,7 @@ class Component:
     An interface for types which implement stand-alone simulation components.
     Components define the top level building blocks of a tickit simulation (examples
     include the DeviceComponent which host a device and corresponding adapter or a
-    SystemSimulation which hosts a SlaveScheduler and internal Components).
+    SystemComponent which hosts a SlaveScheduler and internal Components).
     """
 
     name: ComponentID

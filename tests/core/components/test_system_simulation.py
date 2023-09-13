@@ -9,7 +9,7 @@ from mock.mock import create_autospec
 from tickit.core.components.component import Component
 from tickit.core.components.system_simulation import (
     SystemSimulation,
-    SystemSimulationComponent,
+    SystemComponent,
 )
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import (
@@ -79,7 +79,7 @@ def patch_asyncio() -> Iterable[Mock]:
 
 @pytest.mark.asyncio
 async def test_system_simulation_methods(
-    system_simulation: SystemSimulationComponent,
+    system_simulation: SystemComponent,
     mock_state_producer_type: Mock,
     mock_state_consumer_type: Mock,
 ):
@@ -109,7 +109,7 @@ async def test_system_simulation_methods(
 
 @pytest.mark.asyncio
 async def test_system_simulation_handles_exception_in_handle_input(
-    system_simulation: SystemSimulationComponent,
+    system_simulation: SystemComponent,
     mock_state_producer_type: Mock,
     mock_state_consumer_type: Mock,
 ):
@@ -131,7 +131,7 @@ async def test_system_simulation_handles_exception_in_handle_input(
 
 @pytest.mark.asyncio
 async def test_system_simulation_stops_when_told(
-    system_simulation: SystemSimulationComponent,
+    system_simulation: SystemComponent,
     mock_state_producer_type: Mock,
     mock_state_consumer_type: Mock,
 ):

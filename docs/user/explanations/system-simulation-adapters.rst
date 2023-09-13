@@ -1,7 +1,7 @@
 System Simulation Adapters
 ==========================
 
-Adapters may also be used with system simulations (`SystemSimulationComponent`),
+Adapters may also be used with system simulations (`SystemComponent`),
 as well as with devices (`DeviceComponent`). This would allow you, for example, to
 query what device components are inside the system simulation component, and how they
 are wired together.
@@ -12,7 +12,7 @@ for implementing this.
 .. code-block:: python
         
     class BaseSystemSimulationAdapter:
-        """A base for a SystemSimulationComponent adapter."""
+        """A base for a SystemComponent adapter."""
 
         _components: Dict[ComponentID, Component]
         _wiring: Union[Wiring, InverseWiring]
@@ -22,7 +22,7 @@ for implementing this.
             components: Dict[ComponentID, Component],
             wiring: Union[Wiring, InverseWiring],
         ) -> None:
-            """Provides the components and wiring of a SystemSimulationComponent."""
+            """Provides the components and wiring of a SystemComponent."""
             self._components = components
             self._wiring = wiring
 
@@ -32,7 +32,7 @@ Nested Amplifier Example
 ------------------------
 
 The following system adapter is a simple ``CommandAdapter``. This Can be used to query the
-SystemSimulationComponent for a list of ID's of the components it contains; and to
+SystemComponent for a list of ID's of the components it contains; and to
 return the wiring map of the components.
 
 .. code-block:: python
@@ -52,7 +52,7 @@ return the wiring map of the components.
             return str(self._wiring).encode("utf-8")
 
 To use this adapter we would need to put it in an adapter container with ``TcpIo`` and
-assign it as an argument in the SystemSimulationComponent.
+assign it as an argument in the SystemComponent.
 
 .. code-block:: python
 
@@ -66,7 +66,7 @@ assign it as an argument in the SystemSimulationComponent.
         expose: Dict[PortID, ComponentPort]
 
         def __call__(self) -> Component:  # noqa: D102
-            return SystemSimulationComponent(
+            return SystemComponent(
                 name=self.name,
                 components=self.components,
                 expose=self.expose,
@@ -81,7 +81,7 @@ assign it as an argument in the SystemSimulationComponent.
 This ComponentConfig ``NestedAmplifierWithAdapter`` can be used as any other component.
 
 Below is a very simple simulation with a system simulation component. It is a
-source, which is connected to a `SystemSimulationComponent` which only contains a
+source, which is connected to a `SystemComponent` which only contains a
 single amplifier. The output of this amplfier is fed to the output of the system
 simulation component, which is wired to a sink. 
 

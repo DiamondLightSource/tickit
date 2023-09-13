@@ -8,7 +8,7 @@ import pytest_asyncio
 
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_simulation import DeviceComponent
-from tickit.core.components.system_simulation import SystemSimulationComponent
+from tickit.core.components.system_simulation import SystemComponent
 from tickit.core.management.event_router import InverseWiring
 from tickit.core.management.schedulers.master import MasterScheduler
 from tickit.core.state_interfaces.state_interface import get_interface
@@ -77,7 +77,7 @@ async def test_sink_has_captured_value(
     master_scheduler: MasterScheduler,
 ):
     source = cast(DeviceComponent, components[0])
-    sim = cast(SystemSimulationComponent, components[1])
+    sim = cast(SystemComponent, components[1])
     sink = cast(DeviceComponent, components[2])
 
     assert sink.device_inputs == {}
