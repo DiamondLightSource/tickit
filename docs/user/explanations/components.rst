@@ -41,7 +41,7 @@ the master scheduler's wiring is correct, for example:
       name: random_trampoline
       inputs: {}
       callback_period: 10000000000
-    - type: tickit.core.components.system_simulation.SystemSimulation
+    - type: tickit.core.components.system_component.SystemSimulation
       name: internal_tickit
       inputs:
         input_1:
@@ -80,5 +80,5 @@ A simulation containing both types of component will look something like this:
 
 
 
-.. _DeviceSimulation: <tickit.core.device_simulation.DeviceComponent>
-.. _SystemSimulationComponent: <tickit.core.system_simulation.SystemComponent>
+.. _DeviceComponent: <tickit.core.components.device_component.DeviceComponent>
+.. _SystemComponent: <tickit.core.components.system_component.SystemComponent>

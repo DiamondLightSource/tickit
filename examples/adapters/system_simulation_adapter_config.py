@@ -6,7 +6,7 @@ from examples.adapters.system_simulation_adapter import SystemSimulationAdapter
 from tickit.adapters.io.tcp_io import TcpIo
 from tickit.core.adapter import AdapterContainer
 from tickit.core.components.component import Component, ComponentConfig
-from tickit.core.components.system_simulation import SystemComponent
+from tickit.core.components.system_component import SystemComponent
 from tickit.core.typedefs import ComponentID, ComponentPort, PortID
 
 

@@ -2,7 +2,7 @@
   name: external_source
   inputs: {}
   value: 42
-- type: tickit.core.components.system_simulation.SystemSimulation
+- type: tickit.core.components.system_component.SystemSimulation
   name: internal_tickit
   inputs:
     input_1: 

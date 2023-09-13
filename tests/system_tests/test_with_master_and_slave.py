@@ -8,7 +8,7 @@ import pytest_asyncio
 
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_component import DeviceComponent
-from tickit.core.components.system_simulation import SystemComponent
+from tickit.core.components.system_component import SystemComponent
 from tickit.core.management.event_router import InverseWiring
 from tickit.core.management.schedulers.master import MasterScheduler
 from tickit.core.state_interfaces.state_interface import get_interface
