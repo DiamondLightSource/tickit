@@ -18,7 +18,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 @dataclass
-class SystemSimulationComponent(BaseComponent):
+class SystemComponent(BaseComponent):
     """A component containing a slave scheduler and several components.
 
     A component which acts as a nested tickit simulation by wrapping a slave scheduler
@@ -122,7 +122,7 @@ class SystemSimulation(ComponentConfig):
     expose: Dict[PortID, ComponentPort]
 
     def __call__(self) -> Component:  # noqa: D102
-        return SystemSimulationComponent(
+        return SystemComponent(
             name=self.name,
             components=self.components,
             expose=self.expose,

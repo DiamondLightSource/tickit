@@ -9,7 +9,7 @@ from tickit.adapters.specifications import RegexCommand
 from tickit.adapters.tcp import CommandAdapter
 from tickit.core.adapter import AdapterContainer
 from tickit.core.components.component import Component, ComponentConfig
-from tickit.core.components.device_simulation import DeviceSimulation
+from tickit.core.components.device_component import DeviceComponent
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 from tickit.utils.byte_format import ByteFormat
@@ -139,7 +139,7 @@ class IsolatedBox(ComponentConfig):
                 EpicsIo("ISOLATED_IOC"),
             ),
         ]
-        return DeviceSimulation(
+        return DeviceComponent(
             name=self.name,
             device=device,
             adapters=adapters,

@@ -4,7 +4,7 @@ from typing import TypedDict
 import pydantic.v1.dataclasses
 
 from tickit.core.components.component import Component, ComponentConfig
-from tickit.core.components.device_simulation import DeviceSimulation
+from tickit.core.components.device_component import DeviceComponent
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 
@@ -16,7 +16,7 @@ class Counter(ComponentConfig):
     """Simulation of simple counting device."""
 
     def __call__(self) -> Component:  # noqa: D102
-        return DeviceSimulation(name=self.name, device=CounterDevice())
+        return DeviceComponent(name=self.name, device=CounterDevice())
 
 
 class CounterDevice(Device):

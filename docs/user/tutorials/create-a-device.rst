@@ -118,7 +118,7 @@ Creating a ComponentConfig
 In order to run the Device as a simulation, it requires a `ComponentConfig` that
 knows how to instantiate that Device. This will be defined in the same file as the
 device, and defines any default initial configuration values. As well as this, we
-overwrite the magic method `__call__()`, which returns a `DeviceSimulation` object.
+overwrite the magic method `__call__()`, which returns a `DeviceComponent` object.
 This object takes the component name, as well as its device. We will return to this
 if the device requires any adapters to control it externally.
 
@@ -127,7 +127,7 @@ if the device requires any adapters to control it externally.
     import pydantic.v1.dataclasses
 
     from tickit.core.components.component import Component, ComponentConfig
-    from tickit.core.components.device_simulation import DeviceSimulation
+    from tickit.core.components.device_component import DeviceComponent
 
 
     @pydantic.v1.dataclasses.dataclass
@@ -135,7 +135,7 @@ if the device requires any adapters to control it externally.
         initial_amplification: float
 
         def __call__(self) -> Component:
-            return DeviceSimulation(
+            return DeviceComponent(
                 name=self.name,
                 device=AmplifierDevice(
                     initial_amplification=self.initial_amplification,

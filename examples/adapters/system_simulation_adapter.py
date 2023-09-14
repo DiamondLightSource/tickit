@@ -2,7 +2,7 @@ from tickit.adapters.specifications import RegexCommand
 from tickit.adapters.system import BaseSystemSimulationAdapter
 from tickit.adapters.tcp import CommandAdapter
 from tickit.core.components.component import BaseComponent
-from tickit.core.components.device_simulation import DeviceSimulation
+from tickit.core.components.device_component import DeviceComponent
 from tickit.core.typedefs import ComponentID
 from tickit.utils.byte_format import ByteFormat
 
@@ -11,7 +11,7 @@ class SystemSimulationAdapter(BaseSystemSimulationAdapter, CommandAdapter):
     """Network adapter for a generic system simulation.
 
     Network adapter for a generic system simulation using a CommandAdapter. This
-    Can be used to query the SystemSimulationComponent for a list of ID's of the
+    Can be used to query the SystemComponent for a list of ID's of the
     components it contains; to provide the details of a component given its ID; and
     to return the wiring map of the components.
     """
@@ -28,7 +28,7 @@ class SystemSimulationAdapter(BaseSystemSimulationAdapter, CommandAdapter):
         """Returns the component info of the given id."""
         component = self._components.get(ComponentID(id), "ComponentID not recognised.")
 
-        if isinstance(component, DeviceSimulation):
+        if isinstance(component, DeviceComponent):
             return str(
                 f"ComponentID: {component.name}\n"
                 + f" device: {component.device.__class__.__name__}\n"

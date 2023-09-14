@@ -5,7 +5,7 @@ import pydantic.v1.dataclasses
 from typing_extensions import NotRequired
 
 from tickit.core.components.component import Component, ComponentConfig
-from tickit.core.components.device_simulation import DeviceSimulation
+from tickit.core.components.device_component import DeviceComponent
 from tickit.core.device import Device, DeviceUpdate
 from tickit.core.typedefs import SimTime
 
@@ -124,7 +124,7 @@ class IoBox(ComponentConfig):
     """Arbitrary box of key-value pairs."""
 
     def __call__(self) -> Component:  # noqa: D102
-        return DeviceSimulation(
+        return DeviceComponent(
             name=self.name,
             device=IoBoxDevice(),
         )

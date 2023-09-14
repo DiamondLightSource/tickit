@@ -7,7 +7,7 @@ from mock import AsyncMock, MagicMock, Mock, create_autospec, patch
 from tickit.adapters.io.tcp_io import TcpIo
 from tickit.adapters.tcp import CommandAdapter
 from tickit.core.adapter import AdapterContainer
-from tickit.core.components.device_simulation import DeviceSimulation
+from tickit.core.components.device_component import DeviceComponent
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import (
     Changes,
@@ -60,7 +60,7 @@ def mock_state_consumer_type() -> Mock:
 @pytest.fixture
 def patch_asyncio_wait() -> Iterable[Mock]:
     with patch(
-        "tickit.core.components.device_simulation.asyncio.wait", autospec=True
+        "tickit.core.components.device_component.asyncio.wait", autospec=True
     ) as mock:
         yield mock
 
@@ -69,21 +69,21 @@ def patch_asyncio_wait() -> Iterable[Mock]:
 def device_simulation(
     source: SourceDevice,
     adapter_container: AdapterContainer,
-) -> DeviceSimulation:
-    return DeviceSimulation(
+) -> DeviceComponent:
+    return DeviceComponent(
         name=ComponentID("test_device_simulation"),
         device=source,
         adapters=[adapter_container],
     )
 
 
-def test_device_simulation_constructor(device_simulation: DeviceSimulation):
+def test_device_simulation_constructor(device_simulation: DeviceComponent):
     pass
 
 
 @pytest.mark.asyncio
 async def test_device_simulation_run_forever_method(
-    device_simulation: DeviceSimulation,
+    device_simulation: DeviceComponent,
     mock_state_producer_type: Mock,
     mock_state_consumer_type: Mock,
     patch_asyncio_wait: Mock,
@@ -111,7 +111,7 @@ async def test_device_simulation_run_forever_method(
 
 @pytest.mark.asyncio
 async def test_device_simulation_handles_exception_in_handle_input(
-    device_simulation: DeviceSimulation,
+    device_simulation: DeviceComponent,
     mock_state_producer_type: Mock,
     mock_state_consumer_type: Mock,
 ):
@@ -133,7 +133,7 @@ async def test_device_simulation_handles_exception_in_handle_input(
 
 @pytest.mark.asyncio
 async def test_device_simulation_stops_when_told(
-    device_simulation: DeviceSimulation,
+    device_simulation: DeviceComponent,
     mock_state_producer_type: Mock,
     mock_state_consumer_type: Mock,
 ):

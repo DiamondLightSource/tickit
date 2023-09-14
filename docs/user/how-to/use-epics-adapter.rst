@@ -45,7 +45,7 @@ component:
                     EpicsIo(self.ioc_name),
                 ),
             ]
-            return DeviceSimulation(
+            return DeviceComponent(
                 name=self.name,
                 device=device,
                 adapters=adapters,

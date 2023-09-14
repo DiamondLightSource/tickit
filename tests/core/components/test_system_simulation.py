@@ -7,10 +7,7 @@ from mock import AsyncMock, Mock, patch
 from mock.mock import create_autospec
 
 from tickit.core.components.component import Component
-from tickit.core.components.system_simulation import (
-    SystemSimulation,
-    SystemSimulationComponent,
-)
+from tickit.core.components.system_component import SystemComponent, SystemSimulation
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import (
     Changes,
@@ -39,7 +36,7 @@ def mock_state_consumer_type() -> Mock:
 
 @pytest.fixture
 def patch_scheduler() -> Iterable[Mock]:
-    spec = "tickit.core.components.system_simulation.SlaveScheduler"
+    spec = "tickit.core.components.system_component.SlaveScheduler"
     with patch(spec, autospec=True) as mock:
 
         def on_tick(time, changes):
@@ -72,14 +69,14 @@ def test_system_simulation_constructor(system_simulation: SystemSimulation):
 @pytest.fixture
 def patch_asyncio() -> Iterable[Mock]:
     with patch(
-        "tickit.core.components.system_simulation.asyncio", autospec=True
+        "tickit.core.components.system_component.asyncio", autospec=True
     ) as mock:
         yield mock
 
 
 @pytest.mark.asyncio
 async def test_system_simulation_methods(
-    system_simulation: SystemSimulationComponent,
+    system_simulation: SystemComponent,
     mock_state_producer_type: Mock,
     mock_state_consumer_type: Mock,
 ):
@@ -109,7 +106,7 @@ async def test_system_simulation_methods(
 
 @pytest.mark.asyncio
 async def test_system_simulation_handles_exception_in_handle_input(
-    system_simulation: SystemSimulationComponent,
+    system_simulation: SystemComponent,
     mock_state_producer_type: Mock,
     mock_state_consumer_type: Mock,
 ):
@@ -131,7 +128,7 @@ async def test_system_simulation_handles_exception_in_handle_input(
 
 @pytest.mark.asyncio
 async def test_system_simulation_stops_when_told(
-    system_simulation: SystemSimulationComponent,
+    system_simulation: SystemComponent,
     mock_state_producer_type: Mock,
     mock_state_consumer_type: Mock,
 ):
