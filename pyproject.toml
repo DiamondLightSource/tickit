@@ -43,6 +43,7 @@ dev = [
     "pytest-black",
     "pytest-asyncio",
     "pytest-pydocstyle",
+    "sphinx<=7.1", #https://github.com/sphinx-doc/sphinx/issues/11662
     "sphinx-autobuild",
     "sphinx-copybutton",
     "sphinx-design",
