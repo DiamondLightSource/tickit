@@ -22,7 +22,7 @@ System Simulation
 
 System simulation components are themselves entire tickit simulations. They
 contain their own device simulation components and a scheduler for orchestrating
-them. However, the scheduler in a system component acts as a slave scheduler
+them. However, the scheduler in a system component acts as a nested scheduler
 which is driven by the master scheduler in the top level of the simulation
 it belongs to.
 
@@ -75,7 +75,7 @@ The Overall Simulation
 
 A simulation containing both types of component will look something like this:
 
-.. figure:: ../../images/tickit-simple-overview-with-system-simulation.svg
+.. figure:: ../../images/tickit-overview-with-system-component.svg
     :align: center
 
 

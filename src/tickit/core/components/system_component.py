@@ -9,7 +9,7 @@ from tickit.adapters.system import BaseSystemSimulationAdapter
 from tickit.core.adapter import AdapterContainer
 from tickit.core.components.component import BaseComponent, Component, ComponentConfig
 from tickit.core.management.event_router import InverseWiring
-from tickit.core.management.schedulers.slave import SlaveScheduler
+from tickit.core.management.schedulers.nested import NestedScheduler
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import Changes, ComponentID, ComponentPort, PortID, SimTime
 from tickit.utils.topic_naming import output_topic
@@ -19,9 +19,9 @@ LOGGER = logging.getLogger(__name__)
 
 @dataclass
 class SystemComponent(BaseComponent):
-    """A component containing a slave scheduler and several components.
+    """A component containing a nested scheduler and several components.
 
-    A component which acts as a nested tickit simulation by wrapping a slave scheduler
+    A component which acts as a nested tickit simulation by wrapping a NestedScheduler
     and a set of internal components, this component delegates core behaviour to the
     components within it, whilst outputting their requests for wakeups and interrupts.
     """
@@ -49,7 +49,7 @@ class SystemComponent(BaseComponent):
         blocks until and of the components or the scheduler complete.
         """
         inverse_wiring = InverseWiring.from_component_configs(self.components)
-        self.scheduler = SlaveScheduler(
+        self.scheduler = NestedScheduler(
             inverse_wiring,
             state_consumer,
             state_producer,
@@ -75,10 +75,10 @@ class SystemComponent(BaseComponent):
             await asyncio.wait(self._tasks)
 
     async def on_tick(self, time: SimTime, changes: Changes) -> None:
-        """Delegates core behaviour to the slave scheduler.
+        """Delegates core behaviour to the nested scheduler.
 
         An asynchronous method which delegates core behaviour of computing changes and
-        determining a callback period to the slave scheduler and sends the resulting
+        determining a callback period to the nested scheduler and sends the resulting
         Output.
 
         Args:

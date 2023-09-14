@@ -36,7 +36,7 @@ def mock_state_consumer_type() -> Mock:
 
 @pytest.fixture
 def patch_scheduler() -> Iterable[Mock]:
-    spec = "tickit.core.components.system_component.SlaveScheduler"
+    spec = "tickit.core.components.system_component.NestedScheduler"
     with patch(spec, autospec=True) as mock:
 
         def on_tick(time, changes):

@@ -20,8 +20,8 @@ from tickit.core.typedefs import (
 LOGGER = logging.getLogger(__name__)
 
 
-class SlaveScheduler(BaseScheduler):
-    """A slave scheduler which orchestrates nested tickit simulations."""
+class NestedScheduler(BaseScheduler):
+    """A scheduler which orchestrates nested tickit simulations."""
 
     def __init__(
         self,
@@ -31,7 +31,7 @@ class SlaveScheduler(BaseScheduler):
         expose: Dict[PortID, ComponentPort],
         raise_interrupt: Callable[[], Awaitable[None]],
     ) -> None:
-        """Slave scheduler constructor which adds wiring and saves values for reference.
+        """NestedScheduler constructor which adds wiring and saves values for reference.
 
         Args:
             wiring (Union[Wiring, InverseWiring]): A wiring or inverse wiring object
@@ -40,10 +40,10 @@ class SlaveScheduler(BaseScheduler):
                 by the component.
             state_producer (Type[StateProducer]): The state producer class to be used
                 by the component.
-            expose (Dict[PortID, ComponentPort]): A mapping of slave scheduler
+            expose (Dict[PortID, ComponentPort]): A mapping of nested scheduler
                 outputs to internal component ports.
             raise_interrupt (Callable[[], Awaitable[None]]): A callback to request that
-                the slave scheduler is updated immediately.
+                the nested scheduler is updated immediately.
         """
         wiring = self.add_exposing_wiring(wiring, expose)
         super().__init__(wiring, state_consumer, state_producer)
@@ -57,22 +57,22 @@ class SlaveScheduler(BaseScheduler):
         wiring: Union[Wiring, InverseWiring],
         expose: Dict[PortID, ComponentPort],
     ) -> InverseWiring:
-        """Adds wiring to expose slave scheduler outputs.
+        """Adds wiring to expose nested scheduler outputs.
 
-        Adds wiring to expose slave scheduler outputs, this is performed creating a
+        Adds wiring to expose nested scheduler outputs, this is performed creating a
         mock "expose" component with inverse wiring set by expose.
 
         Args:
             wiring (Union[Wiring, InverseWiring]): A wiring or inverse wiring object
                 representing the connections between components in the system.
-            expose (Dict[PortID, ComponentPort]): A mapping of slave scheduler
+            expose (Dict[PortID, ComponentPort]): A mapping of nested scheduler
                 outputs to internal component ports.
 
         Returns:
             InverseWiring:
                 An inverse wiring object representing the connections between
                 components in the system and the "expose" component which acts as the
-                slave scheduler output.
+                nested scheduler output.
         """
         if isinstance(wiring, Wiring):
             wiring = InverseWiring.from_wiring(wiring)
@@ -109,7 +109,7 @@ class SlaveScheduler(BaseScheduler):
 
         An asynchronous method which determines which components within the simulation
         require being woken up, sets the input changes for use by the "external" mock
-        component, performs a tick, determines the period in which the slave scheduler
+        component, performs a tick, determines the period in which the nested scheduler
         should next be updated, and returns the changes collated by the "expose" mock
         component.
 
@@ -122,7 +122,7 @@ class SlaveScheduler(BaseScheduler):
             Tuple[Changes, Optional[SimTime]]:
                 A tuple of a mapping of the changed exposed outputs and their new
                 values and optionally a duration in simulation time after which the
-                slave scheduler should be called again.
+                nested scheduler should be called again.
         """
         wakeup_components = {
             component for component, when in self.wakeups.items() if when <= time
@@ -163,7 +163,7 @@ class SlaveScheduler(BaseScheduler):
     async def handle_component_exception(self, message: ComponentException) -> None:
         """Handle exceptions raised from components by shutting down the simulation.
 
-        If a component inside a system simulation produces an exception, the slave
+        If a component inside a system simulation produces an exception, the nested
         scheduler will produce a message to all components it contains to cause them
         to cancel any running component tasks (adapter tasks). Afterwards the scheduler
         stores the ComponentException message, allowing its associated system simulation
