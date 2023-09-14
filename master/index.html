@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tickit &#8212; tickit 0.4.2.dev2+geba276eb documentation</title>
+    <title>tickit &#8212; tickit 0.4.3.dev1+gd6415fe0 documentation</title>
   
   
   
@@ -37,9 +37,9 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script src="_static/documentation_options.js?v=428dafdd"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=e4909230"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=30646c52"></script>
     <script src="_static/design-tabs.js?v=36754332"></script>
@@ -388,7 +388,7 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="tickit">
-<h1>tickit<a class="headerlink" href="#tickit" title="Link to this heading">#</a></h1>
+<h1>tickit<a class="headerlink" href="#tickit" title="Permalink to this heading">#</a></h1>
 <p><a class="reference external" href="https://github.com/dls-controls/tickit/actions?query=workflow%3A%22Code+CI%22"><img alt="Code CI" src="https://github.com/dls-controls/tickit/workflows/Code%20CI/badge.svg?branch=master" /></a> <a class="reference external" href="https://github.com/dls-controls/tickit/actions?query=workflow%3A%22Docs+CI%22"><img alt="Docs CI" src="https://github.com/dls-controls/tickit/workflows/Docs%20CI/badge.svg?branch=master" /></a> <a class="reference external" href="https://codecov.io/gh/dls-controls/tickit"><img alt="Test Coverage" src="https://codecov.io/gh/dls-controls/tickit/branch/master/graph/badge.svg" /></a> <a class="reference external" href="https://pypi.org/project/tickit"><img alt="Latest PyPI version" src="https://img.shields.io/pypi/v/tickit.svg" /></a> <a class="reference external" href="https://opensource.org/licenses/Apache-2.0"><img alt="Apache License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" /></a></p>
 <p>An event-based multi-device simulation framework providing configuration and
 orchestration of complex multi-device simulations.</p>
@@ -453,7 +453,7 @@ it increments.</p>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Simple counting device.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Component</span><span class="p">:</span>  <span class="c1"># noqa: D102</span>
-        <span class="k">return</span> <span class="n">DeviceSimulation</span><span class="p">(</span>
+        <span class="k">return</span> <span class="n">DeviceComponent</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="n">device</span><span class="o">=</span><span class="n">CounterDevice</span><span class="p">(),</span>
             <span class="p">)</span>
@@ -482,7 +482,7 @@ it increments.</p>
 </pre></div>
 </div>
 <section id="how-the-documentation-is-structured">
-<h2>How the documentation is structured<a class="headerlink" href="#how-the-documentation-is-structured" title="Link to this heading">#</a></h2>
+<h2>How the documentation is structured<a class="headerlink" href="#how-the-documentation-is-structured" title="Permalink to this heading">#</a></h2>
 <p>The documentation is split into 2 sections:</p>
 <div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
 <div class="sd-row sd-row-cols-2 sd-row-cols-xs-2 sd-row-cols-sm-2 sd-row-cols-md-2 sd-row-cols-lg-2 docutils">

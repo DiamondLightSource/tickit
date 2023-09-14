@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>System Simulation Adapters &#8212; tickit 0.4.2.dev2+geba276eb documentation</title>
+    <title>System Simulation Adapters &#8212; tickit 0.4.3.dev1+gd6415fe0 documentation</title>
   
   
   
@@ -37,9 +37,9 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script src="../../_static/documentation_options.js?v=428dafdd"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=e4909230"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=30646c52"></script>
     <script src="../../_static/design-tabs.js?v=36754332"></script>
@@ -457,15 +457,15 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="system-simulation-adapters">
-<h1>System Simulation Adapters<a class="headerlink" href="#system-simulation-adapters" title="Link to this heading">#</a></h1>
-<p>Adapters may also be used with system simulations (<a class="reference internal" href="../reference/api.html#tickit.core.components.system_simulation.SystemSimulationComponent" title="tickit.core.components.system_simulation.SystemSimulationComponent"><code class="xref any py py-class docutils literal notranslate"><span class="pre">SystemSimulationComponent</span></code></a>),
-as well as with devices (<a class="reference internal" href="../reference/api.html#tickit.core.components.device_simulation.DeviceSimulation" title="tickit.core.components.device_simulation.DeviceSimulation"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DeviceSimulation</span></code></a>). This would allow you, for example, to
+<h1>System Simulation Adapters<a class="headerlink" href="#system-simulation-adapters" title="Permalink to this heading">#</a></h1>
+<p>Adapters may also be used with system simulations (<a class="reference internal" href="../reference/api.html#tickit.core.components.system_component.SystemComponent" title="tickit.core.components.system_component.SystemComponent"><code class="xref any py py-class docutils literal notranslate"><span class="pre">SystemComponent</span></code></a>),
+as well as with devices (<a class="reference internal" href="../reference/api.html#tickit.core.components.device_component.DeviceComponent" title="tickit.core.components.device_component.DeviceComponent"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DeviceComponent</span></code></a>). This would allow you, for example, to
 query what device components are inside the system simulation component, and how they
 are wired together.</p>
 <p>Currently system adapters need both wiring and components. There is a helper base class
 for implementing this.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">BaseSystemSimulationAdapter</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A base for a SystemSimulationComponent adapter.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A base for a SystemComponent adapter.&quot;&quot;&quot;</span>
 
     <span class="n">_components</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">,</span> <span class="n">Component</span><span class="p">]</span>
     <span class="n">_wiring</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Wiring</span><span class="p">,</span> <span class="n">InverseWiring</span><span class="p">]</span>
@@ -475,15 +475,15 @@ for implementing this.</p>
         <span class="n">components</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">,</span> <span class="n">Component</span><span class="p">],</span>
         <span class="n">wiring</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Wiring</span><span class="p">,</span> <span class="n">InverseWiring</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Provides the components and wiring of a SystemSimulationComponent.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Provides the components and wiring of a SystemComponent.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_components</span> <span class="o">=</span> <span class="n">components</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_wiring</span> <span class="o">=</span> <span class="n">wiring</span>
 </pre></div>
 </div>
 <section id="nested-amplifier-example">
-<h2>Nested Amplifier Example<a class="headerlink" href="#nested-amplifier-example" title="Link to this heading">#</a></h2>
+<h2>Nested Amplifier Example<a class="headerlink" href="#nested-amplifier-example" title="Permalink to this heading">#</a></h2>
 <p>The following system adapter is a simple <code class="docutils literal notranslate"><span class="pre">CommandAdapter</span></code>. This Can be used to query the
-SystemSimulationComponent for a list of ID’s of the components it contains; and to
+SystemComponent for a list of ID’s of the components it contains; and to
 return the wiring map of the components.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SystemSimulationAdapter</span><span class="p">(</span><span class="n">BaseSystemSimulationAdapter</span><span class="p">,</span> <span class="n">CommandAdapter</span><span class="p">):</span>
 
@@ -501,7 +501,7 @@ return the wiring map of the components.</p>
 </pre></div>
 </div>
 <p>To use this adapter we would need to put it in an adapter container with <code class="docutils literal notranslate"><span class="pre">TcpIo</span></code> and
-assign it as an argument in the SystemSimulationComponent.</p>
+assign it as an argument in the SystemComponent.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@pydantic</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
 <span class="k">class</span> <span class="nc">NestedAmplifierWithAdapter</span><span class="p">(</span><span class="n">ComponentConfig</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Simulation of a nested amplifier with a CommandAdapter.&quot;&quot;&quot;</span>
@@ -512,7 +512,7 @@ assign it as an argument in the SystemSimulationComponent.</p>
     <span class="n">expose</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">PortID</span><span class="p">,</span> <span class="n">ComponentPort</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Component</span><span class="p">:</span>  <span class="c1"># noqa: D102</span>
-        <span class="k">return</span> <span class="n">SystemSimulationComponent</span><span class="p">(</span>
+        <span class="k">return</span> <span class="n">SystemComponent</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="n">components</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">,</span>
             <span class="n">expose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">expose</span><span class="p">,</span>
@@ -525,7 +525,7 @@ assign it as an argument in the SystemSimulationComponent.</p>
 </div>
 <p>This ComponentConfig <code class="docutils literal notranslate"><span class="pre">NestedAmplifierWithAdapter</span></code> can be used as any other component.</p>
 <p>Below is a very simple simulation with a system simulation component. It is a
-source, which is connected to a <a class="reference internal" href="../reference/api.html#tickit.core.components.system_simulation.SystemSimulationComponent" title="tickit.core.components.system_simulation.SystemSimulationComponent"><code class="xref any py py-class docutils literal notranslate"><span class="pre">SystemSimulationComponent</span></code></a> which only contains a
+source, which is connected to a <a class="reference internal" href="../reference/api.html#tickit.core.components.system_component.SystemComponent" title="tickit.core.components.system_component.SystemComponent"><code class="xref any py py-class docutils literal notranslate"><span class="pre">SystemComponent</span></code></a> which only contains a
 single amplifier. The output of this amplfier is fed to the output of the system
 simulation component, which is wired to a sink.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tickit.devices.source.Source</span>
@@ -560,7 +560,7 @@ simulation component, which is wired to a sink.</p>
 </div>
 </section>
 <section id="interacting-with-devices-using-a-system-simulation-adapter">
-<h2>Interacting with devices using a system simulation adapter<a class="headerlink" href="#interacting-with-devices-using-a-system-simulation-adapter" title="Link to this heading">#</a></h2>
+<h2>Interacting with devices using a system simulation adapter<a class="headerlink" href="#interacting-with-devices-using-a-system-simulation-adapter" title="Permalink to this heading">#</a></h2>
 <p>When using a system adapter you must be careful to achieve the behaviour you desire.</p>
 <p>If you wish to write to and change the devices within the system simulation then any
 change you make must be followed by raising an interrupt in that specific device

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.adapter &#8212; tickit 0.4.2.dev2+geba276eb documentation</title>
+    <title>tickit.core.adapter &#8212; tickit 0.4.3.dev1+gd6415fe0 documentation</title>
   
   
   
@@ -36,9 +36,9 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script src="../../../_static/documentation_options.js?v=428dafdd"></script>
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=e4909230"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=30646c52"></script>
     <script src="../../../_static/design-tabs.js?v=36754332"></script>
@@ -424,9 +424,7 @@ document.write(`
 <span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="RaiseInterrupt">
-<a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.adapter.RaiseInterrupt">[docs]</a>
-<span class="k">class</span> <span class="nc">RaiseInterrupt</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
+<div class="viewcode-block" id="RaiseInterrupt"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.adapter.RaiseInterrupt">[docs]</a><span class="k">class</span> <span class="nc">RaiseInterrupt</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A raise_interrupt function that should be passed the adapter.&quot;&quot;&quot;</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -434,13 +432,10 @@ document.write(`
         <span class="k">pass</span></div>
 
 
-
 <span class="n">A</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="AdapterIo">
-<a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.adapter.AdapterIo">[docs]</a>
-<span class="k">class</span> <span class="nc">AdapterIo</span><span class="p">(</span><span class="n">ABC</span><span class="p">,</span> <span class="n">Generic</span><span class="p">[</span><span class="n">A</span><span class="p">]):</span>
+<div class="viewcode-block" id="AdapterIo"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.adapter.AdapterIo">[docs]</a><span class="k">class</span> <span class="nc">AdapterIo</span><span class="p">(</span><span class="n">ABC</span><span class="p">,</span> <span class="n">Generic</span><span class="p">[</span><span class="n">A</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Io logic with a setup method for an adapter object.&quot;&quot;&quot;</span>
 
     <span class="nd">@abstractmethod</span>
@@ -448,10 +443,7 @@ document.write(`
         <span class="o">...</span></div>
 
 
-
-<div class="viewcode-block" id="AdapterContainer">
-<a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.adapter.AdapterContainer">[docs]</a>
-<span class="k">class</span> <span class="nc">AdapterContainer</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">A</span><span class="p">]):</span>
+<div class="viewcode-block" id="AdapterContainer"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.adapter.AdapterContainer">[docs]</a><span class="k">class</span> <span class="nc">AdapterContainer</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">A</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A container for an object specific adapter and the required functional io.&quot;&quot;&quot;</span>
 
     <span class="n">adapter</span><span class="p">:</span> <span class="n">A</span>
@@ -461,9 +453,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">adapter</span> <span class="o">=</span> <span class="n">adapter</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">io</span> <span class="o">=</span> <span class="n">io</span>
 
-<div class="viewcode-block" id="AdapterContainer.run_forever">
-<a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.adapter.AdapterContainer.run_forever">[docs]</a>
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">run_forever</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raise_interrupt</span><span class="p">:</span> <span class="n">RaiseInterrupt</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="AdapterContainer.run_forever"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.adapter.AdapterContainer.run_forever">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run_forever</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raise_interrupt</span><span class="p">:</span> <span class="n">RaiseInterrupt</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;An asynchronous method allowing indefinite running of core adapter logic.</span>
 
 <span class="sd">        An asynchronous method allowing for indefinite running of core adapter logic</span>
@@ -471,19 +461,13 @@ document.write(`
 <span class="sd">        which are supplied via it).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">adapter</span><span class="p">,</span> <span class="n">raise_interrupt</span><span class="p">)</span></div>
-</div>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">adapter</span><span class="p">,</span> <span class="n">raise_interrupt</span><span class="p">)</span></div></div>
 
 
-
-<div class="viewcode-block" id="Interpreter">
-<a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.adapter.Interpreter">[docs]</a>
-<span class="k">class</span> <span class="nc">Interpreter</span><span class="p">(</span><span class="n">ABC</span><span class="p">,</span> <span class="n">Generic</span><span class="p">[</span><span class="n">T</span><span class="p">]):</span>
+<div class="viewcode-block" id="Interpreter"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.adapter.Interpreter">[docs]</a><span class="k">class</span> <span class="nc">Interpreter</span><span class="p">(</span><span class="n">ABC</span><span class="p">,</span> <span class="n">Generic</span><span class="p">[</span><span class="n">T</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An interface for types which handle messages received by an adapter.&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Interpreter.handle">
-<a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.adapter.Interpreter.handle">[docs]</a>
-    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="Interpreter.handle"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.adapter.Interpreter.handle">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">AsyncIterable</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;An asynchronous method which handles messages received by an adapter.</span>
 
@@ -498,9 +482,7 @@ document.write(`
 <span class="sd">        Returns:</span>
 <span class="sd">            Tuple[AsyncIterable[T], bool]: A tuple containing both an asynchronous</span>
 <span class="sd">                iterable of reply messages and an interrupt flag.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
-</div>
-
+<span class="sd">        &quot;&quot;&quot;</span></div></div>
 </pre></div>
 
                 </article>
