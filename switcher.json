@@ -68,6 +68,10 @@
     "url": "https://dls-controls.github.io/tickit/0.1/"
   },
   {
+    "version": "rename-scheduler",
+    "url": "https://dls-controls.github.io/tickit/rename-scheduler/"
+  },
+  {
     "version": "rename-system-sim",
     "url": "https://dls-controls.github.io/tickit/rename-system-sim/"
   },
