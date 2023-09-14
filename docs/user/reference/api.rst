@@ -85,11 +85,11 @@ This is the internal API reference for tickit
                 ``tickit.core.management.schedulers.master``
                 --------------------------------------------
 
-            .. automodule:: tickit.core.management.schedulers.slave
+            .. automodule:: tickit.core.management.schedulers.nested
                 :members:
 
-                ``tickit.core.management.schedulers.slave``
-                -------------------------------------------
+                ``tickit.core.management.schedulers.nested``
+                --------------------------------------------
 
 
         .. automodule:: tickit.core.management.event_router
