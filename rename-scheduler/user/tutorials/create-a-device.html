@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Creating a Device &#8212; tickit 0.4.3.dev7+gaaa0c61e documentation</title>
+    <title>Creating a Device &#8212; tickit 0.4.3.dev11+g3db9b366 documentation</title>
   
   
   
@@ -38,9 +38,9 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=d2ecf0b9"></script>
+    <script src="../../_static/documentation_options.js?v=d9128996"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=30646c52"></script>
     <script src="../../_static/design-tabs.js?v=36754332"></script>
@@ -473,12 +473,12 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="creating-a-device">
-<h1>Creating a Device<a class="headerlink" href="#creating-a-device" title="Permalink to this heading">#</a></h1>
+<h1>Creating a Device<a class="headerlink" href="#creating-a-device" title="Link to this heading">#</a></h1>
 <p>This tutorial shows how to create a simple amplifier <a class="reference internal" href="../reference/api.html#tickit.core.device.Device" title="tickit.core.device.Device"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Device</span></code></a> for use in the tickit
 framework. This device will act as a simple amplifier which can multiply the signal
 received.</p>
 <section id="device-class">
-<h2>Device Class<a class="headerlink" href="#device-class" title="Permalink to this heading">#</a></h2>
+<h2>Device Class<a class="headerlink" href="#device-class" title="Link to this heading">#</a></h2>
 <p>We shall begin by defining the amplifier class, which inherits <a class="reference internal" href="../reference/api.html#tickit.core.device.Device" title="tickit.core.device.Device"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Device</span></code></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tickit.core.device</span> <span class="kn">import</span> <span class="n">Device</span>
 
@@ -511,7 +511,7 @@ maps as members. As such we shall put in the following boilerplate.</p>
 </div>
 </section>
 <section id="device-constructor-and-configuration">
-<h2>Device Constructor and Configuration<a class="headerlink" href="#device-constructor-and-configuration" title="Permalink to this heading">#</a></h2>
+<h2>Device Constructor and Configuration<a class="headerlink" href="#device-constructor-and-configuration" title="Link to this heading">#</a></h2>
 <p>Next, we shall populate the <code class="docutils literal notranslate"><span class="pre">__init__</span></code> method, allowing for the device to be
 instantiated. For this amplifier we want an amplification of 2, so we assign that
 here.</p>
@@ -538,7 +538,7 @@ here.</p>
 </div>
 </section>
 <section id="device-logic">
-<h2>Device Logic<a class="headerlink" href="#device-logic" title="Permalink to this heading">#</a></h2>
+<h2>Device Logic<a class="headerlink" href="#device-logic" title="Link to this heading">#</a></h2>
 <p>In order to have a signal to amplifier we will make the following small system
 where the amplifier receives a signal from a <a class="reference internal" href="../reference/api.html#module-tickit.devices.source" title="tickit.devices.source"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">source</span></code></a> and outputs it to a <a class="reference internal" href="../reference/api.html#module-tickit.devices.sink" title="tickit.devices.sink"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">sink</span></code></a>.
 The <a class="reference internal" href="../reference/api.html#module-tickit.devices.sink" title="tickit.devices.sink"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">sink</span></code></a> and <a class="reference internal" href="../reference/api.html#module-tickit.devices.source" title="tickit.devices.source"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">source</span></code></a> are already available in <code class="docutils literal notranslate"><span class="pre">tickit.devices</span></code>.</p>
@@ -571,7 +571,7 @@ we define our inputs and outputs in the maps, and the line of logic in the <code
 </div>
 </section>
 <section id="creating-a-componentconfig">
-<h2>Creating a ComponentConfig<a class="headerlink" href="#creating-a-componentconfig" title="Permalink to this heading">#</a></h2>
+<h2>Creating a ComponentConfig<a class="headerlink" href="#creating-a-componentconfig" title="Link to this heading">#</a></h2>
 <p>In order to run the Device as a simulation, it requires a <a class="reference internal" href="../reference/api.html#tickit.core.components.component.ComponentConfig" title="tickit.core.components.component.ComponentConfig"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ComponentConfig</span></code></a> that
 knows how to instantiate that Device. This will be defined in the same file as the
 device, and defines any default initial configuration values. As well as this, we
@@ -599,7 +599,7 @@ if the device requires any adapters to control it externally.</p>
 </div>
 </section>
 <section id="using-the-device">
-<h2>Using the Device<a class="headerlink" href="#using-the-device" title="Permalink to this heading">#</a></h2>
+<h2>Using the Device<a class="headerlink" href="#using-the-device" title="Link to this heading">#</a></h2>
 <p>In order to use the device we must first create a simulation configuration yaml
 file. This file will be used to set up our simulation and will consist of: a
 <a class="reference internal" href="../reference/api.html#tickit.devices.source.Source" title="tickit.devices.source.Source"><code class="xref any py py-class docutils literal notranslate"><span class="pre">Source</span></code></a>, named source, which will produce a constant input signal; our amplifier;
@@ -655,7 +655,7 @@ in a single or across multiple processes.</p>
 </div>
 </section>
 <section id="interact-with-the-device">
-<h2>Interact with the device<a class="headerlink" href="#interact-with-the-device" title="Permalink to this heading">#</a></h2>
+<h2>Interact with the device<a class="headerlink" href="#interact-with-the-device" title="Link to this heading">#</a></h2>
 <p>Now we have a device it is likely we want to interact with it. This can be achieved
 externally using adapters. A guide on how to do this can be found <a class="reference internal" href="use-command-adapter.html"><span class="doc">here.</span></a></p>
 </section>

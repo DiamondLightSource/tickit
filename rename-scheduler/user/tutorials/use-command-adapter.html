@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Using an Adapter &#8212; tickit 0.4.3.dev7+gaaa0c61e documentation</title>
+    <title>Using an Adapter &#8212; tickit 0.4.3.dev11+g3db9b366 documentation</title>
   
   
   
@@ -38,9 +38,9 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=d2ecf0b9"></script>
+    <script src="../../_static/documentation_options.js?v=d9128996"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=30646c52"></script>
     <script src="../../_static/design-tabs.js?v=36754332"></script>
@@ -473,7 +473,7 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="using-an-adapter">
-<h1>Using an Adapter<a class="headerlink" href="#using-an-adapter" title="Permalink to this heading">#</a></h1>
+<h1>Using an Adapter<a class="headerlink" href="#using-an-adapter" title="Link to this heading">#</a></h1>
 <p>This tutorial shows how to use a simple adapter to externally interact with a
 device in the tickit framework.</p>
 <p>We will use a <code class="docutils literal notranslate"><span class="pre">CommandAdapter</span></code> which will act as a simple TCP interface to the
@@ -485,7 +485,7 @@ device.</p>
 </div>
 <p>For more information on adapters see <a class="reference internal" href="../explanations/adapters.html"><span class="doc">here</span></a>.</p>
 <section id="initialise-adapter">
-<h2>Initialise Adapter<a class="headerlink" href="#initialise-adapter" title="Permalink to this heading">#</a></h2>
+<h2>Initialise Adapter<a class="headerlink" href="#initialise-adapter" title="Link to this heading">#</a></h2>
 <p>We shall begin using the same <code class="docutils literal notranslate"><span class="pre">amplifier.py</span></code> file from the <code class="docutils literal notranslate"><span class="pre">Amplifier</span></code> device. In
 that file add a new <code class="docutils literal notranslate"><span class="pre">AmplifierAdapter</span></code> class which inherits <code class="docutils literal notranslate"><span class="pre">CommandAdapter</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tickit.adapters.tcp</span> <span class="kn">import</span> <span class="n">CommandAdapter</span>
@@ -502,7 +502,7 @@ that file add a new <code class="docutils literal notranslate"><span class="pre"
 </div>
 </section>
 <section id="adapter-commands">
-<h2>Adapter Commands<a class="headerlink" href="#adapter-commands" title="Permalink to this heading">#</a></h2>
+<h2>Adapter Commands<a class="headerlink" href="#adapter-commands" title="Link to this heading">#</a></h2>
 <p>Now we have an adapter for our device, we need to tell it how to identify commands.
 Commands are registered by decorating an adapter method with a command register.</p>
 <p>We shall create two methods, one which returns the current amplification of the
@@ -561,7 +561,7 @@ adapter should look as below.</p>
 </div>
 </section>
 <section id="include-the-adapter">
-<h2>Include the Adapter<a class="headerlink" href="#include-the-adapter" title="Permalink to this heading">#</a></h2>
+<h2>Include the Adapter<a class="headerlink" href="#include-the-adapter" title="Link to this heading">#</a></h2>
 <p>In order to now use this adapter to control our device we need to include it in
 our amplifier <a class="reference internal" href="../reference/api.html#tickit.core.components.component.ComponentConfig" title="tickit.core.components.component.ComponentConfig"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ComponentConfig</span></code></a>. To do this we first construct an <a class="reference internal" href="../reference/api.html#tickit.core.adapter.AdapterContainer" title="tickit.core.adapter.AdapterContainer"><code class="xref any py py-class docutils literal notranslate"><span class="pre">AdapterContainer</span></code></a>
 with our <code class="docutils literal notranslate"><span class="pre">AmplifierAdapter</span></code> and the appropriate <a class="reference internal" href="../reference/api.html#tickit.core.adapter.AdapterIo" title="tickit.core.adapter.AdapterIo"><code class="xref any py py-class docutils literal notranslate"><span class="pre">AdapterIo</span></code></a>. In this case <code class="docutils literal notranslate"><span class="pre">TcpIo</span></code>.
@@ -597,7 +597,7 @@ Once this is done we simply add it to the arguments of <a class="reference inter
 adapter. To do this simply list them.</p>
 </section>
 <section id="using-the-adapter">
-<h2>Using the Adapter<a class="headerlink" href="#using-the-adapter" title="Permalink to this heading">#</a></h2>
+<h2>Using the Adapter<a class="headerlink" href="#using-the-adapter" title="Link to this heading">#</a></h2>
 <p>The simulation can be run the same as before using the yaml.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>tickit<span class="w"> </span>all<span class="w"> </span>amplifier.yaml
 </pre></div>

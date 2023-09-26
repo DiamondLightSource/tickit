@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.devices.iobox &#8212; tickit 0.4.3.dev7+gaaa0c61e documentation</title>
+    <title>tickit.devices.iobox &#8212; tickit 0.4.3.dev11+g3db9b366 documentation</title>
   
   
   
@@ -37,9 +37,9 @@
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=d2ecf0b9"></script>
+    <script src="../../../_static/documentation_options.js?v=d9128996"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=30646c52"></script>
     <script src="../../../_static/design-tabs.js?v=36754332"></script>
@@ -448,7 +448,9 @@ document.write(`
 <span class="n">V</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;V&quot;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="IoBoxDevice"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.devices.iobox.IoBoxDevice">[docs]</a><span class="k">class</span> <span class="nc">IoBoxDevice</span><span class="p">(</span><span class="n">Device</span><span class="p">,</span> <span class="n">Generic</span><span class="p">[</span><span class="n">A</span><span class="p">,</span> <span class="n">V</span><span class="p">]):</span>
+<div class="viewcode-block" id="IoBoxDevice">
+<a class="viewcode-back" href="../../../user/reference/api.html#tickit.devices.iobox.IoBoxDevice">[docs]</a>
+<span class="k">class</span> <span class="nc">IoBoxDevice</span><span class="p">(</span><span class="n">Device</span><span class="p">,</span> <span class="n">Generic</span><span class="p">[</span><span class="n">A</span><span class="p">,</span> <span class="n">V</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A simple device which can take and store key-value pairs from both</span>
 <span class="sd">    network adapters and the ticket graph.</span>
@@ -500,7 +502,9 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">_memory</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_change_buffer</span> <span class="o">=</span> <span class="p">[]</span>
 
-<div class="viewcode-block" id="IoBoxDevice.write"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.devices.iobox.IoBoxDevice.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">:</span> <span class="n">A</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">V</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="IoBoxDevice.write">
+<a class="viewcode-back" href="../../../user/reference/api.html#tickit.devices.iobox.IoBoxDevice.write">[docs]</a>
+    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">:</span> <span class="n">A</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">V</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Write a value to an address.</span>
 
 <span class="sd">        The value will only make it into memory when update() is called</span>
@@ -512,7 +516,10 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_change_buffer</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">addr</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="IoBoxDevice.read"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.devices.iobox.IoBoxDevice.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">:</span> <span class="n">A</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">V</span><span class="p">:</span>
+
+<div class="viewcode-block" id="IoBoxDevice.read">
+<a class="viewcode-back" href="../../../user/reference/api.html#tickit.devices.iobox.IoBoxDevice.read">[docs]</a>
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">:</span> <span class="n">A</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">V</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Read a value from an address.</span>
 
 <span class="sd">        Args:</span>
@@ -526,11 +533,14 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_memory</span><span class="p">[</span><span class="n">addr</span><span class="p">]</span></div>
 
+
     <span class="c1"># As well as read and write, can use device[addr] and device[addr] = &quot;foo&quot;</span>
     <span class="fm">__getitem__</span> <span class="o">=</span> <span class="n">read</span>
     <span class="fm">__setitem__</span> <span class="o">=</span> <span class="n">write</span>
 
-<div class="viewcode-block" id="IoBoxDevice.update"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.devices.iobox.IoBoxDevice.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">SimTime</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">Inputs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeviceUpdate</span><span class="p">[</span><span class="n">Outputs</span><span class="p">]:</span>
+<div class="viewcode-block" id="IoBoxDevice.update">
+<a class="viewcode-back" href="../../../user/reference/api.html#tickit.devices.iobox.IoBoxDevice.update">[docs]</a>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">SimTime</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">Inputs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeviceUpdate</span><span class="p">[</span><span class="n">Outputs</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Write all pending values to their addresses.</span>
 
 <span class="sd">        Args:</span>
@@ -549,10 +559,14 @@ document.write(`
             <span class="n">addr</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_change_buffer</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_memory</span><span class="p">[</span><span class="n">addr</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
             <span class="n">updates</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">addr</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">DeviceUpdate</span><span class="p">(</span><span class="n">IoBoxDevice</span><span class="o">.</span><span class="n">Outputs</span><span class="p">(</span><span class="n">updates</span><span class="o">=</span><span class="n">updates</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">DeviceUpdate</span><span class="p">(</span><span class="n">IoBoxDevice</span><span class="o">.</span><span class="n">Outputs</span><span class="p">(</span><span class="n">updates</span><span class="o">=</span><span class="n">updates</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span></div>
+</div>
 
 
-<div class="viewcode-block" id="IoBox"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.devices.iobox.IoBox">[docs]</a><span class="nd">@pydantic</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
+
+<div class="viewcode-block" id="IoBox">
+<a class="viewcode-back" href="../../../user/reference/api.html#tickit.devices.iobox.IoBox">[docs]</a>
+<span class="nd">@pydantic</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
 <span class="k">class</span> <span class="nc">IoBox</span><span class="p">(</span><span class="n">ComponentConfig</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Arbitrary box of key-value pairs.&quot;&quot;&quot;</span>
 
@@ -561,6 +575,7 @@ document.write(`
             <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="n">device</span><span class="o">=</span><span class="n">IoBoxDevice</span><span class="p">(),</span>
         <span class="p">)</span></div>
+
 </pre></div>
 
                 </article>

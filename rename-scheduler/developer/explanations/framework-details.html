@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Framework Details &#8212; tickit 0.4.3.dev7+gaaa0c61e documentation</title>
+    <title>Framework Details &#8212; tickit 0.4.3.dev11+g3db9b366 documentation</title>
   
   
   
@@ -38,9 +38,9 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=d2ecf0b9"></script>
+    <script src="../../_static/documentation_options.js?v=d9128996"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=30646c52"></script>
     <script src="../../_static/design-tabs.js?v=36754332"></script>
@@ -476,7 +476,7 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="framework-details">
-<h1>Framework Details<a class="headerlink" href="#framework-details" title="Permalink to this heading">#</a></h1>
+<h1>Framework Details<a class="headerlink" href="#framework-details" title="Link to this heading">#</a></h1>
 <p>Tickit is an event-based simulation framework allowing for the simulation of
 complex multi-device systems.</p>
 <p>A tickit simulation consists of a scheduler and components, all of which
@@ -490,11 +490,11 @@ update flow through the system.</p>
 <figure class="align-center">
 <img alt="../../_images/tickit-simple-dag.svg" src="../../_images/tickit-simple-dag.svg" /></figure>
 <section id="the-scheduler">
-<h2>The scheduler<a class="headerlink" href="#the-scheduler" title="Permalink to this heading">#</a></h2>
+<h2>The scheduler<a class="headerlink" href="#the-scheduler" title="Link to this heading">#</a></h2>
 <p>The main parts of the scheduler are the state consumer and producer, and the
 ticker.</p>
 <section id="state-consumer-and-producer">
-<h3>State Consumer and producer<a class="headerlink" href="#state-consumer-and-producer" title="Permalink to this heading">#</a></h3>
+<h3>State Consumer and producer<a class="headerlink" href="#state-consumer-and-producer" title="Link to this heading">#</a></h3>
 <p>The consumer and producer are for the messaging between the scheduler and
 the system components via the message bus. This is organised with topics that
 messages can be published to and that consumers can be subscribed to in order to
@@ -505,12 +505,12 @@ in the system.</p>
 and propagates it to the relevant inputs via the ticker.</p>
 </section>
 <section id="the-ticker">
-<h3>The ticker<a class="headerlink" href="#the-ticker" title="Permalink to this heading">#</a></h3>
+<h3>The ticker<a class="headerlink" href="#the-ticker" title="Link to this heading">#</a></h3>
 <p>The ticker contains the logic for the propagation of an update through the system.</p>
 </section>
 </section>
 <section id="one-update-cycle">
-<h2>One update cycle<a class="headerlink" href="#one-update-cycle" title="Permalink to this heading">#</a></h2>
+<h2>One update cycle<a class="headerlink" href="#one-update-cycle" title="Link to this heading">#</a></h2>
 <p>When the simulation starts it initialises all of the components and runs through
 its first tick.</p>
 <p>The scheduler contains a list of wakeups, which is a dictionary of component ids
@@ -540,7 +540,7 @@ time we can expect sim time to lag real time. This is mostly negligible but
 could potentially cause issues in larger more complex systems.</p>
 </section>
 <section id="what-is-actually-running-forever">
-<h2>What is actually running_forever?<a class="headerlink" href="#what-is-actually-running-forever" title="Permalink to this heading">#</a></h2>
+<h2>What is actually running_forever?<a class="headerlink" href="#what-is-actually-running-forever" title="Link to this heading">#</a></h2>
 <p>There are run forever methods for all the adapters in a system and in the master
 scheduler. These are the basis of the runner tasks. The adapters are waiting for
 incoming messages and the scheduler run forever is running system ticks based on

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.components.system_component &#8212; tickit 0.4.3.dev7+gaaa0c61e documentation</title>
+    <title>tickit.core.components.system_component &#8212; tickit 0.4.3.dev11+g3db9b366 documentation</title>
   
   
   
@@ -37,9 +37,9 @@
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js?v=d2ecf0b9"></script>
+    <script src="../../../../_static/documentation_options.js?v=d9128996"></script>
     <script src="../../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../../_static/copybutton.js?v=30646c52"></script>
     <script src="../../../../_static/design-tabs.js?v=36754332"></script>
@@ -450,7 +450,9 @@ document.write(`
 <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="SystemComponent"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.components.system_component.SystemComponent">[docs]</a><span class="nd">@dataclass</span>
+<div class="viewcode-block" id="SystemComponent">
+<a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.components.system_component.SystemComponent">[docs]</a>
+<span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">SystemComponent</span><span class="p">(</span><span class="n">BaseComponent</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A component containing a nested scheduler and several components.</span>
 
@@ -472,7 +474,9 @@ document.write(`
 
     <span class="n">_tasks</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">asyncio</span><span class="o">.</span><span class="n">Task</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
 
-<div class="viewcode-block" id="SystemComponent.run_forever"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.components.system_component.SystemComponent.run_forever">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run_forever</span><span class="p">(</span>
+<div class="viewcode-block" id="SystemComponent.run_forever">
+<a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.components.system_component.SystemComponent.run_forever">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">run_forever</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">state_consumer</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">StateConsumer</span><span class="p">],</span> <span class="n">state_producer</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">StateProducer</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets up state interfaces, the scheduler, and components to run continuously.</span>
@@ -507,7 +511,10 @@ document.write(`
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="p">:</span>
             <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SystemComponent.on_tick"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.components.system_component.SystemComponent.on_tick">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">on_tick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">SimTime</span><span class="p">,</span> <span class="n">changes</span><span class="p">:</span> <span class="n">Changes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="SystemComponent.on_tick">
+<a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.components.system_component.SystemComponent.on_tick">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">on_tick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">SimTime</span><span class="p">,</span> <span class="n">changes</span><span class="p">:</span> <span class="n">Changes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delegates core behaviour to the nested scheduler.</span>
 
 <span class="sd">        An asynchronous method which delegates core behaviour of computing changes and</span>
@@ -536,17 +543,24 @@ document.write(`
             <span class="n">output_changes</span><span class="p">,</span> <span class="n">call_in</span> <span class="o">=</span> <span class="n">on_tick</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">output_changes</span><span class="p">,</span> <span class="n">call_in</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SystemComponent.stop_component"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.components.system_component.SystemComponent.stop_component">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">stop_component</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="SystemComponent.stop_component">
+<a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.components.system_component.SystemComponent.stop_component">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">stop_component</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Cancel all pending tasks associated with the System Simulation component.</span>
 
 <span class="sd">        Cancels long running adapter tasks associated with the component.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stopping </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="p">:</span>
-            <span class="n">task</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span></div></div>
+            <span class="n">task</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span></div>
+</div>
 
 
-<div class="viewcode-block" id="SystemSimulation"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.components.system_component.SystemSimulation">[docs]</a><span class="nd">@pydantic</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
+
+<div class="viewcode-block" id="SystemSimulation">
+<a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.components.system_component.SystemSimulation">[docs]</a>
+<span class="nd">@pydantic</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
 <span class="k">class</span> <span class="nc">SystemSimulation</span><span class="p">(</span><span class="n">ComponentConfig</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Simulation of a nested set of components.&quot;&quot;&quot;</span>
 
@@ -560,6 +574,7 @@ document.write(`
             <span class="n">components</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">,</span>
             <span class="n">expose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">expose</span><span class="p">,</span>
         <span class="p">)</span></div>
+
 </pre></div>
 
                 </article>
