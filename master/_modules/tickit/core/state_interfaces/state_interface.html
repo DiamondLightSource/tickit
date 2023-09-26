@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.state_interfaces.state_interface &#8212; tickit 0.4.3.dev6+g4842db26 documentation</title>
+    <title>tickit.core.state_interfaces.state_interface &#8212; tickit 0.4.3.dev7+g36f6a163 documentation</title>
   
   
   
@@ -37,9 +37,9 @@
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js?v=487ab538"></script>
+    <script src="../../../../_static/documentation_options.js?v=a07c8f88"></script>
     <script src="../../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../../_static/copybutton.js?v=30646c52"></script>
     <script src="../../../../_static/design-tabs.js?v=36754332"></script>
@@ -452,7 +452,9 @@ document.write(`
 <span class="n">P</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="n">contravariant</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="StateConsumer"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.state_interface.StateConsumer">[docs]</a><span class="nd">@runtime_checkable</span>
+<div class="viewcode-block" id="StateConsumer">
+<a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.state_interface.StateConsumer">[docs]</a>
+<span class="nd">@runtime_checkable</span>
 <span class="k">class</span> <span class="nc">StateConsumer</span><span class="p">(</span><span class="n">Protocol</span><span class="p">[</span><span class="n">C</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An interface for types which implement publish/subscribe message consumers.</span>
 
@@ -471,7 +473,9 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span>
 
-<div class="viewcode-block" id="StateConsumer.subscribe"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.state_interface.StateConsumer.subscribe">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">subscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topics</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="StateConsumer.subscribe">
+<a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.state_interface.StateConsumer.subscribe">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">subscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topics</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Subscribe the consumer to the given topics.</span>
 
 <span class="sd">        Subscribe the consumer to the given topics, new messages are passed to</span>
@@ -480,10 +484,14 @@ document.write(`
 <span class="sd">        Args:</span>
 <span class="sd">            topics (Iterable[str]): An iterable of topics to subscribe to.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span></div></div>
+        <span class="k">pass</span></div>
+</div>
 
 
-<div class="viewcode-block" id="StateProducer"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.state_interface.StateProducer">[docs]</a><span class="nd">@runtime_checkable</span>
+
+<div class="viewcode-block" id="StateProducer">
+<a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.state_interface.StateProducer">[docs]</a>
+<span class="nd">@runtime_checkable</span>
 <span class="k">class</span> <span class="nc">StateProducer</span><span class="p">(</span><span class="n">Protocol</span><span class="p">[</span><span class="n">P</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An interface for types which implement publish/subscribe message producers.</span>
 
@@ -496,14 +504,18 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructor of the producer, given no arguments.&quot;&quot;&quot;</span>
         <span class="k">pass</span>
 
-<div class="viewcode-block" id="StateProducer.produce"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.state_interface.StateProducer.produce">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">produce</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">P</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="StateProducer.produce">
+<a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.state_interface.StateProducer.produce">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">produce</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">P</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Produce a value to the provided topic.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            topic (str): The topic to which the value should be sent.</span>
 <span class="sd">            value (P): The value to send to the provided topic.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span></div></div>
+        <span class="k">pass</span></div>
+</div>
+
 
 
 <span class="c1">#: The union of StateConsumer and StateProducer</span>
@@ -513,7 +525,9 @@ document.write(`
 <span class="n">producers</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">StateProducer</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="add"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.state_interface.add">[docs]</a><span class="k">def</span> <span class="nf">add</span><span class="p">(</span>
+<div class="viewcode-block" id="add">
+<a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.state_interface.add">[docs]</a>
+<span class="k">def</span> <span class="nf">add</span><span class="p">(</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">external</span><span class="p">:</span> <span class="nb">bool</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Type</span><span class="p">[</span><span class="n">StateInterface</span><span class="p">]],</span> <span class="n">Type</span><span class="p">[</span><span class="n">StateInterface</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A decorator to add a StateInterface to the registry.</span>
@@ -543,7 +557,10 @@ document.write(`
     <span class="k">return</span> <span class="n">wrap</span></div>
 
 
-<div class="viewcode-block" id="interfaces"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.state_interface.interfaces">[docs]</a><span class="k">def</span> <span class="nf">interfaces</span><span class="p">(</span><span class="n">external</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+
+<div class="viewcode-block" id="interfaces">
+<a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.state_interface.interfaces">[docs]</a>
+<span class="k">def</span> <span class="nf">interfaces</span><span class="p">(</span><span class="n">external</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns interface names for which both a StateConsumer and StateProducer exist.</span>
 
 <span class="sd">    Gets a set of interface names for which both a StateConsumer and StateProducer</span>
@@ -563,7 +580,10 @@ document.write(`
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="satisfy_externality"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.state_interface.satisfy_externality">[docs]</a><span class="k">def</span> <span class="nf">satisfy_externality</span><span class="p">(</span>
+
+<div class="viewcode-block" id="satisfy_externality">
+<a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.state_interface.satisfy_externality">[docs]</a>
+<span class="k">def</span> <span class="nf">satisfy_externality</span><span class="p">(</span>
     <span class="n">external</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">interfaces</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">StateInterface</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Finds which interfaces satisfy the externality requirement provided.</span>
@@ -583,7 +603,10 @@ document.write(`
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="get_interface"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.state_interface.get_interface">[docs]</a><span class="k">def</span> <span class="nf">get_interface</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">StateConsumer</span><span class="p">],</span> <span class="n">Type</span><span class="p">[</span><span class="n">StateProducer</span><span class="p">]]:</span>
+
+<div class="viewcode-block" id="get_interface">
+<a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.state_interface.get_interface">[docs]</a>
+<span class="k">def</span> <span class="nf">get_interface</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">StateConsumer</span><span class="p">],</span> <span class="n">Type</span><span class="p">[</span><span class="n">StateProducer</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the StateConsumer and StateProducer classes for a given interface name.</span>
 
 <span class="sd">    Args:</span>
@@ -594,6 +617,7 @@ document.write(`
 <span class="sd">            A tuple of the StateConsumer and StateProducer classes.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">consumers</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">producers</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span></div>
+
 </pre></div>
 
                 </article>

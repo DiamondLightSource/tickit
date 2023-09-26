@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Run linting using pre-commit &#8212; tickit 0.4.3.dev6+g4842db26 documentation</title>
+    <title>Run linting using pre-commit &#8212; tickit 0.4.3.dev7+g36f6a163 documentation</title>
   
   
   
@@ -38,9 +38,9 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=487ab538"></script>
+    <script src="../../_static/documentation_options.js?v=a07c8f88"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=30646c52"></script>
     <script src="../../_static/design-tabs.js?v=36754332"></script>
@@ -476,10 +476,10 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="run-linting-using-pre-commit">
-<h1>Run linting using pre-commit<a class="headerlink" href="#run-linting-using-pre-commit" title="Permalink to this heading">#</a></h1>
+<h1>Run linting using pre-commit<a class="headerlink" href="#run-linting-using-pre-commit" title="Link to this heading">#</a></h1>
 <p>Code linting is handled by <a class="reference external" href="https://github.com/psf/black">black</a>, <a class="reference external" href="https://flake8.pycqa.org/en/latest/">flake8</a> and <a class="reference external" href="https://github.com/PyCQA/isort">isort</a> run under <a class="reference external" href="https://pre-commit.com/">pre-commit</a>.</p>
 <section id="running-pre-commit">
-<h2>Running pre-commit<a class="headerlink" href="#running-pre-commit" title="Permalink to this heading">#</a></h2>
+<h2>Running pre-commit<a class="headerlink" href="#running-pre-commit" title="Link to this heading">#</a></h2>
 <p>You can run the above checks on all files with this command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ tox -e pre-commit
 </pre></div>
@@ -491,7 +491,7 @@ document.write(`
 </div>
 </section>
 <section id="fixing-issues">
-<h2>Fixing issues<a class="headerlink" href="#fixing-issues" title="Permalink to this heading">#</a></h2>
+<h2>Fixing issues<a class="headerlink" href="#fixing-issues" title="Link to this heading">#</a></h2>
 <p>If black reports an issue you can tell it to reformat all the files in the
 repository:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ black .
@@ -504,7 +504,7 @@ repository:</p>
 <p>If you get any flake8 issues you will have to fix those manually.</p>
 </section>
 <section id="vscode-support">
-<h2>VSCode support<a class="headerlink" href="#vscode-support" title="Permalink to this heading">#</a></h2>
+<h2>VSCode support<a class="headerlink" href="#vscode-support" title="Link to this heading">#</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">.vscode/settings.json</span></code> will run black and isort formatters as well as
 flake8 checking on save. Issues will be highlighted in the editor window.</p>
 </section>

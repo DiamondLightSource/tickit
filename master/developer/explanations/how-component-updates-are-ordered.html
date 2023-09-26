@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>How component updates are ordered &#8212; tickit 0.4.3.dev6+g4842db26 documentation</title>
+    <title>How component updates are ordered &#8212; tickit 0.4.3.dev7+g36f6a163 documentation</title>
   
   
   
@@ -38,9 +38,9 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=487ab538"></script>
+    <script src="../../_static/documentation_options.js?v=a07c8f88"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=30646c52"></script>
     <script src="../../_static/design-tabs.js?v=36754332"></script>
@@ -476,7 +476,7 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="how-component-updates-are-ordered">
-<h1>How component updates are ordered<a class="headerlink" href="#how-component-updates-are-ordered" title="Permalink to this heading">#</a></h1>
+<h1>How component updates are ordered<a class="headerlink" href="#how-component-updates-are-ordered" title="Link to this heading">#</a></h1>
 <p>Update sequencing is performed with the aim of minimising computational cost
 whilst ensuring that all wired component interactions are captured faithfully.
 As such a simulation <strong>tick</strong> is composed of the following steps:</p>
@@ -487,7 +487,7 @@ As such a simulation <strong>tick</strong> is composed of the following steps:</
 <li><p><a class="reference internal" href="#schedule-possible-updates-if-incomplete">Schedule possible updates if incomplete</a></p></li>
 </ol>
 <section id="in-depth-walk-through">
-<h2>In depth walk-through<a class="headerlink" href="#in-depth-walk-through" title="Permalink to this heading">#</a></h2>
+<h2>In depth walk-through<a class="headerlink" href="#in-depth-walk-through" title="Link to this heading">#</a></h2>
 <p>Consider the system shown below, in which outputs of <em>Component A</em> are wired
 to the input of <em>Component B</em> and the first input of <em>Component C</em>, whilst
 the output of <em>Component B</em> is wired to the second input of <em>Component C</em>
@@ -495,7 +495,7 @@ and the input of <em>Component D</em>.</p>
 <figure class="align-center">
 <img alt="../../_images/example-systems.drawio.svg" src="../../_images/example-systems.drawio.svg" /></figure>
 <section id="determine-which-components-require-an-update">
-<h3>Determine which components require an update<a class="headerlink" href="#determine-which-components-require-an-update" title="Permalink to this heading">#</a></h3>
+<h3>Determine which components require an update<a class="headerlink" href="#determine-which-components-require-an-update" title="Link to this heading">#</a></h3>
 <p>When performing a tick we begin by discovering which components require
 updates, this is performed by walking the wiring to discover all dependants of
 the <strong>root</strong> component, with the result stored in a collection named
@@ -505,7 +505,7 @@ the <strong>root</strong>, only they themselves require an update. If <em>Compon
 Whilst if <em>Component A</em> is the <strong>root</strong> all components require an update.</p>
 </section>
 <section id="schedule-possible-updates">
-<h3>Schedule possible updates<a class="headerlink" href="#schedule-possible-updates" title="Permalink to this heading">#</a></h3>
+<h3>Schedule possible updates<a class="headerlink" href="#schedule-possible-updates" title="Link to this heading">#</a></h3>
 <p>Next, we schedule updates for all components whose dependencies have been
 resolved; Dependency resolution is established by checking whether any of their
 dependencies remain in <code class="docutils literal notranslate"><span class="pre">to_update</span></code>. In the example where <em>Component A</em> serves
@@ -517,13 +517,13 @@ would have an update scheduled. Similarly, if <em>Component B</em> had been reso
 the updates of both <em>Component C</em> and <em>Component D</em> would be scheduled.</p>
 </section>
 <section id="handle-responses">
-<h3>Handle responses<a class="headerlink" href="#handle-responses" title="Permalink to this heading">#</a></h3>
+<h3>Handle responses<a class="headerlink" href="#handle-responses" title="Link to this heading">#</a></h3>
 <p>When a component update is completed and the corresponding response is
 received, the component can be removed from <code class="docutils literal notranslate"><span class="pre">to_update</span></code> and <a class="reference internal" href="#schedule-possible-updates-if-incomplete">schedule
 possible updates if incomplete</a>.</p>
 </section>
 <section id="schedule-possible-updates-if-incomplete">
-<h3>Schedule possible updates if incomplete<a class="headerlink" href="#schedule-possible-updates-if-incomplete" title="Permalink to this heading">#</a></h3>
+<h3>Schedule possible updates if incomplete<a class="headerlink" href="#schedule-possible-updates-if-incomplete" title="Link to this heading">#</a></h3>
 <p>If <code class="docutils literal notranslate"><span class="pre">to_update</span></code> is now empty we can assert that the state of the simulation
 has been brought up to date and complete the tick, otherwise we <a class="reference internal" href="#schedule-possible-updates">schedule
 possible updates</a> and <a class="reference internal" href="#handle-responses">handle responses</a> as performed previously.</p>

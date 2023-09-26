@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.management.schedulers.base &#8212; tickit 0.4.3.dev6+g4842db26 documentation</title>
+    <title>tickit.core.management.schedulers.base &#8212; tickit 0.4.3.dev7+g36f6a163 documentation</title>
   
   
   
@@ -37,9 +37,9 @@
 <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../../../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js?v=487ab538"></script>
+    <script src="../../../../../_static/documentation_options.js?v=a07c8f88"></script>
     <script src="../../../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../../../_static/copybutton.js?v=30646c52"></script>
     <script src="../../../../../_static/design-tabs.js?v=36754332"></script>
@@ -456,7 +456,9 @@ document.write(`
 <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="BaseScheduler"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.base.BaseScheduler">[docs]</a><span class="k">class</span> <span class="nc">BaseScheduler</span><span class="p">:</span>
+<div class="viewcode-block" id="BaseScheduler">
+<a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.base.BaseScheduler">[docs]</a>
+<span class="k">class</span> <span class="nc">BaseScheduler</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A base scheduler class which implements logic common to all schedulers.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -482,7 +484,9 @@ document.write(`
 
         <span class="bp">self</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
 
-<div class="viewcode-block" id="BaseScheduler.schedule_interrupt"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.schedule_interrupt">[docs]</a>    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="BaseScheduler.schedule_interrupt">
+<a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.schedule_interrupt">[docs]</a>
+    <span class="nd">@abstractmethod</span>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">schedule_interrupt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">ComponentID</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;An abstract asynchronous method which should schedule an interrupt.</span>
 
@@ -494,7 +498,10 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="BaseScheduler.update_component"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.update_component">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_component</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">:</span> <span class="n">Input</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="BaseScheduler.update_component">
+<a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.update_component">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_component</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">:</span> <span class="n">Input</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Sends a message with an input to the input topic of a component.</span>
 
 <span class="sd">        Args:</span>
@@ -503,7 +510,10 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">state_producer</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">input_topic</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">target</span><span class="p">),</span> <span class="nb">input</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="BaseScheduler.skip_component"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.skip_component">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">skip_component</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">skip</span><span class="p">:</span> <span class="n">Skip</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="BaseScheduler.skip_component">
+<a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.skip_component">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">skip_component</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">skip</span><span class="p">:</span> <span class="n">Skip</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Sends a message to itself that a given component update has been skipped.</span>
 
 <span class="sd">        Args:</span>
@@ -512,7 +522,10 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">state_producer</span><span class="o">.</span><span class="n">produce</span><span class="p">(</span><span class="n">output_topic</span><span class="p">(</span><span class="n">skip</span><span class="o">.</span><span class="n">source</span><span class="p">),</span> <span class="n">skip</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="BaseScheduler.handle_message"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.handle_message">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">ComponentOutput</span><span class="p">,</span> <span class="n">Skip</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="BaseScheduler.handle_message">
+<a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.handle_message">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">ComponentOutput</span><span class="p">,</span> <span class="n">Skip</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle messages received by the state consumer.</span>
 
 <span class="sd">        An asynchronous callback which handles Interrupt, Output, ComponentException</span>
@@ -539,7 +552,10 @@ document.write(`
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">ComponentException</span><span class="p">):</span>
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_component_exception</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="BaseScheduler.setup"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.setup">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="BaseScheduler.setup">
+<a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.setup">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Instantiates and configures the ticker and state interfaces.</span>
 
 <span class="sd">        An asynchronous setup method which creates a ticker, a state consumer which is</span>
@@ -557,7 +573,10 @@ document.write(`
             <span class="n">Union</span><span class="p">[</span><span class="n">ComponentInput</span><span class="p">,</span> <span class="n">Skip</span><span class="p">]</span>
         <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_producer_cls</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="BaseScheduler.add_wakeup"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.add_wakeup">[docs]</a>    <span class="k">def</span> <span class="nf">add_wakeup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component</span><span class="p">:</span> <span class="n">ComponentID</span><span class="p">,</span> <span class="n">when</span><span class="p">:</span> <span class="n">SimTime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="BaseScheduler.add_wakeup">
+<a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.add_wakeup">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_wakeup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component</span><span class="p">:</span> <span class="n">ComponentID</span><span class="p">,</span> <span class="n">when</span><span class="p">:</span> <span class="n">SimTime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds a wakeup to the mapping.</span>
 
 <span class="sd">        Args:</span>
@@ -567,7 +586,10 @@ document.write(`
         <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Scheduling </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2"> for wakeup at </span><span class="si">{</span><span class="n">when</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wakeups</span><span class="p">[</span><span class="n">component</span><span class="p">]</span> <span class="o">=</span> <span class="n">when</span></div>
 
-<div class="viewcode-block" id="BaseScheduler.get_first_wakeups"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.get_first_wakeups">[docs]</a>    <span class="k">def</span> <span class="nf">get_first_wakeups</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SimTime</span><span class="p">]]:</span>
+
+<div class="viewcode-block" id="BaseScheduler.get_first_wakeups">
+<a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.get_first_wakeups">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_first_wakeups</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="n">ComponentID</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SimTime</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the components which are due for update first and the wakeup time.</span>
 
 <span class="sd">        A method which returns a set of components which are due for update first and</span>
@@ -588,7 +610,10 @@ document.write(`
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">components</span><span class="p">,</span> <span class="n">first</span></div>
 
-<div class="viewcode-block" id="BaseScheduler.handle_component_exception"><a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.handle_component_exception">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_component_exception</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">ComponentException</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="BaseScheduler.handle_component_exception">
+<a class="viewcode-back" href="../../../../../user/reference/api.html#tickit.core.management.schedulers.base.BaseScheduler.handle_component_exception">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_component_exception</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">ComponentException</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle exceptions raised from components by shutting down the simulation.</span>
 
 <span class="sd">        If a component produces an exception, the scheduler will produce a message to</span>
@@ -605,7 +630,9 @@ document.write(`
             <span class="p">},</span>
             <span class="n">return_when</span><span class="o">=</span><span class="n">asyncio</span><span class="o">.</span><span class="n">tasks</span><span class="o">.</span><span class="n">ALL_COMPLETED</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">set</span><span class="p">()</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">set</span><span class="p">()</span></div>
+</div>
+
 </pre></div>
 
                 </article>

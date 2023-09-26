@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.state_interfaces.kafka &#8212; tickit 0.4.3.dev6+g4842db26 documentation</title>
+    <title>tickit.core.state_interfaces.kafka &#8212; tickit 0.4.3.dev7+g36f6a163 documentation</title>
   
   
   
@@ -37,9 +37,9 @@
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js?v=487ab538"></script>
+    <script src="../../../../_static/documentation_options.js?v=a07c8f88"></script>
     <script src="../../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../../_static/copybutton.js?v=30646c52"></script>
     <script src="../../../../_static/design-tabs.js?v=36754332"></script>
@@ -446,7 +446,9 @@ document.write(`
 <span class="n">P</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="KafkaStateConsumer"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.kafka.KafkaStateConsumer">[docs]</a><span class="nd">@state_interface</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;kafka&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="KafkaStateConsumer">
+<a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.kafka.KafkaStateConsumer">[docs]</a>
+<span class="nd">@state_interface</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;kafka&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">KafkaStateConsumer</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">C</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A kafka implementation of the StateConsumer protocol.</span>
 
@@ -479,7 +481,9 @@ document.write(`
                 <span class="k">if</span> <span class="n">message</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 
-<div class="viewcode-block" id="KafkaStateConsumer.subscribe"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.kafka.KafkaStateConsumer.subscribe">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">subscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topics</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+<div class="viewcode-block" id="KafkaStateConsumer.subscribe">
+<a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.kafka.KafkaStateConsumer.subscribe">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">subscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topics</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Subscribes the consumer to the given topics.</span>
 
 <span class="sd">        Subscribes the consumer to the given topics, new messages are passed to the</span>
@@ -488,10 +492,14 @@ document.write(`
 <span class="sd">        Args:</span>
 <span class="sd">            topics (Iterable[str]): An iterable of topics to subscribe to.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">consumer</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">topics</span><span class="p">)</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">consumer</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">topics</span><span class="p">)</span></div>
+</div>
 
 
-<div class="viewcode-block" id="KafkaStateProducer"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.kafka.KafkaStateProducer">[docs]</a><span class="nd">@state_interface</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;kafka&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+<div class="viewcode-block" id="KafkaStateProducer">
+<a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.kafka.KafkaStateProducer">[docs]</a>
+<span class="nd">@state_interface</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;kafka&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">KafkaStateProducer</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">P</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A kafka implementation of the StateProducer protocol.</span>
 
@@ -506,7 +514,9 @@ document.write(`
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_start</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">producer</span><span class="o">.</span><span class="n">start</span><span class="p">())</span>
 
-<div class="viewcode-block" id="KafkaStateProducer.produce"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.kafka.KafkaStateProducer.produce">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">produce</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">P</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="KafkaStateProducer.produce">
+<a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.kafka.KafkaStateProducer.produce">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">produce</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">P</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Produces a value to the provided topic.</span>
 
 <span class="sd">        Args:</span>
@@ -514,7 +524,9 @@ document.write(`
 <span class="sd">            value (P): The value to send to the provided topic.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start</span>
-        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">producer</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">topic</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></div></div>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">producer</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">topic</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></div>
+</div>
+
 </pre></div>
 
                 </article>

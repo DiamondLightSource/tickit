@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.typedefs &#8212; tickit 0.4.3.dev6+g4842db26 documentation</title>
+    <title>tickit.core.typedefs &#8212; tickit 0.4.3.dev7+g36f6a163 documentation</title>
   
   
   
@@ -37,9 +37,9 @@
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=487ab538"></script>
+    <script src="../../../_static/documentation_options.js?v=a07c8f88"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=30646c52"></script>
     <script src="../../../_static/design-tabs.js?v=36754332"></script>
@@ -448,7 +448,9 @@ document.write(`
 <span class="n">SimTime</span> <span class="o">=</span> <span class="n">NewType</span><span class="p">(</span><span class="s2">&quot;SimTime&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="ComponentPort"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.typedefs.ComponentPort">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="ComponentPort">
+<a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.typedefs.ComponentPort">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">ComponentPort</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An immutable dataclass for custom (de)serialization of component - port pairs.&quot;&quot;&quot;</span>
 
@@ -472,7 +474,10 @@ document.write(`
         <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">component</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="Input"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.typedefs.Input">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Input">
+<a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.typedefs.Input">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">Input</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An immutable data container for Component inputs.</span>
 
@@ -487,14 +492,20 @@ document.write(`
     <span class="n">changes</span><span class="p">:</span> <span class="n">Changes</span></div>
 
 
-<div class="viewcode-block" id="StopComponent"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.typedefs.StopComponent">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<div class="viewcode-block" id="StopComponent">
+<a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.typedefs.StopComponent">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">StopComponent</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An immutable dataclass to register Component shutdown.&quot;&quot;&quot;</span>
 
     <span class="o">...</span></div>
 
 
-<div class="viewcode-block" id="Output"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.typedefs.Output">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Output">
+<a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.typedefs.Output">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">Output</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An immutable data container for Component outputs.</span>
 
@@ -511,7 +522,10 @@ document.write(`
     <span class="n">call_at</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SimTime</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="Skip"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.typedefs.Skip">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Skip">
+<a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.typedefs.Skip">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">Skip</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An immutable data container for skipping Component Updates.</span>
 
@@ -531,7 +545,10 @@ document.write(`
     <span class="n">changes</span><span class="p">:</span> <span class="n">Changes</span></div>
 
 
-<div class="viewcode-block" id="Interrupt"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.typedefs.Interrupt">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Interrupt">
+<a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.typedefs.Interrupt">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">Interrupt</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An immutable data container for scheduling Component interrupts.</span>
 
@@ -542,7 +559,10 @@ document.write(`
     <span class="n">source</span><span class="p">:</span> <span class="n">ComponentID</span></div>
 
 
-<div class="viewcode-block" id="ComponentException"><a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.typedefs.ComponentException">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ComponentException">
+<a class="viewcode-back" href="../../../user/reference/api.html#tickit.core.typedefs.ComponentException">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">ComponentException</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An immutable data container for raising Component exceptions.</span>
 
@@ -553,6 +573,7 @@ document.write(`
     <span class="n">source</span><span class="p">:</span> <span class="n">ComponentID</span>
     <span class="n">error</span><span class="p">:</span> <span class="ne">Exception</span>
     <span class="n">traceback</span><span class="p">:</span> <span class="nb">str</span></div>
+
 
 
 <span class="n">ComponentOutput</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">Interrupt</span><span class="p">,</span> <span class="n">Output</span><span class="p">,</span> <span class="n">ComponentException</span><span class="p">]</span>

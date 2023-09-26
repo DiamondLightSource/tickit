@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Running a Simulation &#8212; tickit 0.4.3.dev6+g4842db26 documentation</title>
+    <title>Running a Simulation &#8212; tickit 0.4.3.dev7+g36f6a163 documentation</title>
   
   
   
@@ -38,9 +38,9 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=487ab538"></script>
+    <script src="../../_static/documentation_options.js?v=a07c8f88"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=30646c52"></script>
     <script src="../../_static/design-tabs.js?v=36754332"></script>
@@ -473,11 +473,11 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="running-a-simulation">
-<h1>Running a Simulation<a class="headerlink" href="#running-a-simulation" title="Permalink to this heading">#</a></h1>
+<h1>Running a Simulation<a class="headerlink" href="#running-a-simulation" title="Link to this heading">#</a></h1>
 <p>This tutorial shows how to run a tickit simulation both within a single process
 and distributed across multiple processes.</p>
 <section id="within-a-single-process">
-<h2>Within a Single Process<a class="headerlink" href="#within-a-single-process" title="Permalink to this heading">#</a></h2>
+<h2>Within a Single Process<a class="headerlink" href="#within-a-single-process" title="Link to this heading">#</a></h2>
 <p>Tickit simulations may be launched within a single process by executing a command of
 the following format <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">tickit</span> <span class="pre">all</span> <span class="pre">[OPTIONS]</span> <span class="pre">CONFIG_PATH</span></code> in which <code class="docutils literal notranslate"><span class="pre">all</span></code>
 denotes that both a <a class="reference internal" href="../reference/api.html#tickit.core.management.schedulers.master.MasterScheduler" title="tickit.core.management.schedulers.master.MasterScheduler"><code class="xref any py py-class docutils literal notranslate"><span class="pre">MasterScheduler</span></code></a> and the components defined in the config should
@@ -509,7 +509,7 @@ Scheduler<span class="w"> </span>got<span class="w"> </span>Output<span class="o
 </div>
 </section>
 <section id="across-multiple-processes">
-<h2>Across Multiple Processes<a class="headerlink" href="#across-multiple-processes" title="Permalink to this heading">#</a></h2>
+<h2>Across Multiple Processes<a class="headerlink" href="#across-multiple-processes" title="Link to this heading">#</a></h2>
 <p>In order to run across multiple processes a message broking service must be utilized.
 As such, prior to launching any instances of Tickit a message broker must be launched;
 In this example we will use apache kafka (the default distributed broker for Tickit),

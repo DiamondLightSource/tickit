@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tickit.core.state_interfaces.internal &#8212; tickit 0.4.3.dev6+g4842db26 documentation</title>
+    <title>tickit.core.state_interfaces.internal &#8212; tickit 0.4.3.dev7+g36f6a163 documentation</title>
   
   
   
@@ -37,9 +37,9 @@
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js?v=487ab538"></script>
+    <script src="../../../../_static/documentation_options.js?v=a07c8f88"></script>
     <script src="../../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../../_static/copybutton.js?v=30646c52"></script>
     <script src="../../../../_static/design-tabs.js?v=36754332"></script>
@@ -455,17 +455,22 @@ document.write(`
 <span class="n">P</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="Message"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.internal.Message">[docs]</a><span class="k">class</span> <span class="nc">Message</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<div class="viewcode-block" id="Message">
+<a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.internal.Message">[docs]</a>
+<span class="k">class</span> <span class="nc">Message</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An immutable data container for internal messages.&quot;&quot;&quot;</span>
 
     <span class="n">value</span><span class="p">:</span> <span class="n">Any</span></div>
+
 
 
 <span class="c1">#: A list of messages</span>
 <span class="n">Messages</span> <span class="o">=</span> <span class="n">NewType</span><span class="p">(</span><span class="s2">&quot;Messages&quot;</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Message</span><span class="p">])</span>
 
 
-<div class="viewcode-block" id="InternalStateServer"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.internal.InternalStateServer">[docs]</a><span class="k">class</span> <span class="nc">InternalStateServer</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">Singleton</span><span class="p">):</span>
+<div class="viewcode-block" id="InternalStateServer">
+<a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.internal.InternalStateServer">[docs]</a>
+<span class="k">class</span> <span class="nc">InternalStateServer</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">Singleton</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A singleton, in memory, publish/subscribe message store and router.</span>
 
 <span class="sd">    A singleton, in memory, publish/subscribe message store and router. The single</span>
@@ -480,7 +485,9 @@ document.write(`
     <span class="n">_topics</span><span class="p">:</span> <span class="n">DefaultDict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Messages</span><span class="p">]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">Messages</span><span class="p">(</span><span class="nb">list</span><span class="p">()))</span>
     <span class="n">_subscribers</span><span class="p">:</span> <span class="n">DefaultDict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Set</span><span class="p">[</span><span class="s2">&quot;InternalStateConsumer&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">set</span><span class="p">)</span>
 
-<div class="viewcode-block" id="InternalStateServer.push"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.internal.InternalStateServer.push">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">push</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="InternalStateServer.push">
+<a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.internal.InternalStateServer.push">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">push</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Asynchronous method which propagates a message to subscribers and stores it.</span>
 
 <span class="sd">        An asynchronous method which propagates the given message to consumers which</span>
@@ -496,7 +503,10 @@ document.write(`
         <span class="k">for</span> <span class="n">subscriber</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subscribers</span><span class="p">[</span><span class="n">topic</span><span class="p">]:</span>
             <span class="k">await</span> <span class="n">subscriber</span><span class="o">.</span><span class="n">add_message</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="InternalStateServer.subscribe"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.internal.InternalStateServer.subscribe">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">subscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">consumer</span><span class="p">:</span> <span class="s2">&quot;InternalStateConsumer&quot;</span><span class="p">,</span> <span class="n">topics</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+
+<div class="viewcode-block" id="InternalStateServer.subscribe">
+<a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.internal.InternalStateServer.subscribe">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">subscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">consumer</span><span class="p">:</span> <span class="s2">&quot;InternalStateConsumer&quot;</span><span class="p">,</span> <span class="n">topics</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Subscribes the consumer to the given topics.</span>
 
 <span class="sd">        An asynchronous method which adds a consumer to the subscriber list of each</span>
@@ -513,7 +523,10 @@ document.write(`
             <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topics</span><span class="p">[</span><span class="n">topic</span><span class="p">]:</span>
                 <span class="k">await</span> <span class="n">consumer</span><span class="o">.</span><span class="n">add_message</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="InternalStateServer.create_topic"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.internal.InternalStateServer.create_topic">[docs]</a>    <span class="k">def</span> <span class="nf">create_topic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="InternalStateServer.create_topic">
+<a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.internal.InternalStateServer.create_topic">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_topic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a new topic as an empty message list.</span>
 
 <span class="sd">        Args:</span>
@@ -522,7 +535,10 @@ document.write(`
         <span class="k">assert</span> <span class="n">topic</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topics</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_topics</span><span class="p">[</span><span class="n">topic</span><span class="p">]</span> <span class="o">=</span> <span class="n">Messages</span><span class="p">(</span><span class="nb">list</span><span class="p">())</span></div>
 
-<div class="viewcode-block" id="InternalStateServer.remove_topic"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.internal.InternalStateServer.remove_topic">[docs]</a>    <span class="k">def</span> <span class="nf">remove_topic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="InternalStateServer.remove_topic">
+<a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.internal.InternalStateServer.remove_topic">[docs]</a>
+    <span class="k">def</span> <span class="nf">remove_topic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Removes an existing topic and the corresponding message list.</span>
 
 <span class="sd">        Args:</span>
@@ -530,6 +546,7 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="n">topic</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topics</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topics</span><span class="p">[</span><span class="n">topic</span><span class="p">]</span></div>
+
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">topics</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
@@ -541,7 +558,10 @@ document.write(`
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_topics</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span></div>
 
 
-<div class="viewcode-block" id="InternalStateConsumer"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.internal.InternalStateConsumer">[docs]</a><span class="nd">@state_interface</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;internal&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+<div class="viewcode-block" id="InternalStateConsumer">
+<a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.internal.InternalStateConsumer">[docs]</a>
+<span class="nd">@state_interface</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;internal&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">InternalStateConsumer</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">C</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An internal, singleton based, implementation of the StateConsumer protocol.</span>
 
@@ -561,7 +581,9 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">InternalStateServer</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="n">callback</span>
 
-<div class="viewcode-block" id="InternalStateConsumer.subscribe"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.internal.InternalStateConsumer.subscribe">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">subscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topics</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="InternalStateConsumer.subscribe">
+<a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.internal.InternalStateConsumer.subscribe">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">subscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topics</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Subscribes the consumer to the given topics.</span>
 
 <span class="sd">        Subscribes the consumer to the given topics, new messages are passed to the</span>
@@ -572,16 +594,23 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topics</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="InternalStateConsumer.add_message"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.internal.InternalStateConsumer.add_message">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">add_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="InternalStateConsumer.add_message">
+<a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.internal.InternalStateConsumer.add_message">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">add_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds a message to the consumer, triggering a callback.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            message (Message): The message to be added to the consumer.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">value</span><span class="p">)</span></div></div>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">value</span><span class="p">)</span></div>
+</div>
 
 
-<div class="viewcode-block" id="InternalStateProducer"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.internal.InternalStateProducer">[docs]</a><span class="nd">@state_interface</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;internal&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+<div class="viewcode-block" id="InternalStateProducer">
+<a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.internal.InternalStateProducer">[docs]</a>
+<span class="nd">@state_interface</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;internal&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">InternalStateProducer</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">P</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An internal, singleton based, implementation of the StateProducer protocol.</span>
 
@@ -594,14 +623,18 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets an instance of the InternalStateServer for use in produce.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">InternalStateServer</span><span class="p">()</span>
 
-<div class="viewcode-block" id="InternalStateProducer.produce"><a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.internal.InternalStateProducer.produce">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">produce</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">P</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="InternalStateProducer.produce">
+<a class="viewcode-back" href="../../../../user/reference/api.html#tickit.core.state_interfaces.internal.InternalStateProducer.produce">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">produce</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">P</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Produces a value to the provided topic.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            topic (str): The topic to which the value should be sent.</span>
 <span class="sd">            value (P): The value to send to the provided topic.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">topic</span><span class="p">,</span> <span class="n">Message</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">))</span></div></div>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">topic</span><span class="p">,</span> <span class="n">Message</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">))</span></div>
+</div>
+
 </pre></div>
 
                 </article>
