@@ -2,37 +2,37 @@ Simulation Components
 =====================
 
 There are two types of components that can be used in a tickit simulation,
-device simulations and system simulations.
+device components and system components.
 
-Device Simulation
+Device Component
 -----------------
 
-Device simulations are the typical use case of a component. They encapsulate a
+Device components are the typical use case of a component. They encapsulate a
 device and any adapters for that device.
 
-.. figure:: ../../images/tickit-device-simulation-cpt.svg
+.. figure:: ../../images/tickit-device-component.svg
     :align: center
 
 
 (See `DeviceComponent`.)
 
 
-System Simulation
+System Component
 -----------------
 
-System simulation components are themselves entire tickit simulations. They
-contain their own device simulation components and a scheduler for orchestrating
+System components are themselves entire tickit simulations. They
+contain their own device components and a scheduler for orchestrating
 them. However, the scheduler in a system component acts as a nested scheduler
-which is driven by the master scheduler in the top level of the simulation
+which is triggered by the master scheduler in the top level of the simulation
 it belongs to.
 
-.. figure:: ../../images/tickit-system-simulation-cpt.svg
+.. figure:: ../../images/tickit-system-component.svg
     :align: center
 
-System simulations can also contain their own system simulation components
+System components can also contain their own system components
 allowing for the construction of reasonably complex systems.
 
-System simulations can be nested inside other components in the config so that
+System components can be nested inside other components in the config so that
 the master scheduler's wiring is correct, for example:
 
 .. code-block:: yaml
