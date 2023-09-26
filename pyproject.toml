@@ -70,6 +70,7 @@ write_to = "src/tickit/_version.py"
 
 [tool.pyright]
 reportMissingImports = false # Ignore missing stubs in imported modules
+ignore = ["src/tickit/_version.py"]
 
 [tool.isort]
 float_to_top = true
