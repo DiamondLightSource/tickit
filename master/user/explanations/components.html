@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Simulation Components &#8212; tickit 0.4.3.dev8+gef41764d documentation</title>
+    <title>Simulation Components &#8212; tickit 0.4.3.dev10+gc213d58d documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script src="../../_static/documentation_options.js?v=0f5ca945"></script>
+    <script src="../../_static/documentation_options.js?v=625064e1"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -475,27 +475,27 @@ document.write(`
   <section id="simulation-components">
 <h1>Simulation Components<a class="headerlink" href="#simulation-components" title="Link to this heading">#</a></h1>
 <p>There are two types of components that can be used in a tickit simulation,
-device simulations and system simulations.</p>
-<section id="device-simulation">
-<h2>Device Simulation<a class="headerlink" href="#device-simulation" title="Link to this heading">#</a></h2>
-<p>Device simulations are the typical use case of a component. They encapsulate a
+device components and system components.</p>
+<section id="device-component">
+<h2>Device Component<a class="headerlink" href="#device-component" title="Link to this heading">#</a></h2>
+<p>Device components are the typical use case of a component. They encapsulate a
 device and any adapters for that device.</p>
 <figure class="align-center">
-<img alt="../../_images/tickit-device-simulation-cpt.svg" src="../../_images/tickit-device-simulation-cpt.svg" /></figure>
+<img alt="../../_images/tickit-device-component.svg" src="../../_images/tickit-device-component.svg" /></figure>
 <p>(See <a class="reference internal" href="../reference/api.html#tickit.core.components.device_component.DeviceComponent" title="tickit.core.components.device_component.DeviceComponent"><code class="xref any py py-class docutils literal notranslate"><span class="pre">DeviceComponent</span></code></a>.)</p>
 </section>
-<section id="system-simulation">
-<h2>System Simulation<a class="headerlink" href="#system-simulation" title="Link to this heading">#</a></h2>
-<p>System simulation components are themselves entire tickit simulations. They
-contain their own device simulation components and a scheduler for orchestrating
-them. However, the scheduler in a system component acts as a slave scheduler
-which is driven by the master scheduler in the top level of the simulation
+<section id="system-component">
+<h2>System Component<a class="headerlink" href="#system-component" title="Link to this heading">#</a></h2>
+<p>System components are themselves entire tickit simulations. They
+contain their own device components and a scheduler for orchestrating
+them. However, the scheduler in a system component acts as a nested scheduler
+which is triggered by the master scheduler in the top level of the simulation
 it belongs to.</p>
 <figure class="align-center">
-<img alt="../../_images/tickit-system-simulation-cpt.svg" src="../../_images/tickit-system-simulation-cpt.svg" /></figure>
-<p>System simulations can also contain their own system simulation components
+<img alt="../../_images/tickit-system-component.svg" src="../../_images/tickit-system-component.svg" /></figure>
+<p>System components can also contain their own system components
 allowing for the construction of reasonably complex systems.</p>
-<p>System simulations can be nested inside other components in the config so that
+<p>System components can be nested inside other components in the config so that
 the master scheduler’s wiring is correct, for example:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">examples.devices.trampoline.RandomTrampoline</span>
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">random_trampoline</span>
@@ -535,7 +535,7 @@ the master scheduler’s wiring is correct, for example:</p>
 <h2>The Overall Simulation<a class="headerlink" href="#the-overall-simulation" title="Link to this heading">#</a></h2>
 <p>A simulation containing both types of component will look something like this:</p>
 <figure class="align-center">
-<img alt="../../_images/tickit-simple-overview-with-system-simulation.svg" src="../../_images/tickit-simple-overview-with-system-simulation.svg" /></figure>
+<img alt="../../_images/tickit-overview-with-system-component.svg" src="../../_images/tickit-overview-with-system-component.svg" /></figure>
 </section>
 </section>
 
@@ -582,8 +582,8 @@ the master scheduler’s wiring is correct, for example:</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#device-simulation">Device Simulation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#system-simulation">System Simulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#device-component">Device Component</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#system-component">System Component</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-overall-simulation">The Overall Simulation</a></li>
 </ul>
   </nav></div>

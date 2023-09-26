@@ -20,7 +20,7 @@ Glossary
         unpredictable internal changes.
 
     System Simulation
-        A system simulation is a component which wraps a slave scheduler and a
+        A system simulation is a component which wraps a nested scheduler and a
         collection of components, allowing for infinitely nested systems.
 
     Device Simulation
