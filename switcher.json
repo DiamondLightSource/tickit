@@ -8,6 +8,10 @@
     "url": "https://dls-controls.github.io/tickit/v0.1/"
   },
   {
+    "version": "0.4.3",
+    "url": "https://dls-controls.github.io/tickit/0.4.3/"
+  },
+  {
     "version": "0.4.2",
     "url": "https://dls-controls.github.io/tickit/0.4.2/"
   },
@@ -70,10 +74,6 @@
   {
     "version": "dependabot_github_actions_docker_setup-buildx-action-3",
     "url": "https://dls-controls.github.io/tickit/dependabot_github_actions_docker_setup-buildx-action-3/"
-  },
-  {
-    "version": "rename-scheduler",
-    "url": "https://dls-controls.github.io/tickit/rename-scheduler/"
   },
   {
     "version": "split-interpreter-empty-strings",
