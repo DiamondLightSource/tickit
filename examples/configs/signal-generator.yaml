@@ -1,0 +1,3 @@
+- type: tickit.devices.signal_generator.EpicsSignalGenerator
+  name: gen
+  inputs: {}
