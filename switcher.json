@@ -76,6 +76,10 @@
     "url": "https://dls-controls.github.io/tickit/dependabot_github_actions_docker_setup-buildx-action-3/"
   },
   {
+    "version": "siggen",
+    "url": "https://dls-controls.github.io/tickit/siggen/"
+  },
+  {
     "version": "split-interpreter-empty-strings",
     "url": "https://dls-controls.github.io/tickit/split-interpreter-empty-strings/"
   },
