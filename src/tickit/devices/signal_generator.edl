@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 2067
-y 454
+x 2660
+y 386
 w 620
 h 556
 font "arial-bold-r-14.0"
@@ -19,7 +19,7 @@ ctlBgColor1 index 3
 ctlBgColor2 index 3
 topShadowColor index 1
 botShadowColor index 11
-title "Linkam"
+title "Sine Generator"
 showGrid
 endScreenProperties
 

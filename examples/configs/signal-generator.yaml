@@ -1,3 +1,15 @@
 - type: tickit.devices.signal_generator.EpicsSignalGenerator
   name: gen
   inputs: {}
+- type: tickit.devices.sink.Sink
+  name: sink
+  inputs:
+    input:
+      component: gen
+      port: value
+- type: tickit.devices.sink.Sink
+  name: sink
+  inputs:
+    input:
+      component: gen
+      port: gate
