@@ -112,15 +112,23 @@ class EpicsAdapter:
         getter: Callable[[], float],
         setter: Callable[[float], None],
         rbv_name: Optional[str] = None,
+        precision: int = 2,
     ):
         rbv_name = rbv_name or f"{name}_RBV"
         builder.aOut(
             name,
             initial_value=getter(),
             on_update=self.interrupting_callback(setter),
+            PREC=precision,
         )
-        rbv = builder.aIn(rbv_name, initial_value=getter())
+        rbv = builder.aIn(rbv_name, initial_value=getter(), PREC=precision,)
         self.link_input_on_interrupt(rbv, getter)
+
+    def float_ro(self, name: str, getter: Callable[[], float], precision: int = 3,):
+        self.link_input_on_interrupt(
+            builder.aIn(name, PREC=precision),
+            getter,
+        )
 
     def int_rbv(
         self,
@@ -154,22 +162,11 @@ class EpicsAdapter:
         rbv = builder.boolIn(rbv_name, initial_value=getter())
         self.link_input_on_interrupt(rbv, getter)
 
-    def bool_rbv(
-        self,
-        name: str,
-        getter: Callable[[], bool],
-        setter: Callable[[bool], None],
-        rbv_name: Optional[str] = None,
-    ):
-        rbv_name = rbv_name or f"{name}_RBV"
-        builder.boolOut(
-            name,
-            initial_value=getter(),
-            on_update=self.interrupting_callback(setter),
+    def bool_ro(self, name: str, getter: Callable[[], float]):
+        self.link_input_on_interrupt(
+            builder.boolIn(name),
+            getter,
         )
-        rbv = builder.boolIn(rbv_name, initial_value=getter())
-        self.link_input_on_interrupt(rbv, getter)
-
 
     def interrupting_callback(
         self, action: Callable[[Any], None]
