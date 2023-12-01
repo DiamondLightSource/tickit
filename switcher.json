@@ -76,6 +76,10 @@
     "url": "https://dls-controls.github.io/tickit/dependabot_github_actions_docker_setup-buildx-action-3/"
   },
   {
+    "version": "epics-adapter-improvements",
+    "url": "https://dls-controls.github.io/tickit/epics-adapter-improvements/"
+  },
+  {
     "version": "siggen",
     "url": "https://dls-controls.github.io/tickit/siggen/"
   },
