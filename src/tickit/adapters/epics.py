@@ -3,8 +3,7 @@ import itertools
 import logging
 from abc import abstractmethod
 from dataclasses import dataclass
-from enum import Enum
-from typing import Any, Awaitable, Callable, Dict, Generic, Optional, Set, TypeVar
+from typing import Any, Awaitable, Callable, Dict, Optional, Set
 
 from softioc import asyncio_dispatcher, builder, softioc
 
@@ -41,6 +40,7 @@ def register_adapter() -> int:
 
 def register_background_task(task: Awaitable[None]) -> None:
     _REGISTERED_IOC_BACKGROUND_TASKS.add(task)
+
 
 def notify_adapter_ready(adapter_id: int) -> None:
     """Notify the builder that a particular adapter has made all the records it needs.
@@ -83,6 +83,7 @@ def _build_and_run_ioc() -> None:
         softioc.dbl()  # type: ignore
     LOGGER.debug("IOC started")
 
+
 @dataclass(frozen=True)
 class InputRecord:
     """A data container representing an EPICS input record."""
@@ -123,10 +124,19 @@ class EpicsAdapter:
             on_update=self.interrupting_callback(setter),
             PREC=precision,
         )
-        rbv = builder.aIn(rbv_name, initial_value=getter(), PREC=precision,)
+        rbv = builder.aIn(
+            rbv_name,
+            initial_value=getter(),
+            PREC=precision,
+        )
         self.link_input_on_interrupt(rbv, getter)
 
-    def float_ro(self, name: str, getter: Callable[[], float], precision: int = 2,):
+    def float_ro(
+        self,
+        name: str,
+        getter: Callable[[], float],
+        precision: int = 2,
+    ):
         self.link_input_on_interrupt(
             builder.aIn(name, PREC=precision),
             getter,
@@ -207,5 +217,5 @@ class EpicsAdapter:
             while True:
                 await asyncio.sleep(interval)
                 await self.interrupt()
-        
+
         register_background_task(polling_task())
