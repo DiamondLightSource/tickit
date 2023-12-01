@@ -4,7 +4,7 @@ import logging
 from abc import abstractmethod
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Awaitable, Callable, Dict, Optional, Set, TypeVar
+from typing import Any, Awaitable, Callable, Dict, Generic, Optional, Set, TypeVar
 
 from softioc import asyncio_dispatcher, builder, softioc
 
@@ -83,7 +83,6 @@ def _build_and_run_ioc() -> None:
         softioc.dbl()  # type: ignore
     LOGGER.debug("IOC started")
 
-
 @dataclass(frozen=True)
 class InputRecord:
     """A data container representing an EPICS input record."""
@@ -103,8 +102,11 @@ class OutputRecord:
 class EpicsAdapter:
     """An adapter interface for the EpicsIo."""
 
-    interrupt_records: Dict[InputRecord, Callable[[], Any]] = {}
+    interrupt_records: Dict[InputRecord, Callable[[], Any]]
     interrupt: RaiseInterrupt
+
+    def __init__(self) -> None:
+        self.interrupt_records = {}
 
     def float_rbv(
         self,
@@ -124,7 +126,7 @@ class EpicsAdapter:
         rbv = builder.aIn(rbv_name, initial_value=getter(), PREC=precision,)
         self.link_input_on_interrupt(rbv, getter)
 
-    def float_ro(self, name: str, getter: Callable[[], float], precision: int = 3,):
+    def float_ro(self, name: str, getter: Callable[[], float], precision: int = 2,):
         self.link_input_on_interrupt(
             builder.aIn(name, PREC=precision),
             getter,
