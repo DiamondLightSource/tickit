@@ -13,7 +13,7 @@ from tickit.adapters.specifications import HttpEndpoint
 from tickit.core.adapter import AdapterContainer, RaiseInterrupt
 from tickit.core.device import Device
 
-ISSUE_LINK = "https://github.com/dls-controls/tickit/issues/111"
+ISSUE_LINK = "https://github.com/DiamondLightSource/tickit/issues/111"
 REQUEST_TIMEOUT = 0.5
 
 

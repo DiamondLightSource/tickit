@@ -58,7 +58,7 @@ dev = [
 tickit = "tickit.cli:main"
 
 [project.urls]
-GitHub = "https://github.com/dls-controls/tickit"
+GitHub = "https://github.com/DiamondLightSource/tickit"
 
 [[project.authors]] # Further authors may be added by duplicating this section
 email = "callum.forrester@diamond.ac.uk"

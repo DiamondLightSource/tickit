@@ -69,4 +69,4 @@ updating the rest. When it finishes the tick caused by the interrupt, the schedu
 continues to wait until the next update.
 
 
-.. _Shutter: https://github.com/dls-controls/tickit/blob/master/examples/devices/shutter.py
+.. _Shutter: https://github.com/DiamondLightSource/tickit/blob/master/examples/devices/shutter.py

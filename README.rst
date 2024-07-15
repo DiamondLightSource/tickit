@@ -8,9 +8,9 @@ orchestration of complex multi-device simulations.
 
 ============== ==============================================================
 PyPI           ``pip install tickit``
-Source code    https://github.com/dls-controls/tickit
-Documentation  https://dls-controls.github.io/tickit
-Releases       https://github.com/dls-controls/tickit/releases
+Source code    https://github.com/DiamondLightSource/tickit
+Documentation  https://DiamondLightSource.github.io/tickit
+Releases       https://github.com/DiamondLightSource/tickit/releases
 ============== ==============================================================
 
 An example simulation consists of a simple counter and a sink. The counter
@@ -98,16 +98,16 @@ it increments.
                 SimTime(time + self.callback_period),
             )
 
-.. |code_ci| image:: https://github.com/dls-controls/tickit/workflows/Code%20CI/badge.svg?branch=master
-    :target: https://github.com/dls-controls/tickit/actions?query=workflow%3A%22Code+CI%22
+.. |code_ci| image:: https://github.com/DiamondLightSource/tickit/workflows/Code%20CI/badge.svg?branch=master
+    :target: https://github.com/DiamondLightSource/tickit/actions?query=workflow%3A%22Code+CI%22
     :alt: Code CI
 
-.. |docs_ci| image:: https://github.com/dls-controls/tickit/workflows/Docs%20CI/badge.svg?branch=master
-    :target: https://github.com/dls-controls/tickit/actions?query=workflow%3A%22Docs+CI%22
+.. |docs_ci| image:: https://github.com/DiamondLightSource/tickit/workflows/Docs%20CI/badge.svg?branch=master
+    :target: https://github.com/DiamondLightSource/tickit/actions?query=workflow%3A%22Docs+CI%22
     :alt: Docs CI
 
-.. |coverage| image:: https://codecov.io/gh/dls-controls/tickit/branch/master/graph/badge.svg
-    :target: https://codecov.io/gh/dls-controls/tickit
+.. |coverage| image:: https://codecov.io/gh/DiamondLightSource/tickit/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/DiamondLightSource/tickit
     :alt: Test Coverage
 
 .. |pypi_version| image:: https://img.shields.io/pypi/v/tickit.svg
@@ -122,4 +122,4 @@ it increments.
     Anything below this line is used when viewing README.rst and will be replaced
     when included in index.rst
 
-See https://dls-controls.github.io/tickit for more detailed documentation.
+See https://DiamondLightSource.github.io/tickit for more detailed documentation.
