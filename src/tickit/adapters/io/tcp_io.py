@@ -80,7 +80,7 @@ class TcpIo(AdapterIo[CommandAdapter]):
             tasks.append(asyncio.create_task(reply(on_connect())))
 
             while True:
-                if self.separator != None:
+                if self.separator is not None:
                     data: bytes = await reader.readuntil(separator=self.separator.encode())
                 else:
                     data: bytes = await reader.read(1024)
