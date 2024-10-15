@@ -81,7 +81,9 @@ class TcpIo(AdapterIo[CommandAdapter]):
 
             while True:
                 if self.separator is not None:
-                    data: bytes = await reader.readuntil(separator=self.separator.encode())
+                    data: bytes = ( 
+                        await reader.readuntil(separator=self.separator.encode())
+                    )
                 else:
                     data: bytes = await reader.read(1024)
 
