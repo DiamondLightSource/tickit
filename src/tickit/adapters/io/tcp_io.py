@@ -20,10 +20,10 @@ class TcpIo(AdapterIo[CommandAdapter]):
     host: str
     port: int
 
-    def __init__(self, host: str, port: int, separator: str | None = None) -> None:
+    def __init__(self, host: str, port: int, terminator: str | None = None) -> None:
         self.host = host
         self.port = port
-        self.separator = separator
+        self.terminator = terminator
 
     async def setup(
         self, adapter: CommandAdapter, raise_interrupt: RaiseInterrupt
@@ -80,9 +80,9 @@ class TcpIo(AdapterIo[CommandAdapter]):
             tasks.append(asyncio.create_task(reply(on_connect())))
 
             while True:
-                if self.separator is not None:
+                if self.terminator is not None:
                     data: bytes = ( 
-                        await reader.readuntil(separator=self.separator.encode())
+                        await reader.readuntil(separator=self.terminator.encode())
                     )
                 else:
                     data: bytes = await reader.read(1024)
