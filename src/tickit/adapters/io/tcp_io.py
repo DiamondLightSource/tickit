@@ -20,7 +20,7 @@ class TcpIo(AdapterIo[CommandAdapter]):
     host: str
     port: int
 
-    def __init__(self, host: str, port: int, separator: str = None) -> None:
+    def __init__(self, host: str, port: int, separator: str | None = None) -> None:
         self.host = host
         self.port = port
         self.separator = separator
