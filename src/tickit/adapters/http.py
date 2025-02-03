@@ -27,5 +27,4 @@ class HttpAdapter:
             if endpoint is not None and isinstance(endpoint, HttpEndpoint):
                 yield endpoint, func
 
-    def after_update(self) -> None:
-        ...
+    def after_update(self) -> None: ...

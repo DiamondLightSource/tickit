@@ -21,8 +21,7 @@ LOGGER = logging.getLogger(__name__)
 
 @runtime_checkable
 class SocketFactory(Protocol):
-    async def __call__(self, __host: str, __port: int) -> aiozmq.ZmqStream:
-        ...
+    async def __call__(self, __host: str, __port: int) -> aiozmq.ZmqStream: ...
 
 
 async def create_zmq_push_socket(host: str, port: int) -> aiozmq.ZmqStream:
