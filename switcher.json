@@ -84,6 +84,10 @@
     "url": "https://DiamondLightSource.github.io/tickit/epics-adapter-improvements/"
   },
   {
+    "version": "pyright_black_edit",
+    "url": "https://DiamondLightSource.github.io/tickit/pyright_black_edit/"
+  },
+  {
     "version": "siggen",
     "url": "https://DiamondLightSource.github.io/tickit/siggen/"
   },
