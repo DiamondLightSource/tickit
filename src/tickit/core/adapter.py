@@ -22,8 +22,7 @@ class AdapterIo(ABC, Generic[A]):
     """Io logic with a setup method for an adapter object."""
 
     @abstractmethod
-    async def setup(self, adapter: A, raise_interrupt: RaiseInterrupt) -> None:
-        ...
+    async def setup(self, adapter: A, raise_interrupt: RaiseInterrupt) -> None: ...
 
 
 class AdapterContainer(Generic[A]):

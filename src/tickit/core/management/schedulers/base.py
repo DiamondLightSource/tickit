@@ -120,9 +120,9 @@ class BaseScheduler:
         await self.state_consumer.subscribe(
             {output_topic(component) for component in self.ticker.components}
         )
-        self.state_producer: StateProducer[
-            Union[ComponentInput, Skip]
-        ] = self._state_producer_cls()
+        self.state_producer: StateProducer[Union[ComponentInput, Skip]] = (
+            self._state_producer_cls()
+        )
 
     def add_wakeup(self, component: ComponentID, when: SimTime) -> None:
         """Adds a wakeup to the mapping.

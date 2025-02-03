@@ -56,8 +56,7 @@ class CommandAdapter(Interpreter[AnyStr]):
     def byte_format(self) -> ByteFormat:
         return self._byte_format
 
-    def after_update(self) -> None:
-        ...
+    def after_update(self) -> None: ...
 
     async def handle_message(
         self,
