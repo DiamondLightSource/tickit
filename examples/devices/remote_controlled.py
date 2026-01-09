@@ -22,8 +22,7 @@ class RemoteControlledDevice(Device):
     """A trivial toy device which is controlled by an adapter."""
 
     #: An empty typed mapping of device inputs
-    class Inputs(TypedDict):
-        ...
+    class Inputs(TypedDict): ...
 
     #: A typed mapping containing the 'observed' output value
     class Outputs(TypedDict):

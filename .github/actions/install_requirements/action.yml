@@ -36,7 +36,7 @@ runs:
       shell: bash
 
     - name: Upload lockfiles
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: lockfiles
         path: lockfiles

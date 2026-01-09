@@ -31,8 +31,7 @@ class ZeroMqPushAdapter:
     async def next_message(self) -> ZeroMqMessage:
         return await self._ensure_queue().get()
 
-    def after_update(self) -> None:
-        ...
+    def after_update(self) -> None: ...
 
     def _ensure_queue(self) -> asyncio.Queue:
         if self._message_queue is None:

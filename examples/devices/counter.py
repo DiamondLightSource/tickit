@@ -23,8 +23,7 @@ class CounterDevice(Device):
     """A simple device which increments a value."""
 
     #: An empty typed mapping of input values
-    class Inputs(TypedDict):
-        ...
+    class Inputs(TypedDict): ...
 
     #: A typed mapping containing the 'value' output value
     class Outputs(TypedDict):
