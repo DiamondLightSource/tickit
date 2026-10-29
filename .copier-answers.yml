@@ -1,0 +1,19 @@
+# Changes here will be overwritten by Copier
+_commit: 5.5.0
+_src_path: gh:DiamondLightSource/python-copier-template
+author_email: 'callum.forrester@diamond.ac.uk'
+author_name: 'Callum Forrester'
+component_lifecycle: experimental
+component_owner: ''
+component_type: library
+description: Event-based device simulation framework
+distribution_name: tickit
+docker: true
+docs_type: sphinx
+git_platform: github.com
+github_org: DiamondLightSource
+package_name: tickit
+pypi: true
+repo_name: tickit
+strict_typing: false
+type_checker: pyright

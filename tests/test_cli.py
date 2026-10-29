@@ -1,22 +1,13 @@
 import subprocess
 from typing import Iterable
+from unittest.mock import Mock, patch
 
-import pytest
 from click.testing import CliRunner, Result
-from mock import Mock, patch
+import pytest
 
 from tickit import __version__
 from tickit.cli import main
 from tickit.core.typedefs import ComponentID
-
-
-def test_cli_version():
-    cmd = ["tickit", "--version"]
-    assert (
-        subprocess.check_output(cmd).decode().strip()
-        == f"tickit, version {__version__}"
-    )
-
 
 @pytest.fixture
 def patch_logging() -> Iterable[Mock]:
@@ -28,6 +19,15 @@ def patch_logging() -> Iterable[Mock]:
 def patch_build_simulation() -> Iterable[Mock]:
     with patch("tickit.cli.build_simulation", autospec=True) as mock:
         yield mock
+
+
+def test_cli_version():
+
+    cmd = ["tickit", "--version"]
+    assert (
+        subprocess.check_output(cmd).decode().strip()
+        == f"tickit, version {__version__}"
+    )
 
 
 def test_cli_set_logging_level(
