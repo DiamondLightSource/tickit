@@ -1,5 +1,6 @@
 import asyncio
-from typing import Awaitable, Callable, Generic, Iterable, TypeVar
+from collections.abc import Awaitable, Callable, Iterable
+from typing import Generic, TypeVar
 
 import yaml
 from aiokafka import AIOKafkaConsumer, AIOKafkaProducer

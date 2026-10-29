@@ -1,13 +1,14 @@
 import subprocess
-from typing import Iterable
+from collections.abc import Iterable
 from unittest.mock import Mock, patch
 
-from click.testing import CliRunner, Result
 import pytest
+from click.testing import CliRunner, Result
 
 from tickit import __version__
 from tickit.cli import main
 from tickit.core.typedefs import ComponentID
+
 
 @pytest.fixture
 def patch_logging() -> Iterable[Mock]:

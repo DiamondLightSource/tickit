@@ -1,7 +1,6 @@
 import asyncio
 import logging
 from abc import abstractmethod
-from typing import Dict, Optional, Set, Tuple, Type, Union
 
 from tickit.core.management.event_router import InverseWiring, Wiring
 from tickit.core.management.ticker import Ticker
@@ -28,9 +27,9 @@ class BaseScheduler:
 
     def __init__(
         self,
-        wiring: Union[Wiring, InverseWiring],
-        state_consumer: Type[StateConsumer],
-        state_producer: Type[StateProducer],
+        wiring: Wiring | InverseWiring,
+        state_consumer: type[StateConsumer],
+        state_producer: type[StateProducer],
     ) -> None:
         """A constructor which stores inputs and creates an empty wakeups mapping.
 
@@ -45,7 +44,7 @@ class BaseScheduler:
         self._wiring = wiring
         self._state_consumer_cls = state_consumer
         self._state_producer_cls = state_producer
-        self.wakeups: Dict[ComponentID, SimTime] = dict()
+        self.wakeups: dict[ComponentID, SimTime] = dict()
 
         self.error = asyncio.Event()
 
@@ -79,7 +78,7 @@ class BaseScheduler:
         """
         await self.state_producer.produce(output_topic(skip.source), skip)
 
-    async def handle_message(self, message: Union[ComponentOutput, Skip]) -> None:
+    async def handle_message(self, message: ComponentOutput | Skip) -> None:
         """Handle messages received by the state consumer.
 
         An asynchronous callback which handles Interrupt, Output, ComponentException
@@ -120,7 +119,7 @@ class BaseScheduler:
         await self.state_consumer.subscribe(
             {output_topic(component) for component in self.ticker.components}
         )
-        self.state_producer: StateProducer[Union[ComponentInput, Skip]] = (
+        self.state_producer: StateProducer[ComponentInput | Skip] = (
             self._state_producer_cls()
         )
 
@@ -134,7 +133,7 @@ class BaseScheduler:
         LOGGER.debug(f"Scheduling {component} for wakeup at {when}")
         self.wakeups[component] = when
 
-    def get_first_wakeups(self) -> Tuple[Set[ComponentID], Optional[SimTime]]:
+    def get_first_wakeups(self) -> tuple[set[ComponentID], SimTime | None]:
         """Gets the components which are due for update first and the wakeup time.
 
         A method which returns a set of components which are due for update first and

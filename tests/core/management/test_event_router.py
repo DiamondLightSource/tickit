@@ -1,4 +1,4 @@
-from typing import Dict, Hashable, Mapping, Set
+from collections.abc import Hashable, Mapping
 
 import pytest
 from immutables import Map
@@ -149,7 +149,7 @@ def test_event_router_inverse_component_tree(event_router: EventRouter):
     ],
 )
 def test_event_router_dependants(
-    event_router: EventRouter, root: ComponentID, expected: Set[ComponentID]
+    event_router: EventRouter, root: ComponentID, expected: set[ComponentID]
 ):
     assert expected == event_router.dependants(root)
 
@@ -168,7 +168,7 @@ def test_event_router_route(
     event_router: EventRouter,
     source: ComponentID,
     changes: Mapping[PortID, Hashable],
-    expected: Dict[ComponentID, Dict[PortID, object]],
+    expected: dict[ComponentID, dict[PortID, object]],
 ):
     assert expected == event_router.route(source, changes)
 

@@ -1,9 +1,8 @@
 from collections import defaultdict
-from typing import List
+from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 from immutables import Map
-from mock import AsyncMock, MagicMock
 
 from tickit.core.management.event_router import Inverse_Wiring_Struct, InverseWiring
 from tickit.core.management.ticker import Ticker
@@ -189,7 +188,7 @@ async def test_ticker_call_schedules_possible_updates(ticker: Ticker):
 
 @pytest.mark.asyncio
 async def test_ticker_does_tick(ticker: Ticker):
-    updates: List[Input] = list()
+    updates: list[Input] = list()
 
     async def update_component(input: Input) -> None:
         updates.append(input)

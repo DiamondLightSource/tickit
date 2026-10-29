@@ -1,8 +1,8 @@
 from asyncio import StreamReader, StreamWriter
-from typing import AsyncIterable, Awaitable, Callable, Optional
+from collections.abc import AsyncIterable, Awaitable, Callable
+from unittest.mock import ANY, MagicMock, Mock, patch
 
 import pytest
-from mock import ANY, MagicMock, Mock, patch
 from mock.mock import AsyncMock, create_autospec
 
 from tickit.adapters.io import TcpIo
@@ -78,9 +78,7 @@ def mock_adapter(handler, on_connect) -> CommandAdapter:
 async def test_tcpio_generate_handle_function_method(
     tcp_io: TcpIo,
     on_connect: Callable[[], AsyncIterable[bytes]],
-    handler: Callable[
-        [bytes, RaiseInterrupt], Awaitable[AsyncIterable[Optional[bytes]]]
-    ],
+    handler: Callable[[bytes, RaiseInterrupt], Awaitable[AsyncIterable[bytes | None]]],
     mock_stream_reader: Mock,
     mock_stream_writer: Mock,
     raise_interrupt: RaiseInterrupt = Mock(),

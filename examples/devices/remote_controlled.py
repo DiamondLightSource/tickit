@@ -1,7 +1,8 @@
 import asyncio
 import logging
 import struct
-from typing import AsyncIterable, Optional, TypedDict
+from collections.abc import AsyncIterable
+from typing import TypedDict
 
 import pydantic.v1.dataclasses
 
@@ -74,7 +75,7 @@ class RemoteControlledAdapter(CommandAdapter):
         self.device = device
         self._byte_format = format
 
-    async def on_connect(self) -> AsyncIterable[Optional[bytes]]:
+    async def on_connect(self) -> AsyncIterable[bytes | None]:
         """Continiously sends the unobserved value to the client.
 
         Returns:
@@ -83,7 +84,7 @@ class RemoteControlledAdapter(CommandAdapter):
         """
         while True:
             await asyncio.sleep(5.0)
-            yield f"U is {self.device.unobserved}".encode("utf-8")
+            yield f"U is {self.device.unobserved}".encode()
 
     @RegexCommand(b"\x01")
     async def get_observed_bytes(self) -> bytes:
@@ -127,7 +128,7 @@ class RemoteControlledAdapter(CommandAdapter):
             bytes: The utf-8 encoded value of observed.
         """
         self.device.observed = value
-        return f"Observed set to {self.device.observed}".encode("utf-8")
+        return f"Observed set to {self.device.observed}".encode()
 
     @RegexCommand(b"\x02")
     async def get_unobserved_bytes(self) -> bytes:
@@ -171,7 +172,7 @@ class RemoteControlledAdapter(CommandAdapter):
             bytes: The utf-8 encoded value of unobserved.
         """
         self.device.unobserved = value
-        return f"Unobserved set to {self.device.unobserved}".encode("utf-8")
+        return f"Unobserved set to {self.device.unobserved}".encode()
 
     @RegexCommand(chr(0x1F95A), format="utf-8")
     async def misc(self) -> bytes:
@@ -210,7 +211,7 @@ class RemoteControlledAdapter(CommandAdapter):
         """
         for i in range(1, int(n)):
             await asyncio.sleep(1.0)
-            yield f"Observed is {self.device.observed}".encode("utf-8")
+            yield f"Observed is {self.device.observed}".encode()
 
 
 @pydantic.v1.dataclasses.dataclass

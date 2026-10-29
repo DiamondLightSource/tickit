@@ -1,12 +1,10 @@
-from typing import List
-
 import yaml
 from pydantic.v1 import parse_obj_as
 
 from tickit.core.components.component import ComponentConfig
 
 
-def read_configs(config_path) -> List[ComponentConfig]:
+def read_configs(config_path) -> list[ComponentConfig]:
     """A utility function which reads and deserializes configs.
 
     A utility function which reads config files, performs yaml deserialization,
@@ -19,6 +17,6 @@ def read_configs(config_path) -> List[ComponentConfig]:
     Returns:
         List[Component]: A list of component configuration objects.
     """
-    with open(config_path, "r") as config_file:
+    with open(config_path) as config_file:
         yaml_struct = yaml.load(config_file, Loader=yaml.Loader)
-    return parse_obj_as(List[ComponentConfig], yaml_struct)
+    return parse_obj_as(list[ComponentConfig], yaml_struct)

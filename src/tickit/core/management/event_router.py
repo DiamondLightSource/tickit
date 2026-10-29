@@ -1,22 +1,23 @@
 from collections import defaultdict, deque
+from collections.abc import Iterable, Mapping
 from functools import cached_property
-from typing import DefaultDict, Dict, Iterable, Mapping, Optional, Set, Union, overload
+from typing import overload
 
 from tickit.core.components.component import ComponentConfig
 from tickit.core.typedefs import ComponentID, ComponentPort, PortID
 
 #: A mapping of component output ports to component input ports with defaults
-Default_Wiring_Struct = DefaultDict[
-    ComponentID, DefaultDict[PortID, Set[ComponentPort]]
+Default_Wiring_Struct = defaultdict[
+    ComponentID, defaultdict[PortID, set[ComponentPort]]
 ]
 #: A mapping of component output ports to component input ports
-Wiring_Struct = Dict[ComponentID, Dict[PortID, Set[ComponentPort]]]
+Wiring_Struct = dict[ComponentID, dict[PortID, set[ComponentPort]]]
 #: A mapping of component input ports to component output ports with defaults
-Default_InverseWiring_Struct = DefaultDict[
-    ComponentID, DefaultDict[PortID, ComponentPort]
+Default_InverseWiring_Struct = defaultdict[
+    ComponentID, defaultdict[PortID, ComponentPort]
 ]
 #: A mapping of component input ports to component output ports
-Inverse_Wiring_Struct = Dict[ComponentID, Dict[PortID, ComponentPort]]
+Inverse_Wiring_Struct = dict[ComponentID, dict[PortID, ComponentPort]]
 
 
 class Wiring(Default_Wiring_Struct):
@@ -28,7 +29,7 @@ class Wiring(Default_Wiring_Struct):
     created, whilst for an unknown output port an empty input port set is created.
     """
 
-    def __init__(self, wiring: Optional[Wiring_Struct] = None) -> None:
+    def __init__(self, wiring: Wiring_Struct | None = None) -> None:
         """A constructor which adds defaults to a wiring struct if provided.
 
         A constructor which adds defaults to a wiring struct if provided, otherwise an
@@ -39,11 +40,11 @@ class Wiring(Default_Wiring_Struct):
                 None.
         """
         _wiring = (
-            {dev: DefaultDict(set, io) for dev, io in wiring.items()}
+            {dev: defaultdict(set, io) for dev, io in wiring.items()}
             if wiring
             else dict()
         )
-        return super().__init__(lambda: DefaultDict(set, dict()), _wiring)
+        return super().__init__(lambda: defaultdict(set, dict()), _wiring)
 
     @classmethod
     def from_inverse_wiring(cls, inverse_wiring: "InverseWiring") -> "Wiring":
@@ -72,7 +73,7 @@ class InverseWiring(Default_InverseWiring_Struct):
     or an unknown input component port is requested a KeyError is raised.
     """
 
-    def __init__(self, wiring: Optional[Inverse_Wiring_Struct] = None) -> None:
+    def __init__(self, wiring: Inverse_Wiring_Struct | None = None) -> None:
         """A constructor which adds defaults to an inverse wiring struct if provided.
 
         A constructor which adds defaults to an inverse wiring struct if provided,
@@ -83,11 +84,11 @@ class InverseWiring(Default_InverseWiring_Struct):
                 Defaults to None.
         """
         _wiring = (
-            {dev: DefaultDict(None, io) for dev, io in wiring.items()}
+            {dev: defaultdict(None, io) for dev, io in wiring.items()}
             if wiring
             else dict()
         )
-        return super().__init__(lambda: DefaultDict(None, dict()), _wiring)
+        return super().__init__(lambda: defaultdict(None, dict()), _wiring)
 
     @classmethod
     def from_wiring(cls, wiring: Wiring) -> "InverseWiring":
@@ -139,7 +140,7 @@ class EventRouter:
         """Placeholder."""  # See: https://github.com/PyCQA/pydocstyle/issues/525
         pass
 
-    def __init__(self, wiring: Union[Wiring, InverseWiring]) -> None:
+    def __init__(self, wiring: Wiring | InverseWiring) -> None:
         """Construct an EventRouter.
 
         An EventRouter stores possible inverse wiring for use in utilities.
@@ -163,7 +164,7 @@ class EventRouter:
         return self._wiring
 
     @cached_property
-    def components(self) -> Set[ComponentID]:
+    def components(self) -> set[ComponentID]:
         """A cached set of all components in the wiring.
 
         Returns:
@@ -176,7 +177,7 @@ class EventRouter:
         )
 
     @cached_property
-    def output_components(self) -> Set[ComponentID]:
+    def output_components(self) -> set[ComponentID]:
         """A cached set of components which provide outputs.
 
         Returns:
@@ -185,7 +186,7 @@ class EventRouter:
         return {component for component, port in self.wiring.items() if port}
 
     @cached_property
-    def input_components(self) -> Set[ComponentID]:
+    def input_components(self) -> set[ComponentID]:
         """A cached set of components which receive inputs.
 
         Returns:
@@ -199,7 +200,7 @@ class EventRouter:
         )
 
     @cached_property
-    def isolated_components(self) -> Set[ComponentID]:
+    def isolated_components(self) -> set[ComponentID]:
         """A cached set of components without inputs or outputs.
 
         Returns:
@@ -211,7 +212,7 @@ class EventRouter:
         )
 
     @cached_property
-    def component_tree(self) -> Dict[ComponentID, Set[ComponentID]]:
+    def component_tree(self) -> dict[ComponentID, set[ComponentID]]:
         """A cached mapping of first order component dependants.
 
         A cached property which returns a mapping of components to the set of
@@ -228,7 +229,7 @@ class EventRouter:
         }
 
     @cached_property
-    def inverse_component_tree(self) -> Dict[ComponentID, Set[ComponentID]]:
+    def inverse_component_tree(self) -> dict[ComponentID, set[ComponentID]]:
         """A cached mapping of first order component dependencies.
 
         A cached property which returns a mapping of components to the set of
@@ -239,7 +240,7 @@ class EventRouter:
                 A mapping of components to the set of components which are wired to any
                 of its inputs.
         """
-        inverse_tree: Dict[ComponentID, Set[ComponentID]] = {
+        inverse_tree: dict[ComponentID, set[ComponentID]] = {
             dev: set() for dev in self.components
         }
         for dev, deps in self.component_tree.items():
@@ -247,7 +248,7 @@ class EventRouter:
                 inverse_tree[dep].add(dev)
         return inverse_tree
 
-    def dependants(self, root: ComponentID) -> Set[ComponentID]:
+    def dependants(self, root: ComponentID) -> set[ComponentID]:
         """Finds the set of root component dependents .
 
         Finds the set of all components which are recursively dependant on the root
@@ -273,7 +274,7 @@ class EventRouter:
 
     def route(
         self, source: ComponentID, changes: Mapping[PortID, object]
-    ) -> DefaultDict[ComponentID, Dict[PortID, object]]:
+    ) -> defaultdict[ComponentID, dict[PortID, object]]:
         """Generates a mapping of input changes resulting from output changes.
 
         A method which generates a mapping of input changes which result from the
@@ -289,7 +290,7 @@ class EventRouter:
                 A mapping of the input changes which result from the propagation of
                 output changes according to the wiring.
         """
-        routed: DefaultDict[ComponentID, Dict[PortID, object]] = defaultdict(dict)
+        routed: defaultdict[ComponentID, dict[PortID, object]] = defaultdict(dict)
         for out_id, out_val in changes.items():
             for in_dev, in_id in self.wiring[source][out_id]:
                 routed[in_dev][in_id] = out_val

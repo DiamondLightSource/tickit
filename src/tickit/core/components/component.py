@@ -3,7 +3,6 @@ import logging
 import traceback
 from abc import abstractmethod
 from dataclasses import dataclass
-from typing import Dict, Optional, Type
 
 import pydantic.v1.dataclasses
 
@@ -42,7 +41,7 @@ class Component:
 
     @abstractmethod
     async def run_forever(
-        self, state_consumer: Type[StateConsumer], state_producer: Type[StateProducer]
+        self, state_consumer: type[StateConsumer], state_producer: type[StateProducer]
     ) -> None:
         """Asynchronous method allowing indefinite running of core logic."""
 
@@ -67,7 +66,7 @@ class ComponentConfig:
     """
 
     name: ComponentID
-    inputs: Dict[PortID, ComponentPort]
+    inputs: dict[PortID, ComponentPort]
 
     @abstractmethod
     def __call__(self) -> Component:
@@ -107,7 +106,7 @@ class BaseComponent(Component):
         self,
         time: SimTime,
         changes: Changes,
-        call_at: Optional[SimTime],
+        call_at: SimTime | None,
     ) -> None:
         """Construct and send an Output message to the component output topic.
 
@@ -134,7 +133,7 @@ class BaseComponent(Component):
         await self.state_producer.produce(output_topic(self.name), Interrupt(self.name))
 
     async def run_forever(
-        self, state_consumer: Type[StateConsumer], state_producer: Type[StateProducer]
+        self, state_consumer: type[StateConsumer], state_producer: type[StateProducer]
     ) -> None:
         """Creates and configures a state consumer and state producer.
 

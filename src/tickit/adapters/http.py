@@ -1,5 +1,5 @@
+from collections.abc import Callable, Iterable
 from inspect import getmembers
-from typing import Callable, Iterable, Tuple
 
 from tickit.adapters.specifications import HttpEndpoint
 from tickit.core.adapter import RaiseInterrupt
@@ -10,7 +10,7 @@ class HttpAdapter:
 
     interrupt: RaiseInterrupt
 
-    def get_endpoints(self) -> Iterable[Tuple[HttpEndpoint, Callable]]:
+    def get_endpoints(self) -> Iterable[tuple[HttpEndpoint, Callable]]:
         """Returns list of endpoints.
 
         Fetches the defined HTTP endpoints in the device adapter, parses them and

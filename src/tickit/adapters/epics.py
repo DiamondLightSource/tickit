@@ -2,8 +2,9 @@ import asyncio
 import itertools
 import logging
 from abc import abstractmethod
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Any, Callable, Dict, Set
+from typing import Any
 
 from softioc import asyncio_dispatcher, builder, softioc
 
@@ -15,7 +16,7 @@ LOGGER = logging.getLogger(__name__)
 _TICKIT_IOC_NAME: str = "TICKIT_IOC"
 
 #: Ids of all adapters currently registered but not ready.
-_REGISTERED_ADAPTER_IDS: Set[int] = set()
+_REGISTERED_ADAPTER_IDS: set[int] = set()
 
 #: Iterator of unique IDs for new adapters
 _ID_COUNTER: itertools.count = itertools.count()
@@ -90,7 +91,7 @@ class OutputRecord:
 class EpicsAdapter:
     """An adapter interface for the EpicsIo."""
 
-    interrupt_records: Dict[InputRecord, Callable[[], Any]] = {}
+    interrupt_records: dict[InputRecord, Callable[[], Any]] = {}
     interrupt: RaiseInterrupt
 
     def link_input_on_interrupt(

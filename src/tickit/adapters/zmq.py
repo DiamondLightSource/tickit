@@ -1,5 +1,6 @@
 import asyncio
-from typing import Any, Mapping, Optional, Sequence, Union
+from collections.abc import Mapping, Sequence
+from typing import Any, Union
 
 import zmq
 from pydantic.v1 import BaseModel
@@ -20,7 +21,7 @@ ZeroMqMessage = Sequence[_SerializableMessagePart]
 class ZeroMqPushAdapter:
     """An adapter interface for the ZeroMqPushIo."""
 
-    _message_queue: Optional[asyncio.Queue]
+    _message_queue: asyncio.Queue | None
 
     def __init__(self) -> None:
         self._message_queue = None

@@ -1,8 +1,7 @@
 import logging
-from typing import Any, Dict, Generic, List, Tuple, TypedDict, TypeVar
+from typing import Any, Generic, NotRequired, TypedDict, TypeVar
 
 import pydantic.v1.dataclasses
-from typing_extensions import NotRequired
 
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_component import DeviceComponent
@@ -54,14 +53,14 @@ class IoBoxDevice(Device, Generic[A, V]):
 
     #: A typed mapping containing the 'input' input value
     class Inputs(TypedDict):
-        updates: NotRequired[List[Tuple[Any, Any]]]
+        updates: NotRequired[list[tuple[Any, Any]]]
 
     #: A typed mapping of device outputs
     class Outputs(TypedDict):
-        updates: NotRequired[List[Tuple[Any, Any]]]
+        updates: NotRequired[list[tuple[Any, Any]]]
 
-    _memory: Dict[A, V]
-    _change_buffer: List[Tuple[A, V]]
+    _memory: dict[A, V]
+    _change_buffer: list[tuple[A, V]]
 
     def __init__(self) -> None:  # noqa: D107
         self._memory = {}

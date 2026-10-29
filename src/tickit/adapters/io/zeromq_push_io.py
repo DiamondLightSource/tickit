@@ -1,7 +1,8 @@
 import asyncio
 import json
 import logging
-from typing import Iterable, Optional, Protocol, runtime_checkable
+from collections.abc import Iterable
+from typing import Protocol, runtime_checkable
 
 import aiozmq
 import zmq
@@ -34,10 +35,10 @@ class ZeroMqPushIo(AdapterIo[ZeroMqPushAdapter]):
 
     _host: str
     _port: int
-    _socket: Optional[aiozmq.ZmqStream]
+    _socket: aiozmq.ZmqStream | None
     _socket_factory: SocketFactory
     _socket_lock: asyncio.Lock
-    _task: Optional[asyncio.Task]
+    _task: asyncio.Task | None
 
     def __init__(
         self,

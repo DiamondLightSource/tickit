@@ -1,9 +1,10 @@
-from typing import Any, Iterable
+from collections.abc import Iterable
+from typing import Any
+from unittest.mock import Mock, create_autospec, patch
 
 import pytest
 import pytest_asyncio
 from immutables import Map
-from mock import Mock, create_autospec, patch
 
 from tickit.core.management.event_router import Wiring
 from tickit.core.management.schedulers.base import BaseScheduler

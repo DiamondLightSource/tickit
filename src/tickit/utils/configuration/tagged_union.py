@@ -1,17 +1,18 @@
+from collections.abc import Callable
 from dataclasses import field
 from importlib import import_module
-from typing import Any, Callable, Literal, Optional, Type, Union
+from typing import Any, Literal, Union
 
 from pydantic.v1 import BaseConfig, Field, ValidationError, create_model, parse_obj_as
 from pydantic.v1.error_wrappers import ErrorWrapper
 
 
 def as_tagged_union(
-    super_cls: Optional[Union[Type, Callable[[Type], Type]]] = None,
+    super_cls: type | Callable[[type], type] | None = None,
     *,
     discriminator: str = "type",
-    config: Optional[Type[BaseConfig]] = None,
-) -> Union[Type, Callable[[Type], Type]]:
+    config: type[BaseConfig] | None = None,
+) -> type | Callable[[type], type]:
     def wrap(cls):
         return _as_tagged_union(cls, discriminator, config)
 
@@ -24,10 +25,10 @@ def as_tagged_union(
 
 
 def _as_tagged_union(
-    super_cls: Type,
+    super_cls: type,
     discriminator: str,
-    config: Optional[Type[BaseConfig]] = None,
-) -> Union[Type, Callable[[Type], Type]]:
+    config: type[BaseConfig] | None = None,
+) -> type | Callable[[type], type]:
     super_cls._ref_classes = set()
     super_cls._model = None
     setattr(super_cls, discriminator, field())

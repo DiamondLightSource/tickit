@@ -1,5 +1,4 @@
 from types import new_class
-from typing import Type
 
 from _pytest.fixtures import fixture
 
@@ -7,12 +6,12 @@ from tickit.utils.singleton import Singleton
 
 
 @fixture
-def TestSingleton() -> Type:
+def TestSingleton() -> type:
     return new_class("TestSingleton", tuple(), {"metaclass": Singleton})
 
 
 @fixture
-def OtherSingleton() -> Type:
+def OtherSingleton() -> type:
     return new_class("OtherSingleton", tuple(), {"metaclass": Singleton})
 
 

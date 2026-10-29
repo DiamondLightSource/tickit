@@ -1,16 +1,9 @@
 import asyncio
 import logging
 from collections import defaultdict
+from collections.abc import Callable, Coroutine, Hashable
 from typing import (
     Any,
-    Callable,
-    Coroutine,
-    DefaultDict,
-    Dict,
-    Hashable,
-    Optional,
-    Set,
-    Union,
 )
 
 from immutables import Map
@@ -38,7 +31,7 @@ class Ticker:
 
     def __init__(
         self,
-        wiring: Union[Wiring, InverseWiring],
+        wiring: Wiring | InverseWiring,
         update_component: Callable[[Input], Coroutine[Any, Any, None]],
         skip_component: Callable[[Skip], Coroutine[Any, Any, None]],
     ) -> None:
@@ -55,11 +48,11 @@ class Ticker:
         self.event_router = EventRouter(wiring)
         self.update_component = update_component
         self.skip_component = skip_component
-        self.to_update: Dict[ComponentID, Optional[asyncio.Task]] = dict()
+        self.to_update: dict[ComponentID, asyncio.Task | None] = dict()
         self.finished: asyncio.Event = asyncio.Event()
 
     async def __call__(
-        self, time: SimTime, update_components: Set[ComponentID]
+        self, time: SimTime, update_components: set[ComponentID]
     ) -> None:
         """Perform a tick which updates the provided components and their dependants.
 
@@ -79,7 +72,7 @@ class Ticker:
         await self.finished.wait()
         self.finished.clear()
 
-    async def _start_tick(self, time: SimTime, update_components: Set[ComponentID]):
+    async def _start_tick(self, time: SimTime, update_components: set[ComponentID]):
         """Set up the ticker to perform a tick.
 
         An asynchronous method which sets up the ticker to perform a tick by updating
@@ -95,7 +88,7 @@ class Ticker:
         self.time = time
         self.roots = update_components
         LOGGER.debug(f"Doing tick @ {self.time}")
-        self.inputs: DefaultDict[ComponentID, Dict[PortID, Hashable]] = defaultdict(
+        self.inputs: defaultdict[ComponentID, dict[PortID, Hashable]] = defaultdict(
             dict
         )
         self.to_update = {
@@ -112,12 +105,12 @@ class Ticker:
         dependencies and the set of components which still require an update.
         """
 
-        def required_dependencies(component) -> Set[ComponentID]:
+        def required_dependencies(component) -> set[ComponentID]:
             return self.event_router.inverse_component_tree[component].intersection(
                 self.to_update
             )
 
-        updating: Dict[ComponentID, asyncio.Task] = dict()
+        updating: dict[ComponentID, asyncio.Task] = dict()
 
         for component, task in self.to_update.items():
             if task is not None or required_dependencies(component):
@@ -146,7 +139,7 @@ class Ticker:
 
         self.to_update.update(updating)
 
-    async def propagate(self, output: Union[Output, Skip]) -> None:
+    async def propagate(self, output: Output | Skip) -> None:
         """Propagates the output of an updated component.
 
         An asynchronous message which propagates the output of an updated component by
@@ -170,7 +163,7 @@ class Ticker:
             self.finished.set()
 
     @property
-    def components(self) -> Set[ComponentID]:
+    def components(self) -> set[ComponentID]:
         """The set of all components in the wiring.
 
         Returns:

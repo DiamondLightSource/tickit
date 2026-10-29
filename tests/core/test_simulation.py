@@ -1,9 +1,9 @@
 import asyncio
-from typing import AsyncGenerator, Dict, Iterable
+from collections.abc import AsyncGenerator, Iterable
+from unittest.mock import AsyncMock, Mock, create_autospec, patch
 
 import pytest
 import pytest_asyncio
-from mock import AsyncMock, Mock, create_autospec, patch
 
 from tickit.core.components.component import Component
 from tickit.core.management.event_router import Wiring
@@ -139,7 +139,7 @@ async def patch_component_run_forever() -> AsyncGenerator:
 
 
 @pytest.fixture
-def mock_components() -> Dict[ComponentID, Component]:
+def mock_components() -> dict[ComponentID, Component]:
     sink = Sink(name=ComponentID("test_sink"), inputs=dict())
     source = Source(name=ComponentID("test_source"), inputs=dict(), value=42)
     mock_components = {
@@ -152,7 +152,7 @@ def mock_components() -> Dict[ComponentID, Component]:
 @pytest.mark.asyncio
 async def test_running_only_components(
     patch_component_run_forever: Mock,
-    mock_components: Dict[ComponentID, Component],
+    mock_components: dict[ComponentID, Component],
 ) -> None:
     tickit_simulation = TickitSimulation(
         backend="internal", scheduler=None, components=mock_components
@@ -169,7 +169,7 @@ async def test_running_only_components(
 async def test_running_all(
     mock_master_scheduler: MasterScheduler,
     patch_component_run_forever: Mock,
-    mock_components: Dict[ComponentID, Component],
+    mock_components: dict[ComponentID, Component],
 ) -> None:
     tickit_simulation = TickitSimulation(
         backend="internal", scheduler=mock_master_scheduler, components=mock_components

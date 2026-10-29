@@ -1,10 +1,10 @@
 import asyncio
+from unittest.mock import Mock
 
 import aiohttp
 import pytest
 import pytest_asyncio
 from aiohttp import web
-from mock import Mock
 from mock.mock import create_autospec
 
 from tickit.adapters.http import HttpAdapter

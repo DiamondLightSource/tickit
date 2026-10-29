@@ -1,6 +1,6 @@
 import asyncio
 import logging
-from typing import Dict, Iterable, Optional, Set
+from collections.abc import Iterable
 
 from tickit.core.components.component import Component
 from tickit.core.management.event_router import InverseWiring
@@ -20,8 +20,8 @@ class TickitSimulation:
     """
 
     _backend: str
-    _scheduler: Optional[MasterScheduler]
-    _components: Optional[Dict[ComponentID, Component]]
+    _scheduler: MasterScheduler | None
+    _components: dict[ComponentID, Component] | None
 
     def __init__(
         self,
@@ -62,7 +62,7 @@ def build_simulation(
     backend: str = "internal",
     include_schedulers: bool = True,
     include_components: bool = True,
-    components_to_run: Optional[Set[ComponentID]] = None,
+    components_to_run: set[ComponentID] | None = None,
 ) -> TickitSimulation:
     """Builds the master scheduler and components for a simulation.
 

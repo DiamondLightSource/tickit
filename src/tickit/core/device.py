@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
+from collections.abc import Hashable, Mapping
 from dataclasses import dataclass
-from typing import Generic, Hashable, Mapping, Optional, TypeVar
+from typing import Generic, TypeVar
 
 from tickit.core.typedefs import SimTime
 
@@ -20,7 +21,7 @@ class DeviceUpdate(Generic[OutMap]):
     """
 
     outputs: OutMap
-    call_at: Optional[SimTime]
+    call_at: SimTime | None
 
 
 class Device(ABC, Generic[InMap, OutMap]):

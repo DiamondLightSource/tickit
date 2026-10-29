@@ -1,7 +1,6 @@
 import asyncio
 import logging
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Type
 
 import pydantic.v1.dataclasses
 
@@ -30,17 +29,17 @@ class SystemComponent(BaseComponent):
 
     #: A list of immutable component configuration data containers, used to
     #: construct internal components.
-    components: List[ComponentConfig]
+    components: list[ComponentConfig]
     #: A mapping of outputs which the system simulation exposes and the
     #: corresponding output of an internal component.
-    expose: Dict[PortID, ComponentPort]
+    expose: dict[PortID, ComponentPort]
 
-    adapter: Optional[AdapterContainer[BaseSystemSimulationAdapter]] = None
+    adapter: AdapterContainer[BaseSystemSimulationAdapter] | None = None
 
-    _tasks: List[asyncio.Task] = field(default_factory=list)
+    _tasks: list[asyncio.Task] = field(default_factory=list)
 
     async def run_forever(
-        self, state_consumer: Type[StateConsumer], state_producer: Type[StateProducer]
+        self, state_consumer: type[StateConsumer], state_producer: type[StateProducer]
     ) -> None:
         """Sets up state interfaces, the scheduler, and components to run continuously.
 
@@ -118,8 +117,8 @@ class SystemSimulation(ComponentConfig):
     """Simulation of a nested set of components."""
 
     name: ComponentID
-    components: List[ComponentConfig]
-    expose: Dict[PortID, ComponentPort]
+    components: list[ComponentConfig]
+    expose: dict[PortID, ComponentPort]
 
     def __call__(self) -> Component:  # noqa: D102
         return SystemComponent(

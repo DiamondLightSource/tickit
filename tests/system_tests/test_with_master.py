@@ -1,12 +1,12 @@
 import asyncio
 from asyncio import AbstractEventLoop
 from pathlib import Path
-from typing import List, cast
+from typing import cast
+from unittest import mock
+from unittest.mock import create_autospec
 
-import mock
 import pytest
 import pytest_asyncio
-from mock import create_autospec
 
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_component import DeviceComponent
@@ -19,25 +19,25 @@ from tickit.utils.configuration.loading import read_configs
 
 
 @pytest.fixture
-def configs_from_yaml() -> List[ComponentConfig]:
+def configs_from_yaml() -> list[ComponentConfig]:
     path_to_yaml = Path(__file__).parent / "configs" / "test_with_master.yaml"
     return read_configs(path_to_yaml)
 
 
 @pytest.fixture
-def wiring(configs_from_yaml: List[ComponentConfig]) -> InverseWiring:
+def wiring(configs_from_yaml: list[ComponentConfig]) -> InverseWiring:
     return InverseWiring.from_component_configs(configs_from_yaml)
 
 
 @pytest.fixture
-def components(configs_from_yaml) -> List[Component]:
+def components(configs_from_yaml) -> list[Component]:
     return [config() for config in configs_from_yaml]
 
 
 @pytest_asyncio.fixture
 async def master_scheduler(
     wiring: InverseWiring,
-    components: List[Component],
+    components: list[Component],
     event_loop: AbstractEventLoop,
 ):
     with mock.patch(
@@ -75,7 +75,7 @@ async def master_scheduler(
 
 @pytest.mark.asyncio
 async def test_sink_has_captured_value(
-    components: List[Component],
+    components: list[Component],
     master_scheduler: MasterScheduler,
 ):
     await asyncio.wait_for(master_scheduler.running.wait(), timeout=2.0)

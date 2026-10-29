@@ -1,6 +1,6 @@
 import asyncio
 import logging
-from typing import Iterable, Optional, Set
+from collections.abc import Iterable
 
 import click
 from click.core import Context
@@ -50,7 +50,7 @@ def components(
         seperated by whitespace. If none are provided, all components will be run.
         backend (str): The message broker to be used.
     """
-    components_to_run: Optional[Set[ComponentID]]
+    components_to_run: set[ComponentID] | None
     if components == ():
         components_to_run = None
     else:

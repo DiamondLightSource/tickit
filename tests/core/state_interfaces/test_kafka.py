@@ -1,8 +1,8 @@
-from typing import Iterable
+from collections.abc import Iterable
+from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
 import pytest_asyncio
-from mock import AsyncMock, Mock, patch
 
 from tickit.core.state_interfaces.kafka import KafkaStateConsumer, KafkaStateProducer
 

@@ -1,9 +1,9 @@
 import asyncio
-from typing import Dict, Iterable
+from collections.abc import Iterable
+from unittest.mock import AsyncMock, Mock, create_autospec, patch
 
 import pytest
 from immutables import Map
-from mock import AsyncMock, Mock, create_autospec, patch
 
 from tickit.core.management.event_router import InverseWiring, Wiring
 from tickit.core.management.schedulers.nested import NestedScheduler
@@ -58,7 +58,7 @@ def patch_ticker() -> Iterable[Mock]:
 
 
 @pytest.fixture
-def expose() -> Dict[PortID, ComponentPort]:
+def expose() -> dict[PortID, ComponentPort]:
     return {PortID("42"): ComponentPort(ComponentID("test_component"), PortID("53"))}
 
 

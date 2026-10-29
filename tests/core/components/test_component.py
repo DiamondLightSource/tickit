@@ -1,9 +1,8 @@
 from dataclasses import is_dataclass
-from typing import Type
+from unittest.mock import AsyncMock, create_autospec
 
 import pytest
 from immutables import Map
-from mock import AsyncMock, create_autospec
 
 from tickit.core.components.component import BaseComponent, ComponentConfig
 from tickit.core.state_interfaces.internal import (
@@ -39,7 +38,7 @@ def TestComponent():
 
 
 @pytest.fixture
-def test_component(TestComponent: Type[BaseComponent]):
+def test_component(TestComponent: type[BaseComponent]):
     return TestComponent(ComponentID("TestBase"))  # type: ignore
 
 
@@ -57,8 +56,8 @@ async def test_base_component_handle_input_awaits_on_tick(
 @pytest.mark.asyncio
 async def test_base_component_output_sends_output(
     test_component: BaseComponent,
-    MockConsumer: Type[StateConsumer],
-    MockProducer: Type[StateProducer],
+    MockConsumer: type[StateConsumer],
+    MockProducer: type[StateProducer],
 ):
     await test_component.run_forever(MockConsumer, MockProducer)
     test_component.state_producer.produce = AsyncMock()  # type: ignore
@@ -72,8 +71,8 @@ async def test_base_component_output_sends_output(
 @pytest.mark.asyncio
 async def test_base_component_raise_interrupt_sends_output(
     test_component: BaseComponent,
-    MockConsumer: Type[StateConsumer],
-    MockProducer: Type[StateProducer],
+    MockConsumer: type[StateConsumer],
+    MockProducer: type[StateProducer],
 ):
     await test_component.run_forever(MockConsumer, MockProducer)
     test_component.state_producer.produce = AsyncMock()  # type: ignore
@@ -86,9 +85,9 @@ async def test_base_component_raise_interrupt_sends_output(
 
 @pytest.mark.asyncio
 async def test_base_component_set_up_state_interfaces_creates_consumer(
-    TestComponent: Type[BaseComponent],
-    MockConsumer: Type[StateConsumer],
-    MockProducer: Type[StateProducer],
+    TestComponent: type[BaseComponent],
+    MockConsumer: type[StateConsumer],
+    MockProducer: type[StateProducer],
 ):
     test_component = TestComponent(ComponentID("TestBase"))  # type: ignore
     await test_component.run_forever(MockConsumer, MockProducer)
@@ -98,8 +97,8 @@ async def test_base_component_set_up_state_interfaces_creates_consumer(
 @pytest.mark.asyncio
 async def test_base_component_set_up_state_interfaces_subscribes_consumer(
     test_component: BaseComponent,
-    MockConsumer: Type[StateConsumer],
-    MockProducer: Type[StateProducer],
+    MockConsumer: type[StateConsumer],
+    MockProducer: type[StateProducer],
 ):
     await test_component.run_forever(MockConsumer, MockProducer)
     test_component.state_consumer.subscribe.assert_called_once_with(  # type: ignore
@@ -109,9 +108,9 @@ async def test_base_component_set_up_state_interfaces_subscribes_consumer(
 
 @pytest.mark.asyncio
 async def test_base_component_set_up_state_interfaces_creates_producer(
-    TestComponent: Type[BaseComponent],
-    MockConsumer: Type[StateConsumer],
-    MockProducer: Type[StateProducer],
+    TestComponent: type[BaseComponent],
+    MockConsumer: type[StateConsumer],
+    MockProducer: type[StateProducer],
 ):
     test_component = TestComponent(
         ComponentID("TestBase"),

@@ -1,14 +1,7 @@
+from collections.abc import Awaitable, Callable, Iterable
 from typing import (
-    Awaitable,
-    Callable,
-    Dict,
-    Iterable,
     Protocol,
-    Set,
-    Tuple,
-    Type,
     TypeVar,
-    Union,
     runtime_checkable,
 )
 from warnings import warn
@@ -74,15 +67,15 @@ class StateProducer(Protocol[P]):
 
 
 #: The union of StateConsumer and StateProducer
-StateInterface = TypeVar("StateInterface", bound=Union[StateConsumer, StateProducer])
+StateInterface = TypeVar("StateInterface", bound=StateConsumer | StateProducer)
 
-consumers: Dict[str, Tuple[Type[StateConsumer], bool]] = dict()
-producers: Dict[str, Tuple[Type[StateProducer], bool]] = dict()
+consumers: dict[str, tuple[type[StateConsumer], bool]] = dict()
+producers: dict[str, tuple[type[StateProducer], bool]] = dict()
 
 
 def add(
     name: str, external: bool
-) -> Callable[[Type[StateInterface]], Type[StateInterface]]:
+) -> Callable[[type[StateInterface]], type[StateInterface]]:
     """A decorator to add a StateInterface to the registry.
 
     A decorator to add a StateInterface to the registry of StateConsumers or
@@ -96,7 +89,7 @@ def add(
             simulations which are distributed across processes.
     """
 
-    def wrap(interface: Type[StateInterface]) -> Type[StateInterface]:
+    def wrap(interface: type[StateInterface]) -> type[StateInterface]:
         if isinstance(interface, StateProducer):
             producers[name] = (interface, external)
         elif isinstance(interface, StateConsumer):
@@ -110,7 +103,7 @@ def add(
     return wrap
 
 
-def interfaces(external: bool = False) -> Set[str]:
+def interfaces(external: bool = False) -> set[str]:
     """Returns interface names for which both a StateConsumer and StateProducer exist.
 
     Gets a set of interface names for which both a StateConsumer and StateProducer
@@ -131,8 +124,8 @@ def interfaces(external: bool = False) -> Set[str]:
 
 
 def satisfy_externality(
-    external: bool, interfaces: Dict[str, Tuple[Type[StateInterface], bool]]
-) -> Set[str]:
+    external: bool, interfaces: dict[str, tuple[type[StateInterface], bool]]
+) -> set[str]:
     """Finds which interfaces satisfy the externality requirement provided.
 
     Args:
@@ -150,7 +143,7 @@ def satisfy_externality(
     )
 
 
-def get_interface(name: str) -> Tuple[Type[StateConsumer], Type[StateProducer]]:
+def get_interface(name: str) -> tuple[type[StateConsumer], type[StateProducer]]:
     """Get the StateConsumer and StateProducer classes for a given interface name.
 
     Args:

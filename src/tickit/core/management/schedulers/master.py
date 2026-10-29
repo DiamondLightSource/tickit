@@ -1,7 +1,6 @@
 import asyncio
 import logging
 from time import time_ns
-from typing import Type, Union
 
 from tickit.core.management.event_router import InverseWiring, Wiring
 from tickit.core.management.schedulers.base import BaseScheduler
@@ -16,9 +15,9 @@ class MasterScheduler(BaseScheduler):
 
     def __init__(
         self,
-        wiring: Union[Wiring, InverseWiring],
-        state_consumer: Type[StateConsumer],
-        state_producer: Type[StateProducer],
+        wiring: Wiring | InverseWiring,
+        state_consumer: type[StateConsumer],
+        state_producer: type[StateProducer],
         initial_time: int = 0,
         simulation_speed: float = 1.0,
     ) -> None:

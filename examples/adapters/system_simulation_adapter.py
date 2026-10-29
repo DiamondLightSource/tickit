@@ -54,6 +54,4 @@ class SystemSimulationAdapter(BaseSystemSimulationAdapter, CommandAdapter):
             await component.raise_interrupt()
             return str(f"Raised Interupt in {component.name}").encode("utf-8")
         else:
-            return str("ComponentID not recognised, No interupt raised.").encode(
-                "utf-8"
-            )
+            return b"ComponentID not recognised, No interupt raised."
