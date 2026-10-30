@@ -1,7 +1,6 @@
-from typing import Dict
+from unittest.mock import MagicMock, Mock, mock_open, patch
 
 import pytest
-from mock import MagicMock, Mock, mock_open, patch
 
 from tickit.adapters.epics import EpicsAdapter
 from tickit.adapters.io.epics_io import EpicsIo
@@ -23,7 +22,7 @@ def epics_io_no_db_file() -> EpicsIo:
     return EpicsIo("ioc_name")
 
 
-def record_db_file_contents() -> Dict[str, bytes]:
+def record_db_file_contents() -> dict[str, bytes]:
     return {
         "data": b"""record(ao, "$(device):GAIN") {
         field(DTYP, "Hy8001")
@@ -41,7 +40,7 @@ def record_db_file_contents() -> Dict[str, bytes]:
     }
 
 
-def filter1_db_file_contents() -> Dict[str, bytes]:
+def filter1_db_file_contents() -> dict[str, bytes]:
     return {
         "data": b"""record(bo, "$(device):FILTER") {
         field(DTYP, "$(DTYP)")
@@ -70,7 +69,7 @@ def filter1_db_file_contents() -> Dict[str, bytes]:
 )
 def test_epics_adapter_load_records_without_DTYP_fields_method(
     epics_io: EpicsIo,
-    test_params: Dict[str, bytes],
+    test_params: dict[str, bytes],
 ):
     data = test_params["data"]
     with patch("builtins.open", mock_open(read_data=data)):

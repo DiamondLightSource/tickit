@@ -1,7 +1,7 @@
 import asyncio
 import logging
 from asyncio.streams import StreamReader, StreamWriter
-from typing import AsyncIterable, Awaitable, Callable, List, Optional
+from collections.abc import AsyncIterable, Awaitable, Callable
 
 from tickit.adapters.tcp import CommandAdapter
 from tickit.core.adapter import AdapterIo, RaiseInterrupt
@@ -45,9 +45,9 @@ class TcpIo(AdapterIo[CommandAdapter]):
 
     def _generate_handle_function(
         self,
-        on_connect: Callable[[], AsyncIterable[Optional[bytes]]],
+        on_connect: Callable[[], AsyncIterable[bytes | None]],
         handler: Callable[
-            [bytes, RaiseInterrupt], Awaitable[AsyncIterable[Optional[bytes]]]
+            [bytes, RaiseInterrupt], Awaitable[AsyncIterable[bytes | None]]
         ],
         raise_interrupt: RaiseInterrupt,
         format: ByteFormat,
@@ -64,10 +64,10 @@ class TcpIo(AdapterIo[CommandAdapter]):
                 asynchronous message handler which returns an asynchronous iterable of
                 replies.
         """
-        tasks: List[asyncio.Task] = list()
+        tasks: list[asyncio.Task] = []
 
         async def handle(reader: StreamReader, writer: StreamWriter) -> None:
-            async def reply(replies: AsyncIterable[Optional[bytes]]) -> None:
+            async def reply(replies: AsyncIterable[bytes | None]) -> None:
                 async for reply in replies:
                     if reply is None:
                         continue
@@ -81,8 +81,8 @@ class TcpIo(AdapterIo[CommandAdapter]):
 
             while True:
                 if self.terminator is not None:
-                    data: bytes = ( 
-                        await reader.readuntil(separator=self.terminator.encode())
+                    data: bytes = await reader.readuntil(
+                        separator=self.terminator.encode()
                     )
                 else:
                     data: bytes = await reader.read(1024)

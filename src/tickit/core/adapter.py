@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-from typing import AsyncIterable, Generic, Tuple, TypeVar
+from collections.abc import AsyncIterable
+from typing import Generic, TypeVar
 
 from typing_extensions import Protocol
 
@@ -50,7 +51,7 @@ class Interpreter(ABC, Generic[T]):
     """An interface for types which handle messages received by an adapter."""
 
     @abstractmethod
-    async def handle(self, message: T) -> Tuple[AsyncIterable[T], bool]:
+    async def handle(self, message: T) -> tuple[AsyncIterable[T], bool]:
         """An asynchronous method which handles messages received by an adapter.
 
         An asynchronous method which handles messages received by an adapter, replies

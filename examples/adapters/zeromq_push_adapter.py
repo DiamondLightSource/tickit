@@ -1,6 +1,5 @@
 import asyncio
 from dataclasses import field
-from typing import Optional, Set
 
 import pydantic.v1.dataclasses
 
@@ -16,13 +15,13 @@ class IoBoxZeroMqAdapter(ZeroMqPushAdapter):
     """An ZMQ adapter which publishes writes to the devices memory."""
 
     device: IoBoxDevice[str, int]
-    _addresses_to_publish: Set[str]
+    _addresses_to_publish: set[str]
     _message_queue: asyncio.Queue
 
     def __init__(
         self,
         device: IoBoxDevice,
-        addresses_to_publish: Optional[Set[str]] = None,
+        addresses_to_publish: set[str] | None = None,
     ) -> None:
         self.device = device
         self._addresses_to_publish = addresses_to_publish or set()
@@ -40,7 +39,7 @@ class ExampleZeroMqPusher(ComponentConfig):
 
     host: str = "127.0.0.1"
     port: int = 5555
-    addresses_to_publish: Set[str] = field(default_factory=lambda: {"foo", "bar"})
+    addresses_to_publish: set[str] = field(default_factory=lambda: {"foo", "bar"})
 
     def __call__(self) -> Component:  # noqa: D102
         device = IoBoxDevice()

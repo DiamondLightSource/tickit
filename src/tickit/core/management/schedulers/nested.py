@@ -1,5 +1,5 @@
 import logging
-from typing import Awaitable, Callable, Dict, Optional, Set, Tuple, Type, Union
+from collections.abc import Awaitable, Callable
 
 from immutables import Map
 
@@ -25,10 +25,10 @@ class NestedScheduler(BaseScheduler):
 
     def __init__(
         self,
-        wiring: Union[Wiring, InverseWiring],
-        state_consumer: Type[StateConsumer],
-        state_producer: Type[StateProducer],
-        expose: Dict[PortID, ComponentPort],
+        wiring: Wiring | InverseWiring,
+        state_consumer: type[StateConsumer],
+        state_producer: type[StateProducer],
+        expose: dict[PortID, ComponentPort],
         raise_interrupt: Callable[[], Awaitable[None]],
     ) -> None:
         """NestedScheduler constructor which adds wiring and saves values for reference.
@@ -49,13 +49,13 @@ class NestedScheduler(BaseScheduler):
         super().__init__(wiring, state_consumer, state_producer)
 
         self.raise_interrupt = raise_interrupt
-        self.interrupts: Set[ComponentID] = set()
+        self.interrupts: set[ComponentID] = set()
         self.component_error: ComponentException
 
     @staticmethod
     def add_exposing_wiring(
-        wiring: Union[Wiring, InverseWiring],
-        expose: Dict[PortID, ComponentPort],
+        wiring: Wiring | InverseWiring,
+        expose: dict[PortID, ComponentPort],
     ) -> InverseWiring:
         """Adds wiring to expose nested scheduler outputs.
 
@@ -104,7 +104,7 @@ class NestedScheduler(BaseScheduler):
 
     async def on_tick(
         self, time: SimTime, changes: Changes
-    ) -> Tuple[Changes, Optional[SimTime]]:
+    ) -> tuple[Changes, SimTime | None]:
         """Routes inputs, does a tick and returns output changes and a callback time.
 
         An asynchronous method which determines which components within the simulation
@@ -127,7 +127,7 @@ class NestedScheduler(BaseScheduler):
         wakeup_components = {
             component for component, when in self.wakeups.items() if when <= time
         }
-        root_components: Set[ComponentID] = {
+        root_components: set[ComponentID] = {
             *self.interrupts,
             *wakeup_components,
             ComponentID("external"),

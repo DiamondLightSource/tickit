@@ -1,9 +1,9 @@
 import asyncio
-from typing import Awaitable, Iterable, Set
+from collections.abc import Awaitable, Iterable
+from unittest.mock import AsyncMock, Mock, create_autospec, patch
 
 import pytest
 import pytest_asyncio
-from mock import AsyncMock, Mock, create_autospec, patch
 
 from tickit.core.management.event_router import Wiring
 from tickit.core.management.schedulers.master import MasterScheduler
@@ -71,7 +71,7 @@ def patch_asyncio_wait() -> Iterable[Mock]:
             self.call_count = 0
             self.threshold = 3
 
-        async def __call__(self, awaitables: Set[Awaitable], return_when):
+        async def __call__(self, awaitables: set[Awaitable], return_when):
             """Simulates the call to asyncio.wait(return_when=FIRST_COMPLETED).
 
             The call to wait is a (deliberate) race condition. To simulate this and

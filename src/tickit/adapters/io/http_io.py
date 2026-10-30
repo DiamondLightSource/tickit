@@ -1,6 +1,6 @@
 import asyncio
 import logging
-from typing import Awaitable, Callable, Iterable, Optional, Tuple
+from collections.abc import Awaitable, Callable, Iterable
 
 from aiohttp import web
 from aiohttp.web_routedef import RouteDef
@@ -22,8 +22,8 @@ class HttpIo(AdapterIo[HttpAdapter]):
     host: str
     port: int
 
-    _stopped: Optional[asyncio.Event]
-    _ready: Optional[asyncio.Event]
+    _stopped: asyncio.Event | None
+    _ready: asyncio.Event | None
 
     def __init__(
         self,
@@ -75,7 +75,7 @@ class HttpIo(AdapterIo[HttpAdapter]):
 
     async def _start_server(
         self,
-        endpoints: Iterable[Tuple[HttpEndpoint, Callable]],
+        endpoints: Iterable[tuple[HttpEndpoint, Callable]],
         raise_interrupt: RaiseInterrupt,
     ):
         LOGGER.debug(f"Starting HTTP server... {self}")
@@ -89,7 +89,7 @@ class HttpIo(AdapterIo[HttpAdapter]):
 
     def create_route_definitions(
         self,
-        endpoints: Iterable[Tuple[HttpEndpoint, Callable]],
+        endpoints: Iterable[tuple[HttpEndpoint, Callable]],
         raise_interrupt: RaiseInterrupt,
     ) -> Iterable[RouteDef]:
         for endpoint, func in endpoints:

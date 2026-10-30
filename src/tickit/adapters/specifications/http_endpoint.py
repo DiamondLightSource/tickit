@@ -1,5 +1,6 @@
+from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
-from typing import AnyStr, Awaitable, Callable, Generic, Optional
+from typing import AnyStr, Generic
 
 from aiohttp import web
 from aiohttp.web_response import StreamResponse
@@ -26,7 +27,7 @@ class HttpEndpoint(Generic[AnyStr]):
     path: str
     method: str
     interrupt: bool = False
-    func: Optional[Callable[[web.Request], web.Response]] = None
+    func: Callable[[web.Request], web.Response] | None = None
 
     def __call__(self, func: Callable) -> Callable:
         """Decorate a function for HTTP routing.
@@ -37,7 +38,7 @@ class HttpEndpoint(Generic[AnyStr]):
         Returns:
             Callable: The registered adapter endpoint.
         """
-        setattr(func, "__endpoint__", self)
+        func.__endpoint__ = self  # type: ignore[attr-defined]
         return func
 
     def define(

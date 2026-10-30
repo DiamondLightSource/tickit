@@ -1,7 +1,7 @@
 from typing import cast
+from unittest.mock import Mock
 
 import pytest
-from mock import Mock
 
 from tickit.adapters.epics import EpicsAdapter, InputRecord
 

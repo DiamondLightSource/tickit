@@ -1,5 +1,5 @@
-from collections.abc import AsyncIterator
-from typing import AnyStr, Iterable
+from collections.abc import AsyncIterator, Iterable
+from typing import AnyStr
 
 
 async def wrap_as_async_iterator(message: AnyStr) -> AsyncIterator[AnyStr]:

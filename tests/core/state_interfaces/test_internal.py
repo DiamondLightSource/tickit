@@ -1,7 +1,7 @@
 from collections import defaultdict
+from unittest.mock import MagicMock
 
 import pytest
-from mock import MagicMock
 
 from tickit.core.state_interfaces.internal import (
     InternalStateConsumer,

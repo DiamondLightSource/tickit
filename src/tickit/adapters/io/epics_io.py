@@ -1,7 +1,8 @@
 import os
 import re
+from collections.abc import Callable
 from tempfile import NamedTemporaryFile
-from typing import Any, Callable, Dict, Optional
+from typing import Any
 
 from softioc import builder, softioc
 
@@ -21,9 +22,9 @@ class EpicsIo(AdapterIo[EpicsAdapter]):
     but can be customised in code by implementing on_db_load in EpicsAdapter.
     """
 
-    interrupt_records: Dict[InputRecord, Callable[[], Any]] = {}
+    interrupt_records: dict[InputRecord, Callable[[], Any]] = {}
 
-    def __init__(self, ioc_name: str, db_file: Optional[str] = None) -> None:
+    def __init__(self, ioc_name: str, db_file: str | None = None) -> None:
         """An EpicsAdapter constructor which stores the db_file path and the IOC name.
 
         Args:

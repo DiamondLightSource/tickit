@@ -1,5 +1,5 @@
 from random import random
-from typing import Optional, TypedDict
+from typing import TypedDict
 
 import pydantic.v1.dataclasses
 
@@ -32,7 +32,7 @@ class ShutterDevice(Device):
         flux: float
 
     def __init__(
-        self, default_position: float, initial_position: Optional[float] = None
+        self, default_position: float, initial_position: float | None = None
     ) -> None:
         """A Shutter constructor which configures the initial and default position.
 
@@ -45,7 +45,7 @@ class ShutterDevice(Device):
         self.target_position = default_position
         self.position = initial_position if initial_position else random()
         self.rate = 2e-10
-        self.last_time: Optional[SimTime] = None
+        self.last_time: SimTime | None = None
 
     @staticmethod
     def move(position: float, target: float, rate: float, period: SimTime) -> float:
@@ -148,7 +148,7 @@ class Shutter(ComponentConfig):
     """Shutter you can open or close over TCP."""
 
     default_position: float
-    initial_position: Optional[float] = None
+    initial_position: float | None = None
     host: str = "localhost"
     port: int = 25565
 

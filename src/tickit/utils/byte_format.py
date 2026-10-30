@@ -13,7 +13,7 @@ class ByteFormat(BaseModel):
         super().__init__(format=format)
 
     @validator("format")
-    def encode_string(cls, v):
+    def encode_string(self, v):
         if isinstance(v, str):
             v = v.encode("utf-8")
         return v

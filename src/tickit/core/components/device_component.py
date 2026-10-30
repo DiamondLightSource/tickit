@@ -1,7 +1,8 @@
 import asyncio
 import logging
+from collections.abc import Awaitable, Callable, Hashable, Mapping
 from dataclasses import dataclass, field
-from typing import Awaitable, Callable, Dict, Hashable, List, Mapping, Type, cast
+from typing import cast
 
 from immutables import Map
 
@@ -28,13 +29,13 @@ class DeviceComponent(BaseComponent):
 
     name: ComponentID
     device: Device
-    adapters: List[AdapterContainer] = field(default_factory=list)
+    adapters: list[AdapterContainer] = field(default_factory=list)
     last_outputs: State = field(init=False, default_factory=lambda: State({}))
-    device_inputs: Dict[str, Hashable] = field(init=False, default_factory=dict)
-    _tasks: List[asyncio.Task] = field(default_factory=list)
+    device_inputs: dict[str, Hashable] = field(init=False, default_factory=dict)
+    _tasks: list[asyncio.Task] = field(default_factory=list)
 
     async def run_forever(
-        self, state_consumer: Type[StateConsumer], state_producer: Type[StateProducer]
+        self, state_consumer: type[StateConsumer], state_producer: type[StateProducer]
     ) -> None:
         """Set up state interfaces, run adapters and blocks until any complete."""
         self._tasks = [

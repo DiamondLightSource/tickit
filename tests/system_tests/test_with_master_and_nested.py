@@ -1,7 +1,7 @@
 import asyncio
 from asyncio import AbstractEventLoop
 from pathlib import Path
-from typing import List, cast
+from typing import cast
 
 import pytest
 import pytest_asyncio
@@ -17,7 +17,7 @@ from tickit.utils.configuration.loading import read_configs
 
 
 @pytest_asyncio.fixture
-def configs_from_yaml() -> List[ComponentConfig]:
+def configs_from_yaml() -> list[ComponentConfig]:
     path_to_yaml = Path(__file__).parent / "configs" / "nested.yaml"
     return read_configs(path_to_yaml)
 
@@ -28,14 +28,14 @@ def wiring(configs_from_yaml) -> InverseWiring:
 
 
 @pytest_asyncio.fixture
-def components(configs_from_yaml) -> List[Component]:
+def components(configs_from_yaml) -> list[Component]:
     return [config() for config in configs_from_yaml]
 
 
 @pytest_asyncio.fixture
 async def master_scheduler(
     wiring: InverseWiring,
-    components: List[Component],
+    components: list[Component],
     event_loop: AbstractEventLoop,
 ):
     scheduler = MasterScheduler(wiring, *get_interface("internal"))
@@ -73,7 +73,7 @@ async def master_scheduler(
 
 @pytest.mark.asyncio
 async def test_sink_has_captured_value(
-    components: List[Component],
+    components: list[Component],
     master_scheduler: MasterScheduler,
 ):
     source = cast(DeviceComponent, components[0])

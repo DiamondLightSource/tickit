@@ -1,10 +1,10 @@
 import asyncio
-from typing import AsyncGenerator, Sequence
+from collections.abc import AsyncGenerator, Sequence
+from unittest.mock import AsyncMock, MagicMock, Mock
 
 import aiozmq
 import pytest
 import pytest_asyncio
-from mock import AsyncMock, MagicMock, Mock
 from pydantic.v1 import BaseModel
 
 from tickit.adapters.io.zeromq_push_io import SocketFactory, ZeroMqMessage, ZeroMqPushIo

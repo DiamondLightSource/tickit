@@ -1,6 +1,7 @@
+from collections.abc import Callable, Sequence
 from dataclasses import InitVar, dataclass, field
 from re import Pattern, compile
-from typing import AnyStr, Callable, Generic, Optional, Sequence
+from typing import AnyStr, Generic
 
 
 @dataclass
@@ -22,11 +23,11 @@ class RegexCommand(Generic[AnyStr]):
 
     regex: InitVar[AnyStr]
     interrupt: bool = False
-    format: InitVar[Optional[str]] = None
+    format: InitVar[str | None] = None
     pattern: Pattern[AnyStr] = field(init=False)
     convert: Callable[[bytes], AnyStr] = field(init=False)
 
-    def __post_init__(self, regex: AnyStr, format: Optional[str]):
+    def __post_init__(self, regex: AnyStr, format: str | None):
         # The type checking fails here as it can't determine that the return
         # type matches the regex type. The isinstance should narrow the AnyStr
         # type but doesn't
@@ -50,10 +51,10 @@ class RegexCommand(Generic[AnyStr]):
         Returns:
             Callable: The registered adapter method.
         """
-        setattr(func, "__command__", self)
+        func.__command__ = self  # type: ignore[attr-defined]
         return func
 
-    def parse(self, data: bytes) -> Optional[Sequence[AnyStr]]:
+    def parse(self, data: bytes) -> Sequence[AnyStr] | None:
         """Performs message decoding and regex matching to match and extract arguments.
 
         A method which performs message decoding according to the command formatting

@@ -1,5 +1,6 @@
+from collections.abc import Hashable, Iterator, Mapping
 from dataclasses import dataclass
-from typing import Hashable, Iterator, Mapping, NewType, Optional, Union
+from typing import NewType
 
 from immutables import Map
 
@@ -75,7 +76,7 @@ class Output:
     source: ComponentID
     time: SimTime
     changes: Changes
-    call_at: Optional[SimTime]
+    call_at: SimTime | None
 
 
 @dataclass(frozen=True)
@@ -122,5 +123,5 @@ class ComponentException:
     traceback: str
 
 
-ComponentOutput = Union[Interrupt, Output, ComponentException]
-ComponentInput = Union[Input, StopComponent, ComponentException]
+ComponentOutput = Interrupt | Output | ComponentException
+ComponentInput = Input | StopComponent | ComponentException

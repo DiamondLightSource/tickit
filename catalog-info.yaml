@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: tickit
+  title: tickit
+  description: Event-based device simulation framework
+spec:
+  type: library
+  lifecycle: experimental
+  owner: 

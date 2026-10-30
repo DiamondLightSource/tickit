@@ -1,7 +1,7 @@
-from typing import Iterable
+from collections.abc import Iterable
+from unittest.mock import Mock, patch
 
 import pytest
-from mock import Mock, patch
 
 from tickit.core.typedefs import SimTime
 from tickit.devices.source import SourceDevice

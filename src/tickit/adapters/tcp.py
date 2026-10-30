@@ -1,13 +1,9 @@
 from abc import abstractmethod
+from collections.abc import AsyncIterable, AsyncIterator, Sequence
 from inspect import getmembers
 from typing import (
     AnyStr,
-    AsyncIterable,
-    AsyncIterator,
-    Optional,
     Protocol,
-    Sequence,
-    Tuple,
     get_type_hints,
     runtime_checkable,
 )
@@ -25,7 +21,7 @@ class Command(Protocol):
     interrupt: bool
 
     @abstractmethod
-    def parse(self, data: bytes) -> Optional[Sequence[AnyStr]]:
+    def parse(self, data: bytes) -> Sequence[AnyStr] | None:
         """An abstract method which parses a message and extracts arguments.
 
         An abstract method which parses a message and produces arguments if a match is
@@ -62,7 +58,7 @@ class CommandAdapter(Interpreter[AnyStr]):
         self,
         message: AnyStr,
         raise_interrupt: RaiseInterrupt,
-    ) -> AsyncIterable[Optional[AnyStr]]:
+    ) -> AsyncIterable[AnyStr | None]:
         """Delegates message handling to the adapter, raises interrupt if requested.
 
         Args:
@@ -76,7 +72,7 @@ class CommandAdapter(Interpreter[AnyStr]):
             await raise_interrupt()
         return reply
 
-    async def handle(self, message: AnyStr) -> Tuple[AsyncIterator[AnyStr], bool]:
+    async def handle(self, message: AnyStr) -> tuple[AsyncIterator[AnyStr], bool]:
         """Matches the message to an adapter command and calls the corresponding method.
 
         An asynchronous method which handles a message by attempting to match the
@@ -103,7 +99,9 @@ class CommandAdapter(Interpreter[AnyStr]):
                 continue
             args = (
                 argtype(arg)
-                for arg, argtype in zip(args, get_type_hints(method).values())
+                for arg, argtype in zip(
+                    args, get_type_hints(method).values(), strict=False
+                )
             )
             resp = await method(*args)
             if not isinstance(resp, AsyncIterator):
@@ -120,7 +118,7 @@ class CommandAdapter(Interpreter[AnyStr]):
             resp = wrap_as_async_iterator(msg)
             return resp, False
 
-    async def on_connect(self) -> AsyncIterable[Optional[AnyStr]]:
+    async def on_connect(self) -> AsyncIterable[AnyStr | None]:
         """Overridable asynchronous iterable which yields messages on client connection.
 
         Returns:

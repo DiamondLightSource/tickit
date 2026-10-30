@@ -1,9 +1,9 @@
 import asyncio
-from typing import Iterable
+from collections.abc import Iterable
+from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
 from immutables import Map
-from mock import AsyncMock, Mock, patch
 from mock.mock import create_autospec
 
 from tickit.core.components.component import Component
@@ -87,7 +87,8 @@ async def test_system_simulation_methods(
     interfaces of the system simulation are awaited once with the correct parameters.
     """
     await system_simulation.run_forever(
-        mock_state_consumer_type, mock_state_producer_type  # type: ignore
+        mock_state_consumer_type,
+        mock_state_producer_type,  # type: ignore
     )
 
     system_simulation.state_consumer.subscribe.assert_awaited_once()  # type: ignore
@@ -111,7 +112,8 @@ async def test_system_simulation_handles_exception_in_handle_input(
     mock_state_consumer_type: Mock,
 ):
     await system_simulation.run_forever(
-        mock_state_consumer_type, mock_state_producer_type  # type: ignore
+        mock_state_consumer_type,
+        mock_state_producer_type,  # type: ignore
     )
 
     def raise_error(time, changes):
@@ -133,7 +135,8 @@ async def test_system_simulation_stops_when_told(
     mock_state_consumer_type: Mock,
 ):
     await system_simulation.run_forever(
-        mock_state_consumer_type, mock_state_producer_type  # type: ignore
+        mock_state_consumer_type,
+        mock_state_producer_type,  # type: ignore
     )
 
     await system_simulation.handle_input(StopComponent())

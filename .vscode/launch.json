@@ -5,36 +5,45 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name":"Sunk Trampoline",
-            "type":"python",
-            "request":"launch",
-            "module":"tickit",
-            "args": ["all", "examples/configs/sunk-trampoline.yaml"]
+            "name": "Sunk Trampoline",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "tickit",
+            "args": [
+                "all",
+                "examples/configs/sunk-trampoline.yaml"
+            ]
         },
         {
-            "name":"Sunk TCP",
-            "type":"python",
-            "request":"launch",
-            "module":"tickit",
-            "args": ["all", "examples/configs/sunk-tcp.yaml"]
+            "name": "Sunk TCP",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "tickit",
+            "args": [
+                "all",
+                "examples/configs/sunk-tcp.yaml"
+            ]
         },
         {
-            "name":"Nested",
-            "type":"python",
-            "request":"launch",
-            "module":"tickit",
-            "args": ["all", "examples/configs/nested.yaml"]
+            "name": "Nested",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "tickit",
+            "args": [
+                "all",
+                "examples/configs/nested.yaml"
+            ]
         },
         {
-            "name":"Python: Current File",
-            "type":"python",
-            "request":"launch",
-            "program":"${file}",
-            "console":"integratedTerminal"
+            "name": "Python: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
         },
         {
             "name": "Debug Unit Test",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "justMyCode": false,
             "program": "${file}",

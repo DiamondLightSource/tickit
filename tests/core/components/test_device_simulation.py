@@ -1,8 +1,8 @@
-from typing import Iterable
+from collections.abc import Iterable
+from unittest.mock import AsyncMock, MagicMock, Mock, create_autospec, patch
 
 import pytest
 from immutables import Map
-from mock import AsyncMock, MagicMock, Mock, create_autospec, patch
 
 from tickit.adapters.io.tcp_io import TcpIo
 from tickit.adapters.tcp import CommandAdapter
@@ -89,7 +89,8 @@ async def test_device_simulation_run_forever_method(
     patch_asyncio_wait: Mock,
 ):
     await device_simulation.run_forever(
-        mock_state_consumer_type, mock_state_producer_type  # type: ignore
+        mock_state_consumer_type,
+        mock_state_producer_type,  # type: ignore
     )
     patch_asyncio_wait.assert_awaited_once()
 
@@ -116,7 +117,8 @@ async def test_device_simulation_handles_exception_in_handle_input(
     mock_state_consumer_type: Mock,
 ):
     await device_simulation.run_forever(
-        mock_state_consumer_type, mock_state_producer_type  # type: ignore
+        mock_state_consumer_type,
+        mock_state_producer_type,  # type: ignore
     )
 
     def raise_error(time, changes):
@@ -138,7 +140,8 @@ async def test_device_simulation_stops_when_told(
     mock_state_consumer_type: Mock,
 ):
     await device_simulation.run_forever(
-        mock_state_consumer_type, mock_state_producer_type  # type: ignore
+        mock_state_consumer_type,
+        mock_state_producer_type,  # type: ignore
     )
 
     await device_simulation.handle_input(StopComponent())

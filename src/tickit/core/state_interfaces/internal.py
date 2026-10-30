@@ -1,15 +1,10 @@
 from collections import defaultdict
+from collections.abc import Awaitable, Callable, Iterable
 from typing import (
     Any,
-    Awaitable,
-    Callable,
-    DefaultDict,
     Generic,
-    Iterable,
-    List,
     NamedTuple,
     NewType,
-    Set,
     TypeVar,
 )
 
@@ -29,7 +24,7 @@ class Message(NamedTuple):
 
 
 #: A list of messages
-Messages = NewType("Messages", List[Message])
+Messages = NewType("Messages", list[Message])
 
 
 class InternalStateServer(metaclass=Singleton):
@@ -44,8 +39,8 @@ class InternalStateServer(metaclass=Singleton):
     subscribe to the topic.
     """
 
-    _topics: DefaultDict[str, Messages] = defaultdict(lambda: Messages(list()))
-    _subscribers: DefaultDict[str, Set["InternalStateConsumer"]] = defaultdict(set)
+    _topics: defaultdict[str, Messages] = defaultdict(lambda: Messages([]))
+    _subscribers: defaultdict[str, set["InternalStateConsumer"]] = defaultdict(set)
 
     async def push(self, topic: str, message: Message) -> None:
         """Asynchronous method which propagates a message to subscribers and stores it.
@@ -87,7 +82,7 @@ class InternalStateServer(metaclass=Singleton):
             topic (str): The topic to be created.
         """
         assert topic not in self._topics.keys()
-        self._topics[topic] = Messages(list())
+        self._topics[topic] = Messages([])
 
     def remove_topic(self, topic: str) -> None:
         """Removes an existing topic and the corresponding message list.
@@ -99,7 +94,7 @@ class InternalStateServer(metaclass=Singleton):
         del self._topics[topic]
 
     @property
-    def topics(self) -> List[str]:
+    def topics(self) -> list[str]:
         """A list of topics which currently exist.
 
         Returns:

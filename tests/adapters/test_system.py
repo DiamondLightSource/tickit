@@ -1,7 +1,6 @@
-from typing import Dict
+from unittest.mock import create_autospec
 
 import pytest
-from mock import create_autospec
 
 from tickit.adapters.system import BaseSystemSimulationAdapter
 from tickit.core.components.component import Component
@@ -10,7 +9,7 @@ from tickit.core.typedefs import ComponentID
 
 
 @pytest.fixture
-def mock_components() -> Dict[ComponentID, Component]:
+def mock_components() -> dict[ComponentID, Component]:
     cpt: Component = create_autospec(Component, instance=True)
     return {ComponentID("mock_cpt"): cpt}
 

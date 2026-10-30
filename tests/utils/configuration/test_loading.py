@@ -1,8 +1,8 @@
-from typing import Iterable
+from collections.abc import Iterable
+from unittest.mock import Mock, create_autospec, patch
 
 import pydantic.v1.dataclasses
 import pytest
-from mock import Mock, create_autospec, patch
 from mock.mock import mock_open
 
 from tickit.core.components.component import ComponentConfig

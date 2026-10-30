@@ -1,8 +1,9 @@
-# Configuration file for the Sphinx documentation builder.
-#
-# This file only contains a selection of the most common options. For a full
-# list see the documentation:
-# https://www.sphinx-doc.org/en/master/usage/configuration.html
+"""Configuration file for the Sphinx documentation builder.
+
+This file only contains a selection of the most common options. For a full
+list see the documentation:
+https://www.sphinx-doc.org/en/master/usage/configuration.html
+"""
 
 import sys
 from pathlib import Path
@@ -32,8 +33,8 @@ else:
 extensions = [
     # Use this for generating API docs
     "sphinx.ext.autodoc",
-    # Use this to link to section labels across pages
-    "sphinx.ext.autosectionlabel",
+    # and making summary tables at the top of API docs
+    "sphinx.ext.autosummary",
     # This can parse google style docstrings
     "sphinx.ext.napoleon",
     # For linking to external sphinx documentation
@@ -46,11 +47,16 @@ extensions = [
     "sphinx_copybutton",
     # For the card element
     "sphinx_design",
+    # So we can write markdown files
+    "myst_parser",
 ]
+
+# So we can use the ::: syntax
+myst_enable_extensions = ["colon_fence"]
 
 # If true, Sphinx will warn about all references where the target cannot
 # be found.
-nitpicky = False
+nitpicky = True
 
 # A list of (type, target) tuples (by default empty) that should be ignored when
 # generating warnings in "nitpicky mode". Note that type should include the
@@ -87,6 +93,12 @@ autodoc_member_order = "bysource"
 
 # Don't inherit docstrings from baseclasses
 autodoc_inherit_docstrings = False
+
+# Document only what is in __all__
+autosummary_ignore_module_all = False
+
+# Add any paths that contain templates here, relative to this directory.
+templates_path = ["_templates"]
 
 # Output graphviz directive produced images in a scalable format
 graphviz_output_format = "svg"
@@ -140,8 +152,8 @@ copybutton_prompt_is_regexp = True
 # a list of builtin themes.
 #
 html_theme = "pydata_sphinx_theme"
-github_repo = project
-github_user = "dls-controls"
+github_repo = "tickit"
+github_user = "DiamondLightSource"
 switcher_json = f"https://{github_user}.github.io/{github_repo}/switcher.json"
 switcher_exists = requests.get(switcher_json).ok
 if not switcher_exists:
@@ -156,46 +168,41 @@ if not switcher_exists:
 # Theme options for pydata_sphinx_theme
 # We don't check switcher because there are 3 possible states for a repo:
 # 1. New project, docs are not published so there is no switcher
-# 2. Existing project with latest skeleton, switcher exists and works
-# 3. Existing project with old skeleton that makes broken switcher,
+# 2. Existing project with latest copier template, switcher exists and works
+# 3. Existing project with old copier template that makes broken switcher,
 #    switcher exists but is broken
-# Point 3 makes checking switcher difficult, because the updated skeleton
+# Point 3 makes checking switcher difficult, because the updated copier template
 # will fix the switcher at the end of the docs workflow, but never gets a chance
 # to complete as the docs build warns and fails.
-html_theme_options = dict(
-    logo=dict(
-        text=project,
-    ),
-    use_edit_page_button=True,
-    github_url=f"https://github.com/{github_user}/{github_repo}",
-    icon_links=[
-        dict(
-            name="PyPI",
-            url=f"https://pypi.org/project/{project}",
-            icon="fas fa-cube",
-        )
+html_theme_options = {
+    "logo": {
+        "text": project,
+    },
+    "use_edit_page_button": True,
+    "github_url": f"https://github.com/{github_user}/{github_repo}",
+    "icon_links": [
+        {
+            "name": "PyPI",
+            "url": f"https://pypi.org/project/{project}",
+            "icon": "fas fa-cube",
+        }
     ],
-    switcher=dict(
-        json_url=switcher_json,
-        version_match=version,
-    ),
-    check_switcher=False,
-    navbar_end=["theme-switcher", "icon-links", "version-switcher"],
-    external_links=[
-        dict(
-            name="Release Notes",
-            url=f"https://github.com/{github_user}/{github_repo}/releases",
-        )
-    ],
-)
+    "switcher": {
+        "json_url": switcher_json,
+        "version_match": version,
+    },
+    "check_switcher": False,
+    "navbar_end": ["theme-switcher", "icon-links", "version-switcher"],
+    "navigation_with_keys": False,
+}
 
 # A dictionary of values to pass into the template engine’s context for all pages
-html_context = dict(
-    github_user=github_user,
-    github_repo=project,
-    github_version=version,
-    doc_path="docs",
-)
+html_context = {
+    "github_user": github_user,
+    "github_repo": github_repo,
+    "github_version": version,
+    "doc_path": "docs",
+}
 
 # If true, "Created using Sphinx" is shown in the HTML footer. Default is True.
 html_show_sphinx = False

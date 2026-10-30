@@ -1,7 +1,8 @@
+from unittest.mock import Mock
+
 import pytest
 from aiohttp import web
 from aiohttp.web_response import StreamResponse
-from mock import Mock
 
 from tickit.adapters.specifications import HttpEndpoint
 

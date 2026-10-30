@@ -1,8 +1,9 @@
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
-from typing import AnyStr, Callable, Optional, Sequence
+from typing import AnyStr
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
-from mock import AsyncMock, MagicMock, patch
 
 from tickit.adapters.tcp import Command, CommandAdapter
 from tickit.core.device import Device
@@ -30,10 +31,10 @@ def TestCommand():
         command: bytes
 
         def __call__(self, func: Callable) -> Callable:
-            setattr(func, "__command__", self)
+            func.__command__ = self
             return func
 
-        def parse(self, data: bytes) -> Optional[Sequence[str]]:
+        def parse(self, data: bytes) -> Sequence[str] | None:
             if data == self.command:
                 return ("arg1", "arg2")
             else:
@@ -132,9 +133,7 @@ async def test_command_adapter_handle_skips_unparsed(
     )
     assert (
         b"Request does not match any known command"
-        == await (await adapter.handle("TestCommand".encode("utf-8")))[0]
-        .__aiter__()
-        .__anext__()
+        == await (await adapter.handle(b"TestCommand"))[0].__aiter__().__anext__()
     )
 
 
