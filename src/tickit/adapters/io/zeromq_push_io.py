@@ -6,7 +6,7 @@ from typing import Protocol, runtime_checkable
 
 import aiozmq
 import zmq
-from pydantic.v1 import BaseModel
+from pydantic import BaseModel
 
 from tickit.adapters.zmq import (
     ZeroMqMessage,

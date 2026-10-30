@@ -1,5 +1,5 @@
 import yaml
-from pydantic.v1 import parse_obj_as
+from pydantic import parse_obj_as
 
 from tickit.core.components.component import ComponentConfig
 

@@ -1,7 +1,7 @@
 import logging
 from typing import Any, Generic, NotRequired, TypedDict, TypeVar
 
-import pydantic.v1.dataclasses
+from pydantic import dataclasses
 
 from tickit.core.components.component import Component, ComponentConfig
 from tickit.core.components.device_component import DeviceComponent
@@ -118,7 +118,7 @@ class IoBoxDevice(Device, Generic[A, V]):
         return DeviceUpdate(IoBoxDevice.Outputs(updates=updates), None)
 
 
-@pydantic.v1.dataclasses.dataclass
+@dataclasses.dataclass
 class IoBox(ComponentConfig):
     """Arbitrary box of key-value pairs."""
 

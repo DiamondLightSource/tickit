@@ -2,7 +2,7 @@ import asyncio
 import logging
 from dataclasses import dataclass, field
 
-import pydantic.v1.dataclasses
+from pydantic import dataclasses
 
 from tickit.adapters.system import BaseSystemSimulationAdapter
 from tickit.core.adapter import AdapterContainer
@@ -112,7 +112,7 @@ class SystemComponent(BaseComponent):
             task.cancel()
 
 
-@pydantic.v1.dataclasses.dataclass
+@dataclasses.dataclass
 class SystemSimulation(ComponentConfig):
     """Simulation of a nested set of components."""
 

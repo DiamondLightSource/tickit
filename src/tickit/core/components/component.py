@@ -4,7 +4,7 @@ import traceback
 from abc import abstractmethod
 from dataclasses import dataclass
 
-import pydantic.v1.dataclasses
+from pydantic import dataclasses
 
 from tickit.core.state_interfaces.state_interface import StateConsumer, StateProducer
 from tickit.core.typedefs import (
@@ -57,7 +57,7 @@ class Component:
 
 
 @as_tagged_union
-@pydantic.v1.dataclasses.dataclass
+@dataclasses.dataclass
 class ComponentConfig:
     """A data container for component configuration.
 

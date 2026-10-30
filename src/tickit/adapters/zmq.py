@@ -1,17 +1,12 @@
 import asyncio
 from collections.abc import Mapping, Sequence
-from typing import Any, Union
+from typing import Any
 
 import zmq
-from pydantic.v1 import BaseModel
+from pydantic import BaseModel
 
-_MessagePart = Union[bytes, zmq.Frame, memoryview]
-_SerializableMessagePart = Union[
-    _MessagePart,
-    str,
-    Mapping[str, Any],
-    BaseModel,
-]
+_MessagePart = bytes | zmq.Frame | memoryview
+_SerializableMessagePart = _MessagePart | str | Mapping[str, Any] | BaseModel
 
 _ZeroMqInternalMessage = Sequence[_MessagePart]
 ZeroMqMessage = Sequence[_SerializableMessagePart]

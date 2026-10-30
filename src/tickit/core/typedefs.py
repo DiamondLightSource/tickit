@@ -1,6 +1,6 @@
 from collections.abc import Hashable, Iterator, Mapping
 from dataclasses import dataclass
-from typing import NewType, Union
+from typing import NewType
 
 from immutables import Map
 
@@ -123,5 +123,5 @@ class ComponentException:
     traceback: str
 
 
-ComponentOutput = Union[Interrupt, Output, ComponentException]
-ComponentInput = Union[Input, StopComponent, ComponentException]
+ComponentOutput = Interrupt | Output | ComponentException
+ComponentInput = Input | StopComponent | ComponentException
