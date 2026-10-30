@@ -38,7 +38,7 @@ class HttpEndpoint(Generic[AnyStr]):
         Returns:
             Callable: The registered adapter endpoint.
         """
-        func.__endpoint__ = self
+        func.__endpoint__ = self  # type: ignore[attr-defined]
         return func
 
     def define(

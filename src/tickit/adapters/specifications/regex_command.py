@@ -51,7 +51,7 @@ class RegexCommand(Generic[AnyStr]):
         Returns:
             Callable: The registered adapter method.
         """
-        func.__command__ = self
+        func.__command__ = self  # type: ignore[attr-defined]
         return func
 
     def parse(self, data: bytes) -> Sequence[AnyStr] | None:
