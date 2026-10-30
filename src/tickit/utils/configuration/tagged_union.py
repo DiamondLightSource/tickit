@@ -1,17 +1,17 @@
 from collections.abc import Callable
 from dataclasses import field
+from functools import reduce
 from importlib import import_module
-from typing import Any, Literal, Union
+from typing import Any, Literal
 
-from pydantic.v1 import BaseConfig, Field, ValidationError, create_model, parse_obj_as
-from pydantic.v1.error_wrappers import ErrorWrapper
+from pydantic import ConfigDict, Field, TypeAdapter, ValidationError, create_model
 
 
 def as_tagged_union(
     super_cls: type | Callable[[type], type] | None = None,
     *,
     discriminator: str = "type",
-    config: type[BaseConfig] | None = None,
+    config: type[ConfigDict] | None = None,
 ) -> type | Callable[[type], type]:
     def wrap(cls):
         return _as_tagged_union(cls, discriminator, config)
@@ -19,7 +19,7 @@ def as_tagged_union(
     # Work out if the call was @as_tagged_union or
     # @as_tagged_union(...)
     if super_cls is None:
-        return wrap
+        return wrap  # pyright: ignore[reportReturnType]
     else:
         return wrap(super_cls)
 
@@ -27,7 +27,7 @@ def as_tagged_union(
 def _as_tagged_union(
     super_cls: type,
     discriminator: str,
-    config: type[BaseConfig] | None = None,
+    config: type[ConfigDict] | None = None,
 ) -> type | Callable[[type], type]:
     super_cls._ref_classes = set()
     super_cls._model = None
@@ -55,35 +55,36 @@ def _as_tagged_union(
         }
         setattr(cls, discriminator, field(default=cls_name, repr=False))
 
-    def __get_validators__(cls) -> Any:
-        yield cls.__validate__
-
-    def __validate__(cls, v: Any) -> Any:
+    def _validate(cls, v: Any) -> Any:
         _load_module_with_type(v)
 
         if cls._model is None:
+            discriminator_value = v.get(discriminator) if isinstance(v, dict) else None
+            if discriminator_value:
+                for ref_cls in super_cls._ref_classes:
+                    cls_name = f"{ref_cls.__module__}.{ref_cls.__qualname__}"
+                    if cls_name == discriminator_value:
+                        return TypeAdapter(ref_cls).validate_python(v)
+
             if len(super_cls._ref_classes) == 1:
                 single_subclass = next(iter(super_cls._ref_classes))
-                return parse_obj_as(single_subclass, v)
-            root = Union[tuple(super_cls._ref_classes)]  # type: ignore[no-any-unimported]
+                return TypeAdapter(single_subclass).validate_python(v)
+            root = reduce(lambda a, b: a | b, super_cls._ref_classes)
             super_cls._model = create_model(
                 super_cls.__name__,
-                __root__=(root, Field(..., discriminator=discriminator)),
-                __config__=config,
+                __root__=(root, Field(...)),
             )
         try:
             if cls._model:
-                return cls._model(__root__=v).__root__
+                return TypeAdapter(cls._model).validate_python(v)
         except ValidationError as e:
-            for err in e.raw_errors:
-                # need in to remove redundant __root__ from error path
-                if isinstance(err, ErrorWrapper) and err.loc_tuple()[0] == "__root__":
-                    err._loc = err.loc_tuple()[1:]
-
+            for err in e.errors():
+                if err.get("loc") and err["loc"][0] == "__root__":
+                    err["loc"] = err["loc"][1:]
             raise e
 
     # Inject magic methods into super_cls
-    for method in __init_subclass__, __get_validators__, __validate__:
+    for method in __init_subclass__, _validate:
         setattr(super_cls, method.__name__, classmethod(method))  # type: ignore
 
     return super_cls
