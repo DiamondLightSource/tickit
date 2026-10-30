@@ -44,7 +44,7 @@ class BaseScheduler:
         self._wiring = wiring
         self._state_consumer_cls = state_consumer
         self._state_producer_cls = state_producer
-        self.wakeups: dict[ComponentID, SimTime] = dict()
+        self.wakeups: dict[ComponentID, SimTime] = {}
 
         self.error = asyncio.Event()
 

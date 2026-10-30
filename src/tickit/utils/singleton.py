@@ -6,8 +6,8 @@ class Singleton(type):
 
     _instances: dict["Singleton", "Singleton"] = {}
 
-    def __call__(self, *args: Any, **kwargs: Any) -> "Singleton":
+    def __call__(cls, *args: Any, **kwargs: Any) -> "Singleton":
         """Return the class instance, if uninstantiated create an instance."""
-        if self not in self._instances:
-            self._instances[self] = super().__call__(*args, **kwargs)
-        return self._instances[self]
+        if cls not in cls._instances:
+            cls._instances[cls] = super().__call__(*args, **kwargs)
+        return cls._instances[cls]

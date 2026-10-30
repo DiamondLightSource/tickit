@@ -69,8 +69,8 @@ class StateProducer(Protocol[P]):
 #: The union of StateConsumer and StateProducer
 StateInterface = TypeVar("StateInterface", bound=StateConsumer | StateProducer)
 
-consumers: dict[str, tuple[type[StateConsumer], bool]] = dict()
-producers: dict[str, tuple[type[StateProducer], bool]] = dict()
+consumers: dict[str, tuple[type[StateConsumer], bool]] = {}
+producers: dict[str, tuple[type[StateProducer], bool]] = {}
 
 
 def add(
@@ -96,7 +96,10 @@ def add(
             consumers[name] = (interface, external)
         else:
             warn(
-                RuntimeWarning(f"{interface} is not {StateConsumer} or {StateProducer}")
+                RuntimeWarning(
+                    f"{interface} is not {StateConsumer} or {StateProducer}"
+                ),
+                stacklevel=2,
             )
         return interface
 
@@ -138,9 +141,9 @@ def satisfy_externality(
     Returns:
         Set[str]: A set of interface names which satisfy the externality requirement.
     """
-    return set(
+    return {
         name for name, interface in interfaces.items() if not external or interface[1]
-    )
+    }
 
 
 def get_interface(name: str) -> tuple[type[StateConsumer], type[StateProducer]]:

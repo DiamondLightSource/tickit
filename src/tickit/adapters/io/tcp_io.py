@@ -64,7 +64,7 @@ class TcpIo(AdapterIo[CommandAdapter]):
                 asynchronous message handler which returns an asynchronous iterable of
                 replies.
         """
-        tasks: list[asyncio.Task] = list()
+        tasks: list[asyncio.Task] = []
 
         async def handle(reader: StreamReader, writer: StreamWriter) -> None:
             async def reply(replies: AsyncIterable[bytes | None]) -> None:

@@ -48,7 +48,7 @@ class Ticker:
         self.event_router = EventRouter(wiring)
         self.update_component = update_component
         self.skip_component = skip_component
-        self.to_update: dict[ComponentID, asyncio.Task | None] = dict()
+        self.to_update: dict[ComponentID, asyncio.Task | None] = {}
         self.finished: asyncio.Event = asyncio.Event()
 
     async def __call__(
@@ -110,7 +110,7 @@ class Ticker:
                 self.to_update
             )
 
-        updating: dict[ComponentID, asyncio.Task] = dict()
+        updating: dict[ComponentID, asyncio.Task] = {}
 
         for component, task in self.to_update.items():
             if task is not None or required_dependencies(component):

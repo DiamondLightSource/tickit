@@ -102,7 +102,7 @@ class MasterScheduler(BaseScheduler):
 
         for component in components:
             del self.wakeups[component]
-        await self.ticker(when, {component for component in components})
+        await self.ticker(when, set(components))
         self.last_time = time_ns()
 
     async def schedule_interrupt(self, source: ComponentID) -> None:

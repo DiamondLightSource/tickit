@@ -40,11 +40,9 @@ class Wiring(Default_Wiring_Struct):
                 None.
         """
         _wiring = (
-            {dev: defaultdict(set, io) for dev, io in wiring.items()}
-            if wiring
-            else dict()
+            {dev: defaultdict(set, io) for dev, io in wiring.items()} if wiring else {}
         )
-        return super().__init__(lambda: defaultdict(set, dict()), _wiring)
+        return super().__init__(lambda: defaultdict(set, {}), _wiring)
 
     @classmethod
     def from_inverse_wiring(cls, inverse_wiring: "InverseWiring") -> "Wiring":
@@ -84,11 +82,9 @@ class InverseWiring(Default_InverseWiring_Struct):
                 Defaults to None.
         """
         _wiring = (
-            {dev: defaultdict(None, io) for dev, io in wiring.items()}
-            if wiring
-            else dict()
+            {dev: defaultdict(None, io) for dev, io in wiring.items()} if wiring else {}
         )
-        return super().__init__(lambda: defaultdict(None, dict()), _wiring)
+        return super().__init__(lambda: defaultdict(None, {}), _wiring)
 
     @classmethod
     def from_wiring(cls, wiring: Wiring) -> "InverseWiring":
@@ -192,12 +188,12 @@ class EventRouter:
         Returns:
             Set[ComponentID]: A set of components which receive inputs.
         """
-        return set(
+        return {
             dev
             for out in self.wiring.values()
             for port in out.values()
             for dev, _ in port
-        )
+        }
 
     @cached_property
     def isolated_components(self) -> set[ComponentID]:
@@ -224,7 +220,7 @@ class EventRouter:
                 of its outputs.
         """
         return {
-            dev: set(dev for port in out.values() for dev, _ in port)
+            dev: {dev for port in out.values() for dev, _ in port}
             for dev, out in self.wiring.items()
         }
 

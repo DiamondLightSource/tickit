@@ -39,7 +39,7 @@ class InternalStateServer(metaclass=Singleton):
     subscribe to the topic.
     """
 
-    _topics: defaultdict[str, Messages] = defaultdict(lambda: Messages(list()))
+    _topics: defaultdict[str, Messages] = defaultdict(lambda: Messages([]))
     _subscribers: defaultdict[str, set["InternalStateConsumer"]] = defaultdict(set)
 
     async def push(self, topic: str, message: Message) -> None:
@@ -82,7 +82,7 @@ class InternalStateServer(metaclass=Singleton):
             topic (str): The topic to be created.
         """
         assert topic not in self._topics.keys()
-        self._topics[topic] = Messages(list())
+        self._topics[topic] = Messages([])
 
     def remove_topic(self, topic: str) -> None:
         """Removes an existing topic and the corresponding message list.

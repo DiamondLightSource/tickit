@@ -22,8 +22,8 @@ dependencies = [
     "pyyaml",
     "pyzmq",
     "softioc",
+    "typer",
     "typing_extensions",
-    "click!=8.1.4,!=8.1.5", #https://github.com/pallets/click/issues/2558
 ]
 dynamic = ["version"]
 license.file = "LICENSE"
@@ -41,7 +41,6 @@ dev = [
     "pytest",
     "pytest-asyncio",
     "pytest-cov",
-    "pytest-pydocstyle",
     "ruff",
     "sphinx-autobuild",
     "sphinx-copybutton",
@@ -51,7 +50,7 @@ dev = [
 ]
 
 [project.scripts]
-tickit = "tickit.cli:main"
+tickit = "tickit.__main__:app"
 
 [project.urls]
 GitHub = "https://github.com/DiamondLightSource/tickit"
@@ -86,6 +85,8 @@ addopts = """
     """
 # https://iscinumpy.gitlab.io/post/bound-version-constraints/#watch-for-warnings
 filterwarnings = "error"
+# https://pytest-asyncio.readthedocs.io/en/latest/user-guide/testing-sessions.html
+asyncio_default_fixture_loop_scope = "function"
 # Doctest python code in docs, python code in src docstrings, test functions in tests
 testpaths = "docs src tests"
 
@@ -185,6 +186,7 @@ line-length = 88
 lint.select = [
     "B",   # flake8-bugbear - https://docs.astral.sh/ruff/rules/#flake8-bugbear-b
     "C4",  # flake8-comprehensions - https://docs.astral.sh/ruff/rules/#flake8-comprehensions-c4
+    "D",   # pydocstyle - https://docs.astral.sh/ruff/rules/#pydocestyle-d
     "E",   # pycodestyle errors - https://docs.astral.sh/ruff/rules/#error-e
     "F",   # pyflakes rules - https://docs.astral.sh/ruff/rules/#pyflakes-f
     "N",   # pep8-naming - https://docs.astral.sh/ruff/rules/#pep8-naming-n
@@ -193,6 +195,7 @@ lint.select = [
     "UP",  # pyupgrade - https://docs.astral.sh/ruff/rules/#pyupgrade-up
     "SLF", # self - https://docs.astral.sh/ruff/settings/#lintflake8-self
 ]
+lint.ignore = ["B905", "D100", "D101", "D102", "D103", "D104", "D105", "D106", "D107", "E501", "N802", "N807", "SLF001", "UP007", "D202", "D203", "D205", "D211", "D212", "D213", "D401", "D413", "D415", "D417", "D418"]
 
 [tool.ruff.lint.per-file-ignores]
 # By default, private member access is allowed in tests

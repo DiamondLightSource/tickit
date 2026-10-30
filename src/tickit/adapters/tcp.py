@@ -99,7 +99,9 @@ class CommandAdapter(Interpreter[AnyStr]):
                 continue
             args = (
                 argtype(arg)
-                for arg, argtype in zip(args, get_type_hints(method).values())
+                for arg, argtype in zip(
+                    args, get_type_hints(method).values(), strict=False
+                )
             )
             resp = await method(*args)
             if not isinstance(resp, AsyncIterator):
