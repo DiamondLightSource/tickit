@@ -2,17 +2,36 @@ from collections.abc import Callable
 from dataclasses import field
 from functools import reduce
 from importlib import import_module
-from typing import Any, Literal
+from typing import Any, Literal, TypeVar, overload
 
 from pydantic import ConfigDict, Field, TypeAdapter, ValidationError, create_model
 
+_T = TypeVar("_T", bound=type)
+
+
+# When called with a class: return the same class (enables Pylance to see _validate)
+@overload
+def as_tagged_union(
+    super_cls: _T, *, discriminator: str = ..., config: type[ConfigDict] | None = ...
+) -> _T: ...
+
+
+# When called without args: return a decorator that wraps a class
+@overload
+def as_tagged_union(
+    super_cls: None = None,
+    *,
+    discriminator: str = ...,
+    config: type[ConfigDict] | None = ...,
+) -> Callable[[_T], _T]: ...
+
 
 def as_tagged_union(
-    super_cls: type | Callable[[type], type] | None = None,
+    super_cls: _T | None = None,
     *,
     discriminator: str = "type",
     config: type[ConfigDict] | None = None,
-) -> type | Callable[[type], type]:
+) -> _T | Callable[[_T], _T]:
     def wrap(cls):
         return _as_tagged_union(cls, discriminator, config)
 
@@ -21,7 +40,7 @@ def as_tagged_union(
     if super_cls is None:
         return wrap  # pyright: ignore[reportReturnType]
     else:
-        return wrap(super_cls)
+        return wrap(super_cls)  # type: ignore[return-value]
 
 
 def _as_tagged_union(
